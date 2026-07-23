@@ -1,0 +1,49 @@
+[
+  {
+    "parishSlug": "sample-parish",
+    "eventSlug": "picnic",
+    "parishName": "Sample Parish",
+    "eventName": "Parish Picnic",
+    "dateLabel": "Saturday, August 16, 2026",
+    "timeLabel": "11:00 AM \u2013 2:00 PM",
+    "location": "Parish Grounds",
+    "valueText": "Join us for a day of food, fellowship, and fun for the whole family. Bring a dish to share and come meet your parish community."
+  },
+  {
+    "parishSlug": "st-rose",
+    "eventSlug": "2026-picnic",
+    "parishName": "St. Rose Family of Parishes",
+    "eventName": "St. Rose Picnic",
+    "dateLabel": "Saturday, August 22, 2026",
+    "timeLabel": "12:00 - 3:00 PM",
+    "location": "Snyder Park Clubhouse (follow the signs!)",
+    "address": "1900 Park St, Springfield, OH 45504",
+    "valueText": "Bring the whole family and join us for our parish picnic! It's a wonderful chance to catch up with old friends, welcome new faces, and enjoy a relaxing day together as one St. Rose family. There'll be plenty of food, great company, music, and a scavenger hunt for the kids.",
+    "detailsNote": "Burgers and hot dogs provided \u2014 bring a side to share and a lawn chair or two!",
+    "photos": [
+      {
+        "src": "/images/events/st-rose/2026-picnic.jpg",
+        "alt": "Parishioners and their pastor together at a past St. Rose picnic"
+      },
+      {
+        "src": "/images/events/st-rose/group-photo.jpg",
+        "alt": "Friends gathered at a past St. Rose picnic"
+      },
+      {
+        "src": "/images/events/st-rose/food-table-photo.jpg",
+        "alt": "Kids serving themselves at the picnic food table"
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "buttonLabel": "Add to Calendar",
+      "introText": "Add your name and email below to save your spot. We'll send you a calendar invite, event details, and a reminder before the picnic.",
+      "successMessage": "You're on the list! Keep an eye on your inbox for a calendar invite and a reminder before the picnic.",
+      "collectPhone": false
+    },
+    "accent": {
+      "style": "gingham",
+      "color": "#9E2632"
+    }
+  }
+]

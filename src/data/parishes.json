@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "st-rose",
+    "name": "St. Rose Family of Parishes",
+    "colors": {
+      "primary": "#531212",
+      "secondary": "#956A35",
+      "background": "#FAF5F2",
+      "text": "#531212"
+    },
+    "logo": "/images/parishes/st-rose/logo.png"
+  }
+]

@@ -3,6 +3,9 @@ import eventsData from "./events.json";
 export type EventCTA =
   | {
       type: "form";
+      // Short heading above the form, e.g. "Don't Miss the Picnic" — gives
+      // the CTA card a focal point instead of jumping straight to fields.
+      title?: string;
       buttonLabel?: string;
       introText?: string;
       successMessage?: string;

@@ -8,6 +8,7 @@ const initialState: EventRSVPState = { status: "idle" };
 export default function EventRSVPForm({
   eventName,
   parishName,
+  title,
   buttonLabel = "RSVP",
   introText,
   successMessage,
@@ -15,6 +16,7 @@ export default function EventRSVPForm({
 }: {
   eventName: string;
   parishName: string;
+  title?: string;
   buttonLabel?: string;
   introText?: string;
   successMessage?: string;
@@ -46,8 +48,24 @@ export default function EventRSVPForm({
       action={formAction}
       className="space-y-5 rounded-2xl border border-[var(--brand-primary-10)] bg-white p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-8px_var(--brand-shadow)]"
     >
-      {introText && (
-        <p className="text-sm leading-relaxed text-[var(--brand-primary-70)]">{introText}</p>
+      {(title || introText) && (
+        <div className="text-center">
+          {title && (
+            <>
+              <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-[var(--brand-secondary)]" />
+              <p className="font-serif text-xl font-semibold tracking-tight text-[var(--brand-primary)]">
+                {title}
+              </p>
+            </>
+          )}
+          {introText && (
+            <p
+              className={`text-sm leading-relaxed text-[var(--brand-primary-70)] ${title ? "mt-2" : ""}`}
+            >
+              {introText}
+            </p>
+          )}
+        </div>
       )}
 
       {state.status === "error" && (

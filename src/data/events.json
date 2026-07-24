@@ -36,9 +36,10 @@
     ],
     "cta": {
       "type": "form",
-      "buttonLabel": "Add to Calendar",
-      "introText": "Add your name and email below to save your spot. We'll send you a calendar invite, event details, and a reminder before the picnic.",
-      "successMessage": "You're on the list! Keep an eye on your inbox for a calendar invite and a reminder before the picnic.",
+      "title": "Don't Miss the Picnic",
+      "buttonLabel": "Get Reminder",
+      "introText": "Tap below and we'll add the St. Rose Picnic to your calendar with all the details, plus email you a reminder so you don't forget.",
+      "successMessage": "You're all set! We've got you covered \u2014 watch your inbox for a calendar invite and a reminder before the picnic.",
       "collectPhone": false
     },
     "accent": {

@@ -158,6 +158,7 @@ export default async function EventPage({
           <EventRSVPForm
             eventName={event.eventName}
             parishName={event.parishName}
+            title={event.cta?.type === "form" ? event.cta.title : undefined}
             buttonLabel={event.cta?.buttonLabel}
             introText={event.cta?.type === "form" ? event.cta.introText : undefined}
             successMessage={event.cta?.successMessage}

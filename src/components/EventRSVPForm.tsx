@@ -2,26 +2,30 @@
 
 import { useActionState } from "react";
 import { submitEventRSVP, type EventRSVPState } from "@/app/actions";
+import { uiStrings, type Language } from "@/lib/i18n";
 
 const initialState: EventRSVPState = { status: "idle" };
 
 export default function EventRSVPForm({
   eventName,
   parishName,
+  language = "en",
   title,
-  buttonLabel = "RSVP",
+  buttonLabel,
   introText,
   successMessage,
   collectPhone = true,
 }: {
   eventName: string;
   parishName: string;
+  language?: Language;
   title?: string;
   buttonLabel?: string;
   introText?: string;
   successMessage?: string;
   collectPhone?: boolean;
 }) {
+  const t = uiStrings[language];
   const boundAction = submitEventRSVP.bind(null, eventName, parishName);
   const [state, formAction, pending] = useActionState(
     boundAction,
@@ -32,11 +36,11 @@ export default function EventRSVPForm({
     return (
       <div className="rounded-2xl border border-[var(--brand-primary-10)] bg-white p-8 text-center shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-8px_var(--brand-shadow)]">
         <p className="font-serif text-xl font-semibold text-[var(--brand-primary)]">
-          {successMessage ?? "You’re on the list!"}
+          {successMessage ?? t.defaultSuccessTitle}
         </p>
         {!successMessage && (
           <p className="mt-3 text-[var(--brand-primary-70)]">
-            We&rsquo;ll see you at {eventName}.
+            {t.defaultSuccessBody} {eventName}.
           </p>
         )}
       </div>
@@ -76,7 +80,7 @@ export default function EventRSVPForm({
 
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-[var(--brand-primary)]">
-          Name
+          {t.nameLabel}
         </label>
         <input
           id="name"
@@ -92,7 +96,7 @@ export default function EventRSVPForm({
           htmlFor="email"
           className="block text-sm font-medium text-[var(--brand-primary)]"
         >
-          Email
+          {t.emailLabel}
         </label>
         <input
           id="email"
@@ -109,7 +113,7 @@ export default function EventRSVPForm({
             htmlFor="phone"
             className="block text-sm font-medium text-[var(--brand-primary)]"
           >
-            Phone (optional)
+            {t.phoneLabel}
           </label>
           <input
             id="phone"
@@ -125,7 +129,7 @@ export default function EventRSVPForm({
         disabled={pending}
         className="w-full rounded-full bg-[var(--brand-primary)] px-8 py-3 text-sm font-medium text-[var(--brand-background)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] focus-visible:ring-offset-2 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
       >
-        {pending ? "Submitting..." : buttonLabel}
+        {pending ? t.submitting : (buttonLabel ?? t.defaultRsvpButton)}
       </button>
     </form>
   );

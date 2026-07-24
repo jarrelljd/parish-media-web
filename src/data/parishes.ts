@@ -11,6 +11,8 @@ export type ParishBrand = {
   };
   // Path under public/, e.g. "/images/parishes/st-joseph/logo.svg". Optional.
   logo?: string;
+  // Spanish form of the parish's name, if provided. Doesn't vary per event.
+  nameEs?: string;
 };
 
 // Parish Media Company's own colors — used for any event whose parish hasn't

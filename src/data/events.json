@@ -45,6 +45,22 @@
     "accent": {
       "style": "gingham",
       "color": "#9E2632"
+    },
+    "translations": {
+      "es": {
+        "eventName": "Picnic de Santa Rosa",
+        "dateLabel": "S\u00e1bado, 22 de agosto de 2026",
+        "timeLabel": "12:00 - 3:00 PM",
+        "location": "Casa Club de Snyder Park (\u00a1sigan las se\u00f1ales!)",
+        "valueText": "\u00a1Traigan a toda la familia y \u00fananse a nuestro picnic parroquial! Es una maravillosa oportunidad para reencontrarse con viejos amigos, conocer caras nuevas y disfrutar de un d\u00eda relajado juntos como una sola familia de Santa Rosa. Habr\u00e1 comida de sobra, buena compa\u00f1\u00eda, m\u00fasica y una b\u00fasqueda del tesoro para los ni\u00f1os.",
+        "detailsNote": "Hamburguesas y perritos calientes incluidos \u2014 traigan un plato para compartir y una silla o dos.",
+        "cta": {
+          "title": "No se Pierdan el Picnic",
+          "buttonLabel": "Recibir Recordatorio",
+          "introText": "Toquen abajo y a\u00f1adiremos el Picnic de Santa Rosa a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio por correo electr\u00f3nico para que no se les olvide.",
+          "successMessage": "\u00a1Todo listo! Nosotros nos encargamos \u2014 revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio antes del picnic."
+        }
+      }
     }
   }
 ]

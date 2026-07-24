@@ -28,6 +28,24 @@ export type EventAccent = {
   color: string;
 };
 
+// Every field optional — an untranslated field silently falls back to the
+// English version rather than showing blank. If an event has no `es` object
+// at all, the language toggle doesn't render (nothing to switch to).
+export type EventTranslation = {
+  eventName?: string;
+  dateLabel?: string;
+  timeLabel?: string;
+  location?: string;
+  valueText?: string;
+  detailsNote?: string;
+  cta?: {
+    title?: string;
+    buttonLabel?: string;
+    introText?: string;
+    successMessage?: string;
+  };
+};
+
 export type EventInfo = {
   parishSlug: string;
   eventSlug: string;
@@ -49,6 +67,9 @@ export type EventInfo = {
   // Defaults to an RSVP form if omitted (see EventCTA above).
   cta?: EventCTA;
   accent?: EventAccent;
+  // Human-drafted, human-reviewed only — never machine-translated at
+  // runtime. See workflows/publish_event_landing_page.md.
+  translations?: { es?: EventTranslation };
 };
 
 // Sourced from events.json — edit that file (or use tools/add_event.py in the

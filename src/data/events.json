@@ -217,6 +217,12 @@
     "address": "555 Northampton St., Holyoke, MA",
     "valueText": "Enjoy an afternoon of BBQ, music, and family fun with our parish community. Everyone is welcome!",
     "detailsNote": "Admission is $15 for adults (free for kids under 12). Tickets are available July 25 – August 9, after all Masses or at the Rectory.",
+    "photos": [
+      {
+        "src": "/images/events/st-patrick/picnic-pavilion.png",
+        "alt": "Parishioners gathered at red picnic tables outside the pavilion at a previous St. Patrick's picnic"
+      }
+    ],
     "highlights": [
       {
         "icon": "🍔",

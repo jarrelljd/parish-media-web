@@ -205,5 +205,47 @@
       }
     ],
     "webhookEnvVar": "ZAPIER_WEBHOOK_SS_PETER_PAUL_FESTIVAL"
+  },
+  {
+    "parishSlug": "st-patrick",
+    "eventSlug": "picnic",
+    "parishName": "St. Patrick's Catholic Church",
+    "eventName": "Annual Parish Picnic",
+    "dateLabel": "Sunday, August 16, 2026",
+    "timeLabel": "12:00 PM - 3:00 PM",
+    "location": "Summit View Pavilion",
+    "address": "555 Northampton St., Holyoke, MA",
+    "valueText": "Enjoy an afternoon of BBQ, music, and family fun with our parish community. Everyone is welcome!",
+    "detailsNote": "Admission is $15 for adults (free for kids under 12). Tickets are available July 25 – August 9, after all Masses or at the Rectory.",
+    "highlights": [
+      {
+        "icon": "🍔",
+        "label": "BBQ"
+      },
+      {
+        "icon": "🎳",
+        "label": "Bingo"
+      },
+      {
+        "icon": "🎧",
+        "label": "DJ"
+      },
+      {
+        "icon": "🎮",
+        "label": "Games"
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "title": "Don't Miss the Picnic",
+      "buttonLabel": "Add to Calendar",
+      "introText": "Tap below and we'll add the picnic to your calendar with all the details, plus send you a reminder.",
+      "successMessage": "You're all set! Watch your inbox for a calendar invite and reminder.",
+      "collectPhone": false
+    },
+    "accent": {
+      "style": "gingham",
+      "color": "#2BA84A"
+    }
   }
 ]

@@ -94,6 +94,11 @@ export type EventInfo = {
   photos?: EventPhoto[];
   // Defaults to an RSVP form if omitted (see EventCTA above).
   cta?: EventCTA;
+  // Name of an env var (not the URL itself — that's a secret and belongs
+  // only in .env, never in this committed file) holding a Zapier webhook
+  // for this event's own automation. Falls back to the shared
+  // ZAPIER_RSVP_WEBHOOK_URL when omitted. See workflows/publish_event_landing_page.md.
+  webhookEnvVar?: string;
   accent?: EventAccent;
   // Human-drafted, human-reviewed only — never machine-translated at
   // runtime. See workflows/publish_event_landing_page.md.

@@ -219,6 +219,7 @@ export default function EventPageContent({
           <EventRSVPForm
             eventName={eventName}
             parishName={parishName}
+            webhookEnvVar={event.webhookEnvVar}
             language={language}
             title={ctaTitle}
             buttonLabel={ctaButtonLabel}

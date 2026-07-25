@@ -9,6 +9,7 @@ const initialState: EventRSVPState = { status: "idle" };
 export default function EventRSVPForm({
   eventName,
   parishName,
+  webhookEnvVar,
   language = "en",
   title,
   buttonLabel,
@@ -18,6 +19,7 @@ export default function EventRSVPForm({
 }: {
   eventName: string;
   parishName: string;
+  webhookEnvVar?: string;
   language?: Language;
   title?: string;
   buttonLabel?: string;
@@ -26,7 +28,7 @@ export default function EventRSVPForm({
   collectPhone?: boolean;
 }) {
   const t = uiStrings[language];
-  const boundAction = submitEventRSVP.bind(null, eventName, parishName);
+  const boundAction = submitEventRSVP.bind(null, eventName, parishName, webhookEnvVar);
   const [state, formAction, pending] = useActionState(
     boundAction,
     initialState,

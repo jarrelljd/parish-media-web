@@ -203,6 +203,7 @@
           "alt": "Festival-goers playing the Super Prize game booth"
         }
       }
-    ]
+    ],
+    "webhookEnvVar": "ZAPIER_WEBHOOK_SS_PETER_PAUL_FESTIVAL"
   }
 ]

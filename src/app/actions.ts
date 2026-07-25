@@ -115,24 +115,9 @@ export async function submitEventRSVP(
     };
   }
 
-  // Best-effort heads-up email to Joe — the Zapier webhook above is the part
-  // that actually matters, so a failure here is logged but doesn't block
-  // the user's success state.
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const { error } = await resend.emails.send({
-      from: "Parish Media Company <onboarding@resend.dev>",
-      to: NOTIFY_EMAIL,
-      replyTo: email || undefined,
-      subject: `New RSVP: ${eventName} (${parishName})`,
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nEvent: ${eventName}\nParish: ${parishName}`,
-    });
-    if (error) {
-      console.error("Resend error (event RSVP):", error);
-    }
-  } catch (err) {
-    console.error("Failed to send event RSVP notification email:", err);
-  }
+  // No per-signup notification email — the Zapier webhook above (sheet row +
+  // calendar invite + reminder) is the part that actually matters, and with
+  // many event pages a heads-up email per signup would get overwhelming.
 
   return { status: "success" };
 }

@@ -221,6 +221,14 @@
       {
         "src": "/images/events/st-patrick/picnic-pavilion.png",
         "alt": "Parishioners gathered at red picnic tables outside the pavilion at a previous St. Patrick's picnic"
+      },
+      {
+        "src": "/images/events/st-patrick/2019-picnic.jpg",
+        "alt": "Parishioners eating and socializing at picnic tables under the pavilion at the 2019 picnic"
+      },
+      {
+        "src": "/images/events/st-patrick/ice-cream.jpg",
+        "alt": "Volunteers serving ice cream to parishioners at a previous picnic"
       }
     ],
     "highlights": [
@@ -258,7 +266,11 @@
       {
         "heading": "Food & Fun for Everyone",
         "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with pony rides, a DJ, games, and prizes for all ages.",
-        "icon": "🎉"
+        "icon": "🎉",
+        "photo": {
+          "src": "/images/events/st-patrick/tug-of-war.jpg",
+          "alt": "Parishioners of all ages playing tug of war on the lawn at a previous picnic"
+        }
       },
       {
         "heading": "Fr. Dave Invites You",

@@ -216,7 +216,7 @@
     "location": "Summit View Pavilion",
     "address": "555 Northampton St., Holyoke, MA",
     "valueText": "Enjoy an afternoon of BBQ, music, and family fun with our parish community. Everyone is welcome!",
-    "detailsNote": "Admission is $15 for adults (free for kids under 12). Tickets are available July 25 – August 9, after all Masses or at the Rectory.",
+    "detailsNote": "Admission is $15 for adults (free for kids under 12). Tickets are available July 25 to August 9, after all Masses or at the Rectory.",
     "photos": [
       {
         "src": "/images/events/st-patrick/picnic-pavilion.png",
@@ -237,14 +237,18 @@
         "label": "DJ"
       },
       {
+        "icon": "🐴",
+        "label": "Pony Rides"
+      },
+      {
         "icon": "🎮",
-        "label": "Games"
+        "label": "Games & Prizes"
       }
     ],
     "sections": [
       {
         "heading": "At Summit View Pavilion",
-        "body": "Our picnic returns to Summit View's open-air pavilion — picnic tables, shade, and plenty of room to spread out for an afternoon with the parish family.",
+        "body": "Our picnic returns to Summit View's open-air pavilion: picnic tables, shade, and plenty of room to spread out for an afternoon with the parish family.",
         "icon": "🌳",
         "photo": {
           "src": "/images/events/st-patrick/venue-exterior.jpg",
@@ -252,8 +256,13 @@
         }
       },
       {
-        "heading": "A Word from Fr. Dave",
-        "body": "Fr. Dave invites you to join us for an afternoon of food, fellowship, and fun — see you there!",
+        "heading": "Food & Fun for Everyone",
+        "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with pony rides, a DJ, games, and prizes for all ages.",
+        "icon": "🎉"
+      },
+      {
+        "heading": "Fr. Dave Invites You",
+        "body": "Fr. Dave invites you to join us for an afternoon of food, fellowship, and fun. See you there!",
         "photo": {
           "src": "/images/events/st-patrick/fr-dave.jpg",
           "alt": "Fr. Dave preaching from the pulpit at St. Patrick's"

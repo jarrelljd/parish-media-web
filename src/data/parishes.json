@@ -12,6 +12,17 @@
     "nameEs": "Iglesia Cat\u00f3lica Santos Pedro y Pablo"
   },
   {
+    "slug": "st-patrick",
+    "name": "St. Patrick's Catholic Church",
+    "colors": {
+      "primary": "#2BA84A",
+      "secondary": "#1C2539",
+      "background": "#FFFFFF",
+      "text": "#1C2539"
+    },
+    "logo": "/images/parishes/st-patrick/logo.jpg"
+  },
+  {
     "slug": "st-rose",
     "name": "St. Rose Family of Parishes",
     "colors": {

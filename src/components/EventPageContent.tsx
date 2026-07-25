@@ -31,6 +31,14 @@ export default function EventPageContent({
   const location = es?.location ?? event.location;
   const valueText = es?.valueText ?? event.valueText;
   const detailsNote = es?.detailsNote ?? event.detailsNote;
+  const highlights = event.highlights?.map((h, i) => ({
+    icon: h.icon,
+    label: es?.highlights?.[i]?.label ?? h.label,
+  }));
+  const sections = event.sections?.map((s, i) => ({
+    heading: es?.sections?.[i]?.heading ?? s.heading,
+    body: es?.sections?.[i]?.body ?? s.body,
+  }));
   const ctaTitle = es?.cta?.title ?? ctaFormFields?.title;
   const ctaButtonLabel = es?.cta?.buttonLabel ?? cta?.buttonLabel;
   const ctaIntroText = es?.cta?.introText ?? ctaFormFields?.introText;
@@ -110,7 +118,20 @@ export default function EventPageContent({
         <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
           {eventName}
         </h1>
-        <p className="mt-6 leading-relaxed text-[var(--brand-primary-80)]">{valueText}</p>
+        <p className="mt-6 leading-relaxed text-[var(--brand-text)]">{valueText}</p>
+        {highlights && highlights.length > 0 && (
+          <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {highlights.map((h, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-1.5 text-sm font-medium text-[var(--brand-primary)]"
+              >
+                <span aria-hidden="true">{h.icon}</span>
+                {h.label}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {event.accent?.style === "gingham" && (
@@ -127,7 +148,7 @@ export default function EventPageContent({
         <p className="text-lg font-medium text-[var(--brand-primary)]">
           {dateLabel} &middot; {timeLabel}
         </p>
-        <p className="mt-1 text-[var(--brand-primary-70)]">{location}</p>
+        <p className="mt-1 text-[var(--brand-text)]">{location}</p>
         {event.address && (
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`}
@@ -139,11 +160,27 @@ export default function EventPageContent({
           </a>
         )}
         {detailsNote && (
-          <p className="mt-3 text-sm leading-relaxed text-[var(--brand-primary-70)]">
+          <p className="mt-3 text-sm leading-relaxed text-[var(--brand-text-70)]">
             {detailsNote}
           </p>
         )}
       </div>
+
+      {sections && sections.length > 0 && (
+        <div className="mx-auto mt-6 max-w-xl space-y-4">
+          {sections.map((s, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-[var(--brand-primary-10)] bg-[var(--brand-background)] px-6 py-5 text-center shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)]"
+            >
+              <h2 className="font-serif text-lg font-semibold text-[var(--brand-primary)]">
+                {s.heading}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--brand-text)]">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="mx-auto mt-12 max-w-md">
         {cta?.type === "redirect" ? (

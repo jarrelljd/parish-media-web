@@ -65,6 +65,12 @@ export default async function EventPage({
     "--brand-shadow": hexToRgba(parish.colors.primary, 0.18),
     "--brand-secondary": parish.colors.secondary,
     "--brand-background": parish.colors.background,
+    // Dedicated body-copy color, separate from --brand-primary. Headings,
+    // labels, and buttons keep the brand's primary color for identity;
+    // paragraph-length text uses this instead so a bold primary (e.g. a
+    // saturated red) doesn't make long copy hard to read.
+    "--brand-text": parish.colors.text,
+    "--brand-text-70": hexToRgba(parish.colors.text, 0.7),
     // A faint brand-tinted glow behind the hero content, instead of a flat
     // fill — subtle on purpose, this is a trust-driven parish page, not a
     // marketing landing page.

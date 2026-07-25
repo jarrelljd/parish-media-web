@@ -73,7 +73,7 @@
     "location": "Sts. Peter & Paul Catholic Church",
     "address": "5912 S. 36th Street, Omaha, NE 68107",
     "valueText": "For 109 years, Sts. Peter & Paul has kept summer's biggest South Omaha tradition alive \u2014 the oldest, largest, and longest-running parish festival in the city, proudly hosted by Our Lady of the Saints Family of Parishes. Come hungry, come for the music, and come try your luck on a $5,000 MegaBucks grand prize drawing at \u201cThe Greatest Festival in Town.\u201d",
-    "detailsNote": "Enjoy a full day of live music from the Ken Janak Orchestra, the Mark Vyhldal Orchestra, and Blanford, plus rides, games, and raffles (quilts, afghans, meat raffles, and more) for the whole family. Save room for South Omaha's favorite ethnic foods \u2014 including our famous sarma (cabbage rolls), Italian sausage and peppers, Polish sausage, BBQ lamb sandwiches, tacos, and desserts from every corner of the world. Questions? Call the parish office at 402-731-4578 or visit stspeterpaulomaha.org/festival.",
+    "detailsNote": "Questions? Call the parish office at 402-731-4578 or visit stspeterpaulomaha.org/festival.",
     "photos": [
       {
         "src": "/images/events/ss-peter-paul/band-and-church.png",
@@ -107,14 +107,82 @@
         "timeLabel": "12:00 PM - 8:00 PM",
         "location": "Iglesia Cat\u00f3lica Sts. Peter & Paul",
         "valueText": "Durante 109 a\u00f1os, Sts. Peter & Paul ha mantenido viva la tradici\u00f3n veraniega m\u00e1s grande del sur de Omaha \u2014 el festival parroquial m\u00e1s antiguo, m\u00e1s grande y de mayor duraci\u00f3n en la ciudad, presentado con orgullo por Our Lady of the Saints Family of Parishes. Vengan con hambre, vengan por la m\u00fasica y prueben su suerte en el sorteo del premio mayor de $5,000 de MegaBucks en \u201cEl Festival M\u00e1s Grande de la Ciudad.\u201d",
-        "detailsNote": "Disfruten de un d\u00eda completo de m\u00fasica en vivo con la Orquesta Ken Janak, la Orquesta Mark Vyhldal y Blanford, adem\u00e1s de juegos mec\u00e1nicos, juegos y rifas (edredones, mantas tejidas, rifas de carne y m\u00e1s) para toda la familia. Dejen espacio para las comidas \u00e9tnicas favoritas del sur de Omaha \u2014 incluyendo nuestra famosa sarma (rollos de repollo), salchicha italiana con pimientos, salchicha polaca, s\u00e1ndwiches de cordero a la barbacoa, tacos y postres de todos los rincones del mundo. \u00bfPreguntas? Llamen a la oficina parroquial al 402-731-4578 o visiten stspeterpaulomaha.org/festival.",
+        "detailsNote": "\u00bfPreguntas? Llamen a la oficina parroquial al 402-731-4578 o visiten stspeterpaulomaha.org/festival.",
         "cta": {
           "title": "No se pierdan el festival",
           "buttonLabel": "A\u00f1adir al calendario",
           "introText": "Toquen abajo y a\u00f1adiremos el festival a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio.",
           "successMessage": "\u00a1Todo listo! Revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio."
-        }
+        },
+        "highlights": [
+          {
+            "label": "M\u00fasica en Vivo Todo el D\u00eda"
+          },
+          {
+            "label": "Comida y Bebida \u00c9tnica"
+          },
+          {
+            "label": "Rifa de $5,000"
+          },
+          {
+            "label": "Juegos y Diversi\u00f3n"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "109 A\u00f1os de Tradici\u00f3n",
+            "body": "El festival de Sts. Peter & Paul es el festival parroquial m\u00e1s antiguo, m\u00e1s grande y de mayor duraci\u00f3n en Omaha \u2014 una tradici\u00f3n del sur de Omaha durante 109 a\u00f1os y contando, continuada hoy con orgullo por Our Lady of the Saints Family of Parishes."
+          },
+          {
+            "heading": "Tres Bandas, Todo el D\u00eda",
+            "body": "Bailen todo el d\u00eda con tres presentaciones completas de la Orquesta Ken Janak, la Orquesta Mark Vyhldal y Blanford \u2014 m\u00fasica en vivo continua desde el mediod\u00eda hasta el cierre."
+          },
+          {
+            "heading": "Un Sabor del Sur de Omaha",
+            "body": "Disfruten de un crisol de las comidas \u00e9tnicas favoritas del sur de Omaha, incluyendo nuestra famosa sarma (rollos de repollo), salchicha italiana con pimientos, salchicha polaca, s\u00e1ndwiches de cordero a la barbacoa, tacos y postres de todos los rincones del mundo."
+          },
+          {
+            "heading": "Premios y Rifas",
+            "body": "Prueben su suerte en el sorteo del premio mayor de $5,000 de MegaBucks, adem\u00e1s de un segundo premio de $500 y premios adicionales de $100. Tambi\u00e9n habr\u00e1 rifas de edredones y mantas tejidas hechas a mano, rifas de carne y m\u00e1s."
+          }
+        ]
       }
-    }
+    },
+    "highlights": [
+      {
+        "icon": "\ud83c\udfb6",
+        "label": "Live Music All Day"
+      },
+      {
+        "icon": "\ud83c\udf2d",
+        "label": "Ethnic Food & Drink"
+      },
+      {
+        "icon": "\ud83c\udf9f\ufe0f",
+        "label": "$5,000 Raffle"
+      },
+      {
+        "icon": "\ud83c\udfa1",
+        "label": "Rides & Games"
+      }
+    ],
+    "sections": [
+      {
+        "heading": "109 Years Strong",
+        "body": "Sts. Peter & Paul's festival is the oldest, largest, and longest-running parish festival in Omaha \u2014 a South Omaha tradition for 109 years and counting, proudly continued today by Our Lady of the Saints Family of Parishes."
+      },
+      {
+        "heading": "Three Bands, All Day",
+        "body": "Dance the day away to three full sets from the Ken Janak Orchestra, the Mark Vyhldal Orchestra, and Blanford \u2014 continuous live music from noon to close."
+      },
+      {
+        "heading": "A Taste of South Omaha",
+        "body": "Savor a melting pot of South Omaha's favorite ethnic foods, including our famous sarma (cabbage rolls), Italian sausage and peppers, Polish sausage, BBQ lamb sandwiches, tacos, and desserts from every corner of the world."
+      },
+      {
+        "heading": "Prizes & Raffles",
+        "body": "Try your luck on a $5,000 MegaBucks grand prize drawing, plus a $500 second prize and additional $100 prizes. Also featuring raffles for handmade quilts and afghans, meat raffles, and more."
+      }
+    ]
   }
 ]

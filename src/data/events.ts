@@ -28,6 +28,15 @@ export type EventAccent = {
   color: string;
 };
 
+// A short scannable tag, e.g. { icon: "🎶", label: "Live Music All Day" }.
+// For a quick-hit row of draws, not a replacement for detailsNote.
+export type EventHighlight = { icon: string; label: string };
+
+// A named block of extra content (heading + short paragraph), for events
+// with enough going on that one detailsNote paragraph reads as a wall of
+// text. Optional and repeatable — most events won't need any.
+export type EventSection = { heading: string; body: string };
+
 // Every field optional — an untranslated field silently falls back to the
 // English version rather than showing blank. If an event has no `es` object
 // at all, the language toggle doesn't render (nothing to switch to).
@@ -38,6 +47,11 @@ export type EventTranslation = {
   location?: string;
   valueText?: string;
   detailsNote?: string;
+  // Same order/length as event.highlights — icon isn't translated, only the
+  // label. A missing entry (or missing label) falls back to English.
+  highlights?: { label?: string }[];
+  // Same order/length as event.sections.
+  sections?: { heading?: string; body?: string }[];
   cta?: {
     title?: string;
     buttonLabel?: string;
@@ -61,6 +75,12 @@ export type EventInfo = {
   valueText: string;
   // Extra logistics beyond date/time/location, e.g. "Bring a side to share".
   detailsNote?: string;
+  // Optional row of short icon+label tags (e.g. "🎶 Live Music"). Use
+  // sparingly — a quick-scan complement to valueText, not a repeat of it.
+  highlights?: EventHighlight[];
+  // Optional named content blocks for events with more to say than one
+  // detailsNote paragraph can hold without becoming a wall of text.
+  sections?: EventSection[];
   // 0–4 real photos, rendered as a small grid. The page renders fine with
   // none — never fall back to stock imagery.
   photos?: EventPhoto[];

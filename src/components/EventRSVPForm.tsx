@@ -39,7 +39,7 @@ export default function EventRSVPForm({
           {successMessage ?? t.defaultSuccessTitle}
         </p>
         {!successMessage && (
-          <p className="mt-3 text-[var(--brand-primary-70)]">
+          <p className="mt-3 text-[var(--brand-text)]">
             {t.defaultSuccessBody} {eventName}.
           </p>
         )}
@@ -64,7 +64,7 @@ export default function EventRSVPForm({
           )}
           {introText && (
             <p
-              className={`text-sm leading-relaxed text-[var(--brand-primary-70)] ${title ? "mt-2" : ""}`}
+              className={`text-sm leading-relaxed text-[var(--brand-text)] ${title ? "mt-2" : ""}`}
             >
               {introText}
             </p>

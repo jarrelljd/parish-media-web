@@ -20,7 +20,8 @@
       "background": "#FFFFFF",
       "text": "#1C2539"
     },
-    "logo": "/images/parishes/st-patrick/logo.jpg"
+    "logo": "/images/parishes/st-patrick/logo.png",
+    "logoBackground": "#1C2539"
   },
   {
     "slug": "st-rose",

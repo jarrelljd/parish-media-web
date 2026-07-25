@@ -1,5 +1,17 @@
 [
   {
+    "slug": "ss-peter-paul",
+    "name": "Saints Peter & Paul Catholic Church",
+    "colors": {
+      "primary": "#D81F26",
+      "secondary": "#1A1A1A",
+      "background": "#FFFFFF",
+      "text": "#1A1A1A"
+    },
+    "logo": "/images/parishes/ss-peter-paul/logo.svg",
+    "nameEs": "Iglesia Cat\u00f3lica Santos Pedro y Pablo"
+  },
+  {
     "slug": "st-rose",
     "name": "St. Rose Family of Parishes",
     "colors": {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { submitEventRSVP, type EventRSVPState } from "@/app/actions";
 import { uiStrings, type Language } from "@/lib/i18n";
+import { trackLead } from "@/lib/pixel";
 
 const initialState: EventRSVPState = { status: "idle" };
 
@@ -33,6 +34,12 @@ export default function EventRSVPForm({
     boundAction,
     initialState,
   );
+
+  useEffect(() => {
+    if (state.status === "success") {
+      trackLead(eventName);
+    }
+  }, [state.status, eventName]);
 
   if (state.status === "success") {
     return (

@@ -35,7 +35,15 @@ export type EventHighlight = { icon: string; label: string };
 // A named block of extra content (heading + short paragraph), for events
 // with enough going on that one detailsNote paragraph reads as a wall of
 // text. Optional and repeatable — most events won't need any.
-export type EventSection = { heading: string; body: string };
+export type EventSection = {
+  heading: string;
+  body: string;
+  // Optional short emoji/glyph shown beside the heading — a light touch to
+  // break up a run of otherwise-identical cards. Not translated.
+  icon?: string;
+  // Optional real photo for this section specifically (never stock).
+  photo?: EventPhoto;
+};
 
 // Every field optional — an untranslated field silently falls back to the
 // English version rather than showing blank. If an event has no `es` object

@@ -38,11 +38,16 @@ export default function EventPageContent({
   const sections = event.sections?.map((s, i) => ({
     heading: es?.sections?.[i]?.heading ?? s.heading,
     body: es?.sections?.[i]?.body ?? s.body,
+    icon: s.icon,
+    photo: s.photo,
   }));
   const ctaTitle = es?.cta?.title ?? ctaFormFields?.title;
   const ctaButtonLabel = es?.cta?.buttonLabel ?? cta?.buttonLabel;
   const ctaIntroText = es?.cta?.introText ?? ctaFormFields?.introText;
   const ctaSuccessMessage = es?.cta?.successMessage ?? ctaFormFields?.successMessage;
+  // Reuses the CTA's own button label so the jump-link text always matches
+  // where it lands, instead of a separate generic phrase to translate.
+  const jumpToCtaLabel = ctaButtonLabel ?? t.defaultRsvpButton;
 
   return (
     <main style={brandStyle} className="min-h-screen px-6 py-16 sm:py-24">
@@ -132,6 +137,17 @@ export default function EventPageContent({
             ))}
           </div>
         )}
+        <a
+          href="#cta"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("cta")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-[var(--brand-primary-20)] px-5 py-2 text-sm font-medium text-[var(--brand-primary)] transition-colors hover:bg-[var(--brand-primary-10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary-20)] focus-visible:ring-offset-2 active:scale-[0.98]"
+        >
+          {jumpToCtaLabel}
+          <span aria-hidden="true">&darr;</span>
+        </a>
       </div>
 
       {event.accent?.style === "gingham" && (
@@ -167,22 +183,36 @@ export default function EventPageContent({
       </div>
 
       {sections && sections.length > 0 && (
-        <div className="mx-auto mt-6 max-w-xl space-y-4">
+        <div className="mx-auto mt-6 max-w-3xl divide-y divide-[var(--brand-primary-10)]">
           {sections.map((s, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-[var(--brand-primary-10)] bg-[var(--brand-background)] px-6 py-5 text-center shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)]"
+              className={`flex flex-col items-center gap-6 py-10 first:pt-6 last:pb-6 sm:gap-10 ${
+                s.photo && i % 2 === 1 ? "sm:flex-row-reverse" : "sm:flex-row"
+              }`}
             >
-              <h2 className="font-serif text-lg font-semibold text-[var(--brand-primary)]">
-                {s.heading}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--brand-text)]">{s.body}</p>
+              {s.photo && (
+                <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:w-2/5">
+                  <Image src={s.photo.src} alt={s.photo.alt} fill className="object-cover" />
+                </div>
+              )}
+              <div className={`text-center ${s.photo ? "sm:w-3/5 sm:text-left" : "w-full"}`}>
+                <h2
+                  className={`flex items-center justify-center gap-2 font-serif text-xl font-semibold text-[var(--brand-primary)] ${
+                    s.photo ? "sm:justify-start" : ""
+                  }`}
+                >
+                  {s.icon && <span aria-hidden="true">{s.icon}</span>}
+                  {s.heading}
+                </h2>
+                <p className="mt-3 leading-relaxed text-[var(--brand-text)]">{s.body}</p>
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      <div className="mx-auto mt-12 max-w-md">
+      <div id="cta" className="mx-auto mt-12 max-w-md scroll-mt-10">
         {cta?.type === "redirect" ? (
           <EventRedirectCTA buttonLabel={ctaButtonLabel ?? cta.buttonLabel} url={cta.url} />
         ) : (

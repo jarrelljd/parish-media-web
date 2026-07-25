@@ -169,19 +169,39 @@
     "sections": [
       {
         "heading": "109 Years Strong",
-        "body": "Sts. Peter & Paul's festival is the oldest, largest, and longest-running parish festival in Omaha \u2014 a South Omaha tradition for 109 years and counting, proudly continued today by Our Lady of the Saints Family of Parishes."
+        "body": "Sts. Peter & Paul's festival is the oldest, largest, and longest-running parish festival in Omaha \u2014 a South Omaha tradition for 109 years and counting, proudly continued today by Our Lady of the Saints Family of Parishes.",
+        "icon": "\ud83c\udfdb\ufe0f",
+        "photo": {
+          "src": "/images/events/ss-peter-paul/omaha-postcard-1910s.jpg",
+          "alt": "Vintage postcard of 16th and Farnam Streets in Omaha, from around the time the festival began"
+        }
       },
       {
         "heading": "Three Bands, All Day",
-        "body": "Dance the day away to three full sets from the Ken Janak Orchestra, the Mark Vyhldal Orchestra, and Blanford \u2014 continuous live music from noon to close."
+        "body": "Dance the day away to three full sets from the Ken Janak Orchestra, the Mark Vyhldal Orchestra, and Blanford \u2014 continuous live music from noon to close.",
+        "icon": "\ud83c\udfb5",
+        "photo": {
+          "src": "/images/events/ss-peter-paul/kenny-janak-orchestra.jpg",
+          "alt": "The Kenny Janak Orchestra performing live at the festival"
+        }
       },
       {
         "heading": "A Taste of South Omaha",
-        "body": "Savor a melting pot of South Omaha's favorite ethnic foods, including our famous sarma (cabbage rolls), Italian sausage and peppers, Polish sausage, BBQ lamb sandwiches, tacos, and desserts from every corner of the world."
+        "body": "Savor a melting pot of South Omaha's favorite ethnic foods, including our famous sarma (cabbage rolls), Italian sausage and peppers, Polish sausage, BBQ lamb sandwiches, tacos, and desserts from every corner of the world.",
+        "icon": "\ud83c\udf2d",
+        "photo": {
+          "src": "/images/events/ss-peter-paul/grilling.png",
+          "alt": "A festival cook carving meat at one of the food booths"
+        }
       },
       {
         "heading": "Prizes & Raffles",
-        "body": "Try your luck on a $5,000 MegaBucks grand prize drawing, plus a $500 second prize and additional $100 prizes. Also featuring raffles for handmade quilts and afghans, meat raffles, and more."
+        "body": "Try your luck on a $5,000 MegaBucks grand prize drawing, plus a $500 second prize and additional $100 prizes. Also featuring raffles for handmade quilts and afghans, meat raffles, and more.",
+        "icon": "\ud83c\udf9f\ufe0f",
+        "photo": {
+          "src": "/images/events/ss-peter-paul/super-prize-booth.png",
+          "alt": "Festival-goers playing the Super Prize game booth"
+        }
       }
     ]
   }

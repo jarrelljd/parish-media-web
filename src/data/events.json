@@ -241,6 +241,25 @@
         "label": "Games"
       }
     ],
+    "sections": [
+      {
+        "heading": "At Summit View Pavilion",
+        "body": "Our picnic returns to Summit View's open-air pavilion — picnic tables, shade, and plenty of room to spread out for an afternoon with the parish family.",
+        "icon": "🌳",
+        "photo": {
+          "src": "/images/events/st-patrick/venue-exterior.jpg",
+          "alt": "Exterior of Summit View, the red banquet and wedding house hosting this year's picnic"
+        }
+      },
+      {
+        "heading": "A Word from Fr. Dave",
+        "body": "Fr. Dave invites you to join us for an afternoon of food, fellowship, and fun — see you there!",
+        "photo": {
+          "src": "/images/events/st-patrick/fr-dave.jpg",
+          "alt": "Fr. Dave preaching from the pulpit at St. Patrick's"
+        }
+      }
+    ],
     "cta": {
       "type": "form",
       "title": "Don't Miss the Picnic",

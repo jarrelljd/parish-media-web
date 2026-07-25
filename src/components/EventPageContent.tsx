@@ -102,10 +102,7 @@ export default function EventPageContent({
       <div className="mx-auto max-w-xl text-center">
         {parish.logo && (
           <div
-            className={`relative mx-auto h-16 w-48 ${event.photos?.length ? "mt-10" : ""} ${
-              parish.logoBackground ? "rounded-xl px-4 py-2" : ""
-            }`}
-            style={parish.logoBackground ? { backgroundColor: parish.logoBackground } : undefined}
+            className={`relative mx-auto h-16 w-48 ${event.photos?.length ? "mt-10" : ""}`}
           >
             <Image
               src={parish.logo}

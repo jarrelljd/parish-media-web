@@ -11,11 +11,6 @@ export type ParishBrand = {
   };
   // Path under public/, e.g. "/images/parishes/st-joseph/logo.svg". Optional.
   logo?: string;
-  // Hex color for a rounded backdrop chip rendered behind the logo. Only
-  // needed when the logo art itself has light/white text with no background
-  // (e.g. a transparent PNG meant for dark surfaces) — omit for logos that
-  // already read fine directly on the page's own background.
-  logoBackground?: string;
   // Spanish form of the parish's name, if provided. Doesn't vary per event.
   nameEs?: string;
 };

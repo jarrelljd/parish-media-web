@@ -14,6 +14,7 @@
     "eventSlug": "2026-picnic",
     "parishName": "St. Rose Family of Parishes",
     "eventName": "St. Rose Picnic",
+    "subheading": "A relaxing day of food, music, and fun with your parish family.",
     "dateLabel": "Saturday, August 22, 2026",
     "timeLabel": "12:00 - 3:00 PM",
     "location": "Snyder Park Clubhouse (follow the signs!)",
@@ -63,6 +64,7 @@
     "translations": {
       "es": {
         "eventName": "Picnic de Santa Rosa",
+        "subheading": "Un d\u00eda relajado de comida, m\u00fasica y diversi\u00f3n con su familia parroquial.",
         "dateLabel": "S\u00e1bado, 22 de agosto de 2026",
         "timeLabel": "12:00 - 3:00 PM",
         "location": "Casa Club de Snyder Park (\u00a1sigan las se\u00f1ales!)",
@@ -238,6 +240,7 @@
     "eventSlug": "picnic",
     "parishName": "St. Patrick's Catholic Church",
     "eventName": "Annual Parish Picnic",
+    "subheading": "An afternoon of BBQ, music, and family fun for everyone.",
     "dateLabel": "Sunday, August 16, 2026",
     "timeLabel": "12:00 PM - 3:00 PM",
     "location": "Summit View Pavilion",
@@ -323,6 +326,7 @@
     "translations": {
       "es": {
         "eventName": "Picnic Anual de la Parroquia",
+        "subheading": "Una tarde de barbacoa, música y diversión familiar para todos.",
         "dateLabel": "Domingo, 16 de agosto de 2026",
         "timeLabel": "12:00 PM - 3:00 PM",
         "location": "Pabell\u00f3n Summit View",
@@ -373,6 +377,7 @@
     "eventSlug": "all-saints-festival",
     "parishName": "St. Joseph Catholic Church",
     "eventName": "All Saints Festival",
+    "subheading": "A day of food, music, games, and faith for the whole family.",
     "dateLabel": "Sunday, November 1, 2026",
     "timeLabel": "9:00 AM - 4:00 PM",
     "location": "St. Joseph Catholic Church",
@@ -418,6 +423,7 @@
     "translations": {
       "es": {
         "eventName": "Festival de Todos los Santos",
+        "subheading": "Un día de comida, música, juegos y fe para toda la familia.",
         "dateLabel": "Domingo, 1 de noviembre de 2026",
         "timeLabel": "9:00 a.m. a 4:00 p.m.",
         "location": "Iglesia Cat\u00f3lica San Jos\u00e9",

@@ -45,43 +45,72 @@ export default function EventPageContent({
   const ctaButtonLabel = es?.cta?.buttonLabel ?? cta?.buttonLabel;
   const ctaIntroText = es?.cta?.introText ?? ctaFormFields?.introText;
   const ctaSuccessMessage = es?.cta?.successMessage ?? ctaFormFields?.successMessage;
+  const ctaReassuranceText = es?.cta?.reassuranceText ?? ctaFormFields?.reassuranceText;
   // Reuses the CTA's own button label so the jump-link text always matches
   // where it lands, instead of a separate generic phrase to translate.
   const jumpToCtaLabel = ctaButtonLabel ?? t.defaultRsvpButton;
+  const mapsUrl = event.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`
+    : undefined;
 
   return (
-    <main style={brandStyle} className="min-h-screen px-6 py-16 sm:py-24">
-      {event.translations?.es && (
-        <div className="mx-auto mb-8 flex w-fit items-center gap-1 rounded-full border border-[var(--brand-primary-20)] bg-white p-1 text-xs font-semibold shadow-sm">
-          <button
-            type="button"
-            onClick={() => setLanguage("en")}
-            aria-pressed={language === "en"}
-            className={`rounded-full px-3 py-1 transition-colors ${
-              language === "en"
-                ? "bg-[var(--brand-primary)] text-[var(--brand-background)]"
-                : "text-[var(--brand-primary)]"
-            }`}
-          >
-            EN
-          </button>
-          <button
-            type="button"
-            onClick={() => setLanguage("es")}
-            aria-pressed={language === "es"}
-            className={`rounded-full px-3 py-1 transition-colors ${
-              language === "es"
-                ? "bg-[var(--brand-primary)] text-[var(--brand-background)]"
-                : "text-[var(--brand-primary)]"
-            }`}
-          >
-            ES
-          </button>
+    <main style={brandStyle} className="min-h-screen px-6 pt-6 pb-16 sm:pt-24 sm:pb-24">
+      {/* Slim identity bar: logo + parish name + language toggle, kept to one
+          line so it doesn't eat into the above-the-fold budget on mobile. */}
+      <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          {parish.logo && (
+            // Not `fill` here — parish logos are wide banner shapes (up to
+            // ~5:1), and a fixed square box crushes them illegibly. A fixed
+            // height with `w-auto` lets the browser size to each logo's own
+            // aspect ratio instead.
+            <Image
+              src={parish.logo}
+              alt={`${parishName} logo`}
+              width={200}
+              height={32}
+              className="h-8 w-auto shrink-0 object-contain"
+            />
+          )}
+          <span className="line-clamp-2 text-sm leading-tight font-semibold text-[var(--brand-secondary)]">
+            {parishName}
+          </span>
         </div>
-      )}
+        {event.translations?.es && (
+          <div className="flex shrink-0 items-center gap-1 rounded-full border border-[var(--brand-primary-20)] bg-white p-1 text-xs font-semibold shadow-sm">
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              aria-pressed={language === "en"}
+              className={`rounded-full px-3 py-1 transition-colors ${
+                language === "en"
+                  ? "bg-[var(--brand-primary)] text-[var(--brand-background)]"
+                  : "text-[var(--brand-primary)]"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("es")}
+              aria-pressed={language === "es"}
+              className={`rounded-full px-3 py-1 transition-colors ${
+                language === "es"
+                  ? "bg-[var(--brand-primary)] text-[var(--brand-background)]"
+                  : "text-[var(--brand-primary)]"
+              }`}
+            >
+              ES
+            </button>
+          </div>
+        )}
+      </div>
 
+      {/* Hero photo: capped to ~42% of viewport height on mobile so it can't
+          push the headline/CTA below the fold; reverts to a normal 16:9 crop
+          from sm and up, where the fold isn't a concern. */}
       {event.photos && event.photos.length > 0 && (
-        <div className="relative mx-auto aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)]">
+        <div className="relative mx-auto mt-4 h-[42vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:h-auto sm:aspect-[16/9]">
           <Image
             src={event.photos[0].src}
             alt={event.photos[0].alt}
@@ -92,25 +121,58 @@ export default function EventPageContent({
         </div>
       )}
 
-      <div className={`mx-auto max-w-xl text-center ${event.photos?.length ? "mt-10" : ""}`}>
-        {parish.logo && (
-          <div className="relative mx-auto h-16 w-48">
-            <Image
-              src={parish.logo}
-              alt={`${parishName} logo`}
-              fill
-              className="object-contain"
-            />
-          </div>
-        )}
-        <span className="mx-auto block h-1 w-16 rounded-full bg-[var(--brand-secondary)] mt-8" />
-        <p className="mt-8 text-sm font-semibold uppercase tracking-widest text-[var(--brand-secondary)]">
-          {parishName}
-        </p>
-        <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
+      <div className="mx-auto mt-5 max-w-xl text-center">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
           {eventName}
         </h1>
-        <p className="mt-6 leading-relaxed text-[var(--brand-text)]">{valueText}</p>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--brand-text)] line-clamp-3 sm:mt-6 sm:text-base sm:leading-relaxed sm:line-clamp-none">
+          {valueText}
+        </p>
+
+        {/* Compact logistics row — date/time/location at a glance. The full
+            details card further down still has the complete picture
+            (admission, notes, etc.), this is just the above-the-fold gist. */}
+        <div className="mx-auto mt-4 flex max-w-md flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-sm font-medium text-[var(--brand-text)]">
+          <span className="inline-flex items-center gap-1">
+            <span aria-hidden="true">📅</span>
+            {dateLabel}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <span aria-hidden="true">🕐</span>
+            {timeLabel}
+          </span>
+          {mapsUrl ? (
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 underline decoration-[var(--brand-secondary)]/40 underline-offset-2 hover:decoration-[var(--brand-secondary)]"
+            >
+              <span aria-hidden="true">📍</span>
+              {location} &middot; {t.getDirections}
+            </a>
+          ) : (
+            <span className="inline-flex items-center gap-1">
+              <span aria-hidden="true">📍</span>
+              {location}
+            </span>
+          )}
+        </div>
+
+        <a
+          href="#cta"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("cta")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="mt-5 inline-flex w-full max-w-xs items-center justify-center gap-1.5 rounded-full bg-[var(--brand-primary)] px-8 py-3 text-sm font-medium text-[var(--brand-background)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] focus-visible:ring-offset-2"
+        >
+          {jumpToCtaLabel}
+        </a>
+        {ctaReassuranceText && (
+          <p className="mt-2 text-xs text-[var(--brand-text-70)]">{ctaReassuranceText}</p>
+        )}
+
         {highlights && highlights.length > 0 && (
           <div className="mx-auto mt-6 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {highlights.map((h, i) => (
@@ -124,17 +186,6 @@ export default function EventPageContent({
             ))}
           </div>
         )}
-        <a
-          href="#cta"
-          onClick={(e) => {
-            e.preventDefault();
-            document.getElementById("cta")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-          className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-[var(--brand-primary-20)] px-5 py-2 text-sm font-medium text-[var(--brand-primary)] transition-colors hover:bg-[var(--brand-primary-10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary-20)] focus-visible:ring-offset-2 active:scale-[0.98]"
-        >
-          {jumpToCtaLabel}
-          <span aria-hidden="true">&darr;</span>
-        </a>
       </div>
 
       {event.photos && event.photos.length > 1 && (
@@ -165,9 +216,9 @@ export default function EventPageContent({
           {dateLabel} &middot; {timeLabel}
         </p>
         <p className="mt-1 text-[var(--brand-text)]">{location}</p>
-        {event.address && (
+        {mapsUrl && (
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`}
+            href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-1 inline-block text-sm font-medium text-[var(--brand-secondary)] underline decoration-[var(--brand-secondary)]/40 underline-offset-2 transition-colors hover:decoration-[var(--brand-secondary)]"

@@ -12,6 +12,11 @@ export type EventCTA =
       // Defaults to true. Set false when a phone number doesn't make sense
       // for the CTA (e.g. an email-only calendar invite).
       collectPhone?: boolean;
+      // Optional short line shown under the above-the-fold CTA button, e.g.
+      // "Free • All ages" or "$15 adults, kids free". No default — write
+      // one per event only when it's accurate; never fabricate a claim like
+      // "Free" for a ticketed event.
+      reassuranceText?: string;
     }
   | { type: "redirect"; buttonLabel: string; url: string };
 
@@ -65,6 +70,7 @@ export type EventTranslation = {
     buttonLabel?: string;
     introText?: string;
     successMessage?: string;
+    reassuranceText?: string;
   };
 };
 

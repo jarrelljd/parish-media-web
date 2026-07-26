@@ -80,7 +80,19 @@ export default function EventPageContent({
         </div>
       )}
 
-      <div className="mx-auto max-w-xl text-center">
+      {event.photos && event.photos.length > 0 && (
+        <div className="relative mx-auto aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)]">
+          <Image
+            src={event.photos[0].src}
+            alt={event.photos[0].alt}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
+
+      <div className={`mx-auto max-w-xl text-center ${event.photos?.length ? "mt-10" : ""}`}>
         {parish.logo && (
           <div className="relative mx-auto h-16 w-48">
             <Image
@@ -125,9 +137,9 @@ export default function EventPageContent({
         </a>
       </div>
 
-      {event.photos && event.photos.length > 0 && (
+      {event.photos && event.photos.length > 1 && (
         <div className="mx-auto mt-10 flex max-w-2xl flex-wrap justify-center gap-3">
-          {event.photos.map((photo) => (
+          {event.photos.slice(1).map((photo) => (
             <div
               key={photo.src}
               className="relative aspect-square w-[calc(50%-0.375rem)] overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:w-[calc(33.333%-0.5rem)]"

@@ -249,12 +249,12 @@
     "detailsNote": "Admission is $15 for adults (free for kids under 12). Tickets are available July 25 to August 9, after all Masses or at the Rectory.",
     "photos": [
       {
-        "src": "/images/events/st-patrick/picnic-pavilion.png",
-        "alt": "Parishioners gathered at red picnic tables outside the pavilion at a previous St. Patrick's picnic"
-      },
-      {
         "src": "/images/events/st-patrick/2019-picnic.jpg",
         "alt": "Parishioners eating and socializing at picnic tables under the pavilion at the 2019 picnic"
+      },
+      {
+        "src": "/images/events/st-patrick/picnic-pavilion.png",
+        "alt": "Parishioners gathered at red picnic tables outside the pavilion at a previous St. Patrick's picnic"
       },
       {
         "src": "/images/events/st-patrick/ice-cream.jpg",

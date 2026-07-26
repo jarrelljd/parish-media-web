@@ -18,7 +18,7 @@
     "timeLabel": "12:00 - 3:00 PM",
     "location": "Snyder Park Clubhouse (follow the signs!)",
     "address": "1900 Park St, Springfield, OH 45504",
-    "valueText": "Bring the whole family and join us for our parish picnic! It's a wonderful chance to catch up with old friends, welcome new faces, and enjoy a relaxing day together as one St. Rose family. There'll be plenty of food, great company, music, and a scavenger hunt for the kids.",
+    "valueText": "Bring the whole family for food, music, and a scavenger hunt for the kids — a relaxing day catching up with friends as one St. Rose family.",
     "detailsNote": "Burgers and hot dogs provided \u2014 bring a side to share and a lawn chair or two!",
     "photos": [
       {
@@ -52,7 +52,7 @@
         "dateLabel": "S\u00e1bado, 22 de agosto de 2026",
         "timeLabel": "12:00 - 3:00 PM",
         "location": "Casa Club de Snyder Park (\u00a1sigan las se\u00f1ales!)",
-        "valueText": "\u00a1Traigan a toda la familia y \u00fananse a nuestro picnic parroquial! Es una maravillosa oportunidad para reencontrarse con viejos amigos, conocer caras nuevas y disfrutar de un d\u00eda relajado juntos como una sola familia de Santa Rosa. Habr\u00e1 comida de sobra, buena compa\u00f1\u00eda, m\u00fasica y una b\u00fasqueda del tesoro para los ni\u00f1os.",
+        "valueText": "Traigan a toda la familia para disfrutar de comida, m\u00fasica y una b\u00fasqueda del tesoro para los ni\u00f1os, en un d\u00eda relajado junto a la familia de Santa Rosa.",
         "detailsNote": "Hamburguesas y perritos calientes incluidos \u2014 traigan un plato para compartir y una silla o dos.",
         "cta": {
           "title": "No se Pierdan el Picnic",
@@ -72,7 +72,7 @@
     "timeLabel": "12:00 PM - 8:00 PM",
     "location": "Sts. Peter & Paul Catholic Church",
     "address": "5912 S. 36th Street, Omaha, NE 68107",
-    "valueText": "For 109 years, Sts. Peter & Paul has kept summer's biggest South Omaha tradition alive \u2014 the oldest, largest, and longest-running parish festival in the city, proudly hosted by Our Lady of the Saints Family of Parishes. Come hungry, come for the music, and come try your luck on a $5,000 MegaBucks grand prize drawing at \u201cThe Greatest Festival in Town.\u201d",
+    "valueText": "109 years running, Omaha's oldest and largest parish festival. Come hungry, come for the music, and try your luck at our $5,000 MegaBucks drawing.",
     "detailsNote": "Questions? Call the parish office at 402-731-4578.",
     "photos": [
       {
@@ -106,7 +106,7 @@
         "dateLabel": "Domingo, 2 de agosto de 2026",
         "timeLabel": "12:00 PM - 8:00 PM",
         "location": "Iglesia Cat\u00f3lica Sts. Peter & Paul",
-        "valueText": "Durante 109 a\u00f1os, Sts. Peter & Paul ha mantenido viva la tradici\u00f3n veraniega m\u00e1s grande del sur de Omaha \u2014 el festival parroquial m\u00e1s antiguo, m\u00e1s grande y de mayor duraci\u00f3n en la ciudad, presentado con orgullo por Our Lady of the Saints Family of Parishes. Vengan con hambre, vengan por la m\u00fasica y prueben su suerte en el sorteo del premio mayor de $5,000 de MegaBucks en \u201cEl Festival M\u00e1s Grande de la Ciudad.\u201d",
+        "valueText": "109 a\u00f1os consecutivos, el festival parroquial m\u00e1s antiguo y grande de Omaha. Vengan con hambre, vengan por la m\u00fasica, y prueben su suerte en el sorteo de $5,000 de MegaBucks.",
         "detailsNote": "\u00bfPreguntas? Llamen a la oficina parroquial al 402-731-4578.",
         "cta": {
           "title": "No se pierdan el festival",

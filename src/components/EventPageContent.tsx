@@ -127,7 +127,7 @@ export default function EventPageContent({
         <h1 className="font-serif text-3xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
           {eventName}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-[var(--brand-text)] line-clamp-3 sm:mt-6 sm:text-base sm:leading-relaxed sm:line-clamp-none">
+        <p className="mt-3 text-sm leading-relaxed text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-base sm:leading-relaxed sm:line-clamp-none">
           {valueText}
         </p>
 

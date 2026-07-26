@@ -108,11 +108,11 @@ export default function EventPageContent({
         )}
       </div>
 
-      {/* Hero photo: capped to ~42% of viewport height on mobile so it can't
+      {/* Hero photo: capped to ~30% of viewport height on mobile so it can't
           push the headline/CTA below the fold; reverts to a normal 16:9 crop
           from sm and up, where the fold isn't a concern. */}
       {event.photos && event.photos.length > 0 && (
-        <div className="relative mx-auto mt-4 h-[42vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:h-auto sm:aspect-[16/9]">
+        <div className="relative mx-auto mt-4 h-[30vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--brand-primary-10)] shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:h-auto sm:aspect-[16/9]">
           <Image
             src={event.photos[0].src}
             alt={event.photos[0].alt}

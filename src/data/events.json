@@ -18,7 +18,7 @@
     "timeLabel": "12:00 - 3:00 PM",
     "location": "Snyder Park Clubhouse (follow the signs!)",
     "address": "1900 Park St, Springfield, OH 45504",
-    "valueText": "Bring the whole family for food, music, and a scavenger hunt for the kids — a relaxing day catching up with friends as one St. Rose family.",
+    "valueText": "Bring the whole family for food, music, and a scavenger hunt for the kids \u2014 a relaxing day catching up with friends as one St. Rose family.",
     "detailsNote": "Burgers and hot dogs provided \u2014 bring a side to share and a lawn chair or two!",
     "photos": [
       {
@@ -56,7 +56,7 @@
         "detailsNote": "Hamburguesas y perritos calientes incluidos \u2014 traigan un plato para compartir y una silla o dos.",
         "cta": {
           "title": "No se Pierdan el Picnic",
-          "buttonLabel": "Añadir al Calendario",
+          "buttonLabel": "A\u00f1adir al Calendario",
           "introText": "Toquen abajo y a\u00f1adiremos el Picnic de Santa Rosa a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio por correo electr\u00f3nico para que no se les olvide.",
           "successMessage": "\u00a1Todo listo! Nosotros nos encargamos \u2014 revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio antes del picnic."
         }
@@ -233,23 +233,23 @@
     ],
     "highlights": [
       {
-        "icon": "🍔",
+        "icon": "\ud83c\udf54",
         "label": "BBQ"
       },
       {
-        "icon": "🎳",
+        "icon": "\ud83c\udfb3",
         "label": "Bingo"
       },
       {
-        "icon": "🎧",
+        "icon": "\ud83c\udfa7",
         "label": "DJ"
       },
       {
-        "icon": "🐴",
+        "icon": "\ud83d\udc34",
         "label": "Pony Rides"
       },
       {
-        "icon": "🎮",
+        "icon": "\ud83c\udfae",
         "label": "Games & Prizes"
       }
     ],
@@ -257,7 +257,7 @@
       {
         "heading": "At Summit View Pavilion",
         "body": "Our picnic returns to Summit View's open-air pavilion: picnic tables, shade, and plenty of room to spread out for an afternoon with the parish family.",
-        "icon": "🌳",
+        "icon": "\ud83c\udf33",
         "photo": {
           "src": "/images/events/st-patrick/venue-exterior.jpg",
           "alt": "Exterior of Summit View, the red banquet and wedding house hosting this year's picnic"
@@ -266,7 +266,7 @@
       {
         "heading": "Food & Fun for Everyone",
         "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with pony rides, a DJ, games, and prizes for all ages.",
-        "icon": "🎉",
+        "icon": "\ud83c\udf89",
         "photo": {
           "src": "/images/events/st-patrick/tug-of-war.jpg",
           "alt": "Parishioners of all ages playing tug of war on the lawn at a previous picnic"
@@ -298,35 +298,120 @@
         "eventName": "Picnic Anual de la Parroquia",
         "dateLabel": "Domingo, 16 de agosto de 2026",
         "timeLabel": "12:00 PM - 3:00 PM",
-        "location": "Pabellón Summit View",
-        "valueText": "Disfruten de una tarde de barbacoa, música y diversión familiar con nuestra comunidad parroquial. ¡Todos son bienvenidos!",
-        "detailsNote": "La entrada cuesta $15 para adultos (gratis para niños menores de 12 años). Los boletos estarán disponibles del 25 de julio al 9 de agosto, después de todas las Misas o en la Rectoría.",
+        "location": "Pabell\u00f3n Summit View",
+        "valueText": "Disfruten de una tarde de barbacoa, m\u00fasica y diversi\u00f3n familiar con nuestra comunidad parroquial. \u00a1Todos son bienvenidos!",
+        "detailsNote": "La entrada cuesta $15 para adultos (gratis para ni\u00f1os menores de 12 a\u00f1os). Los boletos estar\u00e1n disponibles del 25 de julio al 9 de agosto, despu\u00e9s de todas las Misas o en la Rector\u00eda.",
         "highlights": [
-          { "label": "Barbacoa" },
-          { "label": "Bingo" },
-          { "label": "DJ" },
-          { "label": "Paseos en Poni" },
-          { "label": "Juegos y Premios" }
+          {
+            "label": "Barbacoa"
+          },
+          {
+            "label": "Bingo"
+          },
+          {
+            "label": "DJ"
+          },
+          {
+            "label": "Paseos en Poni"
+          },
+          {
+            "label": "Juegos y Premios"
+          }
         ],
         "sections": [
           {
-            "heading": "En el Pabellón Summit View",
-            "body": "Nuestro picnic regresa al pabellón al aire libre de Summit View: mesas de picnic, sombra y mucho espacio para disfrutar de una tarde con la familia parroquial."
+            "heading": "En el Pabell\u00f3n Summit View",
+            "body": "Nuestro picnic regresa al pabell\u00f3n al aire libre de Summit View: mesas de picnic, sombra y mucho espacio para disfrutar de una tarde con la familia parroquial."
           },
           {
-            "heading": "Comida y Diversión para Todos",
-            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, además de bebidas frías toda la tarde. Complementen el día con paseos en poni, un DJ, juegos y premios para todas las edades."
+            "heading": "Comida y Diversi\u00f3n para Todos",
+            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, adem\u00e1s de bebidas fr\u00edas toda la tarde. Complementen el d\u00eda con paseos en poni, un DJ, juegos y premios para todas las edades."
           },
           {
             "heading": "El Padre Dave los Invita",
-            "body": "El Padre Dave los invita a unirse a nosotros para una tarde de comida, compañerismo y diversión. ¡Nos vemos allí!"
+            "body": "El Padre Dave los invita a unirse a nosotros para una tarde de comida, compa\u00f1erismo y diversi\u00f3n. \u00a1Nos vemos all\u00ed!"
           }
         ],
         "cta": {
           "title": "No se Pierdan el Picnic",
-          "buttonLabel": "Añadir al Calendario",
-          "introText": "Toquen abajo y añadiremos el picnic a su calendario con todos los detalles, además les enviaremos un recordatorio.",
-          "successMessage": "¡Todo listo! Revisen su correo electrónico para la invitación al calendario y un recordatorio."
+          "buttonLabel": "A\u00f1adir al Calendario",
+          "introText": "Toquen abajo y a\u00f1adiremos el picnic a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio.",
+          "successMessage": "\u00a1Todo listo! Revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio."
+        }
+      }
+    }
+  },
+  {
+    "parishSlug": "st-joseph",
+    "eventSlug": "all-saints-festival",
+    "parishName": "St. Joseph Catholic Church",
+    "eventName": "All Saints Festival",
+    "dateLabel": "Sunday, November 1, 2026",
+    "timeLabel": "9:00 AM - 4:00 PM",
+    "location": "St. Joseph Catholic Church",
+    "address": "1621 Center Ave, Los Banos, CA 93635",
+    "valueText": "Join your parish family for a day of food, music, kids games, vendors, and folklore dance \u2014 plus a Saint Dress-Up Contest and Grand Raffle.",
+    "detailsNote": "Grand Raffle after Mass \u2014 $10 per ticket, prizes up to $2,000. Kids can enter the Saint Dress-Up Contest for a chance to win prizes too.",
+    "highlights": [
+      {
+        "icon": "\ud83c\udfb6",
+        "label": "Live Music & Folklore Dance"
+      },
+      {
+        "icon": "\ud83d\udc7c",
+        "label": "Saint Dress-Up Contest"
+      },
+      {
+        "icon": "\ud83c\udfab",
+        "label": "Grand Raffle \u2014 $10/Ticket"
+      }
+    ],
+    "photos": [
+      {
+        "src": "/images/events/st-joseph/Festival-Photo-Dark.jpg",
+        "alt": "Families gathered at the food tents at dusk during last year's festival"
+      },
+      {
+        "src": "/images/events/st-joseph/Festival-Photo-Food.jpg",
+        "alt": "Volunteers preparing food for the festival"
+      },
+      {
+        "src": "/images/events/st-joseph/Festival-Photo-People.jpg",
+        "alt": "Parish families among the festival booths"
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "title": "Don't Miss the Festival",
+      "buttonLabel": "Add to Calendar",
+      "introText": "Tap below and we'll add the festival to your calendar with all the details.",
+      "successMessage": "You're all set! Check your calendar for the invite.",
+      "collectPhone": false
+    },
+    "translations": {
+      "es": {
+        "eventName": "Festival de Todos los Santos",
+        "dateLabel": "Domingo, 1 de noviembre de 2026",
+        "timeLabel": "9:00 a.m. a 4:00 p.m.",
+        "location": "Iglesia Cat\u00f3lica San Jos\u00e9",
+        "valueText": "\u00dananse a su familia parroquial para un d\u00eda de comida, m\u00fasica, juegos para ni\u00f1os, vendedores y danza folcl\u00f3rica \u2014 adem\u00e1s del Concurso de Disfraces de Santos y la Gran Rifa.",
+        "detailsNote": "Gran Rifa despu\u00e9s de la Misa \u2014 $10 por boleto, con premios de hasta $2,000. Los ni\u00f1os pueden participar en el Concurso de Disfraces de Santos con premios tambi\u00e9n.",
+        "highlights": [
+          {
+            "label": "M\u00fasica en Vivo y Danza Folcl\u00f3rica"
+          },
+          {
+            "label": "Concurso de Disfraces de Santos"
+          },
+          {
+            "label": "Gran Rifa \u2014 $10 por Boleto"
+          }
+        ],
+        "cta": {
+          "title": "No se Pierda el Festival",
+          "buttonLabel": "A\u00f1adir al Calendario",
+          "introText": "Toque el bot\u00f3n y a\u00f1adiremos el festival a su calendario con todos los detalles.",
+          "successMessage": "\u00a1Listo! Revise su calendario para ver la invitaci\u00f3n."
         }
       }
     }

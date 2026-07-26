@@ -46,6 +46,20 @@
       "style": "gingham",
       "color": "#9E2632"
     },
+    "highlights": [
+      {
+        "icon": "\ud83c\udf54",
+        "label": "Burgers & Hot Dogs Provided"
+      },
+      {
+        "icon": "\ud83c\udfb6",
+        "label": "Live Music"
+      },
+      {
+        "icon": "\ud83e\udded",
+        "label": "Kids' Scavenger Hunt"
+      }
+    ],
     "translations": {
       "es": {
         "eventName": "Picnic de Santa Rosa",
@@ -59,7 +73,18 @@
           "buttonLabel": "A\u00f1adir al Calendario",
           "introText": "Toquen abajo y a\u00f1adiremos el Picnic de Santa Rosa a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio por correo electr\u00f3nico para que no se les olvide.",
           "successMessage": "\u00a1Todo listo! Nosotros nos encargamos \u2014 revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio antes del picnic."
-        }
+        },
+        "highlights": [
+          {
+            "label": "Hamburguesas y Perritos Calientes Incluidos"
+          },
+          {
+            "label": "M\u00fasica en Vivo"
+          },
+          {
+            "label": "B\u00fasqueda del Tesoro para Ni\u00f1os"
+          }
+        ]
       }
     }
   },

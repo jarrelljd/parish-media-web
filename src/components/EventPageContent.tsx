@@ -72,9 +72,11 @@ export default function EventPageContent({
               className="h-8 w-auto shrink-0 object-contain"
             />
           )}
-          <span className="line-clamp-2 text-sm leading-tight font-semibold text-[var(--brand-secondary)]">
-            {parishName}
-          </span>
+          {!parish.hideNameInHeader && (
+            <span className="line-clamp-2 text-sm leading-tight font-semibold text-[var(--brand-secondary)]">
+              {parishName}
+            </span>
+          )}
         </div>
         {event.translations?.es && (
           <div className="flex shrink-0 items-center gap-1 rounded-full border border-[var(--brand-primary-20)] bg-white p-1 text-xs font-semibold shadow-sm">

@@ -9,7 +9,8 @@
       "text": "#1A1A1A"
     },
     "logo": "/images/parishes/ss-peter-paul/logo.svg",
-    "nameEs": "Iglesia Cat\u00f3lica Santos Pedro y Pablo"
+    "nameEs": "Iglesia Cat\u00f3lica Santos Pedro y Pablo",
+    "hideNameInHeader": true
   },
   {
     "slug": "st-patrick",

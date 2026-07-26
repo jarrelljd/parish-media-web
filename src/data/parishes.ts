@@ -13,6 +13,10 @@ export type ParishBrand = {
   logo?: string;
   // Spanish form of the parish's name, if provided. Doesn't vary per event.
   nameEs?: string;
+  // Skip the parish name text next to the logo in the page's compact
+  // identity bar — only for logos that already spell the name out in full
+  // (e.g. a wordmark logo), where repeating it as text is redundant.
+  hideNameInHeader?: boolean;
 };
 
 // Parish Media Company's own colors — used for any event whose parish hasn't

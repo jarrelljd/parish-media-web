@@ -133,7 +133,7 @@ export default function EventPageContent({
             the fuller valueText when an event hasn't been given a dedicated
             subheading yet (see EventInfo.subheading) — kept in an <h2> either
             way so there's always exactly one subheading-level element here. */}
-        <h2 className="mt-3 text-sm leading-relaxed font-medium text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-lg sm:leading-relaxed sm:line-clamp-none">
+        <h2 className="mt-3 font-serif text-base leading-relaxed font-normal text-[var(--brand-text)] italic line-clamp-4 sm:mt-6 sm:text-xl sm:leading-relaxed sm:line-clamp-none">
           {subheading ?? valueText}
         </h2>
 

@@ -24,6 +24,10 @@ export type EventPhoto = {
   // Path under public/, e.g. "/images/events/st-rose/group.jpg".
   src: string;
   alt: string;
+  // CSS object-position for the hero crop (first photo only — see
+  // EventPageContent), e.g. "center 20%" to shift the crop window up so a
+  // subject's head isn't cut off. Defaults to "center" when omitted.
+  objectPosition?: string;
 };
 
 export type EventAccent = {

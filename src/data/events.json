@@ -24,7 +24,8 @@
     "photos": [
       {
         "src": "/images/events/st-rose/2026-picnic-enhanced.png",
-        "alt": "Parishioners and their pastor together at a past St. Rose picnic"
+        "alt": "Parishioners and their pastor together at a past St. Rose picnic",
+        "objectPosition": "center 20%"
       },
       {
         "src": "/images/events/st-rose/group-photo.jpg",

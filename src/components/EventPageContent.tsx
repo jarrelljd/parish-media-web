@@ -120,6 +120,7 @@ export default function EventPageContent({
             alt={event.photos[0].alt}
             fill
             className="object-cover"
+            style={{ objectPosition: event.photos[0].objectPosition ?? "center" }}
             priority
           />
         </div>

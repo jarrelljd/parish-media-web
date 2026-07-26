@@ -55,6 +55,7 @@ export type EventSection = {
 // at all, the language toggle doesn't render (nothing to switch to).
 export type EventTranslation = {
   eventName?: string;
+  subheading?: string;
   dateLabel?: string;
   timeLabel?: string;
   location?: string;
@@ -79,13 +80,22 @@ export type EventInfo = {
   eventSlug: string;
   parishName: string;
   eventName: string;
+  // Short one-sentence hook (5-15 words) rendered as an H2 directly under the
+  // H1 heading — "what happens here and who is it for". Optional: events
+  // without one fall back to showing valueText in that slot instead (legacy
+  // behavior), and skip the separate Value block below the fold — see
+  // EventPageContent. New events should set this; see
+  // workflows/publish_event_landing_page.md.
+  subheading?: string;
   dateLabel: string;
   timeLabel: string;
   location: string;
   // Standard going forward (see workflows/publish_event_landing_page.md) —
   // optional here only so older data without one doesn't break the build.
   address?: string;
-  // The "why come" pitch — also used as the SEO/OG description.
+  // The fuller "why come" pitch — also used as the SEO/OG description. Shown
+  // as its own Value block below the fold when `subheading` is set; falls
+  // back to appearing in the above-the-fold subheadline slot when it's not.
   valueText: string;
   // Extra logistics beyond date/time/location, e.g. "Bring a side to share".
   detailsNote?: string;

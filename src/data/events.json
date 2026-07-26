@@ -67,7 +67,8 @@
     "parishSlug": "ss-peter-paul",
     "eventSlug": "2026-festival",
     "parishName": "Saints Peter & Paul Catholic Church",
-    "eventName": "109th Annual Sts. Peter & Paul Festival",
+    "eventName": "109th Sts. Peter & Paul Festival",
+    "subheading": "One day of food, music, and faith for the whole family.",
     "dateLabel": "Sunday, August 2, 2026",
     "timeLabel": "12:00 PM - 8:00 PM",
     "location": "Sts. Peter & Paul Catholic Church",
@@ -102,7 +103,8 @@
     },
     "translations": {
       "es": {
-        "eventName": "109.\u00ba Festival Anual de Sts. Peter & Paul",
+        "eventName": "109.\u00ba Festival de Sts. Peter & Paul",
+        "subheading": "Un d\u00eda de comida, m\u00fasica y fe para toda la familia.",
         "dateLabel": "Domingo, 2 de agosto de 2026",
         "timeLabel": "12:00 PM - 8:00 PM",
         "location": "Iglesia Cat\u00f3lica Sts. Peter & Paul",

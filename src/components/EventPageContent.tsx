@@ -26,6 +26,7 @@ export default function EventPageContent({
 
   const parishName = es ? (parish.nameEs ?? event.parishName) : event.parishName;
   const eventName = es?.eventName ?? event.eventName;
+  const subheading = es?.subheading ?? event.subheading;
   const dateLabel = es?.dateLabel ?? event.dateLabel;
   const timeLabel = es?.timeLabel ?? event.timeLabel;
   const location = es?.location ?? event.location;
@@ -128,9 +129,13 @@ export default function EventPageContent({
         <h1 className="font-serif text-3xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
           {eventName}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-base sm:leading-relaxed sm:line-clamp-none">
-          {valueText}
-        </p>
+        {/* Short "why come" hook directly under the heading. Falls back to
+            the fuller valueText when an event hasn't been given a dedicated
+            subheading yet (see EventInfo.subheading) — kept in an <h2> either
+            way so there's always exactly one subheading-level element here. */}
+        <h2 className="mt-3 text-sm leading-relaxed font-medium text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-lg sm:leading-relaxed sm:line-clamp-none">
+          {subheading ?? valueText}
+        </h2>
 
         {/* Compact logistics row — date/time/location at a glance. The full
             details card further down still has the complete picture
@@ -212,6 +217,19 @@ export default function EventPageContent({
             backgroundSize: "10px 10px",
           }}
         />
+      )}
+
+      {/* Fuller "why come" pitch, split out from the above-the-fold hero once
+          an event has its own short `subheading` there instead. Only renders
+          here for those events — legacy events without a subheading keep
+          showing valueText up in the hero (see the H2 above) rather than
+          twice. */}
+      {subheading && (
+        <div className="mx-auto mt-10 max-w-2xl text-center">
+          <p className="text-base leading-relaxed text-[var(--brand-text)] sm:text-lg">
+            {valueText}
+          </p>
+        </div>
       )}
 
       <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-[var(--brand-primary-10)] bg-[var(--brand-background)] px-6 py-6 text-center shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)]">

@@ -54,7 +54,7 @@ export default function EventPageContent({
     : undefined;
 
   return (
-    <main style={brandStyle} className="min-h-screen px-6 pt-6 pb-16 sm:pt-24 sm:pb-24">
+    <main style={brandStyle} className="min-h-screen px-6 pt-6 pb-16 sm:pt-16 sm:pb-24">
       {/* Slim identity bar: logo + parish name + language toggle, kept to one
           line so it doesn't eat into the above-the-fold budget on mobile. */}
       <div className="mx-auto flex max-w-xl items-center justify-between gap-3">

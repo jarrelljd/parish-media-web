@@ -37,7 +37,7 @@
     "cta": {
       "type": "form",
       "title": "Don't Miss the Picnic",
-      "buttonLabel": "Get Reminder",
+      "buttonLabel": "Add to Calendar",
       "introText": "Tap below and we'll add the St. Rose Picnic to your calendar with all the details, plus email you a reminder so you don't forget.",
       "successMessage": "You're all set! We've got you covered \u2014 watch your inbox for a calendar invite and a reminder before the picnic.",
       "collectPhone": false
@@ -56,7 +56,7 @@
         "detailsNote": "Hamburguesas y perritos calientes incluidos \u2014 traigan un plato para compartir y una silla o dos.",
         "cta": {
           "title": "No se Pierdan el Picnic",
-          "buttonLabel": "Recibir Recordatorio",
+          "buttonLabel": "Añadir al Calendario",
           "introText": "Toquen abajo y a\u00f1adiremos el Picnic de Santa Rosa a su calendario con todos los detalles, adem\u00e1s les enviaremos un recordatorio por correo electr\u00f3nico para que no se les olvide.",
           "successMessage": "\u00a1Todo listo! Nosotros nos encargamos \u2014 revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio antes del picnic."
         }
@@ -292,6 +292,43 @@
     "accent": {
       "style": "gingham",
       "color": "#2BA84A"
+    },
+    "translations": {
+      "es": {
+        "eventName": "Picnic Anual de la Parroquia",
+        "dateLabel": "Domingo, 16 de agosto de 2026",
+        "timeLabel": "12:00 PM - 3:00 PM",
+        "location": "Pabellón Summit View",
+        "valueText": "Disfruten de una tarde de barbacoa, música y diversión familiar con nuestra comunidad parroquial. ¡Todos son bienvenidos!",
+        "detailsNote": "La entrada cuesta $15 para adultos (gratis para niños menores de 12 años). Los boletos estarán disponibles del 25 de julio al 9 de agosto, después de todas las Misas o en la Rectoría.",
+        "highlights": [
+          { "label": "Barbacoa" },
+          { "label": "Bingo" },
+          { "label": "DJ" },
+          { "label": "Paseos en Poni" },
+          { "label": "Juegos y Premios" }
+        ],
+        "sections": [
+          {
+            "heading": "En el Pabellón Summit View",
+            "body": "Nuestro picnic regresa al pabellón al aire libre de Summit View: mesas de picnic, sombra y mucho espacio para disfrutar de una tarde con la familia parroquial."
+          },
+          {
+            "heading": "Comida y Diversión para Todos",
+            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, además de bebidas frías toda la tarde. Complementen el día con paseos en poni, un DJ, juegos y premios para todas las edades."
+          },
+          {
+            "heading": "El Padre Dave los Invita",
+            "body": "El Padre Dave los invita a unirse a nosotros para una tarde de comida, compañerismo y diversión. ¡Nos vemos allí!"
+          }
+        ],
+        "cta": {
+          "title": "No se Pierdan el Picnic",
+          "buttonLabel": "Añadir al Calendario",
+          "introText": "Toquen abajo y añadiremos el picnic a su calendario con todos los detalles, además les enviaremos un recordatorio.",
+          "successMessage": "¡Todo listo! Revisen su correo electrónico para la invitación al calendario y un recordatorio."
+        }
+      }
     }
   }
 ]

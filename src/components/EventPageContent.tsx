@@ -69,7 +69,8 @@ export default function EventPageContent({
               alt={`${parishName} logo`}
               width={200}
               height={32}
-              className="h-8 w-auto shrink-0 object-contain"
+              className="w-auto shrink-0 object-contain"
+              style={{ height: parish.logoHeightPx ?? 32 }}
             />
           )}
           {!parish.hideNameInHeader && (

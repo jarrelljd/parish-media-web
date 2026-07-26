@@ -22,7 +22,8 @@
       "text": "#1B2951"
     },
     "logo": "/images/parishes/st-joseph/logo.png",
-    "nameEs": "Iglesia Cat\u00f3lica San Jos\u00e9"
+    "nameEs": "Iglesia Cat\u00f3lica San Jos\u00e9",
+    "logoHeightPx": 40
   },
   {
     "slug": "st-patrick",

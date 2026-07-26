@@ -17,6 +17,9 @@ export type ParishBrand = {
   // identity bar — only for logos that already spell the name out in full
   // (e.g. a wordmark logo), where repeating it as text is redundant.
   hideNameInHeader?: boolean;
+  // Override the header logo's height in px (default 32, see EventPageContent).
+  // Only for logos that read as too small/detailed at the default size.
+  logoHeightPx?: number;
 };
 
 // Parish Media Company's own colors — used for any event whose parish hasn't

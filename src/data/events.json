@@ -350,8 +350,8 @@
     "timeLabel": "9:00 AM - 4:00 PM",
     "location": "St. Joseph Catholic Church",
     "address": "1621 Center Ave, Los Banos, CA 93635",
-    "valueText": "Join your parish family for a day of food, music, kids games, vendors, and folklore dance \u2014 plus a Saint Dress-Up Contest and Grand Raffle.",
-    "detailsNote": "Grand Raffle after Mass \u2014 $10 per ticket, prizes up to $2,000. Kids can enter the Saint Dress-Up Contest for a chance to win prizes too.",
+    "valueText": "Join your parish family for a day of food, music, kids games, vendors, and folklore dance, plus a Saint Dress-Up Contest and Grand Raffle.",
+    "detailsNote": "Grand Raffle after Mass: $10 per ticket, prizes up to $2,000. Kids can enter the Saint Dress-Up Contest for a chance to win prizes too.",
     "highlights": [
       {
         "icon": "\ud83c\udfb6",
@@ -363,7 +363,7 @@
       },
       {
         "icon": "\ud83c\udfab",
-        "label": "Grand Raffle \u2014 $10/Ticket"
+        "label": "Grand Raffle \u2022 $10/Ticket"
       }
     ],
     "photos": [
@@ -394,8 +394,8 @@
         "dateLabel": "Domingo, 1 de noviembre de 2026",
         "timeLabel": "9:00 a.m. a 4:00 p.m.",
         "location": "Iglesia Cat\u00f3lica San Jos\u00e9",
-        "valueText": "\u00dananse a su familia parroquial para un d\u00eda de comida, m\u00fasica, juegos para ni\u00f1os, vendedores y danza folcl\u00f3rica \u2014 adem\u00e1s del Concurso de Disfraces de Santos y la Gran Rifa.",
-        "detailsNote": "Gran Rifa despu\u00e9s de la Misa \u2014 $10 por boleto, con premios de hasta $2,000. Los ni\u00f1os pueden participar en el Concurso de Disfraces de Santos con premios tambi\u00e9n.",
+        "valueText": "\u00dananse a su familia parroquial para un d\u00eda de comida, m\u00fasica, juegos para ni\u00f1os, vendedores y danza folcl\u00f3rica, adem\u00e1s del Concurso de Disfraces de Santos y la Gran Rifa.",
+        "detailsNote": "Gran Rifa despu\u00e9s de la Misa: $10 por boleto, con premios de hasta $2,000. Los ni\u00f1os pueden participar en el Concurso de Disfraces de Santos con premios tambi\u00e9n.",
         "highlights": [
           {
             "label": "M\u00fasica en Vivo y Danza Folcl\u00f3rica"
@@ -404,7 +404,7 @@
             "label": "Concurso de Disfraces de Santos"
           },
           {
-            "label": "Gran Rifa \u2014 $10 por Boleto"
+            "label": "Gran Rifa \u2022 $10 por Boleto"
           }
         ],
         "cta": {

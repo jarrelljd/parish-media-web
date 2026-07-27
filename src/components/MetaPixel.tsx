@@ -8,8 +8,10 @@ export default function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const pathname = usePathname();
 
-  // Every PageView (including the very first one on a page, not just
-  // subsequent client-side navigations) has to go through this effect rather
+  // Every page-view event (tracked as the standard "ViewContent" event, not
+  // "PageView" — see the fbq('track', ...) call below; including the very
+  // first one on a page, not just subsequent client-side navigations) has to
+  // go through this effect rather
   // than firing directly in the inline bootstrap script below. Reason,
   // confirmed by reading the real fbevents.js source: fbq does NOT read
   // window.location.href fresh per track() call. It sends whatever its own
@@ -43,7 +45,7 @@ export default function MetaPixel() {
       if (typeof window.history?.replaceState === "function") {
         window.history.replaceState(window.history.state, "", window.location.href);
       }
-      fbq("track", "PageView");
+      fbq("track", "ViewContent");
     };
 
     fireWhenReady();
@@ -75,7 +77,7 @@ export default function MetaPixel() {
           height="1"
           width="1"
           style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=ViewContent&noscript=1`}
           alt=""
         />
       </noscript>

@@ -3,7 +3,7 @@ import founderPhoto from "../../public/images/founder/joe-founder-photo.png";
 
 export default function About() {
   return (
-    <section id="about" className="px-6 py-24 sm:py-32">
+    <section className="px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />

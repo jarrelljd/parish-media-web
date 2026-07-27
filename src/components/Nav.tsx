@@ -1,39 +1,44 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/testimonials", label: "Testimonials" },
+  { href: "/about", label: "About" },
 ];
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 border-b border-navy/10 bg-offwhite/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#home" className="font-serif text-lg font-semibold tracking-tight text-navy">
+        <Link href="/" className="font-serif text-lg font-semibold tracking-tight text-navy">
           Parish Media Company
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-navy/80 transition-colors hover:text-navy"
+              className={`text-sm font-medium transition-colors hover:text-navy ${
+                pathname === link.href ? "font-semibold text-navy" : "text-navy/80"
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          <Link
+            href="/contact"
             className="rounded-full bg-navy px-5 py-2 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90"
           >
             Get Started
-          </a>
+          </Link>
         </nav>
 
         <button
@@ -62,22 +67,24 @@ export default function Nav() {
       {open && (
         <nav className="flex flex-col gap-1 border-t border-navy/10 px-6 pb-4 md:hidden">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2 text-sm font-medium text-navy/80"
+              className={`py-2 text-sm font-medium ${
+                pathname === link.href ? "font-semibold text-navy" : "text-navy/80"
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          <Link
+            href="/contact"
             onClick={() => setOpen(false)}
             className="mt-2 rounded-full bg-navy px-5 py-2 text-center text-sm font-medium text-offwhite"
           >
             Get Started
-          </a>
+          </Link>
         </nav>
       )}
     </header>

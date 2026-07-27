@@ -23,7 +23,7 @@ export default function Contact() {
   }, [state.status]);
 
   return (
-    <section id="contact" className="px-6 py-24 sm:py-32">
+    <section className="px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-xl">
         <div className="text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />

@@ -14,6 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://parishmediacompany.com"),
   title: "Parish Media Company | Social Media & Ad Growth for Catholic Parishes",
   description:
     "Parish Media Company helps Catholic parishes, dioceses, and vocation offices grow real engagement through organic social media and targeted Meta ads — without adding to the pastor's workload.",

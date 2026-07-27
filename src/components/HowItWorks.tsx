@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
 import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
@@ -63,7 +64,7 @@ function ProofImage({
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="px-6 py-24 sm:py-32">
+    <section className="px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
@@ -74,10 +75,24 @@ export default function HowItWorks() {
             Two ways we help ministries grow — organic content and targeted
             outreach, built around how your team already works.
           </p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <a
+              href="#for-parishes"
+              className="rounded-full border border-navy/15 px-4 py-1.5 text-sm font-medium text-navy/80 transition-colors hover:border-navy/30 hover:text-navy"
+            >
+              For Parishes
+            </a>
+            <a
+              href="#for-vocation-offices"
+              className="rounded-full border border-navy/15 px-4 py-1.5 text-sm font-medium text-navy/80 transition-colors hover:border-navy/30 hover:text-navy"
+            >
+              For Vocation Offices
+            </a>
+          </div>
         </div>
 
         {/* For Parishes */}
-        <div className="mt-20">
+        <div id="for-parishes" className="mt-20 scroll-mt-24">
           <div className="text-center">
             <h3 className="font-serif text-2xl font-semibold text-navy sm:text-3xl">
               For Parishes
@@ -158,7 +173,7 @@ export default function HowItWorks() {
         </div>
 
         {/* For Vocation Offices */}
-        <div className="mt-24 rounded-2xl bg-navy/5 p-8 sm:p-10">
+        <div id="for-vocation-offices" className="mt-24 scroll-mt-24 rounded-2xl bg-navy/5 p-8 sm:p-10">
           <span className="text-xs font-semibold uppercase tracking-widest text-navy/50">
             Also Available
           </span>
@@ -229,12 +244,12 @@ export default function HowItWorks() {
         {/* Diocese line */}
         <p className="mt-12 text-center text-navy/70">
           Custom engagement for dioceses —{" "}
-          <a
-            href="#contact"
+          <Link
+            href="/contact"
             className="font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
           >
             let&rsquo;s talk
-          </a>
+          </Link>
           .
         </p>
       </div>

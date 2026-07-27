@@ -1,7 +1,30 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 
 export default function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const pathname = usePathname();
+  // The inline script below already fires PageView for whichever page loads
+  // first in a tab. This component lives in the root layout, which persists
+  // across client-side navigation (App Router doesn't remount it per route),
+  // so without this, every page visited *after* the first one in a session
+  // would fire nothing. Skip the very first run (already covered) and fire
+  // on every pathname change after that.
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (!pixelId) return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+    fbq?.("track", "PageView");
+  }, [pathname, pixelId]);
+
   if (!pixelId) return null;
 
   return (

@@ -21,6 +21,20 @@ export default function MetaPixel() {
       isFirstRender.current = false;
       return;
     }
+    // fbq doesn't read window.location.href fresh per track() call — it sends
+    // whatever its own internal URL cache holds, which it only refreshes via
+    // its own history.pushState/replaceState interception (installed once at
+    // pixel init; confirmed by reading the real fbevents.js source). Next.js's
+    // App Router navigation doesn't reliably reach that hook, so without this,
+    // every event after the first page load reports the *first* page's URL
+    // forever, even though this effect fires fbq('track', ...) on the right
+    // page every time. A no-op replaceState (URL unchanged, just re-announced)
+    // forces fbq to re-read and re-cache the already-correct current URL
+    // before we track — this is the same mechanism Meta's own SPA
+    // implementation guide has integrators call themselves before fbq('track').
+    if (typeof window.history?.replaceState === "function") {
+      window.history.replaceState(window.history.state, "", window.location.href);
+    }
     const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
     fbq?.("track", "PageView");
   }, [pathname, pixelId]);

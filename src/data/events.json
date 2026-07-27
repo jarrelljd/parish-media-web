@@ -276,8 +276,12 @@
         "label": "DJ"
       },
       {
-        "icon": "\ud83d\udc34",
-        "label": "Pony Rides"
+        "icon": "\ud83c\udf3d",
+        "label": "Corn Hole"
+      },
+      {
+        "icon": "\ud83c\udf9f\ufe0f",
+        "label": "50/50 Raffle"
       },
       {
         "icon": "\ud83c\udfae",
@@ -296,11 +300,11 @@
       },
       {
         "heading": "Food & Fun for Everyone",
-        "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with pony rides, a DJ, games, and prizes for all ages.",
+        "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with corn hole, bingo, a 50/50 raffle, and prizes for all ages.",
         "icon": "\ud83c\udf89",
         "photo": {
-          "src": "/images/events/st-patrick/tug-of-war.jpg",
-          "alt": "Parishioners of all ages playing tug of war on the lawn at a previous picnic"
+          "src": "/images/events/st-patrick/st-patricks-cornhole.jpg",
+          "alt": "Parishioners playing cornhole on the lawn at a previous picnic"
         }
       },
       {
@@ -344,7 +348,10 @@
             "label": "DJ"
           },
           {
-            "label": "Paseos en Poni"
+            "label": "Cornhole"
+          },
+          {
+            "label": "Rifa 50/50"
           },
           {
             "label": "Juegos y Premios"
@@ -357,7 +364,7 @@
           },
           {
             "heading": "Comida y Diversi\u00f3n para Todos",
-            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, adem\u00e1s de bebidas fr\u00edas toda la tarde. Complementen el d\u00eda con paseos en poni, un DJ, juegos y premios para todas las edades."
+            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, adem\u00e1s de bebidas fr\u00edas toda la tarde. Complementen el d\u00eda con cornhole, bingo, una rifa 50/50 y premios para todas las edades."
           },
           {
             "heading": "El Padre Dave los Invita",

@@ -8,25 +8,11 @@ export default function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const pathname = usePathname();
 
-  // Every page-view event (tracked as the standard "ViewContent" event, not
-  // "PageView" — see the fbq('track', ...) call below; including the very
-  // first one on a page, not just subsequent client-side navigations) has to
-  // go through this effect rather
-  // than firing directly in the inline bootstrap script below. Reason,
-  // confirmed by reading the real fbevents.js source: fbq does NOT read
-  // window.location.href fresh per track() call. It sends whatever its own
-  // internal "compared URL" cache holds, and a plain fbq('track', ...) call
-  // does not get that cache refreshed automatically — only fbq's own
-  // history.pushState/replaceState interception hook refreshes it (the same
-  // mechanism Meta's own SPA implementation guide has integrators trigger
-  // manually before fbq('track', ...)). That hook only exists once the real
-  // fbevents.js has loaded and taken over from the placeholder stub (fbq
-  // itself is present immediately, but calls just queue until then) — so we
-  // wait for fbq.callMethod to exist (the real library sets this; the stub
-  // never does) before nudging the cache and tracking. Without the wait, an
-  // immediate track() call on page load reports a stale/default URL instead
-  // of the actual current page — which is exactly what shipped originally
-  // and still didn't fix a fresh first-load reporting the wrong URL.
+  // Fires our own explicit "ViewContent" on every page, including the very
+  // first one on a page and every client-side navigation after that. Waits
+  // for fbq.callMethod to exist (only the real fbevents.js sets this — the
+  // placeholder stub never does) so the call actually reaches the real
+  // library instead of silently queuing forever.
   useEffect(() => {
     if (!pixelId) return;
     let cancelled = false;
@@ -41,9 +27,6 @@ export default function MetaPixel() {
       if (!fbq || !fbq.callMethod) {
         setTimeout(fireWhenReady, 100);
         return;
-      }
-      if (typeof window.history?.replaceState === "function") {
-        window.history.replaceState(window.history.state, "", window.location.href);
       }
       fbq("track", "ViewContent");
     };
@@ -68,6 +51,7 @@ export default function MetaPixel() {
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
+          fbq.disablePushState = true;
           fbq('init', '${pixelId}');
         `}
       </Script>

@@ -167,6 +167,14 @@ export default function EventPageContent({
             </span>
           )}
         </div>
+        {/* The line above links the venue *name* to Maps but never shows the
+            actual street address as text — repeat it here, small and plain,
+            so it's readable above the fold even without following the link. */}
+        {event.address && (
+          <p className="mx-auto mt-1 max-w-md text-center text-xs text-[var(--brand-text-70)]">
+            {event.address}
+          </p>
+        )}
 
         <a
           href="#cta"
@@ -238,6 +246,9 @@ export default function EventPageContent({
           {dateLabel} &middot; {timeLabel}
         </p>
         <p className="mt-1 text-[var(--brand-text)]">{location}</p>
+        {event.address && (
+          <p className="text-sm text-[var(--brand-text-70)]">{event.address}</p>
+        )}
         {mapsUrl && (
           <a
             href={mapsUrl}

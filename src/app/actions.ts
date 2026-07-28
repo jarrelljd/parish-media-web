@@ -1,6 +1,9 @@
 "use server";
 
+import { randomUUID } from "crypto";
+import { headers } from "next/headers";
 import { Resend } from "resend";
+import { sendLeadConversionEvent } from "@/lib/metaConversionsApi";
 
 // TODO: swap to joe@parishmediacompany.com once Google Workspace is live.
 const NOTIFY_EMAIL = "joejarrell@chapellaunch.com";
@@ -51,6 +54,9 @@ export async function submitContactForm(
 export type EventRSVPState = {
   status: "idle" | "success" | "error";
   message?: string;
+  // Shared with the browser pixel's Lead call so Meta dedupes the two into
+  // one Lead instead of double-counting (see components/EventRSVPForm.tsx).
+  eventId?: string;
 };
 
 // The Zap behind this webhook adds a row to the shared signups Sheet, sends
@@ -88,6 +94,8 @@ export async function submitEventRSVP(
   eventName: string,
   parishName: string,
   webhookEnvVar: string | undefined,
+  parishSlug: string,
+  eventSlug: string,
   _prevState: EventRSVPState,
   formData: FormData,
 ): Promise<EventRSVPState> {
@@ -119,5 +127,26 @@ export async function submitEventRSVP(
   // calendar invite + reminder) is the part that actually matters, and with
   // many event pages a heads-up email per signup would get overwhelming.
 
-  return { status: "success" };
+  // Same event_id gets used for the browser pixel's Lead call (see
+  // EventRSVPForm.tsx) so Meta dedupes the two into one Lead. A tracking
+  // failure here should never fail the RSVP itself — the visitor already
+  // has their calendar invite regardless of whether this succeeds.
+  const eventId = randomUUID();
+  try {
+    const headersList = await headers();
+    await sendLeadConversionEvent({
+      parishSlug,
+      eventSlug,
+      eventId,
+      contentName: eventName,
+      email,
+      phone,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event:", err);
+  }
+
+  return { status: "success", eventId };
 }

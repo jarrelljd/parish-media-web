@@ -10,6 +10,8 @@ const initialState: EventRSVPState = { status: "idle" };
 export default function EventRSVPForm({
   eventName,
   parishName,
+  parishSlug,
+  eventSlug,
   webhookEnvVar,
   language = "en",
   title,
@@ -20,6 +22,8 @@ export default function EventRSVPForm({
 }: {
   eventName: string;
   parishName: string;
+  parishSlug: string;
+  eventSlug: string;
   webhookEnvVar?: string;
   language?: Language;
   title?: string;
@@ -29,7 +33,14 @@ export default function EventRSVPForm({
   collectPhone?: boolean;
 }) {
   const t = uiStrings[language];
-  const boundAction = submitEventRSVP.bind(null, eventName, parishName, webhookEnvVar);
+  const boundAction = submitEventRSVP.bind(
+    null,
+    eventName,
+    parishName,
+    webhookEnvVar,
+    parishSlug,
+    eventSlug,
+  );
   const [state, formAction, pending] = useActionState(
     boundAction,
     initialState,
@@ -37,9 +48,9 @@ export default function EventRSVPForm({
 
   useEffect(() => {
     if (state.status === "success") {
-      trackLead(eventName);
+      trackLead(eventName, state.eventId);
     }
-  }, [state.status, eventName]);
+  }, [state.status, state.eventId, eventName]);
 
   if (state.status === "success") {
     return (

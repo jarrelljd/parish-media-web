@@ -7,6 +7,7 @@
     "dateLabel": "Saturday, August 16, 2026",
     "timeLabel": "11:00 AM \u2013 2:00 PM",
     "location": "Parish Grounds",
+    "address": "123 Main St, Anytown, OH 12345",
     "valueText": "Join us for a day of food, fellowship, and fun for the whole family. Bring a dish to share and come meet your parish community."
   },
   {
@@ -96,7 +97,7 @@
     "eventSlug": "2026-festival",
     "parishName": "Saints Peter & Paul Catholic Church",
     "eventName": "109th Sts. Peter & Paul Festival",
-    "subheading": "One day of food, music, and faith for the whole family.",
+    "subheading": "A South Omaha tradition of food, music, and faith for the whole family.",
     "dateLabel": "Sunday, August 2, 2026",
     "timeLabel": "12:00 PM - 8:00 PM",
     "location": "Sts. Peter & Paul Catholic Church",
@@ -132,7 +133,7 @@
     "translations": {
       "es": {
         "eventName": "109.\u00ba Festival de Sts. Peter & Paul",
-        "subheading": "Un d\u00eda de comida, m\u00fasica y fe para toda la familia.",
+        "subheading": "Una tradici\u00f3n del sur de Omaha de comida, m\u00fasica y fe para toda la familia.",
         "dateLabel": "Domingo, 2 de agosto de 2026",
         "timeLabel": "12:00 PM - 8:00 PM",
         "location": "Iglesia Cat\u00f3lica Sts. Peter & Paul",
@@ -300,7 +301,7 @@
       },
       {
         "heading": "Food & Fun for Everyone",
-        "body": "Enjoy hot dogs, hamburgers, beans, desserts, and ice cream, plus cold drinks all afternoon. Round out the day with corn hole, bingo, a 50/50 raffle, and prizes for all ages.",
+        "body": "Enjoy hot dogs, hamburgers, beans, and desserts, plus cold drinks all afternoon. Round out the day with corn hole, bingo, a 50/50 raffle, and prizes for all ages.",
         "icon": "\ud83c\udf89",
         "photo": {
           "src": "/images/events/st-patrick/st-patricks-cornhole.jpg",
@@ -364,7 +365,7 @@
           },
           {
             "heading": "Comida y Diversi\u00f3n para Todos",
-            "body": "Disfruten de hot dogs, hamburguesas, frijoles, postres y helado, adem\u00e1s de bebidas fr\u00edas toda la tarde. Complementen el d\u00eda con cornhole, bingo, una rifa 50/50 y premios para todas las edades."
+            "body": "Disfruten de hot dogs, hamburguesas, frijoles y postres, adem\u00e1s de bebidas fr\u00edas toda la tarde. Complementen el d\u00eda con cornhole, bingo, una rifa 50/50 y premios para todas las edades."
           },
           {
             "heading": "El Padre Dave los Invita",

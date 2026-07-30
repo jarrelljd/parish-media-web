@@ -332,7 +332,7 @@
     "translations": {
       "es": {
         "eventName": "Picnic de San Patricio 2026",
-        "subheading": "Una tarde de barbacoa, música y diversión familiar para todos.",
+        "subheading": "Una tarde de barbacoa, m\u00fasica y diversi\u00f3n familiar para todos.",
         "dateLabel": "Domingo, 16 de agosto de 2026",
         "timeLabel": "12:00 PM - 3:00 PM",
         "location": "Pabell\u00f3n Summit View",
@@ -431,8 +431,8 @@
     },
     "translations": {
       "es": {
-        "eventName": "Festival de Todos los Santos de San José 2026",
-        "subheading": "Un día de comida, música, juegos y fe para toda la familia.",
+        "eventName": "Festival de Todos los Santos de San Jos\u00e9 2026",
+        "subheading": "Un d\u00eda de comida, m\u00fasica, juegos y fe para toda la familia.",
         "dateLabel": "Domingo, 1 de noviembre de 2026",
         "timeLabel": "9:00 a.m. a 4:00 p.m.",
         "location": "Iglesia Cat\u00f3lica San Jos\u00e9",
@@ -454,6 +454,147 @@
           "buttonLabel": "A\u00f1adir al Calendario",
           "introText": "Toque el bot\u00f3n y a\u00f1adiremos el festival a su calendario con todos los detalles.",
           "successMessage": "\u00a1Listo! Revise su calendario para ver la invitaci\u00f3n."
+        }
+      }
+    }
+  },
+  {
+    "parishSlug": "st-mary-mountains",
+    "eventSlug": "visit",
+    "parishName": "St. Mary in the Mountains",
+    "eventName": "Come Visit St. Mary in the Mountains",
+    "subheading": "Explore Nevada's first Catholic church, a free history museum, and a charming gift shop.",
+    "dateLabel": "Open Year-Round",
+    "timeLabel": "10 AM \u2013 4 PM Daily",
+    "location": "St. Mary in the Mountains Catholic Church & Museum",
+    "address": "111 E St, Virginia City, NV 89440",
+    "valueText": "Just 30 minutes south of Reno, this Gothic landmark has crowned the Virginia City skyline since 1870, surviving fire and near-ruin to become one of Nevada's most treasured historic sites. Step inside for the free museum and gift shop, then read on for the full story.",
+    "detailsNote": "The Gift Shop is open 10 AM \u2013 4 PM daily, year-round. Sunday Holy Mass is at 11:30 AM. Admission is free; donations support ongoing preservation of this National Catholic Historic Site.",
+    "highlights": [
+      {
+        "icon": "\ud83c\udfdb\ufe0f",
+        "label": "Free History Museum"
+      },
+      {
+        "icon": "\ud83c\udf81",
+        "label": "Museum Gift Shop"
+      },
+      {
+        "icon": "\ud83d\udca7",
+        "label": "Original 1875 Baptismal Font"
+      },
+      {
+        "icon": "\ud83c\udfb9",
+        "label": "Rare 1898 Pipe Organ"
+      }
+    ],
+    "photos": [
+      {
+        "src": "/images/events/st-mary-mountains/hero.jpg",
+        "alt": "St. Mary in the Mountains and its neighboring church rising above D Street, Virginia City, NV"
+      },
+      {
+        "src": "/images/events/st-mary-mountains/sanctuary.jpg",
+        "alt": "Inside the sanctuary of St. Mary in the Mountains, with its wood columns, chandelier, and altar"
+      },
+      {
+        "src": "/images/events/st-mary-mountains/exterior.jpg",
+        "alt": "St. Mary in the Mountains Catholic Church against a blue Nevada sky, Virginia City"
+      }
+    ],
+    "sections": [
+      {
+        "icon": "\u26ea",
+        "heading": "Nevada's First Catholic Church",
+        "body": "Father Patrick \u201cPaddy\u201d Manogue built the first St. Mary's, a wooden church nearby, after arriving on the Comstock in 1862. As Virginia City boomed, the growing congregation needed something grander: in 1870, the brick-and-marble church you see today rose on this spot, built on the extraordinary wealth of the silver rush.",
+        "photo": {
+          "src": "/images/events/st-mary-mountains/steeple.jpg",
+          "alt": "The Gothic steeple and rose window of St. Mary in the Mountains"
+        }
+      },
+      {
+        "icon": "\ud83d\udd25",
+        "heading": "Rebuilt After the Great Fire of 1875",
+        "body": "Known as the \u201cBonanza Church,\u201d St. Mary's burned along with most of the town in the Great Fire of 1875, though its pewter baptismal font survived and remains in use today. (A local legend claims the walls were dynamited to fight the blaze, but the surviving ruins disprove that.) The church was rebuilt by 1877.",
+        "photo": {
+          "src": "/images/events/st-mary-mountains/landscape.jpg",
+          "alt": "The steeple of St. Mary in the Mountains at golden hour, framed by the Virginia City hills"
+        }
+      },
+      {
+        "icon": "\ud83c\udfa8",
+        "heading": "The \u201cMad Monks\u201d and a Second Restoration",
+        "body": "By the 1950s, decades of neglect had taken a toll, and a group of Cistercian monks brought in to \u201cmodernize\u201d the church in 1957 did lasting damage, smashing the original stained glass and tearing out the choir loft. Father Caviglia stopped the damage in 1959, and his successor commissioned the stained glass seen today.",
+        "photo": {
+          "src": "/images/events/st-mary-mountains/winter.jpg",
+          "alt": "St. Mary in the Mountains under snow, Virginia City, NV"
+        }
+      },
+      {
+        "icon": "\ud83c\udfb9",
+        "heading": "A Bonanza-Era Pipe Organ",
+        "body": "In 1982, the church acquired a rare c. 1898 William Schuelke pipe organ, originally built for a Lutheran church in Wisconsin. The one-manual, six-rank organ now sits at the front of the nave alongside a matching chime case, still played today.",
+        "photo": {
+          "src": "/images/events/st-mary-mountains/organ.jpg",
+          "alt": "The c. 1898 William Schuelke pipe organ inside St. Mary in the Mountains"
+        }
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "title": "Plan Your Visit",
+      "buttonLabel": "Email Me My Visit Guide",
+      "introText": "Get a free 60-minute visit guide: tour info, parking, and the 3 must-see spots in historic Virginia City.",
+      "successMessage": "You're all set! Check your inbox for your St. Mary in the Mountains visit guide.",
+      "collectPhone": false
+    },
+    "webhookEnvVar": "ZAPIER_WEBHOOK_STMARYMOUNTAINS_VISIT",
+    "translations": {
+      "es": {
+        "eventName": "Visite Santa Mar\u00eda en las Monta\u00f1as",
+        "subheading": "Descubra la primera iglesia cat\u00f3lica de Nevada, un museo hist\u00f3rico gratuito y una encantadora tienda de regalos.",
+        "dateLabel": "Abierto Todo el A\u00f1o",
+        "timeLabel": "10 AM \u2013 4 PM Todos los D\u00edas",
+        "location": "Iglesia y Museo Santa Mar\u00eda en las Monta\u00f1as",
+        "valueText": "A solo 30 minutos al sur de Reno, este templo g\u00f3tico corona el horizonte de Virginia City desde 1870, sobreviviendo incendios y la ruina casi total para convertirse en uno de los sitios hist\u00f3ricos m\u00e1s apreciados de Nevada. Entre para visitar el museo y la tienda de regalos gratuitos, y siga leyendo para conocer la historia completa.",
+        "detailsNote": "La tienda de regalos abre de 10 AM a 4 PM todos los d\u00edas, todo el a\u00f1o. La Santa Misa dominical es a las 11:30 AM. La entrada es gratuita; las donaciones ayudan a preservar este Sitio Hist\u00f3rico Cat\u00f3lico Nacional.",
+        "highlights": [
+          {
+            "label": "Museo Hist\u00f3rico Gratuito"
+          },
+          {
+            "label": "Tienda de Regalos del Museo"
+          },
+          {
+            "label": "Pila Bautismal Original de 1875"
+          },
+          {
+            "label": "\u00d3rgano de Tubos de 1898"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "La Primera Iglesia Cat\u00f3lica de Nevada",
+            "body": "El padre Patrick \u201cPaddy\u201d Manogue construy\u00f3 la primera iglesia de Santa Mar\u00eda, una estructura de madera cercana, tras llegar al Comstock en 1862. Cuando Virginia City creci\u00f3 durante la bonanza, la congregaci\u00f3n necesit\u00f3 algo m\u00e1s grande: en 1870 se levant\u00f3 en este lugar la iglesia de ladrillo y m\u00e1rmol que se puede visitar hoy, construida con la extraordinaria riqueza de la fiebre de la plata."
+          },
+          {
+            "heading": "Reconstruida Tras el Gran Incendio de 1875",
+            "body": "Conocida como la \u201cIglesia de la Bonanza,\u201d Santa Mar\u00eda se incendi\u00f3 junto con la mayor parte del pueblo en el Gran Incendio de 1875, aunque su pila bautismal de peltre sobrevivi\u00f3 y sigue en uso hoy. (Una leyenda local afirma que los muros fueron dinamitados para combatir el fuego, pero las ruinas que sobrevivieron lo desmienten.) La iglesia fue reconstruida en 1877."
+          },
+          {
+            "heading": "Los \u201cMonjes Locos\u201d y una Segunda Restauraci\u00f3n",
+            "body": "Para la d\u00e9cada de 1950, d\u00e9cadas de abandono hab\u00edan dejado su huella, y un grupo de monjes cistercienses tra\u00eddos para \u201cmodernizar\u201d la iglesia en 1957 causaron da\u00f1os permanentes, destruyendo los vitrales originales y retirando el coro. El padre Caviglia detuvo los da\u00f1os en 1959, y su sucesor encarg\u00f3 los vitrales que se ven hoy."
+          },
+          {
+            "heading": "Un \u00d3rgano de Tubos de la Era de la Bonanza",
+            "body": "En 1982, la iglesia adquiri\u00f3 un raro \u00f3rgano de tubos William Schuelke de c. 1898, construido originalmente para una iglesia luterana en Wisconsin. Este \u00f3rgano de un manual y seis registros se encuentra hoy al frente de la nave junto a una caja de campanas a juego, que todav\u00eda se toca."
+          }
+        ],
+        "cta": {
+          "title": "Planifique su Visita",
+          "buttonLabel": "Enviarme Mi Gu\u00eda de Visita",
+          "introText": "Obtenga una gu\u00eda de visita gratuita de 60 minutos: informaci\u00f3n sobre recorridos, estacionamiento y los 3 lugares imprescindibles de la hist\u00f3rica Virginia City.",
+          "successMessage": "\u00a1Listo! Revise su correo electr\u00f3nico para recibir su gu\u00eda de visita de Santa Mar\u00eda en las Monta\u00f1as."
         }
       }
     }

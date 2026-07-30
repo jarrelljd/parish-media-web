@@ -1,0 +1,10 @@
+<svg width="460" height="72" viewBox="0 0 460 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="St. Mary in the Mountains">
+  <g>
+    <polygon points="8,58 30,24 44,42 60,18 78,58" fill="#7B2D26"/>
+    <polygon points="60,18 60,4" stroke="#C9A662" stroke-width="3" stroke-linecap="round"/>
+    <line x1="60" y1="18" x2="60" y2="2" stroke="#C9A662" stroke-width="3" stroke-linecap="round"/>
+    <line x1="53" y1="7" x2="67" y2="7" stroke="#C9A662" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text x="94" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="600" fill="#7B2D26">St. Mary in the Mountains</text>
+  <text x="94" y="53" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="2.5" fill="#C9A662">VIRGINIA CITY, NEVADA &#8226; EST. 1870</text>
+</svg>

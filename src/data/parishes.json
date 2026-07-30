@@ -26,6 +26,19 @@
     "logoHeightPx": 40
   },
   {
+    "slug": "st-mary-mountains",
+    "name": "St. Mary in the Mountains",
+    "colors": {
+      "primary": "#7B2D26",
+      "secondary": "#C9A662",
+      "background": "#FBF7F1",
+      "text": "#4A2318"
+    },
+    "logo": "/images/parishes/st-mary-mountains/logo.svg",
+    "nameEs": "Santa Mar\u00eda en las Monta\u00f1as",
+    "hideNameInHeader": true
+  },
+  {
     "slug": "st-patrick",
     "name": "St. Patrick's Catholic Church",
     "colors": {

@@ -667,16 +667,16 @@
         },
         "sections": [
           {
-            "heading": "Una Parroquia Arraigada en Palatka Desde 1858",
-            "body": "Santa M\u00f3nica es la tercera parroquia m\u00e1s antigua de la Di\u00f3cesis de San Agust\u00edn, con ra\u00edces en una peque\u00f1a iglesia de madera bendecida en 1858. La iglesia de ladrillo que ve hoy se complet\u00f3 en 1899 y sigue siendo nuestro hogar parroquial. Venga a conocerla y acomp\u00e1\u00f1enos ese d\u00eda."
-          },
-          {
             "heading": "Un Plato de BBQ por una Buena Causa",
             "body": "Doce d\u00f3lares le dan un plato completo de cerdo desmenuzado, ensalada de col, frijoles y pan, y cada plato vendido beneficia la colecta escolar de Caridades Cat\u00f3licas para ni\u00f1os de la comunidad."
           },
           {
             "heading": "Traiga \u00datiles Escolares, Traiga una Sonrisa",
             "body": "Done \u00fatiles escolares nuevos mientras est\u00e9 aqu\u00ed: cuadernos, l\u00e1pices, mochilas, cualquier cosa de la lista de un maestro. Cada donaci\u00f3n va a Caridades Cat\u00f3licas, quienes las entregan directamente a los ni\u00f1os que las necesitan."
+          },
+          {
+            "heading": "Una Parroquia Arraigada en Palatka Desde 1858",
+            "body": "Santa M\u00f3nica es la tercera parroquia m\u00e1s antigua de la Di\u00f3cesis de San Agust\u00edn, con ra\u00edces en una peque\u00f1a iglesia de madera bendecida en 1858. La iglesia de ladrillo que ve hoy se complet\u00f3 en 1899 y sigue siendo nuestro hogar parroquial. Venga a conocerla y acomp\u00e1\u00f1enos ese d\u00eda."
           }
         ]
       }
@@ -688,15 +688,6 @@
       }
     ],
     "sections": [
-      {
-        "heading": "A Parish Rooted in Palatka Since 1858",
-        "body": "St. Monica is the third-oldest parish in the Diocese of St. Augustine, tracing back to a small wooden church blessed in 1858. The brick church you see today was completed in 1899 and remains our parish home. Come see it and join us for the day.",
-        "icon": "\ud83c\udfdb\ufe0f",
-        "photo": {
-          "src": "/images/events/st-monica/old-church.jpg",
-          "alt": "Historic photo of St. Monica's original wooden church in Palatka, dedicated in 1858"
-        }
-      },
       {
         "heading": "A BBQ Plate for a Good Cause",
         "body": "Twelve dollars gets you a full plate of pulled pork, coleslaw, beans, and a roll, and every plate sold benefits Catholic Charities' back-to-school drive for local kids.",
@@ -713,6 +704,15 @@
         "photo": {
           "src": "/images/events/st-monica/communion.jpg",
           "alt": "A young parishioner receiving First Communion at St. Monica"
+        }
+      },
+      {
+        "heading": "A Parish Rooted in Palatka Since 1858",
+        "body": "St. Monica is the third-oldest parish in the Diocese of St. Augustine, tracing back to a small wooden church blessed in 1858. The brick church you see today was completed in 1899 and remains our parish home. Come see it and join us for the day.",
+        "icon": "\ud83c\udfdb\ufe0f",
+        "photo": {
+          "src": "/images/events/st-monica/old-church.jpg",
+          "alt": "Historic photo of St. Monica's original wooden church in Palatka, dedicated in 1858"
         }
       }
     ]

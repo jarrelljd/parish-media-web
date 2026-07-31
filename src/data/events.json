@@ -598,5 +598,74 @@
         }
       }
     }
+  },
+  {
+    "parishSlug": "st-monica",
+    "eventSlug": "bbq-bash",
+    "parishName": "St. Monica Catholic Church",
+    "eventName": "2026 BBQ Bash & Back-to-School Drive",
+    "subheading": "A BBQ lunch that helps local kids start the school year ready.",
+    "dateLabel": "Saturday, August 1, 2026",
+    "timeLabel": "11:00 AM - 2:00 PM",
+    "location": "St. Monica Catholic Church",
+    "address": "114 S. 4th St, Palatka, FL 32177",
+    "valueText": "Enjoy a delicious BBQ meal while helping local children start the school year with the supplies they need. Every plate served helps support our Catholic community.",
+    "detailsNote": "Plates include pulled pork, coleslaw, beans, and a roll.",
+    "highlights": [
+      {
+        "icon": "\ud83c\udf56",
+        "label": "Pulled Pork Plate \u2013 $12"
+      },
+      {
+        "icon": "\ud83c\udf92",
+        "label": "Bring School Supplies"
+      },
+      {
+        "icon": "\ud83c\udf9f\ufe0f",
+        "label": "50/50 & Free Prize Raffle"
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "title": "Don't Miss the BBQ Bash",
+      "buttonLabel": "Send Me a Reminder",
+      "introText": "Tap below and we'll email you a reminder before the BBQ Bash & Back-to-School Drive.",
+      "successMessage": "You're all set! Watch your inbox for a reminder before the big day.",
+      "collectPhone": false,
+      "reassuranceText": "$12 per plate"
+    },
+    "accent": {
+      "style": "gingham",
+      "color": "#8B2323"
+    },
+    "translations": {
+      "es": {
+        "eventName": "Fiesta BBQ y Colecta Escolar 2026",
+        "subheading": "Un almuerzo BBQ que ayuda a los ni\u00f1os a comenzar el a\u00f1o escolar.",
+        "dateLabel": "S\u00e1bado, 1 de agosto de 2026",
+        "timeLabel": "11:00 AM a 2:00 PM",
+        "location": "Iglesia Cat\u00f3lica de Santa M\u00f3nica",
+        "valueText": "Disfrute de una deliciosa comida BBQ mientras ayuda a los ni\u00f1os de la comunidad a comenzar el a\u00f1o escolar con los \u00fatiles que necesitan. Cada plato servido apoya a nuestra comunidad cat\u00f3lica.",
+        "detailsNote": "Los platos incluyen cerdo desmenuzado, ensalada de col, frijoles y pan.",
+        "highlights": [
+          {
+            "label": "Plato de Cerdo Desmenuzado \u2013 $12"
+          },
+          {
+            "label": "Traiga \u00datiles Escolares"
+          },
+          {
+            "label": "Rifa 50/50 y Premios Gratis"
+          }
+        ],
+        "cta": {
+          "title": "No se Pierda la Fiesta BBQ",
+          "buttonLabel": "Enviarme un Recordatorio",
+          "introText": "Toque abajo y le enviaremos un recordatorio antes de la Fiesta BBQ y Colecta Escolar.",
+          "successMessage": "\u00a1Listo! Revise su correo electr\u00f3nico para un recordatorio antes del gran d\u00eda.",
+          "reassuranceText": "$12 por plato"
+        }
+      }
+    }
   }
 ]

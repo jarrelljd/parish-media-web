@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" width="440" height="120" role="img" aria-label="St. Monica Catholic Church">
+  <!-- Cross mark -->
+  <g transform="translate(14, 14)">
+    <rect x="34" y="0" width="12" height="92" rx="2" fill="#C9A227"/>
+    <rect x="6" y="30" width="68" height="12" rx="2" fill="#C9A227"/>
+    <rect x="34" y="0" width="12" height="92" rx="2" fill="none" stroke="#1C2B4A" stroke-width="2"/>
+    <rect x="6" y="30" width="68" height="12" rx="2" fill="none" stroke="#1C2B4A" stroke-width="2"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(112, 0)">
+    <text x="0" y="56" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-weight="700" letter-spacing="1" fill="#1C2B4A">ST. MONICA</text>
+    <text x="2" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="4" fill="#C9A227">CATHOLIC CHURCH</text>
+  </g>
+</svg>

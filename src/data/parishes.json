@@ -39,6 +39,18 @@
     "hideNameInHeader": true
   },
   {
+    "slug": "st-monica",
+    "name": "St. Monica Catholic Church",
+    "colors": {
+      "primary": "#1C2B4A",
+      "secondary": "#C9A227",
+      "background": "#FAF8F4",
+      "text": "#33404F"
+    },
+    "logo": "/images/parishes/st-monica/logo.svg",
+    "nameEs": "Iglesia Cat\u00f3lica de Santa M\u00f3nica"
+  },
+  {
     "slug": "st-patrick",
     "name": "St. Patrick's Catholic Church",
     "colors": {

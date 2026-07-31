@@ -668,53 +668,52 @@
         "sections": [
           {
             "heading": "Una Parroquia Arraigada en Palatka Desde 1858",
-            "body": "Santa M\u00f3nica es la tercera parroquia m\u00e1s antigua de la Di\u00f3cesis de San Agust\u00edn, con ra\u00edces en una peque\u00f1a iglesia de madera bendecida en 1858. La iglesia de ladrillo que ve hoy se complet\u00f3 en 1899 y sigue siendo nuestro hogar parroquial \u2014 venga a conocerla y acomp\u00e1\u00f1enos ese d\u00eda."
-          },
-          {
-            "heading": "Compa\u00f1erismo Bajo los Robles",
-            "body": "Nuestra familia parroquial se re\u00fane con frecuencia \u2014 para Misa al aire libre, para comidas y para d\u00edas como este. Traiga a los ni\u00f1os, traiga una silla y conozca a sus compa\u00f1eros feligreses."
+            "body": "Santa M\u00f3nica es la tercera parroquia m\u00e1s antigua de la Di\u00f3cesis de San Agust\u00edn, con ra\u00edces en una peque\u00f1a iglesia de madera bendecida en 1858. La iglesia de ladrillo que ve hoy se complet\u00f3 en 1899 y sigue siendo nuestro hogar parroquial. Venga a conocerla y acomp\u00e1\u00f1enos ese d\u00eda."
           },
           {
             "heading": "Un Plato de BBQ por una Buena Causa",
-            "body": "Doce d\u00f3lares le dan un plato completo de cerdo desmenuzado, ensalada de col, frijoles y pan \u2014 y cada plato vendido beneficia la colecta escolar de Caridades Cat\u00f3licas para ni\u00f1os de la comunidad."
+            "body": "Doce d\u00f3lares le dan un plato completo de cerdo desmenuzado, ensalada de col, frijoles y pan, y cada plato vendido beneficia la colecta escolar de Caridades Cat\u00f3licas para ni\u00f1os de la comunidad."
           },
           {
             "heading": "Traiga \u00datiles Escolares, Traiga una Sonrisa",
-            "body": "Done \u00fatiles escolares nuevos mientras est\u00e9 aqu\u00ed \u2014 cuadernos, l\u00e1pices, mochilas, cualquier cosa de la lista de un maestro. Cada donaci\u00f3n va a Caridades Cat\u00f3licas, quienes las entregan directamente a los ni\u00f1os que las necesitan."
+            "body": "Done \u00fatiles escolares nuevos mientras est\u00e9 aqu\u00ed: cuadernos, l\u00e1pices, mochilas, cualquier cosa de la lista de un maestro. Cada donaci\u00f3n va a Caridades Cat\u00f3licas, quienes las entregan directamente a los ni\u00f1os que las necesitan."
           }
         ]
       }
     },
     "photos": [
       {
-        "src": "/images/events/st-monica/church-exterior.jpg",
+        "src": "/images/events/st-monica/church-hero.jpg",
         "alt": "St. Monica Catholic Church's brick sanctuary and steeple in Palatka, FL"
       }
     ],
     "sections": [
       {
         "heading": "A Parish Rooted in Palatka Since 1858",
-        "body": "St. Monica is the third-oldest parish in the Diocese of St. Augustine, tracing back to a small wooden church blessed in 1858. The brick church you see today was completed in 1899 and remains our parish home \u2014 come see it and join us for the day.",
-        "icon": "\ud83c\udfdb\ufe0f"
+        "body": "St. Monica is the third-oldest parish in the Diocese of St. Augustine, tracing back to a small wooden church blessed in 1858. The brick church you see today was completed in 1899 and remains our parish home. Come see it and join us for the day.",
+        "icon": "\ud83c\udfdb\ufe0f",
+        "photo": {
+          "src": "/images/events/st-monica/old-church.jpg",
+          "alt": "Historic photo of St. Monica's original wooden church in Palatka, dedicated in 1858"
+        }
       },
       {
-        "heading": "Fellowship Under the Oaks",
-        "body": "Our parish family gathers often \u2014 for Mass outdoors, for meals, and for days just like this one. Bring the kids, bring a lawn chair, and get to know your fellow parishioners.",
-        "icon": "\ud83c\udf33",
+        "heading": "A BBQ Plate for a Good Cause",
+        "body": "Twelve dollars gets you a full plate of pulled pork, coleslaw, beans, and a roll, and every plate sold benefits Catholic Charities' back-to-school drive for local kids.",
+        "icon": "\ud83c\udf56",
         "photo": {
           "src": "/images/events/st-monica/community-gathering.jpg",
           "alt": "Parishioners gathered for an outdoor Mass at St. Monica"
         }
       },
       {
-        "heading": "A BBQ Plate for a Good Cause",
-        "body": "Twelve dollars gets you a full plate of pulled pork, coleslaw, beans, and a roll \u2014 and every plate sold benefits Catholic Charities' back-to-school drive for local kids.",
-        "icon": "\ud83c\udf56"
-      },
-      {
         "heading": "Bring School Supplies, Bring a Smile",
-        "body": "Drop off new school supplies while you're here \u2014 notebooks, pencils, backpacks, anything on a teacher's list. Every donation goes to Catholic Charities, who get them straight to kids who need them.",
-        "icon": "\ud83c\udf92"
+        "body": "Drop off new school supplies while you're here: notebooks, pencils, backpacks, anything on a teacher's list. Every donation goes to Catholic Charities, who get them straight to kids who need them.",
+        "icon": "\ud83c\udf92",
+        "photo": {
+          "src": "/images/events/st-monica/communion.jpg",
+          "alt": "A young parishioner receiving First Communion at St. Monica"
+        }
       }
     ]
   }

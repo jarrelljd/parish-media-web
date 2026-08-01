@@ -1,11 +1,86 @@
 import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
-import founderPhoto from "../../public/images/founder/joe-founder-photo.png";
+import Reveal from "@/components/Reveal";
+import { clients } from "@/data/clients";
+
+function getInitials(name: string) {
+  const words = name.replace(/^Fr\.\s*/, "").split(" ").filter(Boolean);
+  return words
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
+
+function ClientBadge({ client }: { client: (typeof clients)[number] }) {
+  return (
+    <div className="flex w-40 shrink-0 flex-col items-center text-center">
+      <div className="h-14 w-14 overflow-hidden rounded-full border border-navy/10 bg-navy/5">
+        {client.photo ? (
+          <Image
+            src={client.photo}
+            alt={client.name}
+            width={56}
+            height={56}
+            className="h-full w-full object-cover"
+            style={{
+              objectPosition: client.photoPosition ?? "50% 50%",
+              transform: client.photoZoom
+                ? `scale(${client.photoZoom})`
+                : undefined,
+            }}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center font-serif text-sm font-semibold text-navy/40">
+            {getInitials(client.name)}
+          </div>
+        )}
+      </div>
+      <p className="mt-2 text-xs font-semibold text-navy">{client.name}</p>
+      {client.org && (
+        <p className="mt-0.5 text-xs text-navy/60">{client.org}</p>
+      )}
+      {client.diocese && (
+        <p className="mt-0.5 text-[11px] uppercase tracking-wide text-navy/40">
+          {client.diocese}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   return (
     <>
+      <style>{`
+        @keyframes trusted-by-scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .trusted-by-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes flow-pulse {
+          0%, 100% { opacity: 0.55; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.18); }
+        }
+        .flow-pulse {
+          animation: flow-pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .spin-slow {
+          animation: spin-slow 7s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .flow-pulse, .spin-slow {
+            animation: none;
+          }
+        }
+      `}</style>
       <Nav />
 
       <main className="flex flex-1 flex-col">
@@ -15,19 +90,26 @@ export default function Home() {
         >
           <span className="h-1 w-16 rounded-full bg-gold" />
           <h1 className="mt-8 font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl md:text-6xl">
-            Grow Your Parish&rsquo;s Reach Through Social Media and Targeted
-            Ads
+            Do You Want More Young Families at Your Parish?
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-navy/70 sm:text-xl">
-            We turn your homilies and events into content that reaches new
-            families online — without filling up the pastor&rsquo;s calendar.
+            Learn how we&rsquo;re helping Catholic churches get 30&ndash;50
+            new people involved in parish life in just 90 days.
           </p>
-          <Link
-            href="/contact"
-            className="mt-10 rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
-          >
-            Get Started
-          </Link>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <Link
+              href="/free-guide"
+              className="rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
+            >
+              Get My Free Guide
+            </Link>
+            <Link
+              href="/contact"
+              className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5"
+            >
+              Book a Call
+            </Link>
+          </div>
           <Link
             href="/services#for-vocation-offices"
             className="mt-6 text-sm font-medium text-navy/60 underline decoration-gold decoration-2 underline-offset-4 transition-colors hover:text-navy"
@@ -36,104 +118,391 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* Teasers: Services / Testimonials / About */}
+        {/* Trusted By */}
+        <section className="px-6 pb-20 sm:pb-24">
+          <div className="mx-auto max-w-5xl">
+            <p className="text-center text-xs font-semibold uppercase tracking-widest text-navy/50">
+              Trusted By
+            </p>
+            <div className="mt-8 overflow-hidden">
+              <div className="trusted-by-track flex w-max animate-[trusted-by-scroll_55s_linear_infinite] items-start gap-x-10 motion-reduce:animate-none">
+                {[...clients, ...clients].map((client, i) => (
+                  <ClientBadge key={`${client.name}-${i}`} client={client} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How Our Parish Growth System Works */}
         <section className="px-6 pb-24 sm:pb-32">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3">
-            {/* Services teaser */}
-            <div className="flex flex-col rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                How It Works
-              </span>
-              <h2 className="mt-3 font-serif text-xl font-semibold text-navy">
-                Two Ways We Grow Your Reach
-              </h2>
-              <p className="mt-3 flex-1 text-navy/80">
-                We turn your homilies and events into content people share,
-                and run targeted Meta ads that bring in new families and
-                volunteers — with one clear report each month tracking it
-                all.
-              </p>
-              <div className="mt-6 flex gap-4 border-t border-navy/10 pt-6">
-                <div>
-                  <p className="font-serif text-2xl font-semibold text-navy">
-                    0 → 941
+          <div className="mx-auto max-w-5xl">
+            <Reveal>
+              <div className="mx-auto max-w-2xl text-center">
+                <h2 className="font-serif text-3xl font-semibold text-navy sm:text-4xl">
+                  How Our Parish Growth System Works
+                </h2>
+                <p className="mt-4 text-lg text-navy/70">
+                  We build a measurable communication system around
+                  Facebook and Instagram to engage new people at your
+                  parish.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delayMs={80}>
+              <div className="relative mx-auto mt-12 h-64 w-64 sm:h-72 sm:w-72">
+                <svg viewBox="0 0 200 200" className="h-full w-full">
+                  <g transform="rotate(-90 100 100)">
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#1b2a4a"
+                      strokeWidth="26"
+                      strokeDasharray="152 350.66"
+                      strokeDashoffset="-335.1"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#c9a227"
+                      strokeWidth="26"
+                      strokeDasharray="152 350.66"
+                      strokeDashoffset="0"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#8a6d2f"
+                      strokeWidth="26"
+                      strokeDasharray="152 350.66"
+                      strokeDashoffset="-167.55"
+                    />
+                  </g>
+                  <g>
+                    <circle cx="30.7" cy="60" r="17" fill="white" />
+                    <text
+                      x="30.7"
+                      y="61"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize="18"
+                    >
+                      🎥
+                    </text>
+                  </g>
+                  <g>
+                    <circle cx="169.3" cy="60" r="17" fill="white" />
+                    <text
+                      x="169.3"
+                      y="61"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize="18"
+                    >
+                      🎯
+                    </text>
+                  </g>
+                  <g>
+                    <circle cx="100" cy="180" r="17" fill="white" />
+                    <text
+                      x="100"
+                      y="181"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize="18"
+                    >
+                      📊
+                    </text>
+                  </g>
+                </svg>
+                <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span
+                    className="spin-slow text-xl text-gold"
+                    aria-hidden="true"
+                  >
+                    ↻
+                  </span>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-navy/50">
+                    Repeats
                   </p>
-                  <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-navy/50">
-                    Followers in 4 Months
-                  </p>
-                </div>
-                <div>
-                  <p className="font-serif text-2xl font-semibold text-navy">
-                    $2&ndash;3
-                  </p>
-                  <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-navy/50">
-                    Per Lead
+                  <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
+                    Every Month
                   </p>
                 </div>
               </div>
+            </Reveal>
+
+            <div className="mx-auto mt-10 grid max-w-4xl gap-8 sm:grid-cols-3">
+              <Reveal delayMs={80}>
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center justify-center gap-2 sm:justify-start">
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full bg-navy"
+                      aria-hidden="true"
+                    />
+                    <h3 className="font-serif text-lg font-semibold text-navy">
+                      1. Weekly Content
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-navy/70">
+                    Weekly homily clips and parish-life posts on
+                    Facebook and Instagram help people get to know,
+                    like, and trust your parish, with no extra work
+                    added to your staff&rsquo;s plate.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delayMs={160}>
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center justify-center gap-2 sm:justify-start">
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full bg-gold"
+                      aria-hidden="true"
+                    />
+                    <h3 className="font-serif text-lg font-semibold text-navy">
+                      2. Invitations
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-navy/70">
+                    Targeted local campaigns invite people to a
+                    specific next step, an event, a young adult night,
+                    or simply a warm invitation to come back to Mass,
+                    so they can raise their hand and say they&rsquo;re
+                    interested.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delayMs={240}>
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center justify-center gap-2 sm:justify-start">
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: "#8a6d2f" }}
+                      aria-hidden="true"
+                    />
+                    <h3 className="font-serif text-lg font-semibold text-navy">
+                      3. Tracking &amp; Simple Reports
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-navy/70">
+                    We track every response so you see real outcomes,
+                    like how many new young adults expressed interest
+                    in coming to Mass in the last 90 days, and use
+                    that data to improve what comes next.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+
+            <div className="mt-10 text-center">
               <Link
                 href="/services"
-                className="mt-6 text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
+                className="inline-block text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
               >
-                Explore Services →
+                See how it works in detail →
               </Link>
             </div>
+          </div>
+        </section>
 
-            {/* Testimonials teaser */}
-            <div className="flex flex-col rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                Testimonials
-              </span>
-              <h2 className="mt-3 font-serif text-xl font-semibold text-navy">
-                Real Parishes, Real Growth
+        {/* The Real Difference */}
+        <section className="px-6 pb-24 sm:pb-32">
+          <div className="mx-auto max-w-4xl rounded-2xl bg-navy/5 p-8 sm:p-12">
+            <Reveal>
+              <h2 className="mx-auto max-w-md text-balance text-center font-serif text-3xl font-semibold italic leading-tight text-navy sm:max-w-lg sm:text-4xl">
+                &ldquo;We Already Have Someone for Social Media.&rdquo;
               </h2>
-              <p className="mt-3 flex-1 font-serif text-base italic leading-relaxed text-navy/80">
-                &ldquo;Joe helped us build an Instagram page from zero to 300
-                followers, redesigned our bulletin, and trained our staff to
-                use Canva and Meta ads so we can do this on our own.&rdquo;
+              <p className="mx-auto mt-6 max-w-xl text-center text-lg text-navy/70">
+                That&rsquo;s great. Most parishes do. But there&rsquo;s a
+                difference between having someone who posts and having a
+                system that reliably brings new people to Mass.
               </p>
-              <p className="mt-3 text-sm font-medium text-navy/60">
-                Fr. Nicholas Fleming, Saints John and James Parish
-              </p>
-              <p className="mt-6 border-t border-navy/10 pt-6 text-sm text-navy/70">
-                Trusted by 9+ parishes, dioceses, and vocation offices.
-              </p>
-              <Link
-                href="/testimonials"
-                className="mt-6 text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
-              >
-                Read Testimonials →
-              </Link>
+            </Reveal>
+
+            {/* Comparison: doing it alone vs. Parish Media Company */}
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
+              <Reveal delayMs={80}>
+                <div className="h-full rounded-2xl border border-rose-200/70 bg-rose-50/60 p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100 text-xl"
+                      aria-hidden="true"
+                    >
+                      🤷
+                    </span>
+                    <h3 className="font-serif text-xl font-semibold text-navy">
+                      A Volunteer or Staff Member
+                    </h3>
+                  </div>
+                  <ul className="mt-5 space-y-3">
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-rose-500"
+                        aria-hidden="true"
+                      >
+                        ✕
+                      </span>
+                      <span>Posts when they remember</span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-rose-500"
+                        aria-hidden="true"
+                      >
+                        ✕
+                      </span>
+                      <span>No real outcomes tracked</span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-rose-500"
+                        aria-hidden="true"
+                      >
+                        ✕
+                      </span>
+                      <span>
+                        Not using social media&rsquo;s full potential
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </Reveal>
+
+              <Reveal delayMs={180}>
+                <div className="h-full rounded-2xl border border-gold/40 bg-gold/5 p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold/20 text-xl"
+                      aria-hidden="true"
+                    >
+                      🎯
+                    </span>
+                    <h3 className="font-serif text-xl font-semibold text-navy">
+                      Parish Media Company
+                    </h3>
+                  </div>
+                  <ul className="mt-5 space-y-3">
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-emerald-600"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>
+                        Focused exclusively on outcomes: new Mass
+                        attendees, event registrants, and more
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-emerald-600"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>Real data from work across 8 dioceses</span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-emerald-600"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>
+                        Experts in social media systems built for
+                        Catholic parishes
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </Reveal>
             </div>
 
-            {/* About teaser */}
-            <div className="flex flex-col rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                About
-              </span>
-              <div className="mt-3 flex items-center gap-3">
-                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                  <Image
-                    src={founderPhoto}
-                    alt="Joe Jarrell, founder of Parish Media Company"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <h2 className="font-serif text-xl font-semibold text-navy">
-                  Joe Jarrell
-                </h2>
-              </div>
-              <p className="mt-4 flex-1 text-navy/80">
-                Joe spent three years building an online following and
-                running a fitness program for Catholic men — working with
-                over 200 men, including 20 priests — before founding Parish
-                Media Company in early 2026.
+            <Reveal delayMs={120}>
+              <p className="mx-auto mt-10 max-w-xl text-center text-navy/70">
+                It&rsquo;s not their fault. Their job is to post, not to
+                design campaigns, funnels, and tracking from first click
+                to the pew. Meanwhile, young adults are spending hours a
+                day on social media. If that channel isn&rsquo;t tracked,
+                it quietly slides to the back burner while your
+                parish keeps aging.
               </p>
+            </Reveal>
+
+            <Reveal delayMs={140}>
+              <p className="mx-auto mt-6 max-w-xl text-center text-navy/70">
+                So, our work is not just &ldquo;more posting.&rdquo; We
+                build a measurable communication system around Facebook
+                and Instagram so that you can say things like:
+              </p>
+            </Reveal>
+
+            {/* The report you could send */}
+            <Reveal delayMs={80}>
+              <div className="mx-auto mt-12 max-w-xl rounded-2xl border border-navy/10 bg-white p-6 text-center shadow-sm sm:p-8">
+                <span className="text-2xl" aria-hidden="true">
+                  📈
+                </span>
+                <p className="mt-3 font-serif text-lg italic text-navy">
+                  &ldquo;We had 20 brand new young adults express interest
+                  in coming to Mass in the last 90 days, and here is where
+                  they came from.&rdquo;
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delayMs={120}>
+              <p className="mx-auto mt-8 max-w-xl text-center text-navy/70">
+                And we back it with a simple promise:
+              </p>
+            </Reveal>
+
+            {/* Our promise, bundled with the closing statement */}
+            <Reveal delayMs={160}>
+              <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-gold/40 bg-gold/5 p-8 text-center sm:p-10">
+                <span
+                  className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/20 text-2xl"
+                  aria-hidden="true"
+                >
+                  🤝
+                </span>
+                <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-gold">
+                  Our Promise
+                </p>
+                <p className="mt-3 text-navy/80">
+                  If we don&rsquo;t hit the agreed-upon goal in the first
+                  90 days (for example, 20 new young adults who express
+                  interest in coming to Mass), we keep working with you
+                  at no additional fee until we do.
+                </p>
+
+                <div className="mx-auto mt-6 h-px w-16 bg-gold/30" />
+
+                <p className="mt-6 font-serif text-xl font-semibold text-navy">
+                  Your existing staff cannot reasonably make that claim.
+                  We can, because this is all we do, for Catholic
+                  parishes like yours.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-8 text-center">
               <Link
-                href="/about"
-                className="mt-6 text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
+                href="/services"
+                className="inline-block text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
               >
-                Meet Joe →
+                See how we track it →
               </Link>
             </div>
           </div>
@@ -143,18 +512,25 @@ export default function Home() {
         <section className="bg-navy px-6 py-20 text-center sm:py-24">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h2 className="mx-auto mt-8 max-w-2xl font-serif text-3xl font-semibold text-offwhite sm:text-4xl">
-            Ready to Grow Your Parish&rsquo;s Reach?
+            Ready to Get More Young Adults at Your Parish?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-offwhite/70">
-            Tell us a bit about your parish or office, and we&rsquo;ll follow
-            up.
+            Grab your free guide now, or book a free consultation.
           </p>
-          <Link
-            href="/contact"
-            className="mt-10 inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90"
-          >
-            Get Started
-          </Link>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/free-guide"
+              className="inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90"
+            >
+              Get My Free Guide
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10"
+            >
+              Book a Free Consultation
+            </Link>
+          </div>
         </section>
       </main>
     </>

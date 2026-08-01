@@ -37,7 +37,7 @@ export default function Nav() {
             href="/contact"
             className="rounded-full bg-navy px-5 py-2 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90"
           >
-            Get Started
+            Book a Call
           </Link>
         </nav>
 
@@ -83,7 +83,7 @@ export default function Nav() {
             onClick={() => setOpen(false)}
             className="mt-2 rounded-full bg-navy px-5 py-2 text-center text-sm font-medium text-offwhite"
           >
-            Get Started
+            Book a Call
           </Link>
         </nav>
       )}

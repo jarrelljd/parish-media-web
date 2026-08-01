@@ -88,3 +88,67 @@ export async function sendLeadConversionEvent({
     console.error("Failed to reach Meta Conversions API:", err);
   }
 }
+
+// Generic (non-event-page) Lead event — for lead-gen forms outside the
+// parish/event RSVP flow (e.g. the /free-guide ebook form), where there's no
+// parishSlug/eventSlug to build a source URL from.
+export async function sendGenericLeadEvent({
+  eventId,
+  contentName,
+  sourcePath,
+  email,
+  userAgent,
+  ipAddress,
+}: {
+  eventId: string;
+  contentName: string;
+  sourcePath: string;
+  email?: string;
+  userAgent?: string | null;
+  ipAddress?: string | null;
+}): Promise<void> {
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const accessToken = process.env.META_CONVERSIONS_API_TOKEN;
+  if (!pixelId || !accessToken) {
+    return;
+  }
+
+  const userData: Record<string, unknown> = {};
+  if (email) userData.em = [hashForMeta(email)];
+  if (userAgent) userData.client_user_agent = userAgent;
+  if (ipAddress) userData.client_ip_address = ipAddress;
+
+  const body = {
+    data: [
+      {
+        event_name: "Lead",
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: eventId,
+        action_source: "website",
+        event_source_url: `${SITE_URL}${sourcePath}`,
+        user_data: userData,
+        custom_data: { content_name: contentName },
+      },
+    ],
+  };
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/${GRAPH_API_VERSION}/${pixelId}/events?access_token=${accessToken}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      },
+    );
+    if (!response.ok) {
+      console.error(
+        "Meta Conversions API error:",
+        response.status,
+        await response.text(),
+      );
+    }
+  } catch (err) {
+    console.error("Failed to reach Meta Conversions API:", err);
+  }
+}

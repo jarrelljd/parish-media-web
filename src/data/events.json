@@ -379,7 +379,8 @@
           "successMessage": "\u00a1Todo listo! Revisen su correo electr\u00f3nico para la invitaci\u00f3n al calendario y un recordatorio."
         }
       }
-    }
+    },
+    "webhookEnvVar": "ZAPIER_WEBHOOK_ST_PATRICK_PICNIC"
   },
   {
     "parishSlug": "st-joseph",

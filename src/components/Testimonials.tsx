@@ -2,45 +2,8 @@ import Image from "next/image";
 import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
 import stBrendansBulletin from "../../public/images/bulletins/st-brendans-st-marys/before-after.png";
 import stJosephBulletin from "../../public/images/bulletins/st-joseph-los-banos/before-after.png";
-
-const clients = [
-  {
-    name: "Fr. Nicholas Fleming",
-    org: "Saints John and James Parish, West Warwick, RI",
-  },
-  {
-    name: "Fr. Jared DeLeo",
-    org: "St. Monica's Catholic Church, Palatka, FL",
-  },
-  {
-    name: "Fr. Dalton Rodgers",
-    org: "St. Joseph's Catholic Church, Los Banos, CA",
-  },
-  {
-    name: "Fr. Robert Hale",
-    org: "St. Rose Family of Parishes, Springfield, OH",
-  },
-  {
-    name: "Fr. Dave Aufiero",
-    org: "St. Patrick's Catholic Church, South Hadley, MA",
-  },
-  {
-    name: "Fr. William Bond",
-    org: "Our Lady of the Saints Family of Parishes, Omaha, NE",
-  },
-  {
-    name: "Midwest Province Vocation Office",
-    org: "Capuchin Franciscans",
-  },
-  {
-    name: "Diocese of Reno",
-    org: "",
-  },
-  {
-    name: "UW Oshkosh Newman Center",
-    org: "",
-  },
-];
+import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
+import { clients } from "@/data/clients";
 
 export default function Testimonials() {
   return (
@@ -56,7 +19,7 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Lead testimonial */}
+        {/* Lead video testimonial */}
         <div className="mx-auto mt-16 max-w-3xl rounded-2xl border border-navy/10 bg-white p-6 shadow-sm sm:p-10">
           <div className="relative aspect-video overflow-hidden rounded-xl bg-navy/5">
             <iframe
@@ -86,73 +49,156 @@ export default function Testimonials() {
             </p>
           </blockquote>
           <p className="mt-4 text-sm font-medium text-navy/60">
-            Fr. Nicholas Fleming — Saints John and James Parish, West
+            Fr. Nicholas Fleming, Saints John and James Parish, West
             Warwick, RI
           </p>
+        </div>
 
-          <div className="mt-8 overflow-hidden rounded-lg border border-navy/10">
-            <Image
-              src={saintsJohnJamesBulletin}
-              alt="Saints John and James Parish bulletin, before and after"
-              className="h-auto w-full"
-            />
+        {/* Diocese & vocation office results */}
+        <div className="mt-20 rounded-2xl bg-navy/5 p-8 sm:p-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="font-serif text-2xl font-semibold text-navy">
+              Diocese &amp; Vocation Office Results
+            </h3>
+            <p className="mt-3 text-navy/70">
+              Real outcomes at an institutional scale, not just individual
+              parishes.
+            </p>
           </div>
-          <p className="mt-3 text-center text-xs text-navy/50">
-            Saints John and James Parish bulletin — before and after
-          </p>
+
+          <div className="mt-10 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              Diocese of Reno
+            </span>
+            <blockquote className="mt-4 max-w-2xl">
+              <p className="font-serif text-xl italic leading-relaxed text-navy">
+                &ldquo;Joe works with paid advertisements and social media to
+                highlight the great works of your ministries, and inspire
+                people to dig deeper.&rdquo;
+              </p>
+            </blockquote>
+            <p className="mt-4 text-sm font-medium text-navy/60">
+              Zach Werner, Head of Communications, Diocese of Reno
+            </p>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              Midwest Province Vocation Office, Capuchin Franciscans
+            </span>
+            <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:items-center">
+              <div>
+                <p className="font-serif text-4xl font-semibold text-navy">
+                  140+
+                </p>
+                <p className="text-sm font-medium uppercase tracking-wide text-navy/60">
+                  Inquiries in 60 Days
+                </p>
+                <p className="mt-4 text-navy/80">
+                  For $380 in ad spend, 140+ Catholic men reached out about a
+                  conversation on religious life. Ten were qualified and went
+                  on to meet in person or on a Zoom call with Fr. Nathan
+                  Linton, Vocations Director.
+                </p>
+              </div>
+              <div className="overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={capuchinsPhoto}
+                  alt="Capuchin friars of the Midwest Province of St. Joseph"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Client roster */}
         <div className="mt-20">
           <h3 className="text-center font-serif text-xl font-semibold text-navy">
-            Trusted by Parishes, Dioceses, and Vocation Offices
+            Also Trusted By
           </h3>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {clients.map((client) => (
-              <div
-                key={client.name}
-                className="rounded-xl border border-navy/10 bg-white p-5"
-              >
-                <p className="font-medium text-navy">{client.name}</p>
-                {client.org && (
-                  <p className="mt-1 text-sm text-navy/60">{client.org}</p>
-                )}
-              </div>
-            ))}
+            {clients
+              .filter(
+                (client) =>
+                  client.name !== "Bishop Daniel Mueggenborg" &&
+                  client.name !== "Fr. Nathan Linton, Vocations Director"
+              )
+              .map((client) => (
+                <div
+                  key={client.name}
+                  className="rounded-xl border border-navy/10 bg-white p-5"
+                >
+                  <p className="font-medium text-navy">{client.name}</p>
+                  {client.org && (
+                    <p className="mt-1 text-sm text-navy/60">{client.org}</p>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
 
-        {/* One-off project + additional bulletin proof */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
-          <div className="rounded-xl border border-navy/10 bg-white p-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
-              One-Off Project
+        {/* Bulletin & design work */}
+        <div className="mt-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="font-serif text-2xl font-semibold text-navy">
+              Bulletin &amp; Design Work
+            </h3>
+            <p className="mt-3 text-navy/70">
+              A different kind of proof: real before-and-afters from
+              redesigned parish bulletins.
             </p>
-            <p className="mt-2 text-navy/80">
-              Bulletin redesign for St. Brendan&rsquo;s &amp; St. Mary&rsquo;s
-              Parish, for Fr. Ronald Masilang.
-            </p>
-            <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-              <Image
-                src={stBrendansBulletin}
-                alt="St. Brendan's & St. Mary's Parish bulletin, before and after"
-                className="h-auto w-full"
-              />
-            </div>
           </div>
-          <div className="rounded-xl border border-navy/10 bg-white p-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
-              More Bulletin Work
-            </p>
-            <p className="mt-2 text-navy/80">
-              St. Joseph&rsquo;s Catholic Church, Los Banos, CA.
-            </p>
-            <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-              <Image
-                src={stJosephBulletin}
-                alt="St. Joseph's Catholic Church bulletin, before and after"
-                className="h-auto w-full"
-              />
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
+                Saints John and James Parish
+              </p>
+              <p className="mt-2 text-navy/80">
+                West Warwick, RI. Redesigned alongside the Instagram and ads
+                work above.
+              </p>
+              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={saintsJohnJamesBulletin}
+                  alt="Saints John and James Parish bulletin, before and after"
+                  className="h-auto w-full"
+                />
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
+                St. Brendan&rsquo;s &amp; St. Mary&rsquo;s Parish
+              </p>
+              <p className="mt-2 text-navy/80">
+                One-off bulletin redesign for Fr. Ronald Masilang.
+              </p>
+              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={stBrendansBulletin}
+                  alt="St. Brendan's & St. Mary's Parish bulletin, before and after"
+                  className="h-auto w-full"
+                />
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
+                St. Joseph&rsquo;s Catholic Church
+              </p>
+              <p className="mt-2 text-navy/80">
+                Los Banos, CA. Redesigned alongside ongoing social and ads
+                work.
+              </p>
+              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={stJosephBulletin}
+                  alt="St. Joseph's Catholic Church bulletin, before and after"
+                  className="h-auto w-full"
+                />
+              </div>
             </div>
           </div>
         </div>

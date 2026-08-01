@@ -1,9 +1,14 @@
 "use server";
 
 import { randomUUID } from "crypto";
+import { readFile } from "fs/promises";
+import path from "path";
 import { headers } from "next/headers";
 import { Resend } from "resend";
-import { sendLeadConversionEvent } from "@/lib/metaConversionsApi";
+import {
+  sendLeadConversionEvent,
+  sendGenericLeadEvent,
+} from "@/lib/metaConversionsApi";
 
 // TODO: swap to joe@parishmediacompany.com once Google Workspace is live.
 const NOTIFY_EMAIL = "joejarrell@chapellaunch.com";
@@ -149,4 +154,104 @@ export async function submitEventRSVP(
   }
 
   return { status: "success", eventId };
+}
+
+export type EbookRequestState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+// The PDF Joe provides gets placed here — the ebook filename is fixed since
+// there's only ever one guide to send. See src/components/FreeGuideForm.tsx
+// for the matching public download link.
+const EBOOK_PDF_PATH = path.join(
+  process.cwd(),
+  "public",
+  "downloads",
+  "social-media-for-catholic-churches.pdf",
+);
+const EBOOK_FILENAME = "Social Media for Catholic Churches.pdf";
+
+export async function submitEbookRequest(
+  _prevState: EbookRequestState,
+  formData: FormData,
+): Promise<EbookRequestState> {
+  const name = String(formData.get("name") ?? "");
+  const email = String(formData.get("email") ?? "");
+  const role = String(formData.get("role") ?? "");
+
+  let pdfBuffer: Buffer;
+  try {
+    pdfBuffer = await readFile(EBOOK_PDF_PATH);
+  } catch (err) {
+    console.error("Failed to read ebook PDF:", err);
+    return {
+      status: "error",
+      message:
+        "Something went wrong sending your guide. Please email joe@parishmediacompany.com directly.",
+    };
+  }
+
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const { error } = await resend.emails.send({
+      from: "Parish Media Company <onboarding@resend.dev>",
+      to: email,
+      replyTo: NOTIFY_EMAIL,
+      subject: "Your Free Copy: Social Media for Catholic Churches",
+      text: `Hi ${name},\n\nHere's your free copy of Social Media for Catholic Churches. If you'd like to talk about how we could do this for your parish, book a time here: https://calendly.com/parishmedia/consult\n\n— Joe`,
+      attachments: [
+        {
+          filename: EBOOK_FILENAME,
+          content: pdfBuffer,
+        },
+      ],
+    });
+
+    if (error) {
+      console.error("Resend error (ebook send):", error);
+      return {
+        status: "error",
+        message:
+          "Something went wrong sending your guide. Please email joe@parishmediacompany.com directly.",
+      };
+    }
+
+    // Best-effort heads-up to Joe — these are pre-qualified leads (they
+    // self-identified their role), worth surfacing right away. Never blocks
+    // the visitor's success response.
+    resend.emails
+      .send({
+        from: "Parish Media Company <onboarding@resend.dev>",
+        to: NOTIFY_EMAIL,
+        replyTo: email,
+        subject: `New free guide request from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\nRole: ${role}`,
+      })
+      .catch((err) => console.error("Failed to send ebook lead notification:", err));
+  } catch (err) {
+    console.error("Failed to send ebook email:", err);
+    return {
+      status: "error",
+      message:
+        "Something went wrong sending your guide. Please email joe@parishmediacompany.com directly.",
+    };
+  }
+
+  try {
+    const headersList = await headers();
+    await sendGenericLeadEvent({
+      eventId: randomUUID(),
+      contentName: "Free Guide Request",
+      sourcePath: "/free-guide",
+      email,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (ebook):", err);
+  }
+
+  return { status: "success" };
 }

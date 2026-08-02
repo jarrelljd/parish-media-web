@@ -1,10 +1,7 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
-
-const CALENDLY_URL = "https://calendly.com/parishmedia/consult";
-const PDF_DOWNLOAD_URL = "/downloads/social-media-for-catholic-churches.pdf";
 
 const initialState: EbookRequestState = { status: "idle" };
 
@@ -13,148 +10,195 @@ export default function FreeGuideForm() {
     submitEbookRequest,
     initialState,
   );
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [role, setRole] = useState("");
+  const showMore = name.trim() !== "" && email.trim() !== "" && confirmed;
+  const showOtherExplain = role === "Other";
 
   useEffect(() => {
     if (state.status === "success") {
       const timer = setTimeout(() => {
-        window.location.href = CALENDLY_URL;
+        window.location.href = `/free-guide/book-a-call?role=${encodeURIComponent(
+          role,
+        )}`;
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [state.status]);
+  }, [state.status, role]);
+
+  if (state.status === "success") {
+    return (
+      <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
+        <p className="font-serif text-xl font-semibold text-navy">
+          Thank you!
+        </p>
+        <p className="mt-3 text-navy/70">
+          Your copy is on its way to your inbox. Taking you to book a quick
+          call now...
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <section className="px-6 py-24 sm:py-32">
-      <div className="mx-auto max-w-xl">
-        <div className="text-center">
-          <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h1 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Get the Free Guide
-          </h1>
-          <p className="mt-4 text-lg text-navy/70">
-            A free copy of <em>Social Media for Catholic Churches</em> —
-            Joe&rsquo;s field guide for parish teams. Tell us about your role
-            and we&rsquo;ll send it your way.
-          </p>
-        </div>
+    <form
+      action={formAction}
+      className="space-y-5 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm"
+    >
+      <div>
+        <p className="font-serif text-xl font-semibold text-navy">
+          Get Your Free Copy
+        </p>
+        <p className="mt-1 text-sm text-navy/60">
+          Tell us about your role and we&rsquo;ll send it your way.
+        </p>
+      </div>
 
-        {state.status === "success" ? (
-          <div className="mt-10 rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
-            <p className="font-serif text-xl font-semibold text-navy">
-              Thank you!
-            </p>
-            <p className="mt-3 text-navy/70">
-              Your copy is on its way to your inbox. Taking you to our
-              booking page now...
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <a
-                href={PDF_DOWNLOAD_URL}
-                download
-                className="rounded-full border border-navy px-8 py-3 text-sm font-medium text-navy transition-colors hover:bg-navy/5"
+      {state.status === "error" && (
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {state.message}
+        </div>
+      )}
+
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-navy">
+          Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-navy"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+        />
+      </div>
+
+      <div className="flex items-start gap-3">
+        <input
+          id="confirmEligible"
+          type="checkbox"
+          required
+          checked={confirmed}
+          onChange={(e) => setConfirmed(e.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 rounded border-navy/30 text-navy focus:ring-navy"
+        />
+        <label htmlFor="confirmEligible" className="text-sm text-navy/80">
+          I confirm I work for a parish, diocese, or religious order.
+        </label>
+      </div>
+
+      <div
+        className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
+          showMore ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0 space-y-5">
+          <div>
+            <label
+              htmlFor="organization"
+              className="block text-sm font-medium text-navy"
+            >
+              Parish, Diocese, or Religious Order
+            </label>
+            <input
+              id="organization"
+              name="organization"
+              type="text"
+              required={showMore}
+              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-navy"
+            >
+              Your Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              required={showMore}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+            >
+              <option value="" disabled>
+                Select one...
+              </option>
+              <option value="Priest">Priest</option>
+              <option value="Office Staff">Office Staff</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div
+            className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
+              showOtherExplain
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="min-h-0">
+              <label
+                htmlFor="roleOther"
+                className="block text-sm font-medium text-navy"
               >
-                Download Now
-              </a>
-              <a
-                href={CALENDLY_URL}
-                className="rounded-full bg-navy px-8 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90"
-              >
-                Book a Time Now
-              </a>
+                Tell us your role
+              </label>
+              <input
+                id="roleOther"
+                name="roleOther"
+                type="text"
+                required={showOtherExplain}
+                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+              />
             </div>
           </div>
-        ) : (
-          <form
-            action={formAction}
-            className="mt-10 space-y-5 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm"
-          >
-            {state.status === "error" && (
-              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-                {state.message}
-              </div>
-            )}
-
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-navy"
-              >
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-navy"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="role"
-                className="block text-sm font-medium text-navy"
-              >
-                Your Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                required
-                defaultValue=""
-                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              >
-                <option value="" disabled>
-                  Select one...
-                </option>
-                <option value="Pastor/Priest">Pastor / Priest</option>
-                <option value="Parish Staff">Parish Staff</option>
-                <option value="Vocation Director">Vocation Director</option>
-                <option value="Diocesan Staff">Diocesan Staff</option>
-                <option value="Religious Order Member">
-                  Religious Order Member
-                </option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              disabled={pending}
-              className="w-full rounded-full bg-navy px-8 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90 disabled:opacity-60"
-            >
-              {pending ? "Sending..." : "Send Me the Guide"}
-            </button>
-
-            <p className="text-center text-xs text-navy/50">
-              Having trouble? Email{" "}
-              <a
-                href="mailto:joe@parishmediacompany.com"
-                className="underline decoration-gold decoration-2 underline-offset-4"
-              >
-                joe@parishmediacompany.com
-              </a>{" "}
-              directly.
-            </p>
-          </form>
-        )}
+        </div>
       </div>
-    </section>
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="w-full rounded-full bg-navy px-8 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90 disabled:opacity-60"
+      >
+        {pending ? "Sending..." : "Send Me the Guide"}
+      </button>
+
+      <p className="text-center text-xs text-navy/50">
+        Having trouble? Email{" "}
+        <a
+          href="mailto:joe@parishmediacompany.com"
+          className="underline decoration-gold decoration-2 underline-offset-4"
+        >
+          joe@parishmediacompany.com
+        </a>{" "}
+        directly.
+      </p>
+    </form>
   );
 }

@@ -1,8 +1,6 @@
 "use server";
 
 import { randomUUID } from "crypto";
-import { readFile } from "fs/promises";
-import path from "path";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import {
@@ -161,17 +159,10 @@ export type EbookRequestState = {
   message?: string;
 };
 
-// The PDF Joe provides gets placed here — the ebook filename is fixed since
-// there's only ever one guide to send. See src/components/FreeGuideForm.tsx
-// for the matching public download link.
-const EBOOK_PDF_PATH = path.join(
-  process.cwd(),
-  "public",
-  "downloads",
-  "social-media-for-catholic-churches.pdf",
-);
-const EBOOK_FILENAME = "Social Media for Catholic Churches.pdf";
-
+// The Zap behind this webhook sends the book (Joe's own automation handles
+// delivery now, not this app) and adds the lead to his CRM — this is what
+// actually fulfills the "we'll send it your way" promise on the page, so
+// unlike the Meta tracking below, its failure blocks success.
 export async function submitEbookRequest(
   _prevState: EbookRequestState,
   formData: FormData,
@@ -179,59 +170,23 @@ export async function submitEbookRequest(
   const name = String(formData.get("name") ?? "");
   const email = String(formData.get("email") ?? "");
   const role = String(formData.get("role") ?? "");
-
-  let pdfBuffer: Buffer;
-  try {
-    pdfBuffer = await readFile(EBOOK_PDF_PATH);
-  } catch (err) {
-    console.error("Failed to read ebook PDF:", err);
-    return {
-      status: "error",
-      message:
-        "Something went wrong sending your guide. Please email joe@parishmediacompany.com directly.",
-    };
-  }
+  const roleOther = String(formData.get("roleOther") ?? "");
+  const organization = String(formData.get("organization") ?? "");
+  const roleDisplay = role === "Other" && roleOther ? `Other (${roleOther})` : role;
 
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    const { error } = await resend.emails.send({
-      from: "Parish Media Company <onboarding@resend.dev>",
-      to: email,
-      replyTo: NOTIFY_EMAIL,
-      subject: "Your Free Copy: Social Media for Catholic Churches",
-      text: `Hi ${name},\n\nHere's your free copy of Social Media for Catholic Churches. If you'd like to talk about how we could do this for your parish, book a time here: https://calendly.com/parishmedia/consult\n\n— Joe`,
-      attachments: [
-        {
-          filename: EBOOK_FILENAME,
-          content: pdfBuffer,
-        },
-      ],
-    });
-
-    if (error) {
-      console.error("Resend error (ebook send):", error);
-      return {
-        status: "error",
-        message:
-          "Something went wrong sending your guide. Please email joe@parishmediacompany.com directly.",
-      };
-    }
-
-    // Best-effort heads-up to Joe — these are pre-qualified leads (they
-    // self-identified their role), worth surfacing right away. Never blocks
-    // the visitor's success response.
-    resend.emails
-      .send({
-        from: "Parish Media Company <onboarding@resend.dev>",
-        to: NOTIFY_EMAIL,
-        replyTo: email,
-        subject: `New free guide request from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\nRole: ${role}`,
-      })
-      .catch((err) => console.error("Failed to send ebook lead notification:", err));
+    await notifyZapier(
+      {
+        timestamp: new Date().toISOString(),
+        name,
+        email,
+        role: roleDisplay,
+        organization,
+      },
+      "ZAPIER_WEBHOOK_FREE_GUIDE",
+    );
   } catch (err) {
-    console.error("Failed to send ebook email:", err);
+    console.error("Failed to notify Zapier webhook (free guide):", err);
     return {
       status: "error",
       message:

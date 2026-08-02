@@ -113,6 +113,19 @@ export default function FreeGuideForm() {
         </label>
       </div>
 
+      <p className="text-xs text-navy/50">
+        Not working for one of these?{" "}
+        <a
+          href="https://www.amazon.com/Social-Media-Catholic-Churches-Practical/dp/B0H3QTWDFL/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline decoration-gold decoration-2 underline-offset-4 hover:text-navy"
+        >
+          Buy the paperback on Amazon
+        </a>
+        .
+      </p>
+
       <div
         className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
           showMore ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"

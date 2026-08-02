@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Book a quick call with Parish Media Company.",
 };
 
-export default async function FreeGuideBookACallPage({
+export default async function BookACallPage({
   searchParams,
 }: {
   searchParams: Promise<{ role?: string }>;

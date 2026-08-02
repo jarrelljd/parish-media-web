@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
+import BookACallButton from "@/components/BookACallButton";
 import { clients } from "@/data/clients";
 
 function getInitials(name: string) {
@@ -103,12 +104,9 @@ export default function Home() {
             >
               Get My Free Guide
             </Link>
-            <Link
-              href="/contact"
-              className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5"
-            >
+            <BookACallButton className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5">
               Book a Call
-            </Link>
+            </BookACallButton>
           </div>
           <Link
             href="/services#for-vocation-offices"
@@ -524,12 +522,9 @@ export default function Home() {
             >
               Get My Free Guide
             </Link>
-            <Link
-              href="/contact"
-              className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10"
-            >
+            <BookACallButton className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10">
               Book a Free Consultation
-            </Link>
+            </BookACallButton>
           </div>
         </section>
       </main>

@@ -210,3 +210,59 @@ export async function submitEbookRequest(
 
   return { status: "success" };
 }
+
+export type BookACallState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+// Separate webhook from the free guide's — this Zap only adds the lead to
+// Joe's CRM, it does NOT send the book, since someone booking a call
+// directly hasn't asked for it. See src/components/BookACallModal.tsx.
+export async function submitBookACallRequest(
+  _prevState: BookACallState,
+  formData: FormData,
+): Promise<BookACallState> {
+  const name = String(formData.get("name") ?? "");
+  const email = String(formData.get("email") ?? "");
+  const role = String(formData.get("role") ?? "");
+  const roleOther = String(formData.get("roleOther") ?? "");
+  const organization = String(formData.get("organization") ?? "");
+  const roleDisplay = role === "Other" && roleOther ? `Other (${roleOther})` : role;
+
+  try {
+    await notifyZapier(
+      {
+        timestamp: new Date().toISOString(),
+        name,
+        email,
+        role: roleDisplay,
+        organization,
+      },
+      "ZAPIER_WEBHOOK_BOOK_A_CALL",
+    );
+  } catch (err) {
+    console.error("Failed to notify Zapier webhook (book a call):", err);
+    return {
+      status: "error",
+      message:
+        "Something went wrong. Please email joe@parishmediacompany.com directly.",
+    };
+  }
+
+  try {
+    const headersList = await headers();
+    await sendGenericLeadEvent({
+      eventId: randomUUID(),
+      contentName: "Book a Call Request",
+      sourcePath: "/book-a-call",
+      email,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (book a call):", err);
+  }
+
+  return { status: "success" };
+}

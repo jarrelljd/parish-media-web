@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useBookACallModal } from "@/components/BookACallModalProvider";
 
 const links = [
   { href: "/services", label: "Services" },
@@ -13,6 +14,7 @@ const links = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const openBookACall = useBookACallModal();
 
   return (
     <header className="sticky top-0 z-50 border-b border-navy/10 bg-offwhite/90 backdrop-blur">
@@ -33,12 +35,13 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
+          <button
+            type="button"
+            onClick={openBookACall}
             className="rounded-full bg-navy px-5 py-2 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90"
           >
             Book a Call
-          </Link>
+          </button>
         </nav>
 
         <button
@@ -78,13 +81,16 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              openBookACall();
+            }}
             className="mt-2 rounded-full bg-navy px-5 py-2 text-center text-sm font-medium text-offwhite"
           >
             Book a Call
-          </Link>
+          </button>
         </nav>
       )}
     </header>

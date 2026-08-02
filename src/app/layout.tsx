@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import MetaPixel from "@/components/MetaPixel";
+import BookACallModalProvider from "@/components/BookACallModalProvider";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -32,7 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-offwhite text-navy">
         <MetaPixel />
-        {children}
+        <BookACallModalProvider>{children}</BookACallModalProvider>
       </body>
     </html>
   );

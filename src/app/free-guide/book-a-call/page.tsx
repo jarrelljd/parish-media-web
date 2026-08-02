@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
-import CalendlyBooking from "@/components/CalendlyBooking";
+import FreeGuideBookACall from "@/components/FreeGuideBookACall";
 
 export const metadata: Metadata = {
   title: "Book a Call | Parish Media Company",
@@ -19,7 +19,7 @@ export default async function FreeGuideBookACallPage({
       <Nav />
       <main className="flex flex-1 flex-col">
         <section className="px-6 py-16 sm:py-20">
-          <CalendlyBooking role={role} />
+          <FreeGuideBookACall role={role} />
         </section>
       </main>
     </>

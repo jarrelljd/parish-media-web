@@ -291,16 +291,7 @@ export default function Home() {
                       >
                         ✕
                       </span>
-                      <span>Posts when they remember</span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-navy/80">
-                      <span
-                        className="mt-0.5 font-bold text-rose-500"
-                        aria-hidden="true"
-                      >
-                        ✕
-                      </span>
-                      <span>No real outcomes tracked</span>
+                      <span>Posting is one of many responsibilities</span>
                     </li>
                     <li className="flex items-start gap-2.5 text-navy/80">
                       <span
@@ -310,7 +301,20 @@ export default function Home() {
                         ✕
                       </span>
                       <span>
-                        Not using social media&rsquo;s full potential
+                        Success is &ldquo;we are active&rdquo; rather than
+                        concrete outcomes
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-rose-500"
+                        aria-hidden="true"
+                      >
+                        ✕
+                      </span>
+                      <span>
+                        Platforms are used, but not fully connected to
+                        invitations, follow up, or data
                       </span>
                     </li>
                   </ul>
@@ -339,18 +343,9 @@ export default function Home() {
                         ✓
                       </span>
                       <span>
-                        Focused exclusively on outcomes: new Mass
-                        attendees, event registrants, and more
+                        Clear goals: new Mass attendees, event sign ups,
+                        volunteer inquiries
                       </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-navy/80">
-                      <span
-                        className="mt-0.5 font-bold text-emerald-600"
-                        aria-hidden="true"
-                      >
-                        ✓
-                      </span>
-                      <span>Real data from work across 8 dioceses</span>
                     </li>
                     <li className="flex items-start gap-2.5 text-navy/80">
                       <span
@@ -360,9 +355,30 @@ export default function Home() {
                         ✓
                       </span>
                       <span>
-                        Experts in social media systems built for
-                        Catholic parishes
+                        Tracking from first click to first step into
+                        parish life
                       </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-emerald-600"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>
+                        Lessons learned across 8 dioceses applied to your
+                        specific context
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-navy/80">
+                      <span
+                        className="mt-0.5 font-bold text-emerald-600"
+                        aria-hidden="true"
+                      >
+                        ✓
+                      </span>
+                      <span>Guaranteed results</span>
                     </li>
                   </ul>
                 </div>

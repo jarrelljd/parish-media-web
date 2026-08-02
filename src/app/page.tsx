@@ -1,67 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import BookACallButton from "@/components/BookACallButton";
-import { clients } from "@/data/clients";
-
-function getInitials(name: string) {
-  const words = name.replace(/^Fr\.\s*/, "").split(" ").filter(Boolean);
-  return words
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-}
-
-function ClientBadge({ client }: { client: (typeof clients)[number] }) {
-  return (
-    <div className="flex w-40 shrink-0 flex-col items-center text-center">
-      <div className="h-14 w-14 overflow-hidden rounded-full border border-navy/10 bg-navy/5">
-        {client.photo ? (
-          <Image
-            src={client.photo}
-            alt={client.name}
-            width={56}
-            height={56}
-            className="h-full w-full object-cover"
-            style={{
-              objectPosition: client.photoPosition ?? "50% 50%",
-              transform: client.photoZoom
-                ? `scale(${client.photoZoom})`
-                : undefined,
-            }}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center font-serif text-sm font-semibold text-navy/40">
-            {getInitials(client.name)}
-          </div>
-        )}
-      </div>
-      <p className="mt-2 text-xs font-semibold text-navy">{client.name}</p>
-      {client.org && (
-        <p className="mt-0.5 text-xs text-navy/60">{client.org}</p>
-      )}
-      {client.diocese && (
-        <p className="mt-0.5 text-[11px] uppercase tracking-wide text-navy/40">
-          {client.diocese}
-        </p>
-      )}
-    </div>
-  );
-}
+import TrustedByMarquee from "@/components/TrustedByMarquee";
 
 export default function Home() {
   return (
     <>
       <style>{`
-        @keyframes trusted-by-scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .trusted-by-track:hover {
-          animation-play-state: paused;
-        }
         @keyframes flow-pulse {
           0%, 100% { opacity: 0.55; transform: scale(1); }
           50% { opacity: 1; transform: scale(1.18); }
@@ -122,12 +68,8 @@ export default function Home() {
             <p className="text-center text-xs font-semibold uppercase tracking-widest text-navy/50">
               Trusted By
             </p>
-            <div className="mt-8 overflow-hidden">
-              <div className="trusted-by-track flex w-max animate-[trusted-by-scroll_55s_linear_infinite] items-start gap-x-10 motion-reduce:animate-none">
-                {[...clients, ...clients].map((client, i) => (
-                  <ClientBadge key={`${client.name}-${i}`} client={client} />
-                ))}
-              </div>
+            <div className="mt-8">
+              <TrustedByMarquee />
             </div>
           </div>
         </section>

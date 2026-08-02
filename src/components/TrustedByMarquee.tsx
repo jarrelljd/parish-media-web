@@ -5,6 +5,7 @@ import Image from "next/image";
 import { clients } from "@/data/clients";
 
 const LOOP_DURATION_MS = 55000;
+const RESUME_DELAY_MS = 400;
 
 function subscribeToReducedMotion(callback: () => void) {
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -68,59 +69,80 @@ function ClientBadge({ client }: { client: (typeof clients)[number] }) {
 }
 
 export default function TrustedByMarquee() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const positionRef = useRef(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const halfWidthRef = useRef(0);
-  const draggingRef = useRef(false);
-  const lastPointerXRef = useRef(0);
   const pausedRef = useRef(false);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Respect prefers-reduced-motion: skip the ambient auto-scroll entirely,
-  // but dragging still works below since that's user-initiated, not ambient.
   const reducedMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
     getReducedMotionServerSnapshot,
   );
 
-  // The list is rendered twice back to back for a seamless loop; "half" is
-  // the width of one copy, i.e. the point where we wrap the position back.
+  // The list renders twice back to back for a seamless loop; "half" is the
+  // width of one copy.
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const el = scrollRef.current;
+    if (!el) return;
     function measure() {
-      if (track) halfWidthRef.current = track.scrollWidth / 2;
+      if (el) halfWidthRef.current = el.scrollWidth / 2;
     }
     measure();
     const resizeObserver = new ResizeObserver(measure);
-    resizeObserver.observe(track);
+    resizeObserver.observe(el);
     return () => resizeObserver.disconnect();
   }, []);
 
+  // Start at the seam between the two copies so there's a full copy-width
+  // of native scroll room in both directions before a wrap is ever needed.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const id = requestAnimationFrame(() => {
+      if (el && halfWidthRef.current > 0) {
+        el.scrollLeft = halfWidthRef.current;
+      }
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // Silently reset scrollLeft by one copy-width whenever it strays close to
+  // either edge of the doubled content — invisible since both copies are
+  // identical, and it doesn't care whether the scroll came from auto-scroll
+  // or the user dragging, so both directions stay infinite.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    function handleScroll() {
+      const half = halfWidthRef.current;
+      if (!el || half <= 0) return;
+      const margin = half * 0.1;
+      if (el.scrollLeft < margin) {
+        el.scrollLeft += half;
+      } else if (el.scrollLeft > half * 2 - margin) {
+        el.scrollLeft -= half;
+      }
+    }
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Idle auto-scroll, paused while the user is touching, dragging, or
+  // hovering (desktop). Native scrolling handles all actual interaction.
   useEffect(() => {
     if (reducedMotion) return;
     let lastTime: number | null = null;
     let rafId: number;
 
     function frame(time: number) {
-      if (lastTime === null) lastTime = time;
-      const dt = time - lastTime;
-      lastTime = time;
-
+      const el = scrollRef.current;
       const half = halfWidthRef.current;
-      if (!draggingRef.current && !pausedRef.current && half > 0) {
-        positionRef.current -= (half / LOOP_DURATION_MS) * dt;
+      if (el && !pausedRef.current && half > 0 && lastTime !== null) {
+        const dt = time - lastTime;
+        el.scrollLeft += (half / LOOP_DURATION_MS) * dt;
       }
-
-      if (half > 0) {
-        if (positionRef.current <= -half) positionRef.current += half;
-        else if (positionRef.current > 0) positionRef.current -= half;
-      }
-
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(${positionRef.current}px)`;
-      }
-
+      lastTime = time;
       rafId = requestAnimationFrame(frame);
     }
 
@@ -128,48 +150,38 @@ export default function TrustedByMarquee() {
     return () => cancelAnimationFrame(rafId);
   }, [reducedMotion]);
 
-  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    draggingRef.current = true;
-    lastPointerXRef.current = e.clientX;
-    e.currentTarget.setPointerCapture(e.pointerId);
+  function pause() {
+    pausedRef.current = true;
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
   }
 
-  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (!draggingRef.current) return;
-    const delta = e.clientX - lastPointerXRef.current;
-    lastPointerXRef.current = e.clientX;
-    positionRef.current += delta;
-  }
-
-  function endDrag() {
-    draggingRef.current = false;
+  function scheduleResume() {
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, RESUME_DELAY_MS);
   }
 
   return (
-    <div
-      className="overflow-hidden"
-      onMouseEnter={() => {
-        pausedRef.current = true;
-      }}
-      onMouseLeave={() => {
-        pausedRef.current = false;
-      }}
-    >
+    <>
+      <style>{`
+        .trusted-by-scroll::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       <div
-        ref={trackRef}
-        className="flex w-max cursor-grab items-start gap-x-10 select-none active:cursor-grabbing"
-        style={{ touchAction: "pan-y" }}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onPointerLeave={endDrag}
-        onDragStart={(e) => e.preventDefault()}
+        ref={scrollRef}
+        className="trusted-by-scroll flex gap-x-10 overflow-x-auto overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none]"
+        onPointerDown={pause}
+        onPointerUp={scheduleResume}
+        onPointerCancel={scheduleResume}
+        onMouseEnter={pause}
+        onMouseLeave={scheduleResume}
       >
         {[...clients, ...clients].map((client, i) => (
           <ClientBadge key={`${client.name}-${i}`} client={client} />
         ))}
       </div>
-    </div>
+    </>
   );
 }

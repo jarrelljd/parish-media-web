@@ -205,17 +205,6 @@ export default function FreeGuideForm() {
       >
         {pending ? "Sending..." : "Send Me the Guide"}
       </button>
-
-      <p className="text-center text-xs text-navy/50">
-        Having trouble? Email{" "}
-        <a
-          href="mailto:joe@parishmediacompany.com"
-          className="underline decoration-gold decoration-2 underline-offset-4"
-        >
-          joe@parishmediacompany.com
-        </a>{" "}
-        directly.
-      </p>
     </form>
   );
 }

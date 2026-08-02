@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
+import FreeGuideNextStepsModal from "@/components/FreeGuideNextStepsModal";
 
 const initialState: EbookRequestState = { status: "idle" };
 
@@ -14,31 +15,34 @@ export default function FreeGuideForm() {
   const [email, setEmail] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [role, setRole] = useState("");
+  const [showNextSteps, setShowNextSteps] = useState(false);
   const showMore = name.trim() !== "" && email.trim() !== "" && confirmed;
   const showOtherExplain = role === "Other";
 
   useEffect(() => {
     if (state.status === "success") {
-      const timer = setTimeout(() => {
-        window.location.href = `/free-guide/book-a-call?role=${encodeURIComponent(
-          role,
-        )}`;
-      }, 1500);
+      const timer = setTimeout(() => setShowNextSteps(true), 800);
       return () => clearTimeout(timer);
     }
-  }, [state.status, role]);
+  }, [state.status]);
 
   if (state.status === "success") {
     return (
-      <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
-        <p className="font-serif text-xl font-semibold text-navy">
-          Thank you!
-        </p>
-        <p className="mt-3 text-navy/70">
-          Your copy is on its way to your inbox. Taking you to book a quick
-          call now...
-        </p>
-      </div>
+      <>
+        <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
+          <p className="font-serif text-xl font-semibold text-navy">
+            Thank you!
+          </p>
+          <p className="mt-3 text-navy/70">
+            Your copy is on its way to your inbox.
+          </p>
+        </div>
+        <FreeGuideNextStepsModal
+          open={showNextSteps}
+          role={role}
+          onClose={() => setShowNextSteps(false)}
+        />
+      </>
     );
   }
 

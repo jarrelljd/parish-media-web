@@ -1,7 +1,4 @@
 import Image from "next/image";
-import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
-import stBrendansBulletin from "../../public/images/bulletins/st-brendans-st-marys/before-after.png";
-import stJosephBulletin from "../../public/images/bulletins/st-joseph-los-banos/before-after.png";
 import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
 import { clients } from "@/data/clients";
 
@@ -135,71 +132,6 @@ export default function Testimonials() {
                   )}
                 </div>
               ))}
-          </div>
-        </div>
-
-        {/* Bulletin & design work */}
-        <div className="mt-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <h3 className="font-serif text-2xl font-semibold text-navy">
-              Bulletin &amp; Design Work
-            </h3>
-            <p className="mt-3 text-navy/70">
-              A different kind of proof: real before-and-afters from
-              redesigned parish bulletins.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-xl border border-navy/10 bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
-                Saints John and James Parish
-              </p>
-              <p className="mt-2 text-navy/80">
-                West Warwick, RI. Redesigned alongside the Instagram and ads
-                work above.
-              </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-                <Image
-                  src={saintsJohnJamesBulletin}
-                  alt="Saints John and James Parish bulletin, before and after"
-                  className="h-auto w-full"
-                />
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-navy/10 bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
-                St. Brendan&rsquo;s &amp; St. Mary&rsquo;s Parish
-              </p>
-              <p className="mt-2 text-navy/80">
-                One-off bulletin redesign for Fr. Ronald Masilang.
-              </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-                <Image
-                  src={stBrendansBulletin}
-                  alt="St. Brendan's & St. Mary's Parish bulletin, before and after"
-                  className="h-auto w-full"
-                />
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-navy/10 bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-navy/50">
-                St. Joseph&rsquo;s Catholic Church
-              </p>
-              <p className="mt-2 text-navy/80">
-                Los Banos, CA. Redesigned alongside ongoing social and ads
-                work.
-              </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-                <Image
-                  src={stJosephBulletin}
-                  alt="St. Joseph's Catholic Church bulletin, before and after"
-                  className="h-auto w-full"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>

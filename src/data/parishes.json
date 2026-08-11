@@ -1,5 +1,18 @@
 [
   {
+    "slug": "assumption-guadalupe",
+    "name": "Assumption-Guadalupe Catholic Church",
+    "colors": {
+      "primary": "#D81F26",
+      "secondary": "#1A1A1A",
+      "background": "#FFFFFF",
+      "text": "#1A1A1A"
+    },
+    "logo": "/images/parishes/assumption-guadalupe/logo.svg",
+    "nameEs": "Iglesia Cat\u00f3lica Asunci\u00f3n-Guadalupe",
+    "hideNameInHeader": true
+  },
+  {
     "slug": "ss-peter-paul",
     "name": "Saints Peter & Paul Catholic Church",
     "colors": {

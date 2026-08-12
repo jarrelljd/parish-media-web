@@ -126,7 +126,7 @@ export default function FreeGuidePage() {
         </section>
 
         {/* Form */}
-        <section id="free-guide-form" className="scroll-mt-24 px-6 pb-20 sm:pb-28">
+        <section className="px-6 pb-20 sm:pb-28">
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
               <div className="relative mx-auto w-full max-w-xs sm:max-w-sm">
@@ -153,7 +153,9 @@ export default function FreeGuidePage() {
                 </div>
               </div>
 
-              <FreeGuideForm />
+              <div id="free-guide-form" className="scroll-mt-24">
+                <FreeGuideForm />
+              </div>
             </div>
           </div>
         </section>

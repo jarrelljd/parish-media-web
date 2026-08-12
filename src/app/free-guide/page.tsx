@@ -29,15 +29,82 @@ export default function FreeGuidePage() {
       <Nav />
       <main className="flex flex-1 flex-col">
         {/* Hero */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="relative overflow-hidden px-6 pt-10 pb-16 sm:pt-14 sm:pb-20">
+          {/*
+            Background: a faint feed-grid dot pattern (nod to a social
+            feed) plus a crisp radial wash behind the headline — no blur
+            filters, just gradient falloff, so it reads as a clean glow
+            rather than a smudgy blob.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, rgba(27,42,74,0.10) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(ellipse 640px 420px at 50% 0%, rgba(201,162,39,0.16), transparent 70%)",
+            }}
+          />
+
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-              Free Guide, Written by Joe Jarrell
-            </span>
-            <h1 className="mt-4 text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
+            <h1 className="text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
               Do You Want More Young Families at Your Parish?
             </h1>
-            <p className="mt-4 text-pretty text-lg text-navy/70">
+
+            {/*
+              Book rendered as an actual 3D object (cover + spine faces in
+              a rotated preserve-3d box), not a flat cover scan with a
+              faked-on shadow.
+            */}
+            <div className="mx-auto mt-8" style={{ width: 160, perspective: "1400px" }}>
+              <div
+                className="relative"
+                style={{
+                  width: 160,
+                  height: 256,
+                  transformStyle: "preserve-3d",
+                  transform: "rotateY(22deg) rotateX(2deg)",
+                }}
+              >
+                <div
+                  className="absolute left-0 top-0"
+                  aria-hidden="true"
+                  style={{
+                    width: 14,
+                    height: 256,
+                    transformOrigin: "left center",
+                    transform: "rotateY(90deg)",
+                    background: "linear-gradient(to right, #0f1c38, #1b2a4a)",
+                  }}
+                />
+                <div
+                  className="absolute left-0 top-0 overflow-hidden rounded-[2px] shadow-[0_25px_45px_-10px_rgba(27,42,74,0.55)]"
+                  style={{ width: 160, height: 256, transform: "translateZ(14px)" }}
+                >
+                  <Image
+                    src={bookCover}
+                    alt="Social Media for Catholic Churches, by Joe Jarrell, book cover"
+                    fill
+                    sizes="160px"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div
+                className="mx-auto mt-4 h-3 w-20 rounded-full bg-navy/15 blur-md"
+                aria-hidden="true"
+              />
+            </div>
+
+            <p className="mt-8 text-pretty text-lg text-navy/70">
               Get the free digital copy of my book, &ldquo;Social Media
               for Catholic Churches,&rdquo; and see how we&rsquo;re
               helping get 30&ndash;50 new people involved in parish

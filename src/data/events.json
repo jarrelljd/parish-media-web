@@ -737,7 +737,7 @@
       },
       {
         "src": "/images/events/assumption-guadalupe/folklorico-dancers.png",
-        "alt": "Folklórico dancers performing in traditional dress at the Assumption-Guadalupe Fiesta"
+        "alt": "Folkl\u00f3rico dancers performing in traditional dress at the Assumption-Guadalupe Fiesta"
       },
       {
         "src": "/images/events/assumption-guadalupe/family-smiling.png",
@@ -850,6 +850,78 @@
             "body": "Bailen todo el d\u00eda con m\u00fasica en vivo de bandas locales tocando durante toda la Fiesta."
           }
         ]
+      }
+    }
+  },
+  {
+    "parishSlug": "st-johns",
+    "eventSlug": "fall-ministry-fair",
+    "parishName": "St. John's Catholic Parish",
+    "eventName": "2026 Fall Ministry Fair",
+    "subheading": "Browse ministry tables, meet fellow parishioners, and find your place at St. John's.",
+    "dateLabel": "Saturday, October 3, 2026",
+    "timeLabel": "10:00 AM - 12:00 PM",
+    "location": "St. John's Catholic Parish Hall",
+    "address": "123 Main St, Springfield, IL",
+    "valueText": "Browse tables from our hospitality, faith formation, music, and outreach ministries, ask questions, and find where you might plug in. Come as you are \u2014 it's a no-pressure way to meet people and explore what's next for you at St. John's.",
+    "detailsNote": "Held in the Parish Hall right after the 8:30 AM Mass \u2014 stop by on your way out, no need to stay the whole time.",
+    "highlights": [
+      {
+        "icon": "\ud83e\udd1d",
+        "label": "Meet Every Ministry"
+      },
+      {
+        "icon": "\u2615",
+        "label": "Coffee & Treats"
+      },
+      {
+        "icon": "\ud83c\udfa8",
+        "label": "Kids' Activity Table"
+      },
+      {
+        "icon": "\ud83c\udfb5",
+        "label": "Live Music"
+      }
+    ],
+    "cta": {
+      "type": "form",
+      "title": "Don't Miss the Fair",
+      "buttonLabel": "Get a Reminder",
+      "introText": "Tap below and we'll add it to your calendar with all the details, plus send you a reminder before the big day.",
+      "successMessage": "You're all set! Watch your inbox for a calendar invite and a reminder before October 3rd.",
+      "collectPhone": false,
+      "reassuranceText": "Just show up \u2014 no RSVP needed"
+    },
+    "translations": {
+      "es": {
+        "eventName": "Feria de Ministerios de Oto\u00f1o 2026",
+        "subheading": "Visita los puestos de los ministerios, conoce a otros feligreses y encuentra tu lugar en San Juan.",
+        "dateLabel": "S\u00e1bado, 3 de octubre de 2026",
+        "timeLabel": "10:00 AM - 12:00 PM",
+        "location": "Sal\u00f3n Parroquial de San Juan",
+        "valueText": "Recorre los puestos de nuestros ministerios de hospitalidad, formaci\u00f3n en la fe, m\u00fasica y alcance comunitario, haz preguntas y descubre d\u00f3nde puedes participar. Ven como eres \u2014 es una manera sin presi\u00f3n de conocer gente y explorar qu\u00e9 sigue para ti en San Juan.",
+        "detailsNote": "Se realiza en el Sal\u00f3n Parroquial justo despu\u00e9s de la Misa de las 8:30 AM \u2014 pasa de camino a casa, no es necesario quedarte todo el tiempo.",
+        "highlights": [
+          {
+            "label": "Conoce Cada Ministerio"
+          },
+          {
+            "label": "Caf\u00e9 y Bocadillos"
+          },
+          {
+            "label": "Mesa de Actividades para Ni\u00f1os"
+          },
+          {
+            "label": "M\u00fasica en Vivo"
+          }
+        ],
+        "cta": {
+          "title": "No Te Pierdas la Feria",
+          "buttonLabel": "Recibir Recordatorio",
+          "introText": "Toca el bot\u00f3n y lo a\u00f1adiremos a tu calendario con todos los detalles, adem\u00e1s te enviaremos un recordatorio antes del gran d\u00eda.",
+          "successMessage": "\u00a1Listo! Revisa tu correo para la invitaci\u00f3n al calendario y un recordatorio antes del 3 de octubre.",
+          "reassuranceText": "Solo pres\u00e9ntate \u2014 no se necesita confirmar asistencia"
+        }
       }
     }
   }

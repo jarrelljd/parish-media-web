@@ -26,6 +26,18 @@
     "hideNameInHeader": true
   },
   {
+    "slug": "st-johns",
+    "name": "St. John's Catholic Parish",
+    "colors": {
+      "primary": "#1C2D4F",
+      "secondary": "#C9A227",
+      "background": "#F4EFE4",
+      "text": "#1C2D4F"
+    },
+    "logo": "/images/parishes/st-johns/logo.jpg",
+    "nameEs": "Parroquia Cat\u00f3lica de San Juan"
+  },
+  {
     "slug": "st-joseph",
     "name": "St. Joseph Catholic Church",
     "colors": {

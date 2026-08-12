@@ -75,7 +75,7 @@ export default function HowItWorks() {
             How It Works
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Two ways we help ministries grow — organic content and targeted
+            Two ways we help ministries grow: organic content and targeted
             outreach, built around how your team already works.
           </p>
           <div className="mt-6 flex items-center justify-center gap-3">
@@ -101,7 +101,7 @@ export default function HowItWorks() {
               For Parishes
             </h3>
             <p className="mx-auto mt-3 max-w-2xl text-navy/70">
-              Three pillars, working together — that&rsquo;s the core of what
+              Three pillars, working together: that&rsquo;s the core of what
               we do for a parish.
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function HowItWorks() {
             <PillarCard
               eyebrow="Pillar One"
               title="Organic Growth"
-              description="We clip your homilies, post the content your community actually shares — think event photos — and design flyers people stop to look at. It's what nurtures your following and steadily grows your account."
+              description="We clip your homilies, post the content your community actually shares (think event photos), and design flyers people stop to look at. It's what nurtures your following and steadily grows your account."
               stat="0 → 941"
               statCaption="Followers in 4 Months"
               media={
@@ -154,7 +154,7 @@ export default function HowItWorks() {
                 </h4>
                 <p className="mt-3 text-navy/80">
                   Every month you get one clear report pulling from organic
-                  Facebook, organic Instagram, and Meta Ads Manager — proof
+                  Facebook, organic Instagram, and Meta Ads Manager: proof
                   things are working, and the real numbers to set next
                   month&rsquo;s ad budget with confidence.
                 </p>
@@ -311,7 +311,7 @@ export default function HowItWorks() {
 
         {/* Diocese line */}
         <p className="mt-12 text-center text-navy/70">
-          Custom engagement for dioceses —{" "}
+          Custom engagement for dioceses,{" "}
           <Link
             href="/contact"
             className="font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"

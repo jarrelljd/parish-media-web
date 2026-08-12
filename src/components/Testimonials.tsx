@@ -12,7 +12,7 @@ export default function Testimonials() {
             Testimonials
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Real parishes, real growth — hear it directly.
+            Real parishes, real growth. Hear it directly.
           </p>
         </div>
 

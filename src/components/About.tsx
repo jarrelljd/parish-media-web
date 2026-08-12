@@ -30,7 +30,7 @@ export default function About() {
             </p>
             <p className="mt-6 text-navy/80">
               Joe spent three years building an online following and running
-              a fitness program for Catholic men — working with over 200
+              a fitness program for Catholic men, working with over 200
               men, including 20 priests. Along the way, he felt called to
               something bigger: helping parishes reach the people who need
               them most. In early 2026, he went all-in and founded Parish

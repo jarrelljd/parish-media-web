@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote:
-      "As a parish priest, both myself and our communications director found this book helpful — especially in knowing the basics of parish social media and concrete steps to build up a following for the parish.",
+      "As a parish priest, both myself and our communications director found this book helpful, especially in knowing the basics of parish social media and concrete steps to build up a following for the parish.",
     name: "Fr. Ian Kelly",
     role: "Parochial Vicar, St. John Vianney Parish, Cleveland",
     photo: frIanPhoto,
@@ -36,7 +36,7 @@ const concepts = [
   {
     title: "Give First, Then Ask",
     description:
-      "People repay good deeds — it’s human nature. Give real value first, then ask, and your parish earns a “yes” instead of a shrug.",
+      "People repay good deeds. It’s human nature. Give real value first, then ask, and your parish earns a “yes” instead of a shrug.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
         <path d="M4 18a8 8 0 1 1 16 0" strokeLinecap="round" />
@@ -62,7 +62,7 @@ const concepts = [
   {
     title: "Ads Ask Without Wasting Goodwill",
     description:
-      "A Story asks everyone, whether it applies to them or not. A well-aimed ad asks only the right people — so goodwill stays intact.",
+      "A Story asks everyone, whether it applies to them or not. A well-aimed ad asks only the right people, so goodwill stays intact.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
         <circle cx="12" cy="12" r="8" />

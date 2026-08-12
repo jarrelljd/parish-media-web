@@ -91,7 +91,7 @@ export default function FreeGuidePage() {
             className="pointer-events-none absolute inset-0 -z-10"
             style={{
               backgroundImage:
-                "radial-gradient(circle, rgba(27,42,74,0.10) 1px, transparent 1px)",
+                "radial-gradient(circle, rgba(27,42,74,0.16) 1.5px, transparent 1.5px)",
               backgroundSize: "24px 24px",
             }}
           />

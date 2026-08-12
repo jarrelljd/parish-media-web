@@ -3,7 +3,7 @@ import Image from "next/image";
 import Nav from "@/components/Nav";
 import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
-import bookCover from "../../../public/images/free-guide/book-cover.jpg";
+import bookHardcover from "../../../public/images/free-guide/book-hardcover.png";
 import founderPhoto from "../../../public/images/founder/joe-founder-photo.png";
 
 export const metadata: Metadata = {
@@ -59,48 +59,12 @@ export default function FreeGuidePage() {
               Do You Want More Young Families at Your Parish?
             </h1>
 
-            {/*
-              Book rendered as an actual 3D object (cover + spine faces in
-              a rotated preserve-3d box), not a flat cover scan with a
-              faked-on shadow.
-            */}
-            <div className="mx-auto mt-8" style={{ width: 160, perspective: "1400px" }}>
-              <div
-                className="relative"
-                style={{
-                  width: 160,
-                  height: 256,
-                  transformStyle: "preserve-3d",
-                  transform: "rotateY(22deg) rotateX(2deg)",
-                }}
-              >
-                <div
-                  className="absolute left-0 top-0"
-                  aria-hidden="true"
-                  style={{
-                    width: 14,
-                    height: 256,
-                    transformOrigin: "left center",
-                    transform: "rotateY(90deg)",
-                    background: "linear-gradient(to right, #0f1c38, #1b2a4a)",
-                  }}
-                />
-                <div
-                  className="absolute left-0 top-0 overflow-hidden rounded-[2px] shadow-[0_25px_45px_-10px_rgba(27,42,74,0.55)]"
-                  style={{ width: 160, height: 256, transform: "translateZ(14px)" }}
-                >
-                  <Image
-                    src={bookCover}
-                    alt="Social Media for Catholic Churches, by Joe Jarrell, book cover"
-                    fill
-                    sizes="160px"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div
-                className="mx-auto mt-4 h-3 w-20 rounded-full bg-navy/15 blur-md"
-                aria-hidden="true"
+            <div className="mx-auto mt-6 w-52 sm:w-60">
+              <Image
+                src={bookHardcover}
+                alt="Social Media for Catholic Churches, by Joe Jarrell, hardcover book"
+                className="h-auto w-full"
+                priority
               />
             </div>
 
@@ -130,24 +94,22 @@ export default function FreeGuidePage() {
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
               <div className="relative mx-auto w-full max-w-xs sm:max-w-sm">
-                <div className="overflow-hidden rounded-2xl border border-navy/10 shadow-lg">
-                  <Image
-                    src={bookCover}
-                    alt="Social Media for Catholic Churches, by Joe Jarrell, book cover"
-                    className="h-auto w-full"
-                  />
-                </div>
+                <Image
+                  src={bookHardcover}
+                  alt="Social Media for Catholic Churches, by Joe Jarrell, hardcover book"
+                  className="h-auto w-full"
+                />
                 <div
-                  className="absolute -right-4 -top-4 flex h-20 w-20 rotate-12 flex-col items-center justify-center bg-gold text-navy shadow-md sm:h-24 sm:w-24"
+                  className="absolute right-4 top-4 flex h-16 w-16 rotate-12 flex-col items-center justify-center bg-gold text-navy shadow-md sm:h-20 sm:w-20"
                   style={{
                     clipPath:
                       "polygon(50.0% 0.0%, 61.1% 15.8%, 79.4% 9.5%, 79.1% 28.8%, 97.6% 34.5%, 86.0% 50.0%, 97.6% 65.5%, 79.1% 71.2%, 79.4% 90.5%, 61.1% 84.2%, 50.0% 100.0%, 38.9% 84.2%, 20.6% 90.5%, 20.9% 71.2%, 2.4% 65.5%, 14.0% 50.0%, 2.4% 34.5%, 20.9% 28.8%, 20.6% 9.5%, 38.9% 15.8%)",
                   }}
                 >
-                  <span className="text-[10px] font-semibold uppercase tracking-wide line-through opacity-70 sm:text-xs">
+                  <span className="text-[9px] font-semibold uppercase tracking-wide line-through opacity-70 sm:text-[10px]">
                     $17.99
                   </span>
-                  <span className="text-sm font-bold sm:text-base">
+                  <span className="text-xs font-bold sm:text-sm">
                     FREE
                   </span>
                 </div>

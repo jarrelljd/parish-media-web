@@ -5,6 +5,25 @@ import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
 import bookHardcover from "../../../public/images/free-guide/book-hardcover.png";
 import founderPhoto from "../../../public/images/founder/joe-founder-photo.png";
+import frIgorPhoto from "../../../public/images/free-guide/fr-igor-cutout.png";
+import frIanPhoto from "../../../public/images/free-guide/fr-ian-cutout.png";
+
+const testimonials = [
+  {
+    quote:
+      "As a former pastor for several years, I’ve read countless parish resources, but this is the first book that gave me a clear, step-by-step plan for modern communications. It gave me a clear understanding of how to reach more young adults in parish life.",
+    name: "Fr. Igor de Bliquy, OFM Cap.",
+    role: "Director, Capuchin Retreat Center",
+    photo: frIgorPhoto,
+  },
+  {
+    quote:
+      "As a parish priest, both myself and our communications director found this book helpful — especially in knowing the basics of parish social media and concrete steps to build up a following for the parish.",
+    name: "Fr. Ian Kelly",
+    role: "Parochial Vicar, St. John Vianney Parish, Cleveland",
+    photo: frIanPhoto,
+  },
+];
 
 export const metadata: Metadata = {
   title: "Free Guide | Parish Media Company",
@@ -85,6 +104,45 @@ export default function FreeGuidePage() {
               <p className="mt-3 text-sm text-navy/50">
                 Instant download. No credit card.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="px-6 pb-16 sm:pb-20">
+          <div className="mx-auto max-w-4xl">
+            <div className="grid gap-6">
+              {testimonials.map((t) => (
+                <div
+                  key={t.name}
+                  className="grid overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-sm sm:grid-cols-[260px_1fr]"
+                >
+                  <div className="flex items-end justify-center bg-navy/5 pt-6 sm:pt-0">
+                    <Image
+                      src={t.photo}
+                      alt={t.name}
+                      className="h-auto w-[85%] sm:w-full"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center gap-5 p-6 sm:p-8">
+                    <div className="flex gap-4">
+                      <span
+                        className="w-1 shrink-0 rounded-full bg-gold"
+                        aria-hidden="true"
+                      />
+                      <p className="text-pretty font-serif text-lg italic leading-relaxed text-navy sm:text-xl">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-widest text-navy">
+                        {t.name}
+                      </p>
+                      <p className="mt-0.5 text-sm text-navy/60">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

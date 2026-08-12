@@ -2,7 +2,6 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
-import FreeGuideNextStepsModal from "@/components/FreeGuideNextStepsModal";
 
 const initialState: EbookRequestState = { status: "idle" };
 
@@ -16,34 +15,31 @@ export default function FreeGuideForm() {
   const [email, setEmail] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [role, setRole] = useState("");
-  const [showNextSteps, setShowNextSteps] = useState(false);
   const showMore = name.trim() !== "" && email.trim() !== "" && confirmed;
   const showOtherExplain = role === "Other";
 
   useEffect(() => {
     if (state.status === "success") {
-      const timer = setTimeout(() => setShowNextSteps(true), 800);
+      const timer = setTimeout(() => {
+        window.location.href = `/free-guide/book-a-call?role=${encodeURIComponent(
+          role,
+        )}`;
+      }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [state.status]);
+  }, [state.status, role]);
 
   if (state.status === "success") {
     return (
-      <>
-        <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
-          <p className="font-serif text-xl font-semibold text-navy">
-            Thank you!
-          </p>
-          <p className="mt-3 text-navy/70">
-            Your copy is on its way to your inbox.
-          </p>
-        </div>
-        <FreeGuideNextStepsModal
-          open={showNextSteps}
-          role={role}
-          onClose={() => setShowNextSteps(false)}
-        />
-      </>
+      <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
+        <p className="font-serif text-xl font-semibold text-navy">
+          Thank you!
+        </p>
+        <p className="mt-3 text-navy/70">
+          Your copy is on its way to your inbox. Taking you to book a quick
+          call&hellip;
+        </p>
+      </div>
     );
   }
 
@@ -216,9 +212,9 @@ export default function FreeGuideForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-navy px-8 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90 disabled:opacity-60"
+        className="w-full rounded-full bg-gold px-8 py-3 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 disabled:opacity-60"
       >
-        {pending ? "Sending..." : "Send Me the Guide"}
+        {pending ? "Sending..." : "Get the Free Book"}
       </button>
     </form>
   );

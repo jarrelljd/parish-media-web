@@ -3,8 +3,9 @@ import Image from "next/image";
 import Nav from "@/components/Nav";
 import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
+import FadeInOnScroll from "@/components/FadeInOnScroll";
 import bookHardcover from "../../../public/images/free-guide/book-hardcover.png";
-import founderPhoto from "../../../public/images/founder/joe-founder-photo.png";
+import founderPhoto from "../../../public/images/founder/joe-founder-photo-square.png";
 import frIgorPhoto from "../../../public/images/free-guide/fr-igor-cutout.png";
 import frIanPhoto from "../../../public/images/free-guide/fr-ian-cutout.png";
 
@@ -31,15 +32,45 @@ export const metadata: Metadata = {
     "Get a free copy of Social Media for Catholic Churches, Joe Jarrell's published, practical guide to Parish Facebook & Instagram.",
 };
 
-const chapters = [
-  "The relationship between giving value and making clear asks",
-  "Closing the “attention gap” by communicating where people are already listening",
-  "Using social media as a simple reach, nurture, and convert system",
-  "The H.A.C.S. Framework for weekly organic posting",
-  "Homily clips, activity posts, connection posts, and Stories that actually serve a purpose",
-  "Stronger creative, clearer calls to action, and honest scarcity for parish asks",
-  "Using paid ads to promote events, recruit volunteers, and reach people outside the parish bubble",
-  "A simple 1-3-10 ad system for parish growth",
+const concepts = [
+  {
+    title: "Give First, Then Ask",
+    description:
+      "People repay good deeds — it’s human nature. Give real value first, then ask, and your parish earns a “yes” instead of a shrug.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+        <path d="M4 18a8 8 0 1 1 16 0" strokeLinecap="round" />
+        <path d="M12 18l4-6" strokeLinecap="round" />
+        <circle cx="12" cy="18" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    title: "Social Media Is a Funnel",
+    description:
+      "Every post moves people through three stages: reach new faces, nurture them with value, then convert the ones who are ready to respond.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+        <path
+          d="M4 5h16l-6 8v6l-4 2v-8L4 5z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Ads Ask Without Wasting Goodwill",
+    description:
+      "A Story asks everyone, whether it applies to them or not. A well-aimed ad asks only the right people — so goodwill stays intact.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="4.5" />
+        <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
 ];
 
 export default function FreeGuidePage() {
@@ -188,30 +219,32 @@ export default function FreeGuidePage() {
                 What&rsquo;s Inside
               </span>
               <h2 className="mt-4 text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-                Inside, You&rsquo;ll Learn How To
+                Three Ideas That Change How You Post
               </h2>
             </div>
 
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2">
-              {chapters.map((chapter) => (
-                <li
-                  key={chapter}
-                  className="flex items-start gap-3 rounded-xl border border-navy/10 bg-white p-4"
-                >
-                  <span
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-sm font-bold text-gold"
-                    aria-hidden="true"
-                  >
-                    &#10003;
-                  </span>
-                  <span className="text-pretty text-sm text-navy/80">
-                    {chapter}
-                  </span>
-                </li>
+            <div className="mt-14 grid gap-10 sm:grid-cols-3">
+              {concepts.map((concept, i) => (
+                <FadeInOnScroll key={concept.title} delay={i * 120}>
+                  <div className="text-center">
+                    <div
+                      className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold"
+                      aria-hidden="true"
+                    >
+                      <div className="h-7 w-7">{concept.icon}</div>
+                    </div>
+                    <h3 className="mt-5 font-serif text-lg font-semibold text-navy">
+                      {concept.title}
+                    </h3>
+                    <p className="mt-2 text-pretty text-sm text-navy/70">
+                      {concept.description}
+                    </p>
+                  </div>
+                </FadeInOnScroll>
               ))}
-            </ul>
+            </div>
 
-            <p className="mx-auto mt-10 max-w-xl text-pretty text-center text-navy/70">
+            <p className="mx-auto mt-14 max-w-xl text-pretty text-center text-navy/70">
               Whether your parish wants more event attendance, more
               volunteers, more young adult engagement, or simply a
               clearer social media strategy, this book gives you a
@@ -221,23 +254,23 @@ export default function FreeGuidePage() {
         </section>
 
         {/* About the Author */}
-        <section className="px-6 py-20 sm:py-24">
-          <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-            <div className="h-20 w-20 overflow-hidden rounded-full border border-navy/10">
+        <section className="px-6 py-16 sm:py-20">
+          <div className="mx-auto grid max-w-3xl gap-8 sm:grid-cols-[260px_1fr] sm:items-center">
+            <div className="mx-auto w-full max-w-[280px] sm:max-w-none">
               <Image
                 src={founderPhoto}
                 alt="Joe Jarrell, founder of Parish Media Company"
-                className="h-full w-full object-cover"
+                className="h-auto w-full rounded-2xl"
               />
             </div>
-            <div>
+            <div className="text-center sm:text-left">
               <span className="text-xs font-semibold uppercase tracking-widest text-gold">
                 About the Author
               </span>
               <h2 className="mt-3 font-serif text-2xl font-semibold text-navy">
                 Joe Jarrell
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-navy/70">
+              <p className="mt-4 text-pretty text-navy/70">
                 Joe spent three years building an online following and
                 running a fitness program for Catholic men, working with
                 over 200 men, including 20 priests, before founding
@@ -245,6 +278,24 @@ export default function FreeGuidePage() {
                 <em>Social Media for Catholic Churches</em> from that same
                 work: running done-for-you Facebook and Instagram growth
                 for Catholic parishes and dioceses.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="border-t border-navy/10 px-6 py-16 sm:py-20">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+              Get Your Free Copy of the Book
+            </h2>
+            <p className="mt-3 text-navy/70">
+              Join the parishes already putting this playbook to work.
+            </p>
+            <div className="mt-8">
+              <FreeGuideCtaButton />
+              <p className="mt-3 text-sm text-navy/50">
+                Instant download. No credit card.
               </p>
             </div>
           </div>

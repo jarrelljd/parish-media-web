@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# source material kept locally for content work, not for the repo/deploy
+/docs/book-transcript.txt

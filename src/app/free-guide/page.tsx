@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Nav from "@/components/Nav";
 import FreeGuideForm from "@/components/FreeGuideForm";
+import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
 import bookCover from "../../../public/images/free-guide/book-cover.jpg";
 import founderPhoto from "../../../public/images/founder/joe-founder-photo.png";
 
@@ -29,34 +30,38 @@ export default function FreeGuidePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="px-6 py-20 sm:py-28">
-          <div className="mx-auto max-w-5xl">
-            <div className="mx-auto max-w-2xl text-center">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                Free Guide, Written by Joe Jarrell
-              </span>
-              <h1 className="mt-4 text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
-                The Step-By-Step Social Media Playbook for Catholic
-                Parishes
-              </h1>
-              <p className="mt-4 text-pretty text-lg text-navy/70">
-                A practical, Catholic-specific guide that shows your
-                parish exactly what to post, how to reach young adults,
-                and how to turn Facebook &amp; Instagram into a steady
-                invitation into parish life, even if staff is busy and
-                no one is &ldquo;good with technology.&rdquo;
-              </p>
-              <p className="mt-4 text-pretty text-base font-semibold text-navy">
-                A $17.99 book on Amazon. Free if you work for a parish,
-                diocese, or religious order.
-              </p>
-            </div>
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              Free Guide, Written by Joe Jarrell
+            </span>
+            <h1 className="mt-4 text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
+              Do You Want More Young Families at Your Parish?
+            </h1>
+            <p className="mt-4 text-pretty text-lg text-navy/70">
+              Get the free digital copy of my book, &ldquo;Social Media
+              for Catholic Churches,&rdquo; and see how we&rsquo;re
+              helping get 30&ndash;50 new people involved in parish
+              life in just 90 days.
+            </p>
 
             {/*
-              VSL slot: once a 60-second video exists, it can replace or sit
-              above the cover image below, same grid cell. No player is
-              wired up yet since there's nothing to embed.
+              VSL slot: once a 60-second video exists, it goes here between
+              the subheading and CTA. No player wired up yet.
             */}
-            <div className="mt-12 grid gap-10 sm:grid-cols-2 sm:items-center">
+
+            <div className="mt-10">
+              <FreeGuideCtaButton />
+              <p className="mt-3 text-sm text-navy/50">
+                Instant download. No credit card.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Form */}
+        <section id="free-guide-form" className="scroll-mt-24 px-6 pb-20 sm:pb-28">
+          <div className="mx-auto max-w-5xl">
+            <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
               <div className="relative mx-auto w-full max-w-xs sm:max-w-sm">
                 <div className="overflow-hidden rounded-2xl border border-navy/10 shadow-lg">
                   <Image

@@ -97,6 +97,7 @@ export async function sendGenericLeadEvent({
   contentName,
   sourcePath,
   email,
+  phone,
   userAgent,
   ipAddress,
 }: {
@@ -104,6 +105,7 @@ export async function sendGenericLeadEvent({
   contentName: string;
   sourcePath: string;
   email?: string;
+  phone?: string;
   userAgent?: string | null;
   ipAddress?: string | null;
 }): Promise<void> {
@@ -115,6 +117,10 @@ export async function sendGenericLeadEvent({
 
   const userData: Record<string, unknown> = {};
   if (email) userData.em = [hashForMeta(email)];
+  if (phone) {
+    const digitsOnly = phone.replace(/[^0-9]/g, "");
+    if (digitsOnly) userData.ph = [hashForMeta(digitsOnly)];
+  }
   if (userAgent) userData.client_user_agent = userAgent;
   if (ipAddress) userData.client_ip_address = ipAddress;
 

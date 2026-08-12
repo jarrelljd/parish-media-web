@@ -168,6 +168,7 @@ export async function submitEbookRequest(
   formData: FormData,
 ): Promise<EbookRequestState> {
   const name = String(formData.get("name") ?? "");
+  const phone = String(formData.get("phone") ?? "");
   const email = String(formData.get("email") ?? "");
   const role = String(formData.get("role") ?? "");
   const roleOther = String(formData.get("roleOther") ?? "");
@@ -179,6 +180,7 @@ export async function submitEbookRequest(
       {
         timestamp: new Date().toISOString(),
         name,
+        phone,
         email,
         role: roleDisplay,
         organization,
@@ -201,6 +203,7 @@ export async function submitEbookRequest(
       contentName: "Free Guide Request",
       sourcePath: "/free-guide",
       email,
+      phone,
       userAgent: headersList.get("user-agent"),
       ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
     });

@@ -12,6 +12,7 @@ export default function FreeGuideForm() {
     initialState,
   );
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [role, setRole] = useState("");
@@ -77,6 +78,20 @@ export default function FreeGuideForm() {
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-navy">
+          Phone Number
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
         />
       </div>

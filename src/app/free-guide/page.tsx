@@ -271,9 +271,6 @@ export default function FreeGuidePage() {
               alt="Joe Jarrell signing copies of Social Media for Catholic Churches"
               className="h-auto w-full rounded-2xl shadow-xl"
             />
-            <p className="mt-3 text-center text-sm italic text-navy/50">
-              Signing copies of Social Media for Catholic Churches
-            </p>
           </div>
 
           <p className="mx-auto mt-10 max-w-2xl text-pretty text-center text-navy/70">

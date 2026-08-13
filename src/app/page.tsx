@@ -33,33 +33,58 @@ export default function Home() {
       <main className="flex flex-1 flex-col">
         <section
           id="home"
-          className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-24 pt-14 text-center sm:pb-32 sm:pt-20"
+          className="relative overflow-hidden px-6 pb-24 pt-14 sm:pb-32 sm:pt-20"
         >
-          <span className="h-1 w-16 rounded-full bg-gold" />
-          <h1 className="mt-8 font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl md:text-6xl">
-            Do You Want More Young Families at Your Parish?
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-navy/70 sm:text-xl">
-            Learn how we&rsquo;re helping Catholic churches get 30&ndash;50
-            new people involved in parish life in just 90 days.
-          </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          {/*
+            Background: the same faint feed-grid dot pattern used on
+            /free-guide, plus a crisp navy radial wash (no blur filter,
+            just gradient falloff) so the two pages feel like one site.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, rgba(27,42,74,0.16) 1.5px, transparent 1.5px)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(ellipse 720px 480px at 50% 0%, rgba(27,42,74,0.12), transparent 70%)",
+            }}
+          />
+
+          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+            <span className="h-1 w-16 rounded-full bg-gold" />
+            <h1 className="mt-8 font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl md:text-6xl">
+              Do You Want More Young Families at Your Parish?
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg text-navy/70 sm:text-xl">
+              Learn how we&rsquo;re helping Catholic churches get 30&ndash;50
+              new people involved in parish life in just 90 days.
+            </p>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/free-guide"
+                className="rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
+              >
+                Get My Free Guide
+              </Link>
+              <BookACallButton className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5">
+                Book a Call
+              </BookACallButton>
+            </div>
             <Link
-              href="/free-guide"
-              className="rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
+              href="/services#for-vocation-offices"
+              className="mt-6 text-sm font-medium text-navy/60 underline decoration-gold decoration-2 underline-offset-4 transition-colors hover:text-navy"
             >
-              Get My Free Guide
+              We also help vocation offices reach young men discerning a call →
             </Link>
-            <BookACallButton className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5">
-              Book a Call
-            </BookACallButton>
           </div>
-          <Link
-            href="/services#for-vocation-offices"
-            className="mt-6 text-sm font-medium text-navy/60 underline decoration-gold decoration-2 underline-offset-4 transition-colors hover:text-navy"
-          >
-            We also help vocation offices reach young men discerning a call →
-          </Link>
         </section>
 
         {/* Trusted By */}

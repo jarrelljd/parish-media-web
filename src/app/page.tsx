@@ -33,7 +33,7 @@ export default function Home() {
       <main className="flex flex-1 flex-col">
         <section
           id="home"
-          className="mx-auto flex max-w-4xl flex-col items-center px-6 py-24 text-center sm:py-32"
+          className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-24 pt-14 text-center sm:pb-32 sm:pt-20"
         >
           <span className="h-1 w-16 rounded-full bg-gold" />
           <h1 className="mt-8 font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl md:text-6xl">

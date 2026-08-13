@@ -6,6 +6,11 @@ import { clients } from "@/data/clients";
 
 const LOOP_DURATION_MS = 55000;
 const RESUME_DELAY_MS = 400;
+// Some mobile browsers (notably WebKit/iOS Safari) don't reliably fire
+// pointerup/pointercancel when a touch that starts on the marquee hands off
+// to native page scrolling, which would otherwise leave it paused forever.
+// This guarantees a resume no matter which release event does or doesn't fire.
+const SAFETY_RESUME_MS = 3000;
 
 function subscribeToReducedMotion(callback: () => void) {
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -153,6 +158,9 @@ export default function TrustedByMarquee() {
   function pause() {
     pausedRef.current = true;
     if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, SAFETY_RESUME_MS);
   }
 
   function scheduleResume() {
@@ -175,6 +183,8 @@ export default function TrustedByMarquee() {
         onPointerDown={pause}
         onPointerUp={scheduleResume}
         onPointerCancel={scheduleResume}
+        onTouchEnd={scheduleResume}
+        onTouchCancel={scheduleResume}
         onMouseEnter={pause}
         onMouseLeave={scheduleResume}
       >

@@ -1,5 +1,8 @@
 import Image from "next/image";
 import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
+import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
+import frDavePhoto from "../../public/images/clients/fr-dave-aufiero-headshot.png";
+import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import { clients } from "@/data/clients";
 
 export default function Testimonials() {
@@ -51,6 +54,49 @@ export default function Testimonials() {
           </p>
         </div>
 
+        {/* More parish pastor testimonials */}
+        <div className="mx-auto mt-16 grid max-w-3xl gap-6 sm:grid-cols-2">
+          <div className="rounded-xl border border-navy/10 bg-white p-6 shadow-sm">
+            <div className="h-16 w-16 overflow-hidden rounded-full bg-navy/5">
+              <Image
+                src={frDavePhoto}
+                alt="Fr. Dave Aufiero, Pastor, St. Patrick's Catholic Church, South Hadley, MA"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <blockquote className="mt-5">
+              <p className="font-serif text-lg italic leading-relaxed text-navy">
+                &ldquo;He helped build our young adult ministry, it&rsquo;s
+                been a pleasure working with him. I recommended Joe to our
+                Diocese.&rdquo;
+              </p>
+            </blockquote>
+            <p className="mt-4 text-sm font-medium text-navy/60">
+              Fr. Dave Aufiero, Pastor, St. Patrick&rsquo;s Catholic Church,
+              South Hadley, MA
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-navy/10 bg-white p-6 shadow-sm">
+            <div className="h-16 w-16 overflow-hidden rounded-full bg-navy/5">
+              <Image
+                src={frJaredPhoto}
+                alt="Fr. Jared DeLeo, Pastor, St. Monica Catholic Parish, Palatka, FL"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <blockquote className="mt-5">
+              <p className="font-serif text-lg italic leading-relaxed text-navy">
+                &ldquo;Joe&rsquo;s work has been great. Easter Mass was the
+                most packed it&rsquo;s ever been.&rdquo;
+              </p>
+            </blockquote>
+            <p className="mt-4 text-sm font-medium text-navy/60">
+              Fr. Jared DeLeo, Pastor, St. Monica Catholic Parish, Palatka, FL
+            </p>
+          </div>
+        </div>
+
         {/* Diocese & vocation office results */}
         <div className="mt-20 rounded-2xl bg-navy/5 p-8 sm:p-10">
           <div className="mx-auto max-w-2xl text-center">
@@ -67,16 +113,27 @@ export default function Testimonials() {
             <span className="text-xs font-semibold uppercase tracking-widest text-gold">
               Diocese of Reno
             </span>
-            <blockquote className="mt-4 max-w-2xl">
-              <p className="font-serif text-xl italic leading-relaxed text-navy">
-                &ldquo;Joe works with paid advertisements and social media to
-                highlight the great works of your ministries, and inspire
-                people to dig deeper.&rdquo;
-              </p>
-            </blockquote>
-            <p className="mt-4 text-sm font-medium text-navy/60">
-              Zach Werner, Head of Communications, Diocese of Reno
-            </p>
+            <div className="mt-4 flex flex-col gap-6 sm:flex-row sm:items-center">
+              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full bg-navy/5">
+                <Image
+                  src={zachWernerPhoto}
+                  alt="Zach Werner, Head of Communications, Diocese of Reno"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>
+                <blockquote className="max-w-2xl">
+                  <p className="font-serif text-xl italic leading-relaxed text-navy">
+                    &ldquo;Joe works with paid advertisements and social media
+                    to highlight the great works of your ministries, and
+                    inspire people to dig deeper.&rdquo;
+                  </p>
+                </blockquote>
+                <p className="mt-4 text-sm font-medium text-navy/60">
+                  Zach Werner, Head of Communications, Diocese of Reno
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-6 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">

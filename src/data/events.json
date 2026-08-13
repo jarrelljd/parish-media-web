@@ -725,11 +725,11 @@
     "eventName": "Join Us: The 60th Annual South Omaha Parish Fiesta!",
     "subheading": "Three days of celebration at Our Lady of Guadalupe Catholic Church. Food, music, and fun for the whole family.",
     "dateLabel": "August 21-23, 2026",
-    "timeLabel": "Fri 7-11 PM \u00b7 Sat Noon-11 PM \u00b7 Sun Noon-9 PM",
+    "timeLabel": "Fri 6-11 PM \u00b7 Sat 11 AM-11 PM \u00b7 Sun 11 AM-9 PM",
     "location": "Our Lady of Guadalupe Catholic Church",
     "address": "4930 S. 23rd St., Omaha, NE 68107",
-    "valueText": "Celebrating 60 years, Assumption-Guadalupe's Fiesta brings three days of authentic food, live music, games, rides, and a beer garden to South Omaha \u2014 plus a shot at our $10,000 cash raffle. The Fiesta kicks off right after Mass each day.",
-    "detailsNote": "Held in the church parking lots and street out front. Festival begins right after the Masses each day.",
+    "valueText": "Celebrating 60 years, Assumption-Guadalupe's Fiesta brings three days of authentic food, live music, games, rides, and a beer garden to South Omaha \u2014 plus a shot at our $10,000 cash raffle. Friday opens with a 6 PM Opening Ceremony, and Saturday and Sunday begin with Holy Mass at 11 AM on the stage outside the church.",
+    "detailsNote": "Held in the church parking lots and street out front. Opening Ceremony is Friday at 6 PM. On Saturday and Sunday, festivities begin with Holy Mass at 11 AM on the stage outside the church.",
     "photos": [
       {
         "src": "/images/events/assumption-guadalupe/church-and-ride.png",
@@ -812,10 +812,10 @@
         "eventName": "\u00a1\u00dananse a Nosotros: La 60.\u00aa Fiesta Parroquial Anual del Sur de Omaha!",
         "subheading": "Tres d\u00edas de celebraci\u00f3n en la Iglesia Cat\u00f3lica Nuestra Se\u00f1ora de Guadalupe. Comida, m\u00fasica y diversi\u00f3n para toda la familia.",
         "dateLabel": "21\u201323 de agosto de 2026",
-        "timeLabel": "Vie 7\u201311 PM \u00b7 S\u00e1b Mediod\u00eda\u201311 PM \u00b7 Dom Mediod\u00eda\u20139 PM",
+        "timeLabel": "Vie 6\u201311 PM \u00b7 S\u00e1b 11 AM\u201311 PM \u00b7 Dom 11 AM\u20139 PM",
         "location": "Iglesia Cat\u00f3lica Nuestra Se\u00f1ora de Guadalupe",
-        "valueText": "Celebrando 60 a\u00f1os, la Fiesta de Asunci\u00f3n-Guadalupe trae tres d\u00edas de comida aut\u00e9ntica, m\u00fasica en vivo, juegos, atracciones y un jard\u00edn de cerveza al sur de Omaha \u2014 adem\u00e1s de la oportunidad de ganar nuestra rifa en efectivo de $10,000. La Fiesta comienza justo despu\u00e9s de la Misa cada d\u00eda.",
-        "detailsNote": "Se realiza en los estacionamientos y la calle frente a la iglesia. La Fiesta comienza justo despu\u00e9s de las Misas cada d\u00eda.",
+        "valueText": "Celebrando 60 a\u00f1os, la Fiesta de Asunci\u00f3n-Guadalupe trae tres d\u00edas de comida aut\u00e9ntica, m\u00fasica en vivo, juegos, atracciones y un jard\u00edn de cerveza al sur de Omaha \u2014 adem\u00e1s de la oportunidad de ganar nuestra rifa en efectivo de $10,000. El viernes abre con una Ceremonia de Apertura a las 6 PM, y el s\u00e1bado y domingo comienzan con la Santa Misa a las 11 AM en el escenario afuera de la iglesia.",
+        "detailsNote": "Se realiza en los estacionamientos y la calle frente a la iglesia. La Ceremonia de Apertura es el viernes a las 6 PM. El s\u00e1bado y domingo, las festividades comienzan con la Santa Misa a las 11 AM en el escenario afuera de la iglesia.",
         "cta": {
           "title": "No se pierdan la Fiesta",
           "buttonLabel": "Env\u00edenme un Recordatorio",

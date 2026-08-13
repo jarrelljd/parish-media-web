@@ -5,17 +5,18 @@ import frDavePhoto from "../../public/images/clients/fr-dave-aufiero-headshot.pn
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import { clients } from "@/data/clients";
 
-export default function Testimonials() {
+export default function Results() {
   return (
     <section className="px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h2 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Testimonials
+            Results
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Real parishes, real growth. Hear it directly.
+            Real parishes, real growth. Hear it directly, then see the
+            numbers.
           </p>
         </div>
 
@@ -54,8 +55,28 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* More parish pastor testimonials */}
-        <div className="mx-auto mt-16 grid max-w-3xl gap-6 sm:grid-cols-2">
+        {/* More written testimonials */}
+        <div className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-xl border border-navy/10 bg-white p-6 shadow-sm">
+            <div className="h-16 w-16 overflow-hidden rounded-full bg-navy/5">
+              <Image
+                src={zachWernerPhoto}
+                alt="Zach Werner, Head of Communications, Diocese of Reno"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <blockquote className="mt-5">
+              <p className="font-serif text-lg italic leading-relaxed text-navy">
+                &ldquo;Joe works with paid advertisements and social media to
+                highlight the great works of your ministries, and inspire
+                people to dig deeper.&rdquo;
+              </p>
+            </blockquote>
+            <p className="mt-4 text-sm font-medium text-navy/60">
+              Zach Werner, Head of Communications, Diocese of Reno
+            </p>
+          </div>
+
           <div className="rounded-xl border border-navy/10 bg-white p-6 shadow-sm">
             <div className="h-16 w-16 overflow-hidden rounded-full bg-navy/5">
               <Image
@@ -97,46 +118,19 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Diocese & vocation office results */}
+        {/* Numbered results */}
         <div className="mt-20 rounded-2xl bg-navy/5 p-8 sm:p-10">
           <div className="mx-auto max-w-2xl text-center">
             <h3 className="font-serif text-2xl font-semibold text-navy">
-              Diocese &amp; Vocation Office Results
+              By the Numbers
             </h3>
             <p className="mt-3 text-navy/70">
-              Real outcomes at an institutional scale, not just individual
-              parishes.
+              Real, measurable outcomes at an institutional scale, not just
+              vanity metrics.
             </p>
           </div>
 
           <div className="mt-10 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-              Diocese of Reno
-            </span>
-            <div className="mt-4 flex flex-col gap-6 sm:flex-row sm:items-center">
-              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full bg-navy/5">
-                <Image
-                  src={zachWernerPhoto}
-                  alt="Zach Werner, Head of Communications, Diocese of Reno"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <blockquote className="max-w-2xl">
-                  <p className="font-serif text-xl italic leading-relaxed text-navy">
-                    &ldquo;Joe works with paid advertisements and social media
-                    to highlight the great works of your ministries, and
-                    inspire people to dig deeper.&rdquo;
-                  </p>
-                </blockquote>
-                <p className="mt-4 text-sm font-medium text-navy/60">
-                  Zach Werner, Head of Communications, Diocese of Reno
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
             <span className="text-xs font-semibold uppercase tracking-widest text-gold">
               Midwest Province Vocation Office, Capuchin Franciscans
             </span>

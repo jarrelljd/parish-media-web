@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
-import Testimonials from "@/components/Testimonials";
+import Results from "@/components/Results";
 
 export const metadata: Metadata = {
-  title: "Testimonials | Parish Media Company",
+  title: "Results | Parish Media Company",
   description:
     "Real results from Catholic parishes, dioceses, and vocation offices working with Parish Media Company.",
 };
 
-export default function TestimonialsPage() {
+export default function ResultsPage() {
   return (
     <>
       <Nav />
       <main className="flex flex-1 flex-col">
-        <Testimonials />
+        <Results />
       </main>
     </>
   );

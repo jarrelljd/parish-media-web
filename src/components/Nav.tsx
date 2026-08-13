@@ -7,7 +7,7 @@ import { useBookACallModal } from "@/components/BookACallModalProvider";
 
 const links = [
   { href: "/services", label: "Services" },
-  { href: "/testimonials", label: "Testimonials" },
+  { href: "/results", label: "Results" },
   { href: "/free-stuff", label: "Free Stuff" },
   { href: "/about", label: "About" },
 ];

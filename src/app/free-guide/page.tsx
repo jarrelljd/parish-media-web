@@ -5,7 +5,7 @@ import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
 import FadeInOnScroll from "@/components/FadeInOnScroll";
 import bookHardcover from "../../../public/images/free-guide/book-hardcover.png";
-import founderPhoto from "../../../public/images/founder/joe-founder-photo-square.png";
+import authorSigningPhoto from "../../../public/images/free-guide/author-book-signing.png";
 import frIgorPhoto from "../../../public/images/free-guide/fr-igor-cutout.png";
 import frIanPhoto from "../../../public/images/free-guide/fr-ian-cutout.png";
 
@@ -255,32 +255,35 @@ export default function FreeGuidePage() {
 
         {/* About the Author */}
         <section className="px-6 py-16 sm:py-20">
-          <div className="mx-auto grid max-w-3xl gap-8 sm:grid-cols-[260px_1fr] sm:items-center">
-            <div className="mx-auto w-full max-w-[280px] sm:max-w-none">
-              <Image
-                src={founderPhoto}
-                alt="Joe Jarrell, founder of Parish Media Company"
-                className="h-auto w-full rounded-2xl"
-              />
-            </div>
-            <div className="text-center sm:text-left">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                About the Author
-              </span>
-              <h2 className="mt-3 font-serif text-2xl font-semibold text-navy">
-                Joe Jarrell
-              </h2>
-              <p className="mt-4 text-pretty text-navy/70">
-                Joe spent three years building an online following and
-                running a fitness program for Catholic men, working with
-                over 200 men, including 20 priests, before founding
-                Parish Media Company in early 2026. He wrote{" "}
-                <em>Social Media for Catholic Churches</em> from that same
-                work: running done-for-you Facebook and Instagram growth
-                for Catholic parishes and dioceses.
-              </p>
-            </div>
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
+            <span className="mt-6 block text-xs font-semibold uppercase tracking-widest text-gold">
+              About the Author
+            </span>
+            <h2 className="mt-3 font-serif text-2xl font-semibold text-navy sm:text-3xl">
+              Joe Jarrell
+            </h2>
           </div>
+
+          <div className="mx-auto mt-10 max-w-4xl">
+            <Image
+              src={authorSigningPhoto}
+              alt="Joe Jarrell signing copies of Social Media for Catholic Churches"
+              className="h-auto w-full rounded-2xl shadow-xl"
+            />
+            <p className="mt-3 text-center text-sm italic text-navy/50">
+              Signing copies of Social Media for Catholic Churches
+            </p>
+          </div>
+
+          <p className="mx-auto mt-10 max-w-2xl text-pretty text-center text-navy/70">
+            Joe spent three years building an online following and running
+            a fitness program for Catholic men, working with over 200 men,
+            including 20 priests, before founding Parish Media Company in
+            early 2026. He wrote <em>Social Media for Catholic Churches</em>{" "}
+            from that same work: running done-for-you Facebook and
+            Instagram growth for Catholic parishes and dioceses.
+          </p>
         </section>
 
         {/* Final CTA */}

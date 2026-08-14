@@ -20,7 +20,7 @@ const writtenTestimonials = [
   {
     photo: johnLujanPhoto,
     photoZoom: 1.8,
-    photoPosition: "50% 15%",
+    photoPosition: "50% 35%",
     quote:
       "This is fabulous. The level of expertise Joe brings is incredible. I really appreciate your time, it’s been extremely valuable for me.",
     name: "John Lujan",
@@ -29,7 +29,7 @@ const writtenTestimonials = [
   {
     photo: frDavePhoto,
     photoZoom: 1.8,
-    photoPosition: "50% 15%",
+    photoPosition: "50% 0%",
     quote:
       "He helped build our young adult ministry, it’s been a pleasure working with him. I recommended Joe to our Diocese.",
     name: "Fr. Dave Aufiero",

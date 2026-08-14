@@ -280,8 +280,16 @@ export default function Home() {
         </section>
 
         {/* The Real Difference */}
-        <section className="px-6 pb-24 sm:pb-32">
-          <div className="mx-auto max-w-4xl rounded-2xl bg-navy/5 p-8 sm:p-12">
+        <section className="relative overflow-hidden px-6 pb-24 sm:pb-32">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 0%, rgba(27,42,74,0.08) 18%, rgba(27,42,74,0.08) 82%, transparent 100%)",
+            }}
+          />
+          <div className="mx-auto max-w-4xl">
             <Reveal>
               <h2 className="mx-auto max-w-md text-balance text-center font-serif text-3xl font-semibold italic leading-tight text-navy sm:max-w-lg sm:text-4xl">
                 &ldquo;We Already Have Someone for Social Media.&rdquo;

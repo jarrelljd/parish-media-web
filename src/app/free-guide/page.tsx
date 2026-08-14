@@ -109,7 +109,7 @@ export default function FreeGuidePage() {
               Do You Want More Young Families at Your Parish?
             </h1>
 
-            <div className="mx-auto mt-4 w-32 sm:mt-6 sm:w-60">
+            <div className="mx-auto mt-4 w-40 sm:mt-6 sm:w-60">
               <Image
                 src={bookHardcover}
                 alt="Social Media for Catholic Churches, by Joe Jarrell, hardcover book"
@@ -118,7 +118,7 @@ export default function FreeGuidePage() {
               />
             </div>
 
-            <p className="mt-6 text-pretty text-base text-navy/70 sm:mt-8 sm:text-lg">
+            <p className="mt-4 text-pretty text-sm text-navy/70 sm:mt-8 sm:text-lg">
               Get the free digital copy of my book, &ldquo;Social Media
               for Catholic Churches,&rdquo; and see how we&rsquo;re
               helping get 30&ndash;50 new people involved in parish

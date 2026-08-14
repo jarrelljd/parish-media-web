@@ -1,8 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
-import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
-import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
 import stJosephReport from "../../public/images/proof/st-joseph-monthly-report.png";
 import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
 import stBrendansBulletin from "../../public/images/bulletins/st-brendans-st-marys/before-after.png";
@@ -107,27 +105,6 @@ export default function HowItWorks() {
           </div>
 
           <div className="mt-10 grid gap-8 lg:grid-cols-2">
-            <PillarCard
-              eyebrow="Pillar One"
-              title="Organic Growth"
-              description="We clip your homilies, post the content your community actually shares (think event photos), and design flyers people stop to look at. It's what nurtures your following and steadily grows your account."
-              stat="0 → 941"
-              statCaption="Followers in 4 Months"
-              media={
-                <div className="flex items-center gap-3">
-                  <ProofImage
-                    src={stJosephBefore}
-                    alt="St. Joseph Catholic Parish Instagram at 0 followers, February 2026"
-                  />
-                  <span className="shrink-0 text-lg text-gold">→</span>
-                  <ProofImage
-                    src={stJosephAfter}
-                    alt="St. Joseph Catholic Parish Instagram at 941 followers, June 2026"
-                  />
-                </div>
-              }
-            />
-
             <PillarCard
               eyebrow="Pillar Two"
               title="Meta Ads"

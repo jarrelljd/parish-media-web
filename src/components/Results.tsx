@@ -3,6 +3,8 @@ import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-provinc
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
 import frDavePhoto from "../../public/images/clients/fr-dave-aufiero-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
+import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
+import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
 import { clients } from "@/data/clients";
 
 export default function Results() {
@@ -12,7 +14,7 @@ export default function Results() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h2 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Results
+            Testimonies
           </h2>
           <p className="mt-4 text-lg text-navy/70">
             Real parishes, real growth. Hear it directly, then see the
@@ -122,15 +124,52 @@ export default function Results() {
         <div className="mt-20 rounded-2xl bg-navy/5 p-8 sm:p-10">
           <div className="mx-auto max-w-2xl text-center">
             <h3 className="font-serif text-2xl font-semibold text-navy">
-              By the Numbers
+              Results
             </h3>
             <p className="mt-3 text-navy/70">
-              Real, measurable outcomes at an institutional scale, not just
-              vanity metrics.
+              Real, measurable outcomes, not vanity metrics.
             </p>
           </div>
 
           <div className="mt-10 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              St. Joseph Catholic Parish, Los Banos, CA
+            </span>
+            <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:items-center">
+              <div>
+                <p className="font-serif text-4xl font-semibold text-navy">
+                  0 → 941
+                </p>
+                <p className="text-sm font-medium uppercase tracking-wide text-navy/60">
+                  Followers in 4 Months
+                </p>
+                <p className="mt-4 text-navy/80">
+                  Pure organic growth: homily clips, event photos, and
+                  flyers people actually stop to look at. No ad spend
+                  behind this number.
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 overflow-hidden rounded-lg border border-navy/10">
+                  <Image
+                    src={stJosephBefore}
+                    alt="St. Joseph Catholic Parish Instagram at 0 followers, February 2026"
+                    className="h-auto w-full"
+                  />
+                </div>
+                <span className="shrink-0 text-lg text-gold">→</span>
+                <div className="flex-1 overflow-hidden rounded-lg border border-navy/10">
+                  <Image
+                    src={stJosephAfter}
+                    alt="St. Joseph Catholic Parish Instagram at 941 followers, June 2026"
+                    className="h-auto w-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-navy/10 bg-white p-6 sm:p-8">
             <span className="text-xs font-semibold uppercase tracking-widest text-gold">
               Midwest Province Vocation Office, Capuchin Franciscans
             </span>

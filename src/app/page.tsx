@@ -294,9 +294,9 @@ export default function Home() {
             </Reveal>
 
             {/* Comparison: doing it alone vs. Parish Media Company */}
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-0 md:divide-x md:divide-navy/10">
               <Reveal delayMs={80}>
-                <div className="h-full rounded-2xl border border-rose-200/70 bg-rose-50/60 p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7">
+                <div className="md:pr-10">
                   <div className="flex items-center gap-3">
                     <span
                       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-100 text-xl"
@@ -347,7 +347,7 @@ export default function Home() {
               </Reveal>
 
               <Reveal delayMs={180}>
-                <div className="h-full rounded-2xl border border-gold/40 bg-gold/5 p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7">
+                <div className="md:pl-10">
                   <div className="flex items-center gap-3">
                     <span
                       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold/20 text-xl"

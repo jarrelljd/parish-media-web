@@ -286,7 +286,7 @@ export default function Home() {
             className="pointer-events-none absolute inset-0 -z-10"
             style={{
               background:
-                "linear-gradient(180deg, transparent 0%, rgba(27,42,74,0.08) 18%, rgba(27,42,74,0.08) 82%, transparent 100%)",
+                "linear-gradient(180deg, transparent 0%, rgba(27,42,74,0.18) 18%, rgba(27,42,74,0.18) 82%, transparent 100%)",
             }}
           />
           <div className="mx-auto max-w-4xl">

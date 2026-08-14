@@ -79,7 +79,7 @@ export default function FreeGuidePage() {
       <Nav />
       <main className="flex flex-1 flex-col">
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 pt-10 pb-16 sm:pt-14 sm:pb-20">
+        <section className="relative overflow-hidden px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">
           {/*
             Background: a faint feed-grid dot pattern (nod to a social
             feed) plus a crisp radial wash behind the headline — no blur
@@ -105,11 +105,11 @@ export default function FreeGuidePage() {
           />
 
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
+            <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
               Do You Want More Young Families at Your Parish?
             </h1>
 
-            <div className="mx-auto mt-6 w-52 sm:w-60">
+            <div className="mx-auto mt-4 w-32 sm:mt-6 sm:w-60">
               <Image
                 src={bookHardcover}
                 alt="Social Media for Catholic Churches, by Joe Jarrell, hardcover book"
@@ -118,7 +118,7 @@ export default function FreeGuidePage() {
               />
             </div>
 
-            <p className="mt-8 text-pretty text-lg text-navy/70">
+            <p className="mt-6 text-pretty text-base text-navy/70 sm:mt-8 sm:text-lg">
               Get the free digital copy of my book, &ldquo;Social Media
               for Catholic Churches,&rdquo; and see how we&rsquo;re
               helping get 30&ndash;50 new people involved in parish
@@ -130,7 +130,7 @@ export default function FreeGuidePage() {
               the subheading and CTA. No player wired up yet.
             */}
 
-            <div className="mt-10">
+            <div className="mt-6 sm:mt-10">
               <FreeGuideCtaButton />
               <p className="mt-3 text-sm text-navy/50">
                 Instant download. No credit card.

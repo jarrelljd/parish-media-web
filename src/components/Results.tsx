@@ -18,6 +18,8 @@ const writtenTestimonials = [
   },
   {
     photo: frDavePhoto,
+    photoZoom: 1.8,
+    photoPosition: "50% 15%",
     quote:
       "He helped build our young adult ministry, it’s been a pleasure working with him. I recommended Joe to our Diocese.",
     name: "Fr. Dave Aufiero",
@@ -25,6 +27,7 @@ const writtenTestimonials = [
   },
   {
     photo: frJaredPhoto,
+    photoPosition: "50% 15%",
     quote:
       "Joe’s work has been great. Easter Mass was the most packed it’s ever been.",
     name: "Fr. Jared DeLeo",
@@ -94,6 +97,12 @@ export default function Results() {
                   src={t.photo}
                   alt={`${t.name}, ${t.role}`}
                   className="h-full w-full object-cover"
+                  style={{
+                    objectPosition: t.photoPosition ?? "50% 50%",
+                    transform: t.photoZoom
+                      ? `scale(${t.photoZoom})`
+                      : undefined,
+                  }}
                 />
               </div>
               <blockquote className="mt-5">
@@ -189,24 +198,40 @@ export default function Results() {
           </div>
         </div>
 
-        {/* Capuchin vocation office, secondary mention */}
-        <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-5 border-t border-navy/10 pt-10 text-center sm:flex-row sm:text-left">
-          <div className="h-16 w-24 shrink-0 overflow-hidden rounded-lg border border-navy/10">
-            <Image
-              src={capuchinsPhoto}
-              alt="Capuchin friars of the Midwest Province of St. Joseph"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <p className="text-navy/80">
-            We also run this for vocation offices:{" "}
-            <span className="font-serif text-xl font-semibold text-navy">
-              140+
-            </span>{" "}
-            inquiries in 60 days for the Midwest Province Vocation Office,
-            Capuchin Franciscans, for $380 in ad spend. Ten were qualified
-            and went on to meet with Fr. Nathan Linton, Vocations Director.
+        {/* Vocation offices */}
+        <div className="mx-auto mt-24 max-w-3xl border-t border-navy/10 pt-16 text-center">
+          <h3 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            Does This Work for Vocation Offices as Well?
+          </h3>
+          <p className="mt-3 text-navy/70">
+            Yes &mdash; the same playbook, aimed at young men discerning a
+            vocation.
           </p>
+
+          <div className="mt-10 flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+            <div className="w-full max-w-xs overflow-hidden rounded-xl border border-navy/10 sm:w-48 sm:shrink-0">
+              <Image
+                src={capuchinsPhoto}
+                alt="Capuchin friars of the Midwest Province of St. Joseph"
+                className="h-auto w-full"
+              />
+            </div>
+            <div>
+              <p className="font-serif text-4xl font-semibold text-navy">
+                140+
+              </p>
+              <p className="text-sm font-medium uppercase tracking-wide text-navy/60">
+                Inquiries in 60 Days
+              </p>
+              <p className="mt-3 text-navy/80">
+                For $380 in ad spend, 140+ Catholic men reached out about a
+                conversation on religious life with the Midwest Province
+                Vocation Office, Capuchin Franciscans. Ten were qualified
+                and went on to meet in person or on a Zoom call with Fr.
+                Nathan Linton, Vocations Director.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Client roster */}

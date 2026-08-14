@@ -6,6 +6,7 @@ import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
 import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
+import johnLujanPhoto from "../../public/images/clients/john-lujan-headshot.png";
 import { clients } from "@/data/clients";
 
 const writtenTestimonials = [
@@ -14,6 +15,15 @@ const writtenTestimonials = [
     quote:
       "Joe works with paid advertisements and social media to highlight the great works of your ministries, and inspire people to dig deeper.",
     name: "Zach Werner",
+    role: "Director of Mission Advancement, Diocese of Reno",
+  },
+  {
+    photo: johnLujanPhoto,
+    photoZoom: 1.8,
+    photoPosition: "50% 15%",
+    quote:
+      "This is fabulous. The level of expertise Joe brings is incredible. I really appreciate your time, it’s been extremely valuable for me.",
+    name: "John Lujan",
     role: "Head of Communications, Diocese of Reno",
   },
   {
@@ -86,7 +96,7 @@ export default function Results() {
         </div>
 
         {/* More written testimonials */}
-        <div className="mx-auto mt-20 grid max-w-5xl gap-12 sm:grid-cols-3 sm:divide-x sm:divide-navy/10">
+        <div className="mx-auto mt-20 grid max-w-5xl gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-navy/10">
           {writtenTestimonials.map((t) => (
             <div
               key={t.name}

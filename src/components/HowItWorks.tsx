@@ -209,18 +209,6 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* Additional Services */}
-        <div className="mt-12 rounded-2xl bg-navy/5 p-8 sm:p-10">
-          <h3 className="font-serif text-xl font-semibold text-navy">
-            Additional Services
-          </h3>
-          <ul className="mt-4 grid gap-3 text-navy/80 sm:grid-cols-3">
-            <li>Canva flyer design</li>
-            <li>Bulletin design consulting</li>
-            <li>One-off bulletin redesigns (Canva)</li>
-          </ul>
-        </div>
-
         {/* Bulletin & design work */}
         <div className="mt-16">
           <div className="mx-auto max-w-2xl text-center">

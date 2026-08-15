@@ -182,6 +182,13 @@ export async function submitEbookRequest(
     };
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return {
+      status: "error",
+      message: "Please enter a valid email address.",
+    };
+  }
+
   try {
     await notifyZapier(
       {

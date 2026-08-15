@@ -108,6 +108,9 @@ export default function FreeGuideForm() {
           name="email"
           type="email"
           required
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+          title="Please enter a valid email address (e.g. name@example.com)"
+          placeholder="name@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"

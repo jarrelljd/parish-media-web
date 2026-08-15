@@ -132,8 +132,8 @@ export default function FreeGuideForm() {
         </label>
       </div>
 
-      <p className="text-xs text-navy/50">
-        Not working for one of these?{" "}
+      <p className="text-sm text-navy/50">
+        Not eligible?{" "}
         <a
           href="https://www.amazon.com/Social-Media-Catholic-Churches-Practical/dp/B0H3QTWDFL/"
           target="_blank"

@@ -187,7 +187,8 @@ export default function FreeGuideForm() {
                 Select one...
               </option>
               <option value="Priest">Priest</option>
-              <option value="Office Staff">Office Staff</option>
+              <option value="Admin">Admin</option>
+              <option value="Communications">Communications</option>
               <option value="Other">Other</option>
             </select>
           </div>

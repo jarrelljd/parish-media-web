@@ -65,13 +65,14 @@ export default function FreeGuideForm() {
 
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-navy">
-          Name
+          Full Name (First and Last)
         </label>
         <input
           id="name"
           name="name"
           type="text"
           required
+          placeholder="John Smith"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"

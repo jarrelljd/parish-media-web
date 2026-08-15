@@ -175,6 +175,13 @@ export async function submitEbookRequest(
   const organization = String(formData.get("organization") ?? "");
   const roleDisplay = role === "Other" && roleOther ? `Other (${roleOther})` : role;
 
+  if (phone.replace(/\D/g, "").length < 10) {
+    return {
+      status: "error",
+      message: "Please enter a valid phone number.",
+    };
+  }
+
   try {
     await notifyZapier(
       {

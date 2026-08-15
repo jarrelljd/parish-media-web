@@ -157,7 +157,7 @@ export default function FreeGuideForm() {
               htmlFor="organization"
               className="block text-sm font-medium text-navy"
             >
-              Parish, Diocese, or Religious Order
+              Name of Parish, Diocese, or Religious Order
             </label>
             <input
               id="organization"

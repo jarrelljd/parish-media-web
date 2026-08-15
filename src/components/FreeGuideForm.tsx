@@ -127,7 +127,8 @@ export default function FreeGuideForm() {
           className="mt-1 h-4 w-4 shrink-0 rounded border-navy/30 text-navy focus:ring-navy"
         />
         <label htmlFor="confirmEligible" className="text-sm text-navy/80">
-          I confirm I work for a parish, diocese, or religious order.
+          I confirm I am a paid staff member or clergy at a parish, diocese,
+          or religious order (not a volunteer).
         </label>
       </div>
 

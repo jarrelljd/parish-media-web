@@ -89,6 +89,7 @@ export default function FreeGuideForm() {
           required
           pattern="^(?:\D*\d){10,}\D*$"
           title="Please enter a valid phone number (at least 10 digits)"
+          placeholder="(555) 123-4567"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"

@@ -514,7 +514,7 @@ export default function Home() {
               Get My Free Guide
             </Link>
             <BookACallButton className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10">
-              Book a Free Consultation
+              Book a Call
             </BookACallButton>
           </div>
         </section>

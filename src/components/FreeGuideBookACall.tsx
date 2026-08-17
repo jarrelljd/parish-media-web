@@ -33,6 +33,43 @@ export default function FreeGuideBookACall({
             ? "Your Free Book Is on Its Way, Father."
             : "Your Free Book Is on Its Way."}
         </h1>
+        <div
+          className="relative mx-auto mt-6 h-14 w-64 max-w-full"
+          aria-hidden="true"
+        >
+          <style>{`
+            @keyframes pmc-delivery-truck {
+              0% { left: -15%; opacity: 0; }
+              10% { opacity: 1; }
+              55% { left: 66%; opacity: 1; }
+              72% { left: 66%; opacity: 1; }
+              88% { left: 66%; opacity: 0; }
+              100% { left: -15%; opacity: 0; }
+            }
+            .pmc-delivery-truck {
+              animation: pmc-delivery-truck 4s ease-in-out infinite;
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .pmc-delivery-truck {
+                animation: none;
+                left: 66%;
+                opacity: 1;
+              }
+            }
+          `}</style>
+          <span className="absolute right-1 top-1/2 -translate-y-1/2 text-3xl">
+            📧
+          </span>
+          <div className="pmc-delivery-truck absolute top-1/2 flex -translate-y-1/2 flex-col items-center">
+            <span className="text-base leading-none">📖</span>
+            <span
+              className="text-3xl leading-none"
+              style={{ transform: "scaleX(-1)" }}
+            >
+              🚚
+            </span>
+          </div>
+        </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {isPriest
             ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."

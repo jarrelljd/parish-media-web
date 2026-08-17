@@ -102,28 +102,14 @@ export default function Contact() {
               >
                 What do you need help with?
               </label>
-              <select
+              <textarea
                 id="helpType"
                 name="helpType"
                 required
-                defaultValue=""
+                rows={4}
+                placeholder="Tell us what you're looking for help with..."
                 className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              >
-                <option value="" disabled>
-                  Select one...
-                </option>
-                <option value="Parish social media & ads">
-                  Parish social media &amp; ads
-                </option>
-                <option value="Vocation office outreach">
-                  Vocation office outreach
-                </option>
-                <option value="Bulletin or flyer design">
-                  Bulletin or flyer design
-                </option>
-                <option value="Diocese engagement">Diocese engagement</option>
-                <option value="Something else">Something else</option>
-              </select>
+              />
             </div>
 
             <button

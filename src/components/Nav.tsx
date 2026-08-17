@@ -14,7 +14,7 @@ const links = [
 
 const serviceLinks = [
   { href: "/services/parish-growth", label: "Parish/Diocese Growth" },
-  { href: "/services/vocations", label: "Vocations" },
+  { href: "/services/vocations", label: "Vocations Outreach" },
 ];
 
 export default function Nav() {

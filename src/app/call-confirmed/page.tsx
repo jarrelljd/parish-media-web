@@ -32,25 +32,33 @@ export default function CallConfirmedPage() {
               You&rsquo;re All Set!
             </h1>
             <p className="mt-4 text-pretty text-lg text-navy/70">
-              A few quick things before we talk:
+              Your appointment has been scheduled.
             </p>
           </div>
 
           <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-            <ul className="space-y-3">
+            <p className="font-semibold text-navy">
+              A few quick notes before we talk:
+            </p>
+            <ul className="mt-3 space-y-3">
               <CheckItem>
-                Please join from a laptop or desktop computer, not your
-                phone, so we can share screens if helpful.
+                Please join from a laptop or desktop computer rather than
+                your phone, so we can share screens if that&rsquo;s helpful.
               </CheckItem>
               <CheckItem>
-                This is just a conversation. You won&rsquo;t be asked to
-                commit to anything on the call.
+                This is simply a conversation about your parish and goals.
+                There&rsquo;s no obligation to commit to anything on the
+                call.
               </CheckItem>
               <CheckItem>
-                If you need to cancel or reschedule, please let us know as
-                soon as you can.
+                If you need to cancel or reschedule, please do so as soon as
+                you can so we can offer the time to another parish.
               </CheckItem>
             </ul>
+            <p className="mt-6 text-pretty text-sm text-navy/60">
+              You&rsquo;ll receive a confirmation email shortly with your
+              appointment details and Zoom link.
+            </p>
           </div>
         </section>
       </main>

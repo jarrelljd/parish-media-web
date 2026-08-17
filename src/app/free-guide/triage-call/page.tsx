@@ -7,19 +7,13 @@ export const metadata: Metadata = {
   description: "Book a quick call with Parish Media Company.",
 };
 
-export default async function FreeGuideBookACallPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ role?: string }>;
-}) {
-  const { role } = await searchParams;
-
+export default function FreeGuideTriageCallPage() {
   return (
     <>
       <Nav />
       <main className="flex flex-1 flex-col">
         <section className="px-6 py-16 sm:py-20">
-          <FreeGuideBookACall role={role} />
+          <FreeGuideBookACall isPriest={false} />
         </section>
       </main>
     </>

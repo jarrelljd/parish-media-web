@@ -21,9 +21,10 @@ export default function FreeGuideForm() {
   useEffect(() => {
     if (state.status === "success") {
       const timer = setTimeout(() => {
-        window.location.href = `/free-guide/book-a-call?role=${encodeURIComponent(
-          role,
-        )}`;
+        window.location.href =
+          role === "Priest"
+            ? "/free-guide/consult-call"
+            : "/free-guide/triage-call";
       }, 1500);
       return () => clearTimeout(timer);
     }

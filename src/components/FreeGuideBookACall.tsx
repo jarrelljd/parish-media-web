@@ -17,8 +17,11 @@ function CheckItem({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function FreeGuideBookACall({ role }: { role?: string }) {
-  const isPriest = role === "Priest";
+export default function FreeGuideBookACall({
+  isPriest,
+}: {
+  isPriest: boolean;
+}) {
   const calendlyUrl = isPriest ? CALENDLY_URL_PRIEST : CALENDLY_URL_STAFF;
 
   return (

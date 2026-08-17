@@ -24,7 +24,7 @@ export default function FreeGuideForm() {
         window.location.href =
           role === "Priest"
             ? "/free-guide/free-consult"
-            : "/free-guide/triage-call";
+            : "/free-guide/free-triage";
       }, 1500);
       return () => clearTimeout(timer);
     }

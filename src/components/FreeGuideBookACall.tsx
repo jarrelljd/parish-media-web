@@ -93,51 +93,28 @@ export default function FreeGuideBookACall({
             </p>
 
             <p className="mt-6 font-semibold text-navy">
-              On this call, we will:
+              In this brief Zoom call we will:
             </p>
             <ul className="mt-3 space-y-2">
               <CheckItem>
-                Review how people currently find your parish online (Google,
-                Facebook, website)
+                See how people currently find your parish online
               </CheckItem>
               <CheckItem>
-                Spot the biggest &ldquo;leaks&rdquo; between first visit and
-                becoming a regular Mass attendee
+                Identify the biggest gap between a first visit and regular
+                Mass attendance
               </CheckItem>
               <CheckItem>
-                Choose 1&ndash;2 simple outreach steps your team can take in
-                the next 30 days
-              </CheckItem>
-              <CheckItem>
-                If helpful, sketch a 90-day Facebook / Instagram pilot
-                tailored to your parish
+                Choose 1&ndash;2 simple outreach steps for the next 30 days
               </CheckItem>
             </ul>
 
-            <p className="mt-6 text-pretty text-navy/80">
-              You will leave with a clear outreach plan you can share with
-              your staff or pastoral council.
+            <p className="mt-6 text-pretty text-sm text-navy/60">
+              No pressure or long presentation, just a focused conversation
+              about your parish.
             </p>
 
             <p className="mt-4 text-pretty text-navy/80">
-              I only hold a small number of these consults each week for
-              pastors who request the book, so if this would serve your
-              parish, please choose a time that works for you below.
-            </p>
-
-            <p className="mt-4 text-pretty text-sm text-navy/60">
-              No pressure, no long presentation, and no obligation. Just a
-              focused conversation about your parish and the people you hope
-              to reach.
-            </p>
-
-            <p className="mt-6 text-pretty text-navy/80">
-              <strong>Step 1:</strong> Pick an available time on the calendar
-              below.
-            </p>
-            <p className="mt-2 text-pretty text-navy/80">
-              <strong>Step 2:</strong> Add it to your calendar, and
-              I&rsquo;ll send a brief confirmation email with the Zoom link.
+              Please choose a time on the calendar below.
             </p>
           </>
         ) : (

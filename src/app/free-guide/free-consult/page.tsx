@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Book a quick call with Parish Media Company.",
 };
 
-export default function FreeGuideConsultCallPage() {
+export default function FreeGuideFreeConsultPage() {
   return (
     <>
       <Nav />

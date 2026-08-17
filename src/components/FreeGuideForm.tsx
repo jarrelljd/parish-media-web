@@ -23,7 +23,7 @@ export default function FreeGuideForm() {
       const timer = setTimeout(() => {
         window.location.href =
           role === "Priest"
-            ? "/free-guide/consult-call"
+            ? "/free-guide/free-consult"
             : "/free-guide/triage-call";
       }, 1500);
       return () => clearTimeout(timer);

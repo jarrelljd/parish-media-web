@@ -35,51 +35,82 @@ export default function FreeGuideBookACall({
         </h1>
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {isPriest
-            ? "While you wait, schedule your complimentary 30-minute parish outreach consult."
+            ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."
             : "Book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-        <p className="text-pretty text-navy/80">
-          Thank you for requesting <em>Social Media for Catholic Churches</em>
-          . It will arrive in your inbox shortly.
-        </p>
-
         {isPriest ? (
           <>
+            <p className="text-pretty text-navy/80">
+              Thank you for requesting{" "}
+              <em>Social Media for Catholic Churches</em>. It will arrive in
+              your inbox in the next few minutes.
+            </p>
+
             <p className="mt-4 text-pretty text-navy/80">
-              As a bonus, you qualify for a free 30-minute Zoom consultation
-              to apply the book to your parish.
+              Because you requested the book, you&rsquo;re invited to a
+              one-time, no-cost 30-minute Zoom conversation to apply it to
+              your parish.
             </p>
 
             <p className="mt-6 font-semibold text-navy">
-              In this call we will:
+              On this call, we will:
             </p>
             <ul className="mt-3 space-y-2">
               <CheckItem>
-                Review how people currently find your parish online
+                Review how people currently find your parish online (Google,
+                Facebook, website)
               </CheckItem>
               <CheckItem>
                 Spot the biggest &ldquo;leaks&rdquo; between first visit and
-                regular Mass
+                becoming a regular Mass attendee
               </CheckItem>
               <CheckItem>
-                Outline 1&ndash;2 simple outreach steps for the next 30 days
+                Choose 1&ndash;2 simple outreach steps your team can take in
+                the next 30 days
               </CheckItem>
               <CheckItem>
-                If helpful, sketch a 90-day Facebook / Instagram pilot for
-                your parish
+                If helpful, sketch a 90-day Facebook / Instagram pilot
+                tailored to your parish
               </CheckItem>
             </ul>
 
-            <p className="mt-6 text-pretty text-sm text-navy/60">
-              No pressure, no long presentation. Just a focused conversation
-              about your parish and your goals.
+            <p className="mt-6 text-pretty text-navy/80">
+              You will leave with a clear outreach plan you can share with
+              your staff or pastoral council.
+            </p>
+
+            <p className="mt-4 text-pretty text-navy/80">
+              I only hold a small number of these consults each week for
+              pastors who request the book, so if this would serve your
+              parish, please choose a time that works for you below.
+            </p>
+
+            <p className="mt-4 text-pretty text-sm text-navy/60">
+              No pressure, no long presentation, and no obligation. Just a
+              focused conversation about your parish and the people you hope
+              to reach.
+            </p>
+
+            <p className="mt-6 text-pretty text-navy/80">
+              <strong>Step 1:</strong> Pick an available time on the calendar
+              below.
+            </p>
+            <p className="mt-2 text-pretty text-navy/80">
+              <strong>Step 2:</strong> Add it to your calendar, and
+              I&rsquo;ll send a brief confirmation email with the Zoom link.
             </p>
           </>
         ) : (
           <>
+            <p className="text-pretty text-navy/80">
+              Thank you for requesting{" "}
+              <em>Social Media for Catholic Churches</em>. It will arrive in
+              your inbox shortly.
+            </p>
+
             <p className="mt-4 text-pretty text-navy/80">
               Because you indicated you&rsquo;re parish staff, the next step
               is a brief 10-minute triage call. The goal is to see whether a

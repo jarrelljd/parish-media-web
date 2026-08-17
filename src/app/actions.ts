@@ -228,6 +228,81 @@ export async function submitEbookRequest(
   return { status: "success" };
 }
 
+export type AuditRequestState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+// No webhook wired up yet — ZAPIER_WEBHOOK_SOCIAL_AUDIT isn't set, so this
+// fails gracefully with a friendly error until that's added, same as the
+// free-guide PDF gap.
+export async function submitAuditRequest(
+  _prevState: AuditRequestState,
+  formData: FormData,
+): Promise<AuditRequestState> {
+  const name = String(formData.get("name") ?? "");
+  const phone = String(formData.get("phone") ?? "");
+  const email = String(formData.get("email") ?? "");
+  const role = String(formData.get("role") ?? "");
+  const roleOther = String(formData.get("roleOther") ?? "");
+  const organization = String(formData.get("organization") ?? "");
+  const socialLink = String(formData.get("socialLink") ?? "");
+  const roleDisplay = role === "Other" && roleOther ? `Other (${roleOther})` : role;
+
+  if (phone.replace(/\D/g, "").length < 10) {
+    return {
+      status: "error",
+      message: "Please enter a valid phone number.",
+    };
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return {
+      status: "error",
+      message: "Please enter a valid email address.",
+    };
+  }
+
+  try {
+    await notifyZapier(
+      {
+        timestamp: new Date().toISOString(),
+        name,
+        phone,
+        email,
+        role: roleDisplay,
+        organization,
+        socialLink,
+      },
+      "ZAPIER_WEBHOOK_SOCIAL_AUDIT",
+    );
+  } catch (err) {
+    console.error("Failed to notify Zapier webhook (social audit):", err);
+    return {
+      status: "error",
+      message:
+        "Something went wrong sending your request. Please email joe@parishmediacompany.com directly.",
+    };
+  }
+
+  try {
+    const headersList = await headers();
+    await sendGenericLeadEvent({
+      eventId: randomUUID(),
+      contentName: "Social Media Audit Request",
+      sourcePath: "/free-audit",
+      email,
+      phone,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (audit):", err);
+  }
+
+  return { status: "success" };
+}
+
 export type BookACallState = {
   status: "idle" | "success" | "error";
   message?: string;

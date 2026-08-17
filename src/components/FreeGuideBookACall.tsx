@@ -142,22 +142,23 @@ export default function FreeGuideBookACall({
               </CheckItem>
               <CheckItem>
                 Get a quick picture of your current Facebook / Instagram
-                efforts
+                efforts and any limits (time, budget, diocesan policies)
               </CheckItem>
               <CheckItem>
-                Note any constraints (time, budget, diocesan policies)
+                Decide whether it makes sense to recommend a full consult
+                with Father or simply email you a short custom action plan
+                you can use in-house or share with him
               </CheckItem>
             </ul>
 
-            <p className="mt-6 font-semibold text-navy">
-              Decide together whether to:
+            <p className="mt-6 text-pretty text-sm text-navy/60">
+              No pressure. It&rsquo;s just to give you clear next steps
+              without wasting your time or Father&rsquo;s.
             </p>
-            <ul className="mt-3 space-y-2">
-              <CheckItem>Recommend a full consult with Father, or</CheckItem>
-              <CheckItem>
-                Send you a short custom action plan to use in-house
-              </CheckItem>
-            </ul>
+
+            <p className="mt-4 text-pretty text-navy/80">
+              Please choose a time on the calendar below.
+            </p>
           </>
         )}
       </div>

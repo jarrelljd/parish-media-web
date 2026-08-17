@@ -42,22 +42,21 @@ export default function CallConfirmedPage() {
             </p>
             <ul className="mt-3 space-y-3">
               <CheckItem>
-                Please join from a laptop or desktop computer rather than
-                your phone, so we can share screens if that&rsquo;s helpful.
+                Please join from a laptop or desktop (not your phone) so we
+                can share screens if needed.
               </CheckItem>
               <CheckItem>
-                This is simply a conversation about your parish and goals.
-                There&rsquo;s no obligation to commit to anything on the
-                call.
+                This is just a conversation about your parish and goals;
+                there&rsquo;s no obligation to commit to anything.
               </CheckItem>
               <CheckItem>
-                If you need to cancel or reschedule, please do so as soon as
-                you can so we can offer the time to another parish.
+                If you need to cancel or reschedule, please do so early so
+                we can offer the time to another parish.
               </CheckItem>
             </ul>
             <p className="mt-6 text-pretty text-sm text-navy/60">
-              You&rsquo;ll receive a confirmation email shortly with your
-              appointment details and Zoom link.
+              You&rsquo;ll get a confirmation email shortly with the details
+              and Zoom link.
             </p>
           </div>
         </section>

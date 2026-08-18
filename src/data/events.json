@@ -410,16 +410,45 @@
     ],
     "photos": [
       {
-        "src": "/images/events/st-joseph/Festival-Photo-Dark.jpg",
-        "alt": "Families gathered at the food tents at dusk during last year's festival"
+        "src": "/images/events/st-joseph/Festival-Photo-People.jpg",
+        "alt": "Parish families among the festival booths"
       },
       {
         "src": "/images/events/st-joseph/Festival-Photo-Food.jpg",
         "alt": "Volunteers preparing food for the festival"
       },
       {
-        "src": "/images/events/st-joseph/Festival-Photo-People.jpg",
-        "alt": "Parish families among the festival booths"
+        "src": "/images/events/st-joseph/Festival-Photo-Dark.jpg",
+        "alt": "Families gathered at the food tents at dusk during last year's festival"
+      }
+    ],
+    "sections": [
+      {
+        "heading": "Live Music",
+        "body": "Mariachi bands play throughout the day, filling the church grounds with music for the whole family to enjoy.",
+        "icon": "🎶",
+        "photo": {
+          "src": "/images/events/st-joseph/live-music.jpg",
+          "alt": "A mariachi band performing near the St. Joseph statue at last year's festival"
+        }
+      },
+      {
+        "heading": "Saint Dress-Up Contest",
+        "body": "Kids dress up as their favorite saints for a chance to win prizes, a festival favorite for the whole family.",
+        "icon": "👼",
+        "photo": {
+          "src": "/images/events/st-joseph/dress-up-contest.jpg",
+          "alt": "Children dressed as saints lined up for the Saint Dress-Up Contest"
+        }
+      },
+      {
+        "heading": "Grand Raffle",
+        "body": "Buy your tickets for $10 each and enter the Grand Raffle after Mass, with prizes up to $2,000.",
+        "icon": "🎫",
+        "photo": {
+          "src": "/images/events/st-joseph/grand-raffle.jpg",
+          "alt": "Volunteers selling raffle tickets at the festival ticket booth"
+        }
       }
     ],
     "cta": {
@@ -448,6 +477,20 @@
           },
           {
             "label": "Gran Rifa \u2022 $10 por Boleto"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "M\u00fasica en Vivo",
+            "body": "Bandas de mariachi tocan durante todo el d\u00eda, llenando el terreno de la iglesia de m\u00fasica para toda la familia."
+          },
+          {
+            "heading": "Concurso de Disfraces de Santos",
+            "body": "Los ni\u00f1os se disfrazan de sus santos favoritos para tener la oportunidad de ganar premios, uno de los favoritos del festival para toda la familia."
+          },
+          {
+            "heading": "Gran Rifa",
+            "body": "Compre sus boletos a $10 cada uno y participe en la Gran Rifa despu\u00e9s de la Misa, con premios de hasta $2,000."
           }
         ],
         "cta": {

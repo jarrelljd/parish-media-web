@@ -77,7 +77,7 @@ export default function EventRSVPForm({
           {title && (
             <>
               <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-[var(--brand-secondary)]" />
-              <p className="font-serif text-xl font-semibold tracking-tight text-[var(--brand-primary)]">
+              <p className="text-balance font-serif text-xl font-semibold tracking-tight text-[var(--brand-primary)]">
                 {title}
               </p>
             </>

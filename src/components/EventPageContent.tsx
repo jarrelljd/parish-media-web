@@ -127,14 +127,14 @@ export default function EventPageContent({
       )}
 
       <div className="mx-auto mt-5 max-w-xl text-center">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
+        <h1 className="text-balance font-serif text-3xl font-semibold tracking-tight text-[var(--brand-primary)] sm:text-5xl">
           {eventName}
         </h1>
         {/* Short "why come" hook directly under the heading. Falls back to
             the fuller valueText when an event hasn't been given a dedicated
             subheading yet (see EventInfo.subheading) — kept in an <h2> either
             way so there's always exactly one subheading-level element here. */}
-        <h2 className="mt-3 font-serif text-base leading-relaxed font-normal text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-xl sm:leading-relaxed sm:line-clamp-none">
+        <h2 className="text-pretty mt-3 font-serif text-base leading-relaxed font-normal text-[var(--brand-text)] line-clamp-4 sm:mt-6 sm:text-xl sm:leading-relaxed sm:line-clamp-none">
           {subheading ?? valueText}
         </h2>
 
@@ -288,7 +288,7 @@ export default function EventPageContent({
               )}
               <div className={`text-center ${s.photo ? "sm:w-3/5 sm:text-left" : "w-full"}`}>
                 <h2
-                  className={`flex items-center justify-center gap-2 font-serif text-xl font-semibold text-[var(--brand-primary)] ${
+                  className={`flex items-center justify-center gap-2 text-balance font-serif text-xl font-semibold text-[var(--brand-primary)] ${
                     s.photo ? "sm:justify-start" : ""
                   }`}
                 >

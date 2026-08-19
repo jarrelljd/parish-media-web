@@ -501,7 +501,8 @@
           "successMessage": "\u00a1Listo! Est\u00e9 pendiente de su correo para el recordatorio."
         }
       }
-    }
+    },
+    "webhookEnvVar": "ZAPIER_WEBHOOK_ST_JOSEPH_FESTIVAL"
   },
   {
     "parishSlug": "st-mary-mountains",

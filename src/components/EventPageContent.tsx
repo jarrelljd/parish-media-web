@@ -277,7 +277,13 @@ export default function EventPageContent({
             >
               {s.photo && (
                 <div className="relative aspect-[4/3] w-full flex-shrink-0 overflow-hidden rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.03),0_8px_24px_-8px_var(--brand-shadow)] sm:w-2/5">
-                  <Image src={s.photo.src} alt={s.photo.alt} fill className="object-cover" />
+                  <Image
+                    src={s.photo.src}
+                    alt={s.photo.alt}
+                    fill
+                    className="object-cover"
+                    style={{ objectPosition: s.photo.objectPosition ?? "center" }}
+                  />
                 </div>
               )}
               <div className={`text-center ${s.photo ? "sm:w-3/5 sm:text-left" : "w-full"}`}>

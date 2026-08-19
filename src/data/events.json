@@ -425,7 +425,7 @@
     "sections": [
       {
         "heading": "Live Music",
-        "body": "Mariachi bands play throughout the day, filling the church grounds with music for the whole family to enjoy.",
+        "body": "Live music plays throughout the day, filling the church grounds with music for the whole family to enjoy.",
         "icon": "🎶",
         "photo": {
           "src": "/images/events/st-joseph/live-music.jpg",
@@ -438,7 +438,8 @@
         "icon": "👼",
         "photo": {
           "src": "/images/events/st-joseph/dress-up-contest.jpg",
-          "alt": "Children dressed as saints lined up for the Saint Dress-Up Contest"
+          "alt": "Children dressed as saints lined up for the Saint Dress-Up Contest",
+          "objectPosition": "center 15%"
         }
       },
       {
@@ -454,9 +455,9 @@
     "cta": {
       "type": "form",
       "title": "Don't Miss the Festival",
-      "buttonLabel": "Add to Calendar",
-      "introText": "Tap below and we'll add the festival to your calendar with all the details.",
-      "successMessage": "You're all set! Check your calendar for the invite.",
+      "buttonLabel": "Send me a Reminder",
+      "introText": "Tap below and we'll send you a reminder with all the festival details.",
+      "successMessage": "You're all set! Keep an eye on your inbox for the reminder.",
       "collectPhone": false
     },
     "translations": {
@@ -482,7 +483,7 @@
         "sections": [
           {
             "heading": "M\u00fasica en Vivo",
-            "body": "Bandas de mariachi tocan durante todo el d\u00eda, llenando el terreno de la iglesia de m\u00fasica para toda la familia."
+            "body": "M\u00fasica en vivo suena durante todo el d\u00eda, llenando el terreno de la iglesia de m\u00fasica para toda la familia."
           },
           {
             "heading": "Concurso de Disfraces de Santos",
@@ -495,9 +496,9 @@
         ],
         "cta": {
           "title": "No se Pierda el Festival",
-          "buttonLabel": "A\u00f1adir al Calendario",
-          "introText": "Toque el bot\u00f3n y a\u00f1adiremos el festival a su calendario con todos los detalles.",
-          "successMessage": "\u00a1Listo! Revise su calendario para ver la invitaci\u00f3n."
+          "buttonLabel": "Env\u00edenme un Recordatorio",
+          "introText": "Toque el bot\u00f3n y le enviaremos un recordatorio con todos los detalles del festival.",
+          "successMessage": "\u00a1Listo! Est\u00e9 pendiente de su correo para el recordatorio."
         }
       }
     }

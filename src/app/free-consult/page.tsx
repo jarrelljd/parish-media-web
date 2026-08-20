@@ -13,7 +13,7 @@ export default function FreeConsultPage() {
       <Nav />
       <main className="flex flex-1 flex-col">
         <section className="px-6 py-16 sm:py-20">
-          <ConsultBookingPage isPriest={true} />
+          <ConsultBookingPage variant="priest" />
         </section>
       </main>
     </>

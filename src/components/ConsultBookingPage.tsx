@@ -3,6 +3,8 @@ import CalendlyEmbed from "@/components/CalendlyEmbed";
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
 const CALENDLY_URL_STAFF = "https://calendly.com/parishmedia/triage";
 
+export type ConsultVariant = "priest" | "vocations" | "staff";
+
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-2.5 text-navy/80">
@@ -18,30 +20,36 @@ function CheckItem({ children }: { children: React.ReactNode }) {
 }
 
 export default function ConsultBookingPage({
-  isPriest,
+  variant,
 }: {
-  isPriest: boolean;
+  variant: ConsultVariant;
 }) {
-  const calendlyUrl = isPriest ? CALENDLY_URL_PRIEST : CALENDLY_URL_STAFF;
+  const calendlyUrl =
+    variant === "staff" ? CALENDLY_URL_STAFF : CALENDLY_URL_PRIEST;
 
   return (
     <>
       <div className="mx-auto max-w-2xl text-center">
         <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
         <h1 className="mt-8 text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
-          {isPriest
-            ? "You’re Invited to a Free Consult, Father."
-            : "Let’s Get You Scheduled."}
+          {variant === "priest" &&
+            "You’re Invited to a Free Consult, Father."}
+          {variant === "vocations" &&
+            "You’re Invited to a Free Vocations Outreach Consult."}
+          {variant === "staff" && "Let’s Get You Scheduled."}
         </h1>
         <p className="mt-4 text-pretty text-lg text-navy/70">
-          {isPriest
-            ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."
-            : "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
+          {variant === "priest" &&
+            "Before you close this page, reserve your no-cost 30-minute parish outreach consult."}
+          {variant === "vocations" &&
+            "Before you close this page, reserve your no-cost 30-minute vocations outreach consult."}
+          {variant === "staff" &&
+            "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-        {isPriest ? (
+        {variant === "priest" && (
           <>
             <p className="text-pretty text-navy/80">
               You&rsquo;re invited to a one-time, no-cost 30-minute Zoom
@@ -73,7 +81,45 @@ export default function ConsultBookingPage({
               Please choose a time on the calendar below.
             </p>
           </>
-        ) : (
+        )}
+
+        {variant === "vocations" && (
+          <>
+            <p className="text-pretty text-navy/80">
+              You&rsquo;re invited to a one-time, no-cost 30-minute Zoom
+              conversation to talk through outreach for your vocations
+              office.
+            </p>
+
+            <p className="mt-6 font-semibold text-navy">
+              In this brief Zoom call we will:
+            </p>
+            <ul className="mt-3 space-y-2">
+              <CheckItem>
+                See how discerners currently find your vocations office
+                online
+              </CheckItem>
+              <CheckItem>
+                Identify the biggest gap between a first inquiry and a real
+                conversation with your director
+              </CheckItem>
+              <CheckItem>
+                Choose 1&ndash;2 simple outreach steps for the next 30 days
+              </CheckItem>
+            </ul>
+
+            <p className="mt-6 text-pretty text-sm text-navy/60">
+              No pressure or long presentation, just a focused conversation
+              about your vocations office.
+            </p>
+
+            <p className="mt-4 text-pretty text-navy/80">
+              Please choose a time on the calendar below.
+            </p>
+          </>
+        )}
+
+        {variant === "staff" && (
           <>
             <p className="text-pretty text-navy/80">
               Because you indicated you&rsquo;re parish staff, the next step

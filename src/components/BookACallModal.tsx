@@ -28,7 +28,13 @@ export default function BookACallModal({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setRedirecting(true);
-    window.location.href = role === "Priest" ? "/free-consult" : "/free-triage";
+    const destination =
+      role === "Parish Priest"
+        ? "/free-consult"
+        : role === "Vocations Director"
+          ? "/free-consult/vocations"
+          : "/free-triage";
+    window.location.href = destination;
   }
 
   return (
@@ -129,7 +135,8 @@ export default function BookACallModal({
                 <option value="" disabled>
                   Select one...
                 </option>
-                <option value="Priest">Priest</option>
+                <option value="Parish Priest">Parish Priest</option>
+                <option value="Vocations Director">Vocations Director</option>
                 <option value="Staff">Staff</option>
               </select>
             </div>

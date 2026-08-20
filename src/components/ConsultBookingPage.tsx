@@ -86,9 +86,8 @@ export default function ConsultBookingPage({
         {variant === "vocations" && (
           <>
             <p className="text-pretty text-navy/80">
-              You&rsquo;re invited to a one-time, no-cost 30-minute Zoom
-              conversation to talk through outreach for your vocations
-              office.
+              You&rsquo;re invited to a no-cost 30-minute Zoom consult to
+              talk through outreach for your vocations office.
             </p>
 
             <p className="mt-6 font-semibold text-navy">
@@ -96,15 +95,15 @@ export default function ConsultBookingPage({
             </p>
             <ul className="mt-3 space-y-2">
               <CheckItem>
-                See how discerners currently find your vocations office
-                online
+                See how men discerning their vocation currently connect
+                with your vocations office
               </CheckItem>
               <CheckItem>
-                Identify the biggest gap between a first inquiry and a real
-                conversation with your director
+                Identify your vocations office&rsquo;s primary goal over the
+                next 90 days
               </CheckItem>
               <CheckItem>
-                Choose 1&ndash;2 simple outreach steps for the next 30 days
+                Develop a 90-day outreach plan to hit that goal
               </CheckItem>
             </ul>
 

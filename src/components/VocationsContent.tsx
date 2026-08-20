@@ -37,17 +37,30 @@ export default function VocationsContent() {
               Book 30-Min Vocation Outreach Plan&nbsp;Call
             </VocationsBookACallButton>
           </div>
-          <div className="mx-auto mt-6 flex max-w-md items-start justify-center gap-2 text-left">
-            <span
-              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs font-bold text-gold"
+          <div className="mx-auto mt-8 flex max-w-md items-center gap-4 rounded-2xl border border-gold/30 bg-white px-6 py-4 text-left shadow-sm">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              className="h-10 w-10 shrink-0 text-gold"
               aria-hidden="true"
             >
-              &#10003;
-            </span>
-            <p className="text-pretty text-sm italic text-navy/60">
-              If we don&rsquo;t deliver 30 new inquiries in 90 days, you pay
-              nothing and we donate $1,000 to your diocese / community.
-            </p>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M12 3c-2.755 0-5.455.386-8.032 1.113a1.125 1.125 0 0 0-.734 1.352 1.125 1.125 0 0 0 .01.104C3.2 12.4 6.4 18.9 12 21c5.6-2.1 8.8-8.6 8.756-15.43a1.125 1.125 0 0 0-.734-1.352A48.424 48.424 0 0 0 12 3Z"
+              />
+            </svg>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold">
+                100% Guarantee
+              </p>
+              <p className="mt-1 text-pretty text-sm text-navy/70">
+                If we don&rsquo;t deliver 30 new inquiries in 90 days, you pay
+                nothing and we donate $1,000 to your diocese / community.
+              </p>
+            </div>
           </div>
         </div>
       </section>

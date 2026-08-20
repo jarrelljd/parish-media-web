@@ -142,35 +142,6 @@ export default function VocationsContent() {
         </div>
       </section>
 
-      {/* Also trusted by vocations directors */}
-      <section className="px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Also Trusted by Vocations Directors
-          </h2>
-          <div className="mt-8 flex flex-col items-center gap-6 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm sm:flex-row sm:items-start sm:text-left">
-            <Image
-              src={daveAufieroPhoto}
-              alt="Fr. Dave Aufiero"
-              className="h-24 w-24 shrink-0 rounded-full object-cover"
-            />
-            <div>
-              <p className="text-pretty text-lg italic text-navy/80">
-                &ldquo;He helped build our young adult ministry, it&rsquo;s
-                been a pleasure working with him. I recommended Joe to our
-                Diocese.&rdquo;
-              </p>
-              <p className="mt-4 font-semibold text-navy">
-                Fr. Dave Aufiero
-              </p>
-              <p className="text-sm text-navy/60">
-                Vocations Director, Diocese of Springfield
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* What we do for you */}
       <section className="bg-navy/5 px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-2xl">
@@ -200,6 +171,22 @@ export default function VocationsContent() {
             You keep full control of screening, discernment, and formation.
             We just help more men reach your front door.
           </p>
+
+          <div className="mx-auto mt-10 flex max-w-md items-center gap-4 border-t border-navy/10 pt-8">
+            <Image
+              src={daveAufieroPhoto}
+              alt="Fr. Dave Aufiero"
+              className="h-14 w-14 shrink-0 rounded-full object-cover"
+            />
+            <p className="text-pretty text-sm italic text-navy/70">
+              &ldquo;He helped build our young adult ministry, it&rsquo;s
+              been a pleasure working with him. I recommended Joe to our
+              Diocese.&rdquo;
+              <span className="mt-1 block font-semibold not-italic text-navy">
+                Fr. Dave Aufiero, Vocations Director, Diocese&nbsp;of&nbsp;Springfield
+              </span>
+            </p>
+          </div>
         </div>
       </section>
 

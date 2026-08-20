@@ -34,7 +34,7 @@ export default function VocationsContent() {
           </p>
           <div className="mt-8">
             <VocationsBookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book a Call
+              Book 30-Min Vocation Outreach Plan Call
             </VocationsBookACallButton>
           </div>
         </div>
@@ -206,7 +206,7 @@ export default function VocationsContent() {
           </p>
           <div className="mt-8">
             <VocationsBookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
-              Book a Call
+              Book 30-Min Vocation Outreach Plan Call
             </VocationsBookACallButton>
           </div>
         </div>

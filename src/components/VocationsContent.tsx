@@ -58,7 +58,8 @@ export default function VocationsContent() {
               </p>
               <p className="mt-1 text-pretty text-sm text-navy/70">
                 If we don&rsquo;t deliver 30 new inquiries in 90 days, you pay
-                nothing and we donate $1,000 to your diocese / community.
+                nothing and we donate $1,000 to your diocese or
+                religious&nbsp;community.
               </p>
             </div>
           </div>

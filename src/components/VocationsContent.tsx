@@ -23,12 +23,12 @@ export default function VocationsContent() {
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h1 className="mt-8 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
             30+ Serious Vocation Inquiries in 90 Days, or We Pay You and
-            Donate $1,000 to Your Community.
+            Donate $1,000 to Your Diocese/Religious Order.
           </h1>
           <p className="mt-6 text-pretty text-lg text-navy/70">
             Done-for-you social media outreach that connects men 21&ndash;35
-            with your vocations office, while protecting your charism and
-            process.
+            with your vocations office, while maintaining your charism and
+            image.
           </p>
           <div className="mt-8">
             <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">

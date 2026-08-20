@@ -3,7 +3,7 @@ import CalendlyEmbed from "@/components/CalendlyEmbed";
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
 const CALENDLY_URL_STAFF = "https://calendly.com/parishmedia/triage";
 const CALENDLY_URL_VOCATIONS =
-  "https://calendly.com/parishmedia/free-consultation-joe-jarrell-clone?hide_event_type_details=1&hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
+  "https://calendly.com/parishmedia/free-consultation-joe-jarrell-clone?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
 
 export type ConsultVariant = "priest" | "vocations" | "staff";
 

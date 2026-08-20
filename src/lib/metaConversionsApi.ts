@@ -15,6 +15,8 @@ function hashForMeta(value: string): string {
   return createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
 }
 
+// Event-page RSVP leads (client conversions) — runs through the "events"
+// pixel, kept separate from Joe's own marketing-site leads below.
 export async function sendLeadConversionEvent({
   parishSlug,
   eventSlug,
@@ -91,7 +93,11 @@ export async function sendLeadConversionEvent({
 
 // Generic (non-event-page) Lead event — for lead-gen forms outside the
 // parish/event RSVP flow (e.g. the /free-guide ebook form), where there's no
-// parishSlug/eventSlug to build a source URL from.
+// parishSlug/eventSlug to build a source URL from. Runs through the separate
+// "marketing" pixel (Joe's own sales leads), not the events pixel above
+// (client RSVP leads) — the two are different audiences to Meta's algorithm
+// and shouldn't share optimization data. See components/MetaPixel.tsx for
+// the matching browser-side split.
 export async function sendGenericLeadEvent({
   eventId,
   contentName,
@@ -109,8 +115,8 @@ export async function sendGenericLeadEvent({
   userAgent?: string | null;
   ipAddress?: string | null;
 }): Promise<void> {
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  const accessToken = process.env.META_CONVERSIONS_API_TOKEN;
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID_MARKETING;
+  const accessToken = process.env.META_CONVERSIONS_API_TOKEN_MARKETING;
   if (!pixelId || !accessToken) {
     return;
   }

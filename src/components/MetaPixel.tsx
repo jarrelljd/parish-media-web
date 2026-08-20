@@ -5,8 +5,14 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 
 export default function MetaPixel() {
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const pathname = usePathname();
+  // Event pages (client RSVP leads) and everything else (Joe's own
+  // marketing/sales leads) are different audiences to Meta's algorithm, so
+  // they run through separate pixels — see metaConversionsApi.ts for the
+  // matching server-side split.
+  const pixelId = pathname.startsWith("/events/")
+    ? process.env.NEXT_PUBLIC_META_PIXEL_ID
+    : process.env.NEXT_PUBLIC_META_PIXEL_ID_MARKETING;
 
   // Fires our own explicit "ViewContent" on every page, including the very
   // first one on a page and every client-side navigation after that. Waits

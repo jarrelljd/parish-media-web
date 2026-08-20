@@ -165,7 +165,10 @@ export default function ConsultBookingPage({
       </div>
 
       <div className="mx-auto mt-10 max-w-3xl">
-        <CalendlyEmbed url={calendlyUrl} />
+        <CalendlyEmbed
+          url={calendlyUrl}
+          trackScheduleEvent={variant === "vocations"}
+        />
       </div>
     </>
   );

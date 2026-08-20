@@ -10,3 +10,10 @@ export function trackLead(contentName: string, eventId?: string) {
   const fbq = (window as unknown as { fbq?: Fbq }).fbq;
   fbq?.("track", "Lead", { content_name: contentName }, eventId ? { eventID: eventId } : undefined);
 }
+
+// Standard Meta "Schedule" event — for an actual booked appointment (e.g. a
+// completed Calendly booking), distinct from "Lead" above.
+export function trackSchedule() {
+  const fbq = (window as unknown as { fbq?: Fbq }).fbq;
+  fbq?.("track", "Schedule");
+}

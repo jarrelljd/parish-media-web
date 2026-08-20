@@ -228,16 +228,15 @@ export default function Results() {
             </div>
             <div>
               <p className="font-serif text-4xl font-semibold text-navy">
-                140+
+                190
               </p>
               <p className="text-sm font-medium uppercase tracking-wide text-navy/60">
-                Inquiries in 60 Days
+                Inquiries in 90 Days
               </p>
               <p className="mt-3 text-navy/80">
-                For $380 in ad spend, 140+ Catholic men reached out about a
+                For $500 in ad spend, 190 Catholic men reached out about a
                 conversation on religious life with the Midwest Province
-                Vocation Office, Capuchin Franciscans. Ten were qualified
-                and went on to meet in person or on a Zoom call with Fr.
+                Vocation Office, Capuchin Franciscans, connecting with Fr.
                 Nathan Linton, Vocations Director.
               </p>
             </div>

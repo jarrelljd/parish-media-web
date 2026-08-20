@@ -1,4 +1,6 @@
+import Image from "next/image";
 import BookACallButton from "./BookACallButton";
+import nathanLintonPhoto from "../../public/images/proof/nathan-linton-vocations.jpg";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -57,15 +59,18 @@ export default function VocationsContent() {
         </div>
       </section>
 
-      {/* What we've done */}
+      {/* Client snapshot */}
       <section className="px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            What We&rsquo;ve Done
-          </h2>
-          <p className="mt-4 text-navy/80">
-            In a recent campaign with the Capuchin friars, we generated:
-          </p>
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center">
+            <h2 className="font-serif text-2xl font-semibold text-navy sm:text-3xl">
+              Client Snapshot: The Capuchin Franciscans
+            </h2>
+            <p className="mt-4 text-navy/80">
+              In a recent campaign with the Midwest Province of St. Joseph, we
+              generated:
+            </p>
+          </div>
 
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             <div className="rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
@@ -86,11 +91,27 @@ export default function VocationsContent() {
             </div>
           </div>
 
-          <p className="mt-8 text-pretty text-navy/80">
-            Same Church. Same Gospel. We simply met young men where they
-            already spend their time and invited them into a real
-            conversation.
-          </p>
+          <div className="mt-8 flex flex-col items-center gap-6 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm sm:flex-row sm:items-start sm:text-left">
+            <Image
+              src={nathanLintonPhoto}
+              alt="Fr. Nathan Linton"
+              className="h-24 w-24 shrink-0 rounded-full object-cover"
+              style={{ objectPosition: "65% 50%" }}
+            />
+            <div>
+              <p className="text-pretty text-lg italic text-navy/80">
+                &ldquo;This has been great. The other provinces have even
+                been talking about how good our socials have gotten.&rdquo;
+              </p>
+              <p className="mt-4 font-semibold text-navy">
+                Fr. Nathan Linton
+              </p>
+              <p className="text-sm text-navy/60">
+                Vocations Director, Capuchins &mdash; Midwest Province of St.
+                Joseph
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -145,7 +166,8 @@ export default function VocationsContent() {
             </CheckItem>
           </ul>
           <p className="mt-6 font-semibold text-navy">
-            No fine print games. If we don&rsquo;t deliver, you win anyway.
+            No fine print games. If we don&rsquo;t deliver, you&rsquo;re
+            still having more conversations with discerners for free.
           </p>
         </div>
       </section>
@@ -159,8 +181,8 @@ export default function VocationsContent() {
           <p className="mt-4 text-center text-navy/80">This is a fit if:</p>
           <ul className="mt-6 space-y-3">
             <CheckItem>
-              You are a diocese or religious community with an active
-              vocations director
+              You are a Catholic diocese or religious community with an
+              active vocations director
             </CheckItem>
             <CheckItem>
               You have capacity to respond personally to new inquiries

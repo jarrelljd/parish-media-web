@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import VocationsBookACallButton from "./VocationsBookACallButton";
 import nathanLintonPhoto from "../../public/images/proof/nathan-linton-vocations.jpg";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
@@ -33,12 +33,9 @@ export default function VocationsContent() {
             image.
           </p>
           <div className="mt-8">
-            <Link
-              href="/free-consult/vocations"
-              className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90"
-            >
+            <VocationsBookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
               Book a Call
-            </Link>
+            </VocationsBookACallButton>
           </div>
         </div>
       </section>
@@ -208,12 +205,9 @@ export default function VocationsContent() {
             step is a short conversation.
           </p>
           <div className="mt-8">
-            <Link
-              href="/free-consult/vocations"
-              className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
-            >
+            <VocationsBookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
               Book a Call
-            </Link>
+            </VocationsBookACallButton>
           </div>
         </div>
       </section>

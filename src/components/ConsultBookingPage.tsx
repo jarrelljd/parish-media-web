@@ -41,14 +41,14 @@ export default function ConsultBookingPage({
           {variant === "priest" &&
             "You’re Invited to a Free Consult, Father."}
           {variant === "vocations" &&
-            "You’re Invited to a Free Vocations Outreach Consult."}
+            "You’re Invited to a Free Vocations Strategy Call."}
           {variant === "staff" && "Let’s Get You Scheduled."}
         </h1>
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {variant === "priest" &&
             "Before you close this page, reserve your no-cost 30-minute parish outreach consult."}
           {variant === "vocations" &&
-            "Before you close this page, reserve your no-cost 30-minute vocations outreach consult below."}
+            "Before you close this page, reserve your no-cost 30-minute vocations strategy call below."}
           {variant === "staff" &&
             "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
@@ -92,8 +92,8 @@ export default function ConsultBookingPage({
         {variant === "vocations" && (
           <>
             <p className="text-pretty text-navy/80">
-              You&rsquo;re invited to a no-cost 30-minute Zoom consult to
-              talk through outreach for your vocations office.
+              You&rsquo;re invited to a no-cost 30-minute Zoom strategy call
+              to talk through outreach for your vocations office.
             </p>
 
             <p className="mt-6 font-semibold text-navy">

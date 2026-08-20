@@ -34,13 +34,21 @@ export default function VocationsContent() {
           </p>
           <div className="mt-8">
             <VocationsBookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book 30-Min Vocation Outreach Plan Call
+              Book 30-Min Vocation Outreach Plan&nbsp;Call
             </VocationsBookACallButton>
           </div>
-          <p className="mx-auto mt-6 max-w-xl text-balance rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-sm font-medium text-navy">
-            If we don&rsquo;t deliver 30 new inquiries in 90 days, you pay
-            nothing and we donate $1,000 to your diocese / community.
-          </p>
+          <div className="mx-auto mt-6 flex max-w-md items-start justify-center gap-2 text-left">
+            <span
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs font-bold text-gold"
+              aria-hidden="true"
+            >
+              &#10003;
+            </span>
+            <p className="text-pretty text-sm italic text-navy/60">
+              If we don&rsquo;t deliver 30 new inquiries in 90 days, you pay
+              nothing and we donate $1,000 to your diocese / community.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -210,7 +218,7 @@ export default function VocationsContent() {
           </p>
           <div className="mt-8">
             <VocationsBookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
-              Book 30-Min Vocation Outreach Plan Call
+              Book 30-Min Vocation Outreach Plan&nbsp;Call
             </VocationsBookACallButton>
           </div>
         </div>

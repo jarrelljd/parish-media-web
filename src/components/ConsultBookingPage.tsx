@@ -48,7 +48,7 @@ export default function ConsultBookingPage({
           {variant === "priest" &&
             "Before you close this page, reserve your no-cost 30-minute parish outreach consult."}
           {variant === "vocations" &&
-            "Before you close this page, reserve your no-cost 30-minute vocations outreach consult."}
+            "Before you close this page, reserve your no-cost 30-minute vocations outreach consult below."}
           {variant === "staff" &&
             "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>

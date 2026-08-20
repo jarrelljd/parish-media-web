@@ -1,6 +1,7 @@
 import Image from "next/image";
 import VocationsBookACallButton from "./VocationsBookACallButton";
 import nathanLintonPhoto from "../../public/images/proof/nathan-linton-vocations.jpg";
+import daveAufieroPhoto from "../../public/images/clients/fr-dave-aufiero.jpg";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -117,25 +118,51 @@ export default function VocationsContent() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col items-center gap-6 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm sm:flex-row sm:items-start sm:text-left">
-            <Image
-              src={nathanLintonPhoto}
-              alt="Fr. Nathan Linton"
-              className="h-24 w-24 shrink-0 rounded-full object-cover"
-              style={{ objectPosition: "65% 50%" }}
-            />
-            <div>
-              <p className="text-pretty text-lg italic text-navy/80">
-                &ldquo;This has been great. The other provinces have even
-                been talking about how good our socials have gotten.&rdquo;
-              </p>
-              <p className="mt-4 font-semibold text-navy">
-                Fr. Nathan Linton
-              </p>
-              <p className="text-sm text-navy/60">
-                Vocations Director, Capuchins &mdash; Midwest Province of St.
-                Joseph
-              </p>
+          <p className="mt-10 text-center text-xs font-semibold uppercase tracking-widest text-gold">
+            In Their Own Words
+          </p>
+          <div className="mt-4 grid gap-6 sm:grid-cols-2">
+            <div className="flex flex-col items-center gap-6 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm text-center sm:items-start sm:text-left">
+              <Image
+                src={nathanLintonPhoto}
+                alt="Fr. Nathan Linton"
+                className="h-24 w-24 shrink-0 rounded-full object-cover"
+                style={{ objectPosition: "65% 50%" }}
+              />
+              <div>
+                <p className="text-pretty text-lg italic text-navy/80">
+                  &ldquo;This has been great. The other provinces have even
+                  been talking about how good our socials have gotten.&rdquo;
+                </p>
+                <p className="mt-4 font-semibold text-navy">
+                  Fr. Nathan Linton
+                </p>
+                <p className="text-sm text-navy/60">
+                  Vocations Director, Capuchins &mdash; Midwest Province of
+                  St. Joseph
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center gap-6 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm text-center sm:items-start sm:text-left">
+              <Image
+                src={daveAufieroPhoto}
+                alt="Fr. Dave Aufiero"
+                className="h-24 w-24 shrink-0 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-pretty text-lg italic text-navy/80">
+                  &ldquo;He helped build our young adult ministry, it&rsquo;s
+                  been a pleasure working with him. I recommended Joe to our
+                  Diocese.&rdquo;
+                </p>
+                <p className="mt-4 font-semibold text-navy">
+                  Fr. Dave Aufiero
+                </p>
+                <p className="text-sm text-navy/60">
+                  Vocations Director, Diocese of Springfield
+                </p>
+              </div>
             </div>
           </div>
         </div>

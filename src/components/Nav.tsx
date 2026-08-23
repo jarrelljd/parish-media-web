@@ -17,8 +17,8 @@ const serviceLinks = [
 ];
 
 const freeStuffLinks = [
-  { href: "/free-guide", label: "Free Books" },
-  { href: "/free-audit", label: "Free Audit" },
+  { href: "/free-guide", label: "Free Book: Social Media for Catholic Churches" },
+  { href: "/free-audit", label: "Free Audit of Your Parish’s Socials" },
 ];
 
 export default function Nav() {
@@ -140,7 +140,7 @@ export default function Nav() {
             </button>
 
             {freeStuffOpen && (
-              <div className="absolute left-0 top-full mt-2 w-48 rounded-xl border border-navy/10 bg-white p-2 shadow-lg">
+              <div className="absolute left-0 top-full mt-2 w-72 rounded-xl border border-navy/10 bg-white p-2 shadow-lg">
                 {freeStuffLinks.map((link) => (
                   <Link
                     key={link.href}

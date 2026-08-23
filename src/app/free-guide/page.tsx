@@ -182,7 +182,7 @@ export default function FreeGuidePage() {
             </h2>
             <div
               className="relative mt-8 overflow-hidden rounded-2xl shadow-lg"
-              style={{ paddingTop: "75%" }}
+              style={{ paddingTop: "56.25%" }}
             >
               <iframe
                 src="https://player.vimeo.com/video/1220634051?badge=0&autopause=0&player_id=0&app_id=58479"

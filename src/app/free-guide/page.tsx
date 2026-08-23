@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Script from "next/script";
 import Nav from "@/components/Nav";
 import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
@@ -125,11 +126,6 @@ export default function FreeGuidePage() {
               life in just 90 days.
             </p>
 
-            {/*
-              VSL slot: once a 60-second video exists, it goes here between
-              the subheading and CTA. No player wired up yet.
-            */}
-
             <div className="mt-6 sm:mt-10">
               <FreeGuideCtaButton />
               <p className="mt-3 text-sm text-navy/50">
@@ -177,6 +173,28 @@ export default function FreeGuidePage() {
             </div>
           </div>
         </section>
+
+        {/* VSL */}
+        <section className="px-6 pb-16 sm:pb-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+              Watch This 60-Second Overview of the Book
+            </h2>
+            <div
+              className="relative mt-8 overflow-hidden rounded-2xl shadow-lg"
+              style={{ paddingTop: "75%" }}
+            >
+              <iframe
+                src="https://player.vimeo.com/video/1220634051?badge=0&autopause=0&player_id=0&app_id=58479"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 h-full w-full border-0"
+                title="Free-Book VSL"
+              />
+            </div>
+          </div>
+        </section>
+        <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
 
         {/* Form */}
         <section className="px-6 pb-20 sm:pb-28">

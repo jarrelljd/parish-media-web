@@ -7,7 +7,6 @@ import { useBookACallModal } from "@/components/BookACallModalProvider";
 
 const links = [
   { href: "/results", label: "Results" },
-  { href: "/free-stuff", label: "Free Stuff" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -17,14 +16,24 @@ const serviceLinks = [
   { href: "/services/vocations", label: "Vocations Outreach" },
 ];
 
+const freeStuffLinks = [
+  { href: "/free-guide", label: "Free Books" },
+  { href: "/free-audit", label: "Free Audit" },
+];
+
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [freeStuffOpen, setFreeStuffOpen] = useState(false);
+  const [mobileFreeStuffOpen, setMobileFreeStuffOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const freeStuffRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const openBookACall = useBookACallModal();
   const servicesActive = pathname.startsWith("/services");
+  const freeStuffActive =
+    pathname.startsWith("/free-guide") || pathname.startsWith("/free-audit");
 
   useEffect(() => {
     if (!servicesOpen) return;
@@ -43,6 +52,24 @@ export default function Nav() {
       document.removeEventListener("keydown", handleKey);
     };
   }, [servicesOpen]);
+
+  useEffect(() => {
+    if (!freeStuffOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (!freeStuffRef.current?.contains(e.target as Node)) {
+        setFreeStuffOpen(false);
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setFreeStuffOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [freeStuffOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-navy/10 bg-offwhite/90 backdrop-blur">
@@ -80,6 +107,45 @@ export default function Nav() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setServicesOpen(false)}
+                    className={`block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-navy/5 hover:text-navy ${
+                      pathname === link.href ? "font-semibold text-navy" : "text-navy/80"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="relative" ref={freeStuffRef}>
+            <button
+              type="button"
+              onClick={() => setFreeStuffOpen((v) => !v)}
+              aria-expanded={freeStuffOpen}
+              className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-navy ${
+                freeStuffActive ? "font-semibold text-navy" : "text-navy/80"
+              }`}
+            >
+              Free Stuff
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className={`h-3.5 w-3.5 transition-transform ${freeStuffOpen ? "rotate-180" : ""}`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+
+            {freeStuffOpen && (
+              <div className="absolute left-0 top-full mt-2 w-48 rounded-xl border border-navy/10 bg-white p-2 shadow-lg">
+                {freeStuffLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setFreeStuffOpen(false)}
                     className={`block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-navy/5 hover:text-navy ${
                       pathname === link.href ? "font-semibold text-navy" : "text-navy/80"
                     }`}
@@ -165,6 +231,47 @@ export default function Nav() {
                     onClick={() => {
                       setOpen(false);
                       setMobileServicesOpen(false);
+                    }}
+                    className={`py-1.5 text-sm ${
+                      pathname === link.href ? "font-semibold text-navy" : "text-navy/70"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button
+              type="button"
+              onClick={() => setMobileFreeStuffOpen((v) => !v)}
+              aria-expanded={mobileFreeStuffOpen}
+              className={`flex w-full items-center justify-between py-2 text-left text-sm font-medium ${
+                freeStuffActive ? "font-semibold text-navy" : "text-navy/80"
+              }`}
+            >
+              Free Stuff
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className={`h-3.5 w-3.5 transition-transform ${mobileFreeStuffOpen ? "rotate-180" : ""}`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+            {mobileFreeStuffOpen && (
+              <div className="flex flex-col gap-1 pb-1 pl-4">
+                {freeStuffLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => {
+                      setOpen(false);
+                      setMobileFreeStuffOpen(false);
                     }}
                     className={`py-1.5 text-sm ${
                       pathname === link.href ? "font-semibold text-navy" : "text-navy/70"

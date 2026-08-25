@@ -1,3 +1,5 @@
+"use client";
+
 import Script from "next/script";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
@@ -77,6 +79,22 @@ export default function FreeGuideBookACall({
             : "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
       </div>
+
+      {!isPriest && (
+        <div className="mx-auto mt-8 max-w-2xl text-center">
+          <button
+            type="button"
+            onClick={() =>
+              document
+                .getElementById("calendly-booking")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90"
+          >
+            Book My 10-Min Implementation Call
+          </button>
+        </div>
+      )}
 
       {!isPriest && (
         <div className="mx-auto mt-10 max-w-2xl">
@@ -185,7 +203,7 @@ export default function FreeGuideBookACall({
         )}
       </div>
 
-      <div className="mx-auto mt-10 max-w-3xl">
+      <div id="calendly-booking" className="mx-auto mt-10 max-w-3xl scroll-mt-24">
         <CalendlyEmbed url={calendlyUrl} />
       </div>
     </>

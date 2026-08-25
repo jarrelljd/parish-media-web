@@ -80,8 +80,11 @@ export default function FreeGuideBookACall({
 
       {!isPriest && (
         <div className="mx-auto mt-10 max-w-2xl">
+          <h2 className="text-balance text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            Watch This Before You Book
+          </h2>
           <div
-            className="relative overflow-hidden rounded-2xl shadow-lg"
+            className="relative mt-8 overflow-hidden rounded-2xl shadow-lg"
             style={{ paddingTop: "56.25%" }}
           >
             <iframe

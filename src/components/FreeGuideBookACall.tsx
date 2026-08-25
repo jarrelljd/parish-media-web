@@ -142,12 +142,11 @@ export default function FreeGuideBookACall({
       ) : (
         <div className="mx-auto mt-10 max-w-xl text-center">
           <p className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Want to discuss how this could apply to your parish?
+            Want to see how this could work for your parish?
           </p>
           <p className="mt-4 text-pretty text-lg text-navy/80">
-            Schedule your free 10-min convo with Joe to review your
-            current social media efforts and determine whether a deeper
-            conversation would be worthwhile.
+            Book a free 10-min call with Joe to review your social media
+            and see if it makes sense to keep talking.
           </p>
         </div>
       )}

@@ -1,5 +1,3 @@
-"use client";
-
 import Script from "next/script";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
@@ -77,30 +75,14 @@ export default function FreeGuideBookACall({
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {isPriest
             ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."
-            : "Before you close this page, book a quick 10-minute implementation call to see if a full consult for Father makes sense."}
+            : "Watch this 60-sec video to see how your parish can apply the principles in the book to reach more people in your community. After, you can schedule a free 10-minute convo about your parish’s goals."}
         </p>
       </div>
 
       {!isPriest && (
-        <div className="mx-auto mt-8 max-w-2xl text-center">
-          <button
-            type="button"
-            onClick={() =>
-              document
-                .getElementById("calendly-booking")
-                ?.scrollIntoView({ behavior: "smooth", block: "start" })
-            }
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-gold px-4 py-3.5 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 sm:px-8 sm:text-base"
-          >
-            Book My 10-Min Implementation Call
-          </button>
-        </div>
-      )}
-
-      {!isPriest && (
         <div className="mx-auto mt-10 max-w-2xl">
           <h2 className="text-balance text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Watch This Before You Book
+            How Your Parish Can Reach More People Through Social Media
           </h2>
           <div
             className="relative mt-8 overflow-hidden rounded-2xl shadow-lg"
@@ -161,50 +143,18 @@ export default function FreeGuideBookACall({
         ) : (
           <>
             <p className="text-pretty text-navy/80">
-              Thank you for requesting{" "}
-              <em>Social Media for Catholic Churches</em>. It will arrive in
-              your inbox shortly.
+              Want to discuss how this could apply to your parish?
             </p>
-
             <p className="mt-4 text-pretty text-navy/80">
-              Because you indicated you&rsquo;re parish staff, the next step
-              is a brief 10-minute triage call. The goal is to see whether a
-              full consult with your priest would actually be helpful right
-              now.
-            </p>
-
-            <p className="mt-6 font-semibold text-navy">
-              On this short call we will:
-            </p>
-            <ul className="mt-3 space-y-2">
-              <CheckItem>
-                Clarify what you&rsquo;re hoping to improve (Mass attendance,
-                events, volunteers, etc.)
-              </CheckItem>
-              <CheckItem>
-                Get a quick picture of your current Facebook / Instagram
-                efforts and any limits (time, budget, diocesan policies)
-              </CheckItem>
-              <CheckItem>
-                Decide whether it makes sense to recommend a full consult
-                with Father or simply email you a short custom action plan
-                you can use in-house or share with him
-              </CheckItem>
-            </ul>
-
-            <p className="mt-6 text-pretty text-sm text-navy/60">
-              No pressure. It&rsquo;s just to give you clear next steps
-              without wasting your time or Father&rsquo;s.
-            </p>
-
-            <p className="mt-4 text-pretty text-navy/80">
-              Please choose a time on the calendar below.
+              Schedule your free 10-min convo with Joe to review your
+              current social media efforts and determine whether a deeper
+              conversation would be worthwhile.
             </p>
           </>
         )}
       </div>
 
-      <div id="calendly-booking" className="mx-auto mt-10 max-w-3xl scroll-mt-24">
+      <div className="mx-auto mt-10 max-w-3xl">
         <CalendlyEmbed url={calendlyUrl} />
       </div>
     </>

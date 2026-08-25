@@ -75,7 +75,7 @@ export default function FreeGuideBookACall({
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {isPriest
             ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."
-            : "Watch this 60-sec video to see how your parish can apply the principles in the book to reach more people in your community. After, you can schedule a free 10-minute convo about your parish’s goals."}
+            : "Watch this 60-sec video to see how your parish can reach more people. Then, book a free 10-min call to talk about your parish’s goals."}
         </p>
       </div>
 

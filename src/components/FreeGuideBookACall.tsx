@@ -3,7 +3,7 @@ import CalendlyEmbed from "@/components/CalendlyEmbed";
 
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
 const CALENDLY_URL_STAFF =
-  "https://calendly.com/parishmedia/triage?hide_gdpr_banner=1&background_color=faf8f4&text_color=c9a227&primary_color=1b2a4a";
+  "https://calendly.com/parishmedia/triage?hide_gdpr_banner=1&background_color=faf8f4&text_color=1b2a4a&primary_color=c9a227";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -85,7 +85,7 @@ export default function FreeGuideBookACall({
             How Your Parish Can Reach More People Through Social Media
           </h2>
           <div
-            className="relative mt-6 overflow-hidden rounded-xl shadow-lg"
+            className="relative -mx-6 mt-6 overflow-hidden rounded-xl shadow-lg sm:mx-0"
             style={{ paddingTop: "56.25%" }}
           >
             <iframe

@@ -12,7 +12,7 @@ export default function FreeGuideFreeTriagePage() {
     <>
       <Nav />
       <main className="flex flex-1 flex-col">
-        <section className="px-6 py-16 sm:py-20">
+        <section className="px-4 py-16 sm:px-6 sm:py-20">
           <FreeGuideBookACall isPriest={false} />
         </section>
       </main>

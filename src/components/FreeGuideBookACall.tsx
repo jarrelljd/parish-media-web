@@ -1,3 +1,4 @@
+import Script from "next/script";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
@@ -76,6 +77,24 @@ export default function FreeGuideBookACall({
             : "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
       </div>
+
+      {!isPriest && (
+        <div className="mx-auto mt-10 max-w-2xl">
+          <div
+            className="relative overflow-hidden rounded-2xl shadow-lg"
+            style={{ paddingTop: "56.25%" }}
+          >
+            <iframe
+              src="https://player.vimeo.com/video/1221266693?badge=0&autopause=0&player_id=0&app_id=58479"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="absolute inset-0 h-full w-full border-0"
+              title="Triage Call VSL"
+            />
+          </div>
+          <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
+        </div>
+      )}
 
       <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
         {isPriest ? (

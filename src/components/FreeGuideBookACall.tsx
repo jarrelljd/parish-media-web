@@ -4,7 +4,8 @@ import Script from "next/script";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
-const CALENDLY_URL_STAFF = "https://calendly.com/parishmedia/triage";
+const CALENDLY_URL_STAFF =
+  "https://calendly.com/parishmedia/triage?hide_gdpr_banner=1&background_color=faf8f4&text_color=c9a227&primary_color=1b2a4a";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -89,7 +90,7 @@ export default function FreeGuideBookACall({
                 .getElementById("calendly-booking")
                 ?.scrollIntoView({ behavior: "smooth", block: "start" })
             }
-            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-gold px-4 py-3.5 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 sm:px-8 sm:text-base"
           >
             Book My 10-Min Implementation Call
           </button>

@@ -80,12 +80,12 @@ export default function FreeGuideBookACall({
       </div>
 
       {!isPriest && (
-        <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-6 shadow-sm sm:p-8">
+        <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 p-3 sm:p-4">
           <h2 className="text-balance text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
             How Your Parish Can Reach More People Through Social Media
           </h2>
           <div
-            className="relative -mx-6 mt-6 overflow-hidden rounded-xl shadow-lg sm:mx-0"
+            className="relative mt-4 overflow-hidden rounded-lg"
             style={{ paddingTop: "56.25%" }}
           >
             <iframe

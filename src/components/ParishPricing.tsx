@@ -105,8 +105,8 @@ export default function ParishPricing() {
               }`}
             >
               {tier.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-4 py-1 text-xs font-semibold uppercase tracking-wide text-navy">
-                  Most Popular
+                <span className="absolute -top-3 left-1/2 w-[88%] max-w-56 -translate-x-1/2 rounded-xl bg-gold px-3 py-1.5 text-center text-xs font-semibold text-navy">
+                  Recommended for Growing&nbsp;Parishes
                 </span>
               )}
 

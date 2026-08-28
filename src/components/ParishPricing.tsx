@@ -34,8 +34,8 @@ const tiers: Tier[] = [
       "Monthly growth report",
       "Email support",
     ],
-    down: "$10,000",
-    installment: "$5,000",
+    down: "$8,000",
+    installment: "$6,000",
   },
   {
     name: "Expansion",
@@ -49,8 +49,8 @@ const tiers: Tier[] = [
       "Quarterly strategy call",
       "Priority support",
     ],
-    down: "$15,000",
-    installment: "$7,500",
+    down: "$12,000",
+    installment: "$9,000",
   },
   {
     name: "Premium",
@@ -63,8 +63,8 @@ const tiers: Tier[] = [
       "Dedicated account lead",
       "Direct line for same-week turnaround requests",
     ],
-    down: "$20,000",
-    installment: "$10,000",
+    down: "$16,000",
+    installment: "$12,000",
   },
 ];
 
@@ -191,17 +191,6 @@ export default function ParishPricing() {
             </div>
           ))}
         </div>
-
-        <p className="mt-12 text-center text-navy/70">
-          Custom engagement for dioceses,{" "}
-          <Link
-            href="/contact"
-            className="font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
-          >
-            let&rsquo;s talk
-          </Link>
-          .
-        </p>
       </section>
 
       {/* Our Promise */}

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import BookACallButton from "@/components/BookACallButton";
 
@@ -16,6 +19,8 @@ type Tier = {
   tagline: string;
   featured?: boolean;
   features: string[];
+  down: string;
+  installment: string;
 };
 
 const tiers: Tier[] = [
@@ -29,6 +34,8 @@ const tiers: Tier[] = [
       "Monthly growth report",
       "Email support",
     ],
+    down: "$10,000",
+    installment: "$5,000",
   },
   {
     name: "Expansion",
@@ -42,6 +49,8 @@ const tiers: Tier[] = [
       "Quarterly strategy call",
       "Priority support",
     ],
+    down: "$15,000",
+    installment: "$7,500",
   },
   {
     name: "Premium",
@@ -54,10 +63,14 @@ const tiers: Tier[] = [
       "Dedicated account lead",
       "Direct line for same-week turnaround requests",
     ],
+    down: "$20,000",
+    installment: "$10,000",
   },
 ];
 
 export default function ParishPricing() {
+  const [openTier, setOpenTier] = useState<string | null>(null);
+
   return (
     <>
       <section className="relative overflow-hidden px-6 pb-16 pt-14 sm:pb-20 sm:pt-20">
@@ -124,15 +137,57 @@ export default function ParishPricing() {
                 ))}
               </ul>
 
-              <BookACallButton
-                className={`mt-8 rounded-full px-6 py-3 text-center text-sm font-medium transition-colors ${
-                  tier.featured
-                    ? "bg-navy text-offwhite hover:bg-navy/90"
-                    : "border border-navy text-navy hover:bg-navy/5"
-                }`}
-              >
-                Book a Call
-              </BookACallButton>
+              <div className="mt-8 border-t border-navy/10 pt-6">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpenTier((current) =>
+                      current === tier.name ? null : tier.name
+                    )
+                  }
+                  aria-expanded={openTier === tier.name}
+                  className="flex w-full items-center justify-between text-sm font-semibold text-navy"
+                >
+                  See Pricing Options
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    className={`h-3.5 w-3.5 shrink-0 transition-transform ${
+                      openTier === tier.name ? "rotate-180" : ""
+                    }`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 9l6 6 6-6"
+                    />
+                  </svg>
+                </button>
+
+                {openTier === tier.name && (
+                  <div className="mt-4 space-y-3">
+                    <div className="rounded-xl border border-navy/10 bg-navy/5 p-4">
+                      <p className="text-sm font-semibold text-navy">
+                        Paid in Full
+                      </p>
+                      <p className="mt-1 text-sm text-navy/70">
+                        {tier.price} due at signing
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-navy/10 bg-navy/5 p-4">
+                      <p className="text-sm font-semibold text-navy">
+                        Payment Plan
+                      </p>
+                      <p className="mt-1 text-sm text-navy/70">
+                        {tier.down} down, {tier.installment} in month 4,{" "}
+                        {tier.installment} in month 8
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -2,12 +2,12 @@ import Link from "next/link";
 import BookACallButton from "@/components/BookACallButton";
 
 /*
-  PLACEHOLDER TIER CONTENTS — Joe, please review/edit before this goes live.
-  You gave me the three price points ($20k / $30k / $40k per year); I drafted
-  what scales between them based on the existing 3-pillar model (Weekly
-  Content, Meta Ads, Monthly Reporting) used elsewhere on the site. Nothing
-  below is a number or claim you've confirmed — swap in the real deliverables,
-  ad-spend handling, and support terms for each tier before sharing this link.
+  Tier names, prices, and the core differentiators (ads + organic only at
+  Essentials; a team-shot photo/video day added at Expansion; Joe personally
+  flying out to shoot plus several days on-site setup & staff training at
+  Premium) are confirmed by Joe. The supporting bullets (report cadence,
+  support level, account lead, etc.) are still drafted-by-proxy — worth a
+  once-over before this page goes out to a prospect.
 */
 
 type Tier = {
@@ -20,37 +20,37 @@ type Tier = {
 
 const tiers: Tier[] = [
   {
-    name: "Foundation",
+    name: "Essentials",
     price: "$20,000",
-    tagline: "For a single parish ready to build a real content system.",
+    tagline: "Ads management and organic posting for a single parish.",
     features: [
       "Weekly organic content for Facebook & Instagram",
-      "One targeted Meta ads campaign (ad spend billed separately)",
+      "Managed Meta ads campaign (ad spend billed separately)",
       "Monthly growth report",
       "Email support",
     ],
   },
   {
-    name: "Growth",
+    name: "Expansion",
     price: "$30,000",
-    tagline: "Our most common plan for parishes actively working toward a 90-day goal.",
+    tagline: "Everything in Essentials, plus a professional photo & video shoot to fuel your content.",
     featured: true,
     features: [
-      "Everything in Foundation",
-      "Increased posting cadence, including Reels & video",
-      "Multiple Meta ad campaigns across events & ministries",
+      "Everything in Essentials",
+      "On-site photo & video (b-roll) shoot by our team",
+      "Increased posting cadence with real photo & video content",
       "Quarterly strategy call",
       "Priority support",
     ],
   },
   {
-    name: "Complete",
+    name: "Premium",
     price: "$40,000",
-    tagline: "For parishes and dioceses that want a fully managed communications system.",
+    tagline: "Joe personally flies out to shoot your parish and train your staff on-site.",
     features: [
-      "Everything in Growth",
-      "Bulletin design & redesign included",
-      "Custom event landing pages",
+      "Everything in Expansion",
+      "Photo & video shoot personally shot by Joe",
+      "Several days on-site setting up your systems & training your staff",
       "Dedicated account lead",
       "Direct line for same-week turnaround requests",
     ],

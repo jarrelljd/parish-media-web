@@ -19,10 +19,13 @@ type Tier = {
   tagline: string;
   featured?: boolean;
   features: string[];
+  planTotal: string;
   down: string;
   installment: string;
 };
 
+// Payment plan = paid-in-full price + 10%, split 50% down / 25% at month 4 /
+// 25% at month 8 of that increased total.
 const tiers: Tier[] = [
   {
     name: "Essentials",
@@ -34,8 +37,9 @@ const tiers: Tier[] = [
       "Monthly growth report",
       "Email support",
     ],
-    down: "$8,000",
-    installment: "$6,000",
+    planTotal: "$22,000",
+    down: "$11,000",
+    installment: "$5,500",
   },
   {
     name: "Expansion",
@@ -49,8 +53,9 @@ const tiers: Tier[] = [
       "Quarterly strategy call",
       "Priority support",
     ],
-    down: "$12,000",
-    installment: "$9,000",
+    planTotal: "$33,000",
+    down: "$16,500",
+    installment: "$8,250",
   },
   {
     name: "Premium",
@@ -63,8 +68,9 @@ const tiers: Tier[] = [
       "Dedicated account lead",
       "Direct line for same-week turnaround requests",
     ],
-    down: "$16,000",
-    installment: "$12,000",
+    planTotal: "$44,000",
+    down: "$22,000",
+    installment: "$11,000",
   },
 ];
 
@@ -178,7 +184,7 @@ export default function ParishPricing() {
                     </div>
                     <div className="rounded-xl border border-navy/10 bg-navy/5 p-4">
                       <p className="text-sm font-semibold text-navy">
-                        Payment Plan
+                        Payment Plan &mdash; {tier.planTotal} total
                       </p>
                       <p className="mt-1 text-sm text-navy/70">
                         {tier.down} down, {tier.installment} in month 4,{" "}

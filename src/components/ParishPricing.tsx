@@ -22,6 +22,10 @@ type Tier = {
   planTotal: string;
   down: string;
   installment: string;
+  guarantee?: {
+    label: string;
+    description: string;
+  };
 };
 
 // Payment plan = paid-in-full price + 10%, split 50% down / 25% at month 4 /
@@ -56,6 +60,11 @@ const tiers: Tier[] = [
     planTotal: "$33,000",
     down: "$16,500",
     installment: "$8,250",
+    guarantee: {
+      label: "Implementation Guarantee",
+      description:
+        "If we don’t hit your agreed-upon 90-day goal, we keep working at no additional cost until we do.",
+    },
   },
   {
     name: "Premium",
@@ -71,6 +80,11 @@ const tiers: Tier[] = [
     planTotal: "$44,000",
     down: "$22,000",
     installment: "$11,000",
+    guarantee: {
+      label: "Money-Back Guarantee",
+      description:
+        "If we don’t hit your agreed-upon 90-day goal, we’ll refund your investment.",
+    },
   },
 ];
 
@@ -143,6 +157,17 @@ export default function ParishPricing() {
                 ))}
               </ul>
 
+              {tier.guarantee && (
+                <div className="mt-6 rounded-xl border border-gold/40 bg-gold/5 p-4 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gold">
+                    {tier.guarantee.label}
+                  </p>
+                  <p className="mt-1 text-sm text-navy/80">
+                    {tier.guarantee.description}
+                  </p>
+                </div>
+              )}
+
               <div className="mt-8 border-t border-navy/10 pt-6">
                 <button
                   type="button"
@@ -196,25 +221,6 @@ export default function ParishPricing() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Our Promise */}
-      <section className="px-6 pb-24 sm:pb-32">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-gold/40 bg-gold/5 p-8 text-center sm:p-10">
-          <span
-            className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/20 text-2xl"
-            aria-hidden="true"
-          >
-            🤝
-          </span>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-gold">
-            Our Promise
-          </p>
-          <p className="mt-3 text-navy/80">
-            If we don&rsquo;t hit your agreed-upon 90-day goal, we keep
-            working at no additional cost until we do.
-          </p>
         </div>
       </section>
 

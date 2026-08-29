@@ -19,12 +19,24 @@ function CheckItem({ children }: { children: React.ReactNode }) {
   );
 }
 
+const VSL = {
+  priest: {
+    videoId: "1220874027",
+    title: "Priest Consult VSL",
+  },
+  staff: {
+    videoId: "1221266693",
+    title: "Triage Call VSL",
+  },
+};
+
 export default function FreeGuideBookACall({
   isPriest,
 }: {
   isPriest: boolean;
 }) {
   const calendlyUrl = isPriest ? CALENDLY_URL_PRIEST : CALENDLY_URL_STAFF;
+  const vsl = isPriest ? VSL.priest : VSL.staff;
 
   return (
     <>
@@ -74,31 +86,26 @@ export default function FreeGuideBookACall({
         </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {isPriest
-            ? "Before you close this page, reserve your no-cost 30-minute parish outreach consult."
+            ? "Watch this quick video, then reserve your no-cost 30-minute parish outreach consult below."
             : "Watch this 60-sec video to see how your parish can reach more people. Then, book a free 10-min call to talk about your parish’s goals."}
         </p>
       </div>
 
-      {!isPriest && (
-        <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl bg-navy/5 py-6 sm:py-8">
-          <h2 className="text-balance px-6 text-center font-serif text-2xl font-semibold text-navy sm:px-8 sm:text-3xl">
-            How Your Parish Can Reach More People Through Social Media
-          </h2>
-          <div
-            className="relative mt-6"
-            style={{ paddingTop: "56.25%" }}
-          >
-            <iframe
-              src="https://player.vimeo.com/video/1221266693?badge=0&autopause=0&player_id=0&app_id=58479"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="absolute inset-0 h-full w-full border-0"
-              title="Triage Call VSL"
-            />
-          </div>
-          <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
+      <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl bg-navy/5 py-6 sm:py-8">
+        <h2 className="text-balance px-6 text-center font-serif text-2xl font-semibold text-navy sm:px-8 sm:text-3xl">
+          How Your Parish Can Reach More People Through Social Media
+        </h2>
+        <div className="relative mt-6" style={{ paddingTop: "56.25%" }}>
+          <iframe
+            src={`https://player.vimeo.com/video/${vsl.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="absolute inset-0 h-full w-full border-0"
+            title={vsl.title}
+          />
         </div>
-      )}
+        <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
+      </div>
 
       {isPriest ? (
         <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">

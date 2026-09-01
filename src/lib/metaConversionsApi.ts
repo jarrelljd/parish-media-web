@@ -11,6 +11,13 @@ import { createHash } from "crypto";
 const GRAPH_API_VERSION = "v21.0";
 const SITE_URL = "https://parishmediacompany.com";
 
+// Set META_TEST_EVENT_CODE in Railway (paste the code shown on Events
+// Manager → Test events) to make these server-side calls show up live in
+// that tab instead of silently landing in production Event history. Leave
+// unset in normal operation — a set code diverts real events into test mode
+// where they don't count toward ad optimization.
+const TEST_EVENT_CODE = process.env.META_TEST_EVENT_CODE;
+
 function hashForMeta(value: string): string {
   return createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
 }
@@ -68,6 +75,7 @@ export async function sendLeadConversionEvent({
         custom_data: { content_name: contentName },
       },
     ],
+    ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
   try {
@@ -142,6 +150,7 @@ export async function sendGenericLeadEvent({
         custom_data: { content_name: contentName },
       },
     ],
+    ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),
   };
 
   try {

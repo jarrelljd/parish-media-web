@@ -5,20 +5,6 @@ const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
 const CALENDLY_URL_STAFF =
   "https://calendly.com/parishmedia/triage?hide_gdpr_banner=1&background_color=faf8f4&text_color=1b2a4a&primary_color=c9a227";
 
-function CheckItem({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex items-start gap-2.5 text-navy/80">
-      <span
-        className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs font-bold text-gold"
-        aria-hidden="true"
-      >
-        &#10003;
-      </span>
-      <span className="text-pretty">{children}</span>
-    </li>
-  );
-}
-
 const VSL = {
   priest: {
     videoId: "1220874027",
@@ -107,56 +93,16 @@ export default function FreeGuideBookACall({
         <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
       </div>
 
-      {isPriest ? (
-        <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-          <p className="text-pretty text-navy/80">
-            Thank you for requesting{" "}
-            <em>Social Media for Catholic Churches</em>. It will arrive in
-            your inbox in the next few minutes.
-          </p>
-
-          <p className="mt-4 text-pretty text-navy/80">
-            Because you requested the book, you&rsquo;re invited to a
-            one-time, no-cost 30-minute Zoom conversation to apply it to
-            your parish.
-          </p>
-
-          <p className="mt-6 font-semibold text-navy">
-            In this brief Zoom call we will:
-          </p>
-          <ul className="mt-3 space-y-2">
-            <CheckItem>
-              See how people currently find your parish online
-            </CheckItem>
-            <CheckItem>
-              Identify the biggest gap between a first visit and regular
-              Mass attendance
-            </CheckItem>
-            <CheckItem>
-              Choose 1&ndash;2 simple outreach steps for the next 30 days
-            </CheckItem>
-          </ul>
-
-          <p className="mt-6 text-pretty text-sm text-navy/60">
-            No pressure or long presentation, just a focused conversation
-            about your parish.
-          </p>
-
-          <p className="mt-4 text-pretty text-navy/80">
-            Please choose a time on the calendar below.
-          </p>
-        </div>
-      ) : (
-        <div className="mx-auto mt-10 max-w-xl text-center">
-          <p className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Want to see how this could work for your parish?
-          </p>
-          <p className="mt-4 text-pretty text-lg text-navy/80">
-            Book a free 10-min call with Joe to review your social media
-            and see if it makes sense to keep talking.
-          </p>
-        </div>
-      )}
+      <div className="mx-auto mt-10 max-w-xl text-center">
+        <p className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+          Want to see how this could work for your parish?
+        </p>
+        <p className="mt-4 text-pretty text-lg text-navy/80">
+          Book a free {isPriest ? "30-min" : "10-min"} call with Joe to
+          review your social media and see if it makes sense to keep
+          talking.
+        </p>
+      </div>
 
       <div className="mx-auto mt-10 max-w-3xl">
         <CalendlyEmbed url={calendlyUrl} />

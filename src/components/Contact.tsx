@@ -1,9 +1,7 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { submitContactForm, type ContactFormState } from "@/app/actions";
-
-const CALENDLY_URL = "https://calendly.com/parishmedia/consult";
 
 const initialState: ContactFormState = { status: "idle" };
 
@@ -12,15 +10,6 @@ export default function Contact() {
     submitContactForm,
     initialState,
   );
-
-  useEffect(() => {
-    if (state.status === "success") {
-      const timer = setTimeout(() => {
-        window.location.href = CALENDLY_URL;
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [state.status]);
 
   return (
     <section className="px-6 py-24 sm:py-32">
@@ -42,15 +31,9 @@ export default function Contact() {
               Thank you!
             </p>
             <p className="mt-3 text-navy/70">
-              We&rsquo;ve received your message. Taking you to our booking
-              page now...
+              Your info has been sent. Joe will follow up with you by email
+              soon.
             </p>
-            <a
-              href={CALENDLY_URL}
-              className="mt-6 inline-block rounded-full bg-navy px-8 py-3 text-sm font-medium text-offwhite transition-colors hover:bg-navy/90"
-            >
-              Book a Time Now
-            </a>
           </div>
         ) : (
           <form

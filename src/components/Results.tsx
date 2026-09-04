@@ -27,7 +27,7 @@ const clientSnapshots = [
   },
   {
     name: "Fr. Nicholas Fleming",
-    org: "Saints John and James Parish, West Warwick, RI",
+    org: "Pastor, Saints John and James Parish, West Warwick, RI",
     video: {
       src: "https://player.vimeo.com/video/1211528738?h=607f3159d2",
       title: "Fr. Nicholas Fleming testimonial for Parish Media Company",
@@ -35,7 +35,7 @@ const clientSnapshots = [
       allowFullScreen: true,
     },
     stat: "0 → 320",
-    statLabel: "Instagram Followers in the First 30 Days",
+    statLabel: "Instagram Followers in the First 30 Days",
     description:
       "Built from zero: homily clips, event photos, and flyers people actually stop to look at. The bulletin got a redesign too.",
     thumbnail: {
@@ -80,62 +80,69 @@ export default function Results() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h2 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Testimonies
+            Client Snapshots
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Real parishes, real growth. Hear it directly, then see the
-            numbers.
+            See results from parishes like yours.
           </p>
         </div>
 
         {/* Client Snapshots */}
-        {clientSnapshots.map((snap) => (
-          <div
-            key={snap.name}
-            className="mx-auto mt-16 max-w-2xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10"
-          >
-            <div className="relative aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
-              <iframe
-                src={snap.video.src}
-                className="absolute inset-0 h-full w-full"
-                allow={snap.video.allow}
-                allowFullScreen={snap.video.allowFullScreen}
-                referrerPolicy={snap.video.referrerPolicy}
-                title={snap.video.title}
-              />
-            </div>
-            <p className="mt-4 text-center text-sm font-medium text-navy/60">
-              {snap.name}, {snap.org}
-            </p>
+        <div className="mx-auto mt-16 flex max-w-2xl flex-col gap-12">
+          {clientSnapshots.map((snap) => (
+            <div
+              key={snap.name}
+              className="rounded-3xl border border-navy/10 bg-white p-8 shadow-sm shadow-navy/5 sm:p-10"
+            >
+              <div className="text-center">
+                <h3 className="font-serif text-2xl font-semibold text-navy">
+                  {snap.name}
+                </h3>
+                <span className="mx-auto mt-3 block h-0.5 w-10 rounded-full bg-gold" />
+                <p className="mt-3 text-sm font-medium uppercase tracking-wide text-navy/60">
+                  {snap.org}
+                </p>
+              </div>
 
-            <div className="mt-8 border-t border-navy/10 pt-8 text-center">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                Client Snapshot
-              </span>
-              <p className="mt-3 font-serif text-5xl font-semibold text-navy">
-                {snap.stat}
-              </p>
-              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                {snap.statLabel}
-              </p>
-              <p className="mt-4 text-navy/80">{snap.description}</p>
-              {snap.thumbnail && (
-                <div className="mx-auto mt-5 w-40">
-                  <div className="overflow-hidden rounded-lg border border-navy/10">
-                    <Image
-                      src={snap.thumbnail.src}
-                      alt={snap.thumbnail.alt}
-                      className="h-auto w-full"
-                    />
-                  </div>
-                  <p className="mt-1.5 text-xs text-navy/50">
-                    {snap.thumbnail.caption}
+              <div className="relative mt-6 aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
+                <iframe
+                  src={snap.video.src}
+                  className="absolute inset-0 h-full w-full"
+                  allow={snap.video.allow}
+                  allowFullScreen={snap.video.allowFullScreen}
+                  referrerPolicy={snap.video.referrerPolicy}
+                  title={snap.video.title}
+                />
+              </div>
+
+              <div className="mt-8 border-t border-navy/10 pt-8 text-center">
+                <div className="mx-auto max-w-sm rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
+                  <p className="font-serif text-5xl font-semibold text-navy">
+                    {snap.stat}
+                  </p>
+                  <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+                    {snap.statLabel}
                   </p>
                 </div>
-              )}
+                <p className="mt-4 text-navy/80">{snap.description}</p>
+                {snap.thumbnail && (
+                  <div className="mx-auto mt-5 w-40">
+                    <div className="overflow-hidden rounded-lg border border-navy/10">
+                      <Image
+                        src={snap.thumbnail.src}
+                        alt={snap.thumbnail.alt}
+                        className="h-auto w-full"
+                      />
+                    </div>
+                    <p className="mt-1.5 text-xs text-navy/50">
+                      {snap.thumbnail.caption}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         {/* More written testimonials */}
         <div className="mx-auto mt-20 grid max-w-5xl gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-navy/10">

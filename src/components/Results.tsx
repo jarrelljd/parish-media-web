@@ -152,7 +152,7 @@ export default function Results() {
         </div>
 
         {/* More written testimonials */}
-        <div className="mx-auto mt-20 grid max-w-5xl gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-navy/10">
+        <div className="mx-auto mt-20 grid max-w-4xl gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:divide-x lg:divide-navy/10">
           {writtenTestimonials.map((t) => (
             <div
               key={t.name}

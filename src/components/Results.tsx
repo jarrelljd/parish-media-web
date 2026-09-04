@@ -1,7 +1,6 @@
 import Image from "next/image";
 import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
-import frDavePhoto from "../../public/images/clients/fr-dave-aufiero-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
 import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
@@ -27,15 +26,6 @@ const writtenTestimonials = [
     role: "Head of Communications, Diocese of Reno",
   },
   {
-    photo: frDavePhoto,
-    photoZoom: 1.8,
-    photoPosition: "50% 0%",
-    quote:
-      "He helped build our young adult ministry, it’s been a pleasure working with him. I recommended Joe to our Diocese.",
-    name: "Fr. Dave Aufiero",
-    role: "Pastor, St. Patrick’s Catholic Church, South Hadley, MA",
-  },
-  {
     photo: frJaredPhoto,
     photoPosition: "50% 15%",
     quote:
@@ -58,6 +48,39 @@ export default function Results() {
             Real parishes, real growth. Hear it directly, then see the
             numbers.
           </p>
+        </div>
+
+        {/* Client Snapshot: Fr. Dave Aufiero */}
+        <div className="mx-auto mt-16 max-w-4xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10">
+          <div className="grid gap-10 sm:grid-cols-[minmax(0,240px)_1fr] sm:items-center">
+            <div className="mx-auto w-full max-w-[240px] overflow-hidden rounded-xl border border-navy/10">
+              <div className="relative" style={{ paddingTop: "177.78%" }}>
+                <iframe
+                  src="https://player.vimeo.com/video/1224059968?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  className="absolute inset-0 h-full w-full"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Fr. Dave Aufiero testimonial for Parish Media Company"
+                />
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Client Snapshot
+              </span>
+              <p className="mt-3 font-serif text-5xl font-semibold text-navy">
+                65
+              </p>
+              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+                Young Adults Inquired About Young Adult Events in 60 Days
+              </p>
+              <p className="mt-4 text-navy/80">
+                Fr. Dave Aufiero, Pastor of St. Patrick&rsquo;s Catholic
+                Church in South Hadley, MA, on building a young adult
+                ministry from the ground up.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Lead video testimonial */}

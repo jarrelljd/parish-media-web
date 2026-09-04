@@ -6,6 +6,7 @@ import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
 import stJosephAfter from "../../public/images/proof/st-joseph-ig-after.jpg";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
 import johnLujanPhoto from "../../public/images/clients/john-lujan-headshot.png";
+import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
 import { clients } from "@/data/clients";
 
 const writtenTestimonials = [
@@ -83,39 +84,80 @@ export default function Results() {
           </div>
         </div>
 
-        {/* Lead video testimonial */}
-        <div className="mx-auto mt-16 max-w-3xl">
-          <div className="relative aspect-video overflow-hidden rounded-2xl border border-navy/10 bg-navy/5">
-            <iframe
-              src="https://player.vimeo.com/video/1211528738?h=607f3159d2"
-              className="absolute inset-0 h-full w-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              title="Fr. Nicholas Fleming testimonial for Parish Media Company"
-            />
+        {/* Client Snapshot: Fr. Nicholas Fleming */}
+        <div className="mx-auto mt-16 max-w-4xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10">
+          <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+            Client Snapshot
+          </span>
+
+          <div className="mx-auto mt-6 max-w-2xl">
+            <div className="relative aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
+              <iframe
+                src="https://player.vimeo.com/video/1211528738?h=607f3159d2"
+                className="absolute inset-0 h-full w-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Fr. Nicholas Fleming testimonial for Parish Media Company"
+              />
+            </div>
+
+            <blockquote className="mt-8 text-center">
+              <span className="font-serif text-5xl leading-none text-gold">
+                &ldquo;
+              </span>
+              <p className="-mt-6 font-serif text-xl italic leading-relaxed text-navy">
+                Before working with Joe, we didn&rsquo;t have an online
+                presence, especially on Instagram, and our bulletin was
+                pretty basic and had never really seen any change. Over the
+                last five months, Joe helped us build an Instagram page from
+                zero to 300 followers, redesigned our bulletin, and trained
+                our staff to use Canva and Meta ads so we can do this on our
+                own. We&rsquo;ve already seen new families register,
+                increased engagement with our homilies online, and seen how
+                this platform helps us grow as a parish. I highly recommend
+                Joe for what he&rsquo;s done for our parish, for yours.
+              </p>
+            </blockquote>
+            <p className="mt-4 text-center text-sm font-medium text-navy/60">
+              Fr. Nicholas Fleming, Saints John and James Parish, West
+              Warwick, RI
+            </p>
           </div>
 
-          <blockquote className="mt-8 text-center">
-            <span className="font-serif text-5xl leading-none text-gold">
-              &ldquo;
-            </span>
-            <p className="-mt-6 font-serif text-xl italic leading-relaxed text-navy">
-              Before working with Joe, we didn&rsquo;t have an online
-              presence, especially on Instagram, and our bulletin was pretty
-              basic and had never really seen any change. Over the last five
-              months, Joe helped us build an Instagram page from zero to 300
-              followers, redesigned our bulletin, and trained our staff to
-              use Canva and Meta ads so we can do this on our own. We&rsquo;ve
-              already seen new families register, increased engagement with
-              our homilies online, and seen how this platform helps us grow
-              as a parish. I highly recommend Joe for what he&rsquo;s done
-              for our parish, for yours.
-            </p>
-          </blockquote>
-          <p className="mt-4 text-center text-sm font-medium text-navy/60">
-            Fr. Nicholas Fleming, Saints John and James Parish, West
-            Warwick, RI
-          </p>
+          <div className="mt-12 grid gap-10 border-t border-navy/10 pt-10 sm:grid-cols-2">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Instagram Growth
+              </span>
+              <p className="mt-3 font-serif text-5xl font-semibold text-navy">
+                0 &rarr; 320
+              </p>
+              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+                Followers in the First 30 Days
+              </p>
+              <p className="mt-4 text-navy/80">
+                The opening month of the growth Fr. Nicholas describes in the
+                video above: homily clips, event photos, and flyers people
+                actually stop to look at.
+              </p>
+            </div>
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Bulletin Redesign
+              </span>
+              <p className="mt-3 text-navy/80">
+                Basic and unchanged for years, redesigned into something
+                families actually read.
+              </p>
+              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={saintsJohnJamesBulletin}
+                  alt="Saints John and James Parish bulletin, before and after"
+                  className="h-auto w-full"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* More written testimonials */}
@@ -276,7 +318,9 @@ export default function Results() {
               .filter(
                 (client) =>
                   client.name !== "Bishop Daniel Mueggenborg" &&
-                  client.name !== "Fr. Nathan Linton, Vocations Director"
+                  client.name !== "Fr. Nathan Linton, Vocations Director" &&
+                  client.name !== "Fr. Nicholas Fleming, Pastor" &&
+                  client.name !== "Fr. Dave Aufiero, Pastor"
               )
               .map((client) => (
                 <div key={client.name}>

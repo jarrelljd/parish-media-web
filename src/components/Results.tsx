@@ -19,6 +19,7 @@ const clientSnapshots = [
       allow:
         "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share",
       referrerPolicy: "strict-origin-when-cross-origin" as const,
+      orientation: "portrait" as const,
     },
     stat: "65",
     statLabel: "Young Adults Inquired About Young Adult Events in 60 Days",
@@ -104,7 +105,13 @@ export default function Results() {
                 </p>
               </div>
 
-              <div className="relative mt-6 aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
+              <div
+                className={
+                  snap.video.orientation === "portrait"
+                    ? "relative mx-auto mt-6 aspect-[9/16] w-full max-w-sm overflow-hidden rounded-xl"
+                    : "relative mt-6 aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
+                }
+              >
                 <iframe
                   src={snap.video.src}
                   className="absolute inset-0 h-full w-full"

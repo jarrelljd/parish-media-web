@@ -9,6 +9,43 @@ import johnLujanPhoto from "../../public/images/clients/john-lujan-headshot.png"
 import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
 import { clients } from "@/data/clients";
 
+const clientSnapshots = [
+  {
+    name: "Fr. Dave Aufiero",
+    org: "Pastor, St. Patrick’s Catholic Church, South Hadley, MA",
+    video: {
+      src: "https://player.vimeo.com/video/1224059968?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+      title: "Fr. Dave Aufiero testimonial for Parish Media Company",
+      allow:
+        "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share",
+      referrerPolicy: "strict-origin-when-cross-origin" as const,
+    },
+    stat: "65",
+    statLabel: "Young Adults Inquired About Young Adult Events in 60 Days",
+    description:
+      "Built a young adult ministry from the ground up, from targeted ads to event follow-up.",
+  },
+  {
+    name: "Fr. Nicholas Fleming",
+    org: "Saints John and James Parish, West Warwick, RI",
+    video: {
+      src: "https://player.vimeo.com/video/1211528738?h=607f3159d2",
+      title: "Fr. Nicholas Fleming testimonial for Parish Media Company",
+      allow: "autoplay; fullscreen; picture-in-picture",
+      allowFullScreen: true,
+    },
+    stat: "0 → 320",
+    statLabel: "Instagram Followers in the First 30 Days",
+    description:
+      "Built from zero: homily clips, event photos, and flyers people actually stop to look at. The bulletin got a redesign too.",
+    thumbnail: {
+      src: saintsJohnJamesBulletin,
+      alt: "Saints John and James Parish bulletin, before and after",
+      caption: "Bulletin, before & after",
+    },
+  },
+];
+
 const writtenTestimonials = [
   {
     photo: zachWernerPhoto,
@@ -51,114 +88,54 @@ export default function Results() {
           </p>
         </div>
 
-        {/* Client Snapshot: Fr. Dave Aufiero */}
-        <div className="mx-auto mt-16 max-w-4xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10">
-          <div className="grid gap-10 sm:grid-cols-[minmax(0,240px)_1fr] sm:items-center">
-            <div className="mx-auto w-full max-w-[240px] overflow-hidden rounded-xl border border-navy/10">
-              <div className="relative" style={{ paddingTop: "177.78%" }}>
-                <iframe
-                  src="https://player.vimeo.com/video/1224059968?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                  className="absolute inset-0 h-full w-full"
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  title="Fr. Dave Aufiero testimonial for Parish Media Company"
-                />
-              </div>
+        {/* Client Snapshots */}
+        {clientSnapshots.map((snap) => (
+          <div
+            key={snap.name}
+            className="mx-auto mt-16 max-w-2xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10"
+          >
+            <div className="relative aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
+              <iframe
+                src={snap.video.src}
+                className="absolute inset-0 h-full w-full"
+                allow={snap.video.allow}
+                allowFullScreen={snap.video.allowFullScreen}
+                referrerPolicy={snap.video.referrerPolicy}
+                title={snap.video.title}
+              />
             </div>
-            <div className="text-center sm:text-left">
+            <p className="mt-4 text-center text-sm font-medium text-navy/60">
+              {snap.name}, {snap.org}
+            </p>
+
+            <div className="mt-8 border-t border-navy/10 pt-8 text-center">
               <span className="text-xs font-semibold uppercase tracking-widest text-gold">
                 Client Snapshot
               </span>
               <p className="mt-3 font-serif text-5xl font-semibold text-navy">
-                65
+                {snap.stat}
               </p>
               <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                Young Adults Inquired About Young Adult Events in 60 Days
+                {snap.statLabel}
               </p>
-              <p className="mt-4 text-navy/80">
-                Fr. Dave Aufiero, Pastor of St. Patrick&rsquo;s Catholic
-                Church in South Hadley, MA, on building a young adult
-                ministry from the ground up.
-              </p>
+              <p className="mt-4 text-navy/80">{snap.description}</p>
+              {snap.thumbnail && (
+                <div className="mx-auto mt-5 w-40">
+                  <div className="overflow-hidden rounded-lg border border-navy/10">
+                    <Image
+                      src={snap.thumbnail.src}
+                      alt={snap.thumbnail.alt}
+                      className="h-auto w-full"
+                    />
+                  </div>
+                  <p className="mt-1.5 text-xs text-navy/50">
+                    {snap.thumbnail.caption}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-
-        {/* Client Snapshot: Fr. Nicholas Fleming */}
-        <div className="mx-auto mt-16 max-w-4xl rounded-2xl border border-navy/10 bg-navy/[0.02] p-8 sm:p-10">
-          <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-            Client Snapshot
-          </span>
-
-          <div className="mx-auto mt-6 max-w-2xl">
-            <div className="relative aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5">
-              <iframe
-                src="https://player.vimeo.com/video/1211528738?h=607f3159d2"
-                className="absolute inset-0 h-full w-full"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title="Fr. Nicholas Fleming testimonial for Parish Media Company"
-              />
-            </div>
-
-            <blockquote className="mt-8 text-center">
-              <span className="font-serif text-5xl leading-none text-gold">
-                &ldquo;
-              </span>
-              <p className="-mt-6 font-serif text-xl italic leading-relaxed text-navy">
-                Before working with Joe, we didn&rsquo;t have an online
-                presence, especially on Instagram, and our bulletin was
-                pretty basic and had never really seen any change. Over the
-                last five months, Joe helped us build an Instagram page from
-                zero to 300 followers, redesigned our bulletin, and trained
-                our staff to use Canva and Meta ads so we can do this on our
-                own. We&rsquo;ve already seen new families register,
-                increased engagement with our homilies online, and seen how
-                this platform helps us grow as a parish. I highly recommend
-                Joe for what he&rsquo;s done for our parish, for yours.
-              </p>
-            </blockquote>
-            <p className="mt-4 text-center text-sm font-medium text-navy/60">
-              Fr. Nicholas Fleming, Saints John and James Parish, West
-              Warwick, RI
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-10 border-t border-navy/10 pt-10 sm:grid-cols-2">
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                Instagram Growth
-              </span>
-              <p className="mt-3 font-serif text-5xl font-semibold text-navy">
-                0 &rarr; 320
-              </p>
-              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                Followers in the First 30 Days
-              </p>
-              <p className="mt-4 text-navy/80">
-                The opening month of the growth Fr. Nicholas describes in the
-                video above: homily clips, event photos, and flyers people
-                actually stop to look at.
-              </p>
-            </div>
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-                Bulletin Redesign
-              </span>
-              <p className="mt-3 text-navy/80">
-                Basic and unchanged for years, redesigned into something
-                families actually read.
-              </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-navy/10">
-                <Image
-                  src={saintsJohnJamesBulletin}
-                  alt="Saints John and James Parish bulletin, before and after"
-                  className="h-auto w-full"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
 
         {/* More written testimonials */}
         <div className="mx-auto mt-20 grid max-w-5xl gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-navy/10">

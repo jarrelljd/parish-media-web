@@ -126,7 +126,7 @@ export default function Results() {
                 </div>
                 <p className="mt-4 text-navy/80">{snap.description}</p>
                 {snap.thumbnail && (
-                  <div className="mx-auto mt-5 w-40">
+                  <div className="mx-auto mt-5 w-full max-w-sm">
                     <div className="overflow-hidden rounded-lg border border-navy/10">
                       <Image
                         src={snap.thumbnail.src}

@@ -115,7 +115,7 @@ export default function Results() {
                       src={snap.video.src}
                       className="absolute inset-0 h-full w-full"
                       allow={snap.video.allow}
-                      allowFullScreen={snap.video.allowFullScreen}
+                      allowFullScreen
                       referrerPolicy={snap.video.referrerPolicy}
                       title={snap.video.title}
                     />

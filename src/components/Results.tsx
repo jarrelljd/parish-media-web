@@ -1,4 +1,5 @@
 import Image from "next/image";
+import BookACallButton from "@/components/BookACallButton";
 import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
@@ -195,11 +196,18 @@ export default function Results() {
           ))}
         </div>
 
-        {/* Results */}
+        {/* Book a Call CTA */}
+        <div className="mt-20 flex justify-center">
+          <BookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
+            Book a Call
+          </BookACallButton>
+        </div>
+
+        {/* More Results */}
         <div className="mx-auto mt-24 max-w-2xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
           <h3 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Results
+            More Results
           </h3>
           <p className="mt-4 text-lg text-navy/70">
             What we actually do for a parish, in two numbers.

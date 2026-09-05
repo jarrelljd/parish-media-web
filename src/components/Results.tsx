@@ -26,7 +26,7 @@ const clientSnapshots = [
     stat: "65",
     statLabel: "Young Adults Inquired About Young Adult Events in 60 Days",
     description:
-      "St. Patrick’s had no young adult ministry. We first ran an ad campaign to hire a young adult ministry leader, then targeted Catholics ages 12–35 in the area with monthly young adult events.",
+      "St. Patrick’s Catholic Church had a failing Facebook page, and no young adult ministry. To remedy this, we first ran a Meta ad campaign to hire a young adult ministry leader in the area. Then, we ran targeted ads to Catholics ages 21–35 in the area for monthly young adult events, all while posting content on the parish socials. The young adult leader texted the inquirers and added them to a group chat. After a few events, the parish had a full young adult ministry.",
   },
   {
     parish: "Saints John and James Parish",

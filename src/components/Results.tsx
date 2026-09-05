@@ -11,8 +11,10 @@ import { clients } from "@/data/clients";
 
 const clientSnapshots = [
   {
-    name: "Fr. Dave Aufiero",
-    org: "Pastor, St. Patrick’s Catholic Church, South Hadley, MA",
+    parish: "St. Patrick’s Catholic Church",
+    location: "South Hadley, MA",
+    diocese: "Diocese of Springfield",
+    priestCaption: "Fr. Dave Aufiero, Pastor of St. Patrick’s",
     video: {
       src: "https://player.vimeo.com/video/1224059968?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
       title: "Fr. Dave Aufiero testimonial for Parish Media Company",
@@ -24,21 +26,25 @@ const clientSnapshots = [
     stat: "65",
     statLabel: "Young Adults Inquired About Young Adult Events in 60 Days",
     description:
-      "Built a young adult ministry from the ground up, from targeted ads to event follow-up.",
+      "St. Patrick’s had no young adult ministry. We first ran an ad campaign to hire a young adult ministry leader, then targeted Catholics ages 12–35 in the area with monthly young adult events.",
   },
   {
-    name: "Fr. Nicholas Fleming",
-    org: "Pastor, Saints John and James Parish, West Warwick, RI",
+    parish: "Saints John and James Parish",
+    location: "West Warwick, RI",
+    diocese: "Diocese of Providence",
+    priestCaption: "Fr. Nicholas Fleming, Pastor of Saints John and James",
     video: {
-      src: "https://player.vimeo.com/video/1211528738?h=607f3159d2",
+      src: "https://player.vimeo.com/video/1224307339?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
       title: "Fr. Nicholas Fleming testimonial for Parish Media Company",
-      allow: "autoplay; fullscreen; picture-in-picture",
-      allowFullScreen: true,
+      allow:
+        "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share",
+      referrerPolicy: "strict-origin-when-cross-origin" as const,
+      orientation: "portrait" as const,
     },
     stat: "0 → 320",
     statLabel: "Instagram Followers in the First 30 Days",
     description:
-      "Built from zero: homily clips, event photos, and flyers people actually stop to look at. The bulletin got a redesign too.",
+      "Created and grew an Instagram account for the parish to 320 followers in 30 days, so the parish could reach more young adults. Also redesigned the parish bulletin.",
     thumbnail: {
       src: saintsJohnJamesBulletin,
       alt: "Saints John and James Parish bulletin, before and after",
@@ -84,68 +90,74 @@ export default function Results() {
             Client Snapshots
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            See results from parishes like yours.
+            See results from parishes, dioceses, and religious orders like
+            yours.
           </p>
         </div>
 
         {/* Client Snapshots */}
-        <div className="mx-auto mt-16 flex max-w-2xl flex-col gap-12">
+        <div className="mx-auto mt-16 flex max-w-5xl flex-col gap-10">
           {clientSnapshots.map((snap) => (
             <div
-              key={snap.name}
+              key={snap.parish}
               className="rounded-3xl border border-navy/10 bg-white p-8 shadow-sm shadow-navy/5 sm:p-10"
             >
-              <div className="text-center">
-                <h3 className="font-serif text-2xl font-semibold text-navy">
-                  {snap.name}
-                </h3>
-                <span className="mx-auto mt-3 block h-0.5 w-10 rounded-full bg-gold" />
-                <p className="mt-3 text-sm font-medium uppercase tracking-wide text-navy/60">
-                  {snap.org}
-                </p>
-              </div>
-
-              <div
-                className={
-                  snap.video.orientation === "portrait"
-                    ? "relative mx-auto mt-6 aspect-[9/16] w-full max-w-sm overflow-hidden rounded-xl"
-                    : "relative mt-6 aspect-video overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
-                }
-              >
-                <iframe
-                  src={snap.video.src}
-                  className="absolute inset-0 h-full w-full"
-                  allow={snap.video.allow}
-                  allowFullScreen={snap.video.allowFullScreen}
-                  referrerPolicy={snap.video.referrerPolicy}
-                  title={snap.video.title}
-                />
-              </div>
-
-              <div className="mt-8 border-t border-navy/10 pt-8 text-center">
-                <div className="mx-auto max-w-sm rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
-                  <p className="font-serif text-5xl font-semibold text-navy">
-                    {snap.stat}
-                  </p>
-                  <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                    {snap.statLabel}
+              <div className="grid gap-8 sm:grid-cols-[280px_1fr] sm:items-center sm:gap-10">
+                <div>
+                  <div
+                    className={
+                      snap.video.orientation === "portrait"
+                        ? "relative mx-auto aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-xl sm:mx-0 sm:max-w-none"
+                        : "relative aspect-video w-full overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
+                    }
+                  >
+                    <iframe
+                      src={snap.video.src}
+                      className="absolute inset-0 h-full w-full"
+                      allow={snap.video.allow}
+                      allowFullScreen={snap.video.allowFullScreen}
+                      referrerPolicy={snap.video.referrerPolicy}
+                      title={snap.video.title}
+                    />
+                  </div>
+                  <p className="mt-3 text-center text-sm font-medium text-navy/60 sm:text-left">
+                    {snap.priestCaption}
                   </p>
                 </div>
-                <p className="mt-4 text-navy/80">{snap.description}</p>
-                {snap.thumbnail && (
-                  <div className="mx-auto mt-5 w-full max-w-sm">
-                    <div className="overflow-hidden rounded-lg border border-navy/10">
-                      <Image
-                        src={snap.thumbnail.src}
-                        alt={snap.thumbnail.alt}
-                        className="h-auto w-full"
-                      />
-                    </div>
-                    <p className="mt-1.5 text-xs text-navy/50">
-                      {snap.thumbnail.caption}
+
+                <div className="text-center sm:text-left">
+                  <h3 className="text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
+                    {snap.parish}
+                  </h3>
+                  <span className="mx-auto mt-3 block h-1 w-12 rounded-full bg-gold sm:mx-0" />
+                  <p className="mt-3 text-lg font-medium text-navy/60">
+                    {snap.location} · {snap.diocese}
+                  </p>
+
+                  <div className="mt-5 rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
+                    <p className="font-serif text-5xl font-semibold text-navy">
+                      {snap.stat}
+                    </p>
+                    <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+                      {snap.statLabel}
                     </p>
                   </div>
-                )}
+                  <p className="mt-4 text-navy/80">{snap.description}</p>
+                  {snap.thumbnail && (
+                    <div className="mt-5 w-full">
+                      <div className="overflow-hidden rounded-lg border border-navy/10">
+                        <Image
+                          src={snap.thumbnail.src}
+                          alt={snap.thumbnail.alt}
+                          className="h-auto w-full"
+                        />
+                      </div>
+                      <p className="mt-1.5 text-xs text-navy/50">
+                        {snap.thumbnail.caption}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))}

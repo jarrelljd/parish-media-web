@@ -23,6 +23,10 @@ type ClientSnapshot = {
   };
   stat: string;
   statLabel: string;
+  secondaryStat?: {
+    stat: string;
+    label: string;
+  };
   description: string;
   thumbnail?: {
     src: StaticImageData;
@@ -45,9 +49,13 @@ const clientSnapshots: ClientSnapshot[] = [
       orientation: "portrait" as const,
     },
     stat: "200",
-    statLabel: "Inquiries in 90 Days",
+    statLabel: "Men Reached Out to Discuss Their Vocation",
+    secondaryStat: {
+      stat: "12+",
+      label: "Serious Discerners Ready for the Next Step",
+    },
     description:
-      "For $500 in ad spend, 200 Catholic men reached out about a conversation on religious life with the Midwest Province Vocation Office.",
+      "Using targeted Meta ads across the province, we reached Catholic men who were actively open to learning more about religious life. Over 90 days, a $500 ad investment generated 200 inquiries, including 12+ serious discerners who were ready for personal follow-up with the Vocation Office. The campaign gave interested men an easy, low-friction way to take the first step, while helping the province identify which inquiries represented genuine vocational interest rather than casual curiosity.",
   },
   {
     parish: "St. Patrick’s Catholic Church",
@@ -163,6 +171,16 @@ function ClientSnapshotCard({ snap }: { snap: ClientSnapshot }) {
             </p>
           </div>
           <p className="mt-4 text-navy/80">{snap.description}</p>
+          {snap.secondaryStat && (
+            <div className="mt-4 rounded-xl border border-navy/10 bg-navy/[0.03] px-6 py-5">
+              <p className="font-serif text-3xl font-semibold text-navy">
+                {snap.secondaryStat.stat}
+              </p>
+              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+                {snap.secondaryStat.label}
+              </p>
+            </div>
+          )}
           {snap.thumbnail && (
             <div className="mt-5 w-full">
               <div className="overflow-hidden rounded-lg border border-navy/10">

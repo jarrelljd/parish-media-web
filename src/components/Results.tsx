@@ -1,6 +1,5 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import BookACallButton from "@/components/BookACallButton";
-import capuchinsPhoto from "../../public/images/clients/capuchin-midwest-province/photo.jpg";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
@@ -10,7 +9,46 @@ import johnLujanPhoto from "../../public/images/clients/john-lujan-headshot.png"
 import saintsJohnJamesBulletin from "../../public/images/bulletins/saints-john-james/before-after.png";
 import { clients } from "@/data/clients";
 
-const clientSnapshots = [
+type ClientSnapshot = {
+  parish: string;
+  location: string;
+  diocese?: string;
+  priestCaption: string;
+  video: {
+    src: string;
+    title: string;
+    allow: string;
+    referrerPolicy?: "strict-origin-when-cross-origin";
+    orientation?: "portrait";
+  };
+  stat: string;
+  statLabel: string;
+  description: string;
+  thumbnail?: {
+    src: StaticImageData;
+    alt: string;
+    caption: string;
+  };
+};
+
+const clientSnapshots: ClientSnapshot[] = [
+  {
+    parish: "Capuchin Franciscans",
+    location: "Midwest Province of St. Joseph",
+    priestCaption: "Fr. Nathan Linton, Vocations Director",
+    video: {
+      src: "https://player.vimeo.com/video/1225765800?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+      title: "Fr. Nathan Linton testimonial for Parish Media Company",
+      allow:
+        "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share",
+      referrerPolicy: "strict-origin-when-cross-origin" as const,
+      orientation: "portrait" as const,
+    },
+    stat: "200",
+    statLabel: "Inquiries in 90 Days",
+    description:
+      "For $500 in ad spend, 200 Catholic men reached out about a conversation on religious life with the Midwest Province Vocation Office.",
+  },
   {
     parish: "St. Patrick’s Catholic Church",
     location: "South Hadley, MA",
@@ -81,6 +119,70 @@ const writtenTestimonials = [
   },
 ];
 
+function ClientSnapshotCard({ snap }: { snap: ClientSnapshot }) {
+  return (
+    <div className="rounded-3xl border border-navy/10 bg-white p-8 shadow-sm shadow-navy/5 sm:p-10">
+      <div className="grid gap-8 sm:grid-cols-[280px_1fr] sm:items-center sm:gap-10">
+        <div>
+          <div
+            className={
+              snap.video.orientation === "portrait"
+                ? "relative mx-auto aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-xl sm:mx-0 sm:max-w-none"
+                : "relative aspect-video w-full overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
+            }
+          >
+            <iframe
+              src={snap.video.src}
+              className="absolute inset-0 h-full w-full"
+              allow={snap.video.allow}
+              allowFullScreen
+              referrerPolicy={snap.video.referrerPolicy}
+              title={snap.video.title}
+            />
+          </div>
+          <p className="mt-3 text-center text-sm font-medium text-navy/60 sm:text-left">
+            {snap.priestCaption}
+          </p>
+        </div>
+
+        <div className="text-center sm:text-left">
+          <h3 className="text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
+            {snap.parish}
+          </h3>
+          <span className="mx-auto mt-3 block h-1 w-12 rounded-full bg-gold sm:mx-0" />
+          <p className="mt-3 text-lg font-medium text-navy/60">
+            {[snap.location, snap.diocese].filter(Boolean).join(" · ")}
+          </p>
+
+          <div className="mt-5 rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
+            <p className="font-serif text-5xl font-semibold text-navy">
+              {snap.stat}
+            </p>
+            <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
+              {snap.statLabel}
+            </p>
+          </div>
+          <p className="mt-4 text-navy/80">{snap.description}</p>
+          {snap.thumbnail && (
+            <div className="mt-5 w-full">
+              <div className="overflow-hidden rounded-lg border border-navy/10">
+                <Image
+                  src={snap.thumbnail.src}
+                  alt={snap.thumbnail.alt}
+                  className="h-auto w-full"
+                />
+              </div>
+              <p className="mt-1.5 text-xs text-navy/50">
+                {snap.thumbnail.caption}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Results() {
   return (
     <section className="px-6 py-24 sm:py-32">
@@ -99,68 +201,7 @@ export default function Results() {
         {/* Client Snapshots */}
         <div className="mx-auto mt-16 flex max-w-5xl flex-col gap-10">
           {clientSnapshots.map((snap) => (
-            <div
-              key={snap.parish}
-              className="rounded-3xl border border-navy/10 bg-white p-8 shadow-sm shadow-navy/5 sm:p-10"
-            >
-              <div className="grid gap-8 sm:grid-cols-[280px_1fr] sm:items-center sm:gap-10">
-                <div>
-                  <div
-                    className={
-                      snap.video.orientation === "portrait"
-                        ? "relative mx-auto aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-xl sm:mx-0 sm:max-w-none"
-                        : "relative aspect-video w-full overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
-                    }
-                  >
-                    <iframe
-                      src={snap.video.src}
-                      className="absolute inset-0 h-full w-full"
-                      allow={snap.video.allow}
-                      allowFullScreen
-                      referrerPolicy={snap.video.referrerPolicy}
-                      title={snap.video.title}
-                    />
-                  </div>
-                  <p className="mt-3 text-center text-sm font-medium text-navy/60 sm:text-left">
-                    {snap.priestCaption}
-                  </p>
-                </div>
-
-                <div className="text-center sm:text-left">
-                  <h3 className="text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
-                    {snap.parish}
-                  </h3>
-                  <span className="mx-auto mt-3 block h-1 w-12 rounded-full bg-gold sm:mx-0" />
-                  <p className="mt-3 text-lg font-medium text-navy/60">
-                    {snap.location} · {snap.diocese}
-                  </p>
-
-                  <div className="mt-5 rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
-                    <p className="font-serif text-5xl font-semibold text-navy">
-                      {snap.stat}
-                    </p>
-                    <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                      {snap.statLabel}
-                    </p>
-                  </div>
-                  <p className="mt-4 text-navy/80">{snap.description}</p>
-                  {snap.thumbnail && (
-                    <div className="mt-5 w-full">
-                      <div className="overflow-hidden rounded-lg border border-navy/10">
-                        <Image
-                          src={snap.thumbnail.src}
-                          alt={snap.thumbnail.alt}
-                          className="h-auto w-full"
-                        />
-                      </div>
-                      <p className="mt-1.5 text-xs text-navy/50">
-                        {snap.thumbnail.caption}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <ClientSnapshotCard key={snap.parish} snap={snap} />
           ))}
         </div>
 
@@ -281,41 +322,6 @@ export default function Results() {
               alt="Meta Ads Manager results showing a cost per lead of $2.42 and $2.53"
               className="h-auto w-full"
             />
-          </div>
-        </div>
-
-        {/* Vocation offices */}
-        <div className="mx-auto mt-24 max-w-3xl border-t border-navy/10 pt-16 text-center">
-          <h3 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Does This Work for Vocation Offices as Well?
-          </h3>
-          <p className="mt-3 text-navy/70">
-            Yes &mdash; the same playbook, aimed at young men discerning a
-            vocation.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-            <div className="w-full max-w-xs overflow-hidden rounded-xl border border-navy/10 sm:w-48 sm:shrink-0">
-              <Image
-                src={capuchinsPhoto}
-                alt="Capuchin friars of the Midwest Province of St. Joseph"
-                className="h-auto w-full"
-              />
-            </div>
-            <div>
-              <p className="font-serif text-4xl font-semibold text-navy">
-                190
-              </p>
-              <p className="text-sm font-medium uppercase tracking-wide text-navy/60">
-                Inquiries in 90 Days
-              </p>
-              <p className="mt-3 text-navy/80">
-                For $500 in ad spend, 190 Catholic men reached out about a
-                conversation on religious life with the Midwest Province
-                Vocation Office, Capuchin Franciscans, connecting with Fr.
-                Nathan Linton, Vocations Director.
-              </p>
-            </div>
           </div>
         </div>
 

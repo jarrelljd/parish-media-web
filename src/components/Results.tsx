@@ -49,10 +49,10 @@ const clientSnapshots: ClientSnapshot[] = [
       orientation: "portrait" as const,
     },
     stat: "200",
-    statLabel: "Men Reached Out to Discuss Their Vocation",
+    statLabel: "Men Reached Out to Discuss Their Vocation in 90 Days",
     secondaryStat: {
       stat: "12+",
-      label: "Serious Discerners Ready for the Next Step",
+      label: "Were Serious, Qualified Discerners That Moved on to the Next Step",
     },
     description:
       "Using targeted Meta ads across the province, we reached Catholic men who were actively open to learning more about religious life. Over 90 days, a $500 ad investment generated 200 inquiries, including 12+ serious discerners who were ready for personal follow-up with the Vocation Office. The campaign gave interested men an easy, low-friction way to take the first step, while helping the province identify which inquiries represented genuine vocational interest rather than casual curiosity.",

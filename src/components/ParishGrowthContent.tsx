@@ -25,7 +25,11 @@ export default function ParishGrowthContent() {
       <section className="px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">
         <div className="mx-auto max-w-3xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h1 className="mt-8 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
+          <p className="mt-6 text-xs font-semibold uppercase tracking-widest text-gold">
+            For Parish Priests and Staff Who Want More Young Adults and
+            Families Involved in Parish Life
+          </p>
+          <h1 className="mt-4 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
             30&ndash;50 Young Adults Reaching Out to Get Involved at Your
             Parish in 90 Days
           </h1>

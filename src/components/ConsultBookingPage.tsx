@@ -165,10 +165,9 @@ export default function ConsultBookingPage({
       </div>
 
       <div className="mx-auto mt-10 max-w-3xl">
-        <CalendlyEmbed
-          url={calendlyUrl}
-          trackScheduleEvent={variant === "vocations"}
-        />
+        {/* Priest, vocations, and staff triage calls all count as a booked
+            call for Meta ad tracking. */}
+        <CalendlyEmbed url={calendlyUrl} trackScheduleEvent />
       </div>
     </>
   );

@@ -11,8 +11,7 @@ export default function CalendlyEmbed({
   url: string;
   // Fires the Meta "Schedule" event the moment Calendly's own inline widget
   // reports a completed booking (via its postMessage API — no Calendly-side
-  // webhook or redirect config needed). Opt-in per page since not every
-  // consult variant needs it tracked yet.
+  // webhook or redirect config needed). Opt-in per page.
   trackScheduleEvent?: boolean;
 }) {
   useEffect(() => {

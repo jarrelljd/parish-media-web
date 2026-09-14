@@ -1,6 +1,5 @@
 import Image from "next/image";
 import BookACallButton from "./BookACallButton";
-import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
 import stJosephReport from "../../public/images/proof/st-joseph-monthly-report.png";
 
@@ -30,13 +29,22 @@ export default function ParishGrowthContent() {
             Families Involved in Parish Life
           </p>
           <h1 className="mt-4 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
-            30&ndash;50 Young Adults Reaching Out to Get Involved at Your
-            Parish in 90 Days
+            Help Your Parish Generate 30&ndash;50 Young-Adult Inquiries in 90
+            Days
           </h1>
           <p className="mt-6 text-pretty text-lg text-navy/70">
-            We use targeted Facebook and Instagram campaigns to reach
-            Catholics near your parish and send interested people straight to
-            your events, ministries, and volunteer opportunities.
+            We help Catholic parishes use Facebook and Instagram to reach
+            nearby young adults, promote meaningful parish opportunities, and
+            turn interest into real conversations, without adding more work
+            to your&nbsp;staff.
+          </p>
+          <p className="mt-6 text-pretty text-navy/80">
+            <span className="font-semibold text-navy">
+              Fr. Dave&rsquo;s parish generated 65 young-adult inquiries in 60
+              days.
+            </span>{" "}
+            The campaign gave interested young adults a simple way to raise
+            their hand and take the next step with the parish.
           </p>
           <div className="mt-8">
             <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
@@ -60,12 +68,12 @@ export default function ParishGrowthContent() {
             </svg>
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold">
-                100% Guarantee
+                The Guarantee
               </p>
               <p className="mt-1 text-pretty text-sm text-navy/70">
-                If we don&rsquo;t deliver at least 30 young adults reaching
-                out in 90 days, you pay nothing and we donate $1,000 to your
-                parish or&nbsp;diocese.
+                If we don&rsquo;t generate the agreed number of qualified
+                young-adult inquiries within 90&nbsp;days, you don&rsquo;t pay
+                our management&nbsp;fee.
               </p>
             </div>
           </div>
@@ -85,10 +93,56 @@ export default function ParishGrowthContent() {
           </p>
           <p className="mt-4 text-pretty text-navy/80">
             Our work is simple: we use Facebook and Instagram to help the
-            right people actually find your parish and take the next concrete
-            step &mdash; showing up to an event, joining a ministry, or
-            volunteering.
+            right people actually find your parish and reach out about an
+            event, ministry, or volunteer opportunity &mdash; a real, tracked
+            inquiry your staff can follow up on.
           </p>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            How It Works
+          </h2>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Reach
+              </span>
+              <p className="mt-2 text-navy/80">
+                Paid campaigns introduce your parish to nearby young adults.
+              </p>
+            </div>
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Nurture
+              </span>
+              <p className="mt-2 text-navy/80">
+                Consistent organic content helps them understand your parish
+                and stay connected.
+              </p>
+            </div>
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Respond
+              </span>
+              <p className="mt-2 text-navy/80">
+                Clear next steps allow interested people to inquire about
+                events, ministries, volunteering, or parish involvement.
+              </p>
+            </div>
+            <div className="rounded-xl border border-navy/10 bg-white p-6">
+              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+                Follow Up
+              </span>
+              <p className="mt-2 text-navy/80">
+                Your parish responds and helps those people take the next
+                step.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -134,8 +188,10 @@ export default function ParishGrowthContent() {
                 <p className="mt-4 text-pretty text-navy/80">
                   St. Patrick&rsquo;s had a failing Facebook page and no young
                   adult ministry. Targeted Meta ads reached Catholics
-                  21&ndash;35 nearby, and the parish now has a full young
-                  adult ministry built from those inquiries.
+                  21&ndash;35 nearby and generated a steady stream of
+                  inquiries. The parish followed up personally with everyone
+                  who reached out, and those conversations grew into a full
+                  young adult ministry.
                 </p>
               </div>
             </div>
@@ -154,16 +210,19 @@ export default function ParishGrowthContent() {
           </p>
           <ul className="mt-6 space-y-3">
             <CheckItem>
-              Build and run parish-specific ads on Facebook and Instagram to
-              spotlight your events and ministries
+              Build and manage parish-specific Facebook and Instagram
+              campaigns that put your events, ministries, and volunteer
+              opportunities in front of nearby young adults
             </CheckItem>
             <CheckItem>
-              Drive nearby Catholics to a simple way to get involved &mdash;
-              RSVP to an event, volunteer, or connect with a ministry leader
+              Direct interested people to a clear next step so they can
+              inquire about attending, joining, or volunteering
             </CheckItem>
             <CheckItem>
-              Post organic content every week so your parish&rsquo;s social
-              media reflects real parish life
+              Strengthen your organic presence by repurposing existing
+              content &mdash; homilies, announcements, and event information
+              &mdash; so paid attention doesn&rsquo;t disappear after someone
+              sees one ad, without adding more work for your staff
             </CheckItem>
             <CheckItem>
               Send one clear monthly report pulling from organic Facebook,
@@ -203,22 +262,6 @@ export default function ParishGrowthContent() {
               </div>
             </div>
           </div>
-
-          <div className="mx-auto mt-10 flex max-w-md items-center gap-4 border-t border-navy/10 pt-8">
-            <Image
-              src={frJaredPhoto}
-              alt="Fr. Jared DeLeo"
-              className="h-14 w-14 shrink-0 rounded-full object-cover"
-              style={{ objectPosition: "50% 15%" }}
-            />
-            <p className="text-pretty text-sm italic text-navy/70">
-              &ldquo;Joe&rsquo;s work has been great. Easter Mass was the most
-              packed it&rsquo;s ever been.&rdquo;
-              <span className="mt-1 block font-semibold not-italic text-navy">
-                Fr. Jared DeLeo, Pastor, St. Monica Catholic&nbsp;Parish
-              </span>
-            </p>
-          </div>
         </div>
       </section>
 
@@ -229,20 +272,30 @@ export default function ParishGrowthContent() {
             The Guarantee
           </span>
           <p className="mt-4 text-pretty text-navy/80">
-            We agree together on your parish&rsquo;s profile and approval
-            process. If, within 90 days of launch, your parish does not
-            receive at least 30 young adults reaching out to get involved:
+            If we agree that your parish is a fit, your parish approves the
+            campaign, provides the required information and access, responds
+            promptly to inquiries, and we do not generate the agreed number
+            of qualified young-adult inquiries within 90 days, you do not pay
+            our management fee.
           </p>
-          <ul className="mt-6 space-y-3">
-            <CheckItem>We refund 100% of our fee, and</CheckItem>
-            <CheckItem>
-              We donate $1,000 to your parish or diocese for having wasted
-              your time
-            </CheckItem>
-          </ul>
-          <p className="mt-6 font-semibold text-navy">
-            No fine print games. If we don&rsquo;t deliver, your parish is
-            still having more people show up for free.
+
+          <div className="mt-6 rounded-xl border border-navy/10 bg-navy/5 p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-navy/60">
+              What Counts as an Inquiry
+            </p>
+            <p className="mt-2 text-pretty text-navy/80">
+              For this offer, an inquiry means a young adult who submits
+              their contact information and expresses interest in attending
+              an event, joining a ministry, volunteering, or learning more
+              about your parish.
+            </p>
+          </div>
+
+          <p className="mt-6 text-pretty font-semibold text-navy">
+            Our commitment is a steady flow of real, qualified inquiries.
+            What happens after that &mdash; attendance, involvement, and
+            long-term relationships &mdash; depends on your parish&rsquo;s
+            own follow-up and hospitality.
           </p>
         </div>
       </section>

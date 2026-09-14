@@ -24,11 +24,7 @@ export default function ParishGrowthContent() {
       <section className="px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">
         <div className="mx-auto max-w-3xl text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <p className="mt-6 text-xs font-semibold uppercase tracking-widest text-gold">
-            For Parish Priests and Staff Who Want More Young Adults and
-            Families Involved in Parish Life
-          </p>
-          <h1 className="mt-4 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
+          <h1 className="mt-8 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
             Help Your Parish Generate 30&ndash;50 Young-Adult Inquiries in 90
             Days
           </h1>
@@ -38,7 +34,12 @@ export default function ParishGrowthContent() {
             turn interest into real conversations, without adding more work
             to your&nbsp;staff.
           </p>
-          <p className="mt-6 text-pretty text-navy/80">
+          <div className="mt-8">
+            <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+              Book 30-Min Parish Growth Strategy&nbsp;Call
+            </BookACallButton>
+          </div>
+          <p className="mt-8 text-pretty text-navy/80">
             <span className="font-semibold text-navy">
               Fr. Dave&rsquo;s parish generated 65 young-adult inquiries in 60
               days.
@@ -46,11 +47,6 @@ export default function ParishGrowthContent() {
             The campaign gave interested young adults a simple way to raise
             their hand and take the next step with the parish.
           </p>
-          <div className="mt-8">
-            <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book 30-Min Parish Growth Strategy&nbsp;Call
-            </BookACallButton>
-          </div>
           <div className="mx-auto mt-8 flex max-w-md items-center gap-4 rounded-2xl border border-gold/30 bg-white px-6 py-4 text-left shadow-sm">
             <svg
               viewBox="0 0 24 24"

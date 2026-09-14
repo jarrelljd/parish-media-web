@@ -94,7 +94,7 @@ export default function ParishGrowthContent() {
           <p className="mt-4 text-pretty text-navy/80">
             Our work is simple: we use Facebook and Instagram to help the
             right people actually find your parish and reach out about an
-            event, ministry, or volunteer opportunity &mdash; a real, tracked
+            event, ministry, or volunteer opportunity: a real, tracked
             inquiry your staff can follow up on.
           </p>
         </div>
@@ -220,9 +220,9 @@ export default function ParishGrowthContent() {
             </CheckItem>
             <CheckItem>
               Strengthen your organic presence by repurposing existing
-              content &mdash; homilies, announcements, and event information
-              &mdash; so paid attention doesn&rsquo;t disappear after someone
-              sees one ad, without adding more work for your staff
+              content (homilies, announcements, and event information) so
+              paid attention doesn&rsquo;t disappear after someone sees one
+              ad, without adding more work for your staff
             </CheckItem>
             <CheckItem>
               Send one clear monthly report pulling from organic Facebook,
@@ -293,9 +293,9 @@ export default function ParishGrowthContent() {
 
           <p className="mt-6 text-pretty font-semibold text-navy">
             Our commitment is a steady flow of real, qualified inquiries.
-            What happens after that &mdash; attendance, involvement, and
-            long-term relationships &mdash; depends on your parish&rsquo;s
-            own follow-up and hospitality.
+            What happens after that (attendance, involvement, and long-term
+            relationships) depends on your parish&rsquo;s own follow-up and
+            hospitality.
           </p>
         </div>
       </section>

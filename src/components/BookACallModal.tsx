@@ -11,7 +11,7 @@ export default function BookACallModal({
   onClose: () => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [role, setRole] = useState("");
+  const [purpose, setPurpose] = useState("");
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
@@ -29,11 +29,9 @@ export default function BookACallModal({
     e.preventDefault();
     setRedirecting(true);
     const destination =
-      role === "Parish Priest"
-        ? "/free-consult"
-        : role === "Vocations Director"
-          ? "/free-consult/vocations"
-          : "/free-triage";
+      purpose === "Vocations Outreach"
+        ? "/free-consult/vocations"
+        : "/free-consult";
     window.location.href = destination;
   }
 
@@ -79,6 +77,10 @@ export default function BookACallModal({
             >
               Book a Call
             </p>
+            <p className="mt-1 text-sm text-navy/60">
+              Due to increased demand, we&rsquo;re only providing free
+              consultations with Catholic priests or deacons.
+            </p>
           </div>
 
           <div className="flex items-start gap-3">
@@ -94,7 +96,7 @@ export default function BookACallModal({
               htmlFor="modal-confirmEligible"
               className="text-sm text-navy/80"
             >
-              I confirm I work for a parish, diocese, or religious order.
+              I confirm I&rsquo;m a priest or deacon.
             </label>
           </div>
 
@@ -119,25 +121,26 @@ export default function BookACallModal({
           >
             <div className="min-h-0">
               <label
-                htmlFor="modal-role"
+                htmlFor="modal-purpose"
                 className="block text-sm font-medium text-navy"
               >
-                Your Role
+                What&rsquo;s This Consult For?
               </label>
               <select
-                id="modal-role"
-                name="role"
+                id="modal-purpose"
+                name="purpose"
                 required={confirmed}
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
                 className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
               >
                 <option value="" disabled>
                   Select one...
                 </option>
-                <option value="Parish Priest">Parish Priest</option>
-                <option value="Vocations Director">Vocations Director</option>
-                <option value="Staff">Staff</option>
+                <option value="Parish/Diocese Growth">
+                  Parish/Diocese Growth
+                </option>
+                <option value="Vocations Outreach">Vocations Outreach</option>
               </select>
             </div>
           </div>

@@ -170,10 +170,22 @@ export async function submitEbookRequest(
   const name = String(formData.get("name") ?? "");
   const phone = String(formData.get("phone") ?? "");
   const email = String(formData.get("email") ?? "");
-  const role = String(formData.get("role") ?? "");
-  const roleOther = String(formData.get("roleOther") ?? "");
+  const eligible = formData.get("eligible") === "yes";
+  const assignment = String(formData.get("assignment") ?? "");
   const organization = String(formData.get("organization") ?? "");
-  const roleDisplay = role === "Other" && roleOther ? `Other (${roleOther})` : role;
+  const cityState = String(formData.get("cityState") ?? "");
+
+  // The free guide is reserved for priests and deacons — other roles don't
+  // convert into paying clients, so we don't want them in the CRM/Zapier
+  // pipeline at all. The checkbox in FreeGuideForm.tsx enforces this
+  // client-side already; this is defense in depth against a bypassed client.
+  if (!eligible) {
+    return {
+      status: "error",
+      message:
+        "This free guide is reserved for priests and deacons. Please use the Amazon link above to buy the paperback.",
+    };
+  }
 
   if (phone.replace(/\D/g, "").length < 10) {
     return {
@@ -196,8 +208,9 @@ export async function submitEbookRequest(
         name,
         phone,
         email,
-        role: roleDisplay,
+        assignment,
         organization,
+        cityState,
       },
       "ZAPIER_WEBHOOK_FREE_GUIDE",
     );

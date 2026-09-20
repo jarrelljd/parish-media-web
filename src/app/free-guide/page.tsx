@@ -121,9 +121,9 @@ export default function FreeGuidePage() {
 
             <p className="mt-4 text-pretty text-sm text-navy/70 sm:mt-8 sm:text-lg">
               Get the free digital copy of my book, &ldquo;Social Media
-              for Catholic Churches,&rdquo; and see how we&rsquo;re
-              helping get 30&ndash;50 new people involved in parish
-              life in just 90 days.
+              for Catholic Churches,&rdquo; if you&rsquo;re a priest or
+              deacon, and see how we&rsquo;re helping get 30&ndash;50
+              new people involved in parish life in just 90 days.
             </p>
 
             <div className="mt-6 sm:mt-10">

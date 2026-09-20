@@ -13,22 +13,17 @@ export default function FreeGuideForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [confirmed, setConfirmed] = useState(false);
-  const [role, setRole] = useState("");
-  const showMore = name.trim() !== "" && email.trim() !== "" && confirmed;
-  const showOtherExplain = role === "Other";
+  const [eligible, setEligible] = useState(false);
+  const showMore = name.trim() !== "" && email.trim() !== "" && eligible;
 
   useEffect(() => {
     if (state.status === "success") {
       const timer = setTimeout(() => {
-        window.location.href =
-          role === "Priest"
-            ? "/free-guide/free-consult"
-            : "/free-guide/free-triage";
+        window.location.href = "/free-guide/free-consult";
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [state.status, role]);
+  }, [state.status]);
 
   if (state.status === "success") {
     return (
@@ -121,16 +116,17 @@ export default function FreeGuideForm() {
 
       <div className="flex items-start gap-3">
         <input
-          id="confirmEligible"
+          id="eligible"
+          name="eligible"
           type="checkbox"
           required
-          checked={confirmed}
-          onChange={(e) => setConfirmed(e.target.checked)}
+          value="yes"
+          checked={eligible}
+          onChange={(e) => setEligible(e.target.checked)}
           className="mt-1 h-4 w-4 shrink-0 rounded border-navy/30 text-navy focus:ring-navy"
         />
-        <label htmlFor="confirmEligible" className="text-sm text-navy/80">
-          I confirm I am a paid staff member or clergy at a parish, diocese,
-          or religious order (not a volunteer).
+        <label htmlFor="eligible" className="text-sm text-navy/80">
+          I am a priest or deacon at a parish, diocese, or religious order.
         </label>
       </div>
 
@@ -155,6 +151,23 @@ export default function FreeGuideForm() {
         <div className="min-h-0 space-y-5">
           <div>
             <label
+              htmlFor="assignment"
+              className="block text-sm font-medium text-navy"
+            >
+              Your Assignment
+            </label>
+            <input
+              id="assignment"
+              name="assignment"
+              type="text"
+              required={showMore}
+              placeholder="Pastor, Parochial Vicar, Deacon, Vocations Director, etc."
+              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+            />
+          </div>
+
+          <div>
+            <label
               htmlFor="organization"
               className="block text-sm font-medium text-navy"
             >
@@ -165,57 +178,26 @@ export default function FreeGuideForm() {
               name="organization"
               type="text"
               required={showMore}
+              placeholder="St. Mary Parish, Diocese of Reno, etc."
               className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
             />
           </div>
 
           <div>
             <label
-              htmlFor="role"
+              htmlFor="cityState"
               className="block text-sm font-medium text-navy"
             >
-              Your Role
+              City/State of Assignment
             </label>
-            <select
-              id="role"
-              name="role"
+            <input
+              id="cityState"
+              name="cityState"
+              type="text"
               required={showMore}
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+              placeholder="Reno, NV"
               className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-            >
-              <option value="" disabled>
-                Select one...
-              </option>
-              <option value="Priest">Priest</option>
-              <option value="Admin">Admin</option>
-              <option value="Communications">Communications</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div
-            className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
-              showOtherExplain
-                ? "grid-rows-[1fr] opacity-100"
-                : "grid-rows-[0fr] opacity-0"
-            }`}
-          >
-            <div className="min-h-0">
-              <label
-                htmlFor="roleOther"
-                className="block text-sm font-medium text-navy"
-              >
-                Tell us your role
-              </label>
-              <input
-                id="roleOther"
-                name="roleOther"
-                type="text"
-                required={showOtherExplain}
-                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              />
-            </div>
+            />
           </div>
         </div>
       </div>

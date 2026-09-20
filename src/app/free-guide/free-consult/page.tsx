@@ -13,7 +13,7 @@ export default function FreeGuideFreeConsultPage() {
       <Nav />
       <main className="flex flex-1 flex-col">
         <section className="px-6 pb-16 pt-8 sm:pb-20 sm:pt-12">
-          <FreeGuideBookACall isPriest={true} />
+          <FreeGuideBookACall />
         </section>
       </main>
     </>

@@ -1,37 +1,20 @@
 import Script from "next/script";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
-const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
-const CALENDLY_URL_STAFF =
-  "https://calendly.com/parishmedia/triage?hide_gdpr_banner=1&background_color=faf8f4&text_color=1b2a4a&primary_color=c9a227";
+const CALENDLY_URL = "https://calendly.com/parishmedia/consult";
 
 const VSL = {
-  priest: {
-    videoId: "1220874027",
-    title: "Priest Consult VSL",
-  },
-  staff: {
-    videoId: "1221266693",
-    title: "Triage Call VSL",
-  },
+  videoId: "1220874027",
+  title: "Priest Consult VSL",
 };
 
-export default function FreeGuideBookACall({
-  isPriest,
-}: {
-  isPriest: boolean;
-}) {
-  const calendlyUrl = isPriest ? CALENDLY_URL_PRIEST : CALENDLY_URL_STAFF;
-  const vsl = isPriest ? VSL.priest : VSL.staff;
-
+export default function FreeGuideBookACall() {
   return (
     <>
       <div className="mx-auto max-w-2xl text-center">
         <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
         <h1 className="mt-8 text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
-          {isPriest
-            ? "Your Free Book Is on Its Way, Father."
-            : "Your Free Book Is on Its Way."}
+          Your Free Book Is on Its Way.
         </h1>
         <div
           className="relative mx-auto mt-6 h-14 w-64 max-w-full"
@@ -71,9 +54,8 @@ export default function FreeGuideBookACall({
           </div>
         </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
-          {isPriest
-            ? "Watch this quick video, then reserve your no-cost 30-minute parish outreach consult below."
-            : "Watch this 60-sec video to see how your parish can reach more people. Then, book a free 10-min call to talk about your parish’s goals."}
+          Watch this quick video, then reserve your no-cost 30-minute
+          parish outreach consult below.
         </p>
       </div>
 
@@ -83,11 +65,11 @@ export default function FreeGuideBookACall({
         </h2>
         <div className="relative mt-6" style={{ paddingTop: "56.25%" }}>
           <iframe
-            src={`https://player.vimeo.com/video/${vsl.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+            src={`https://player.vimeo.com/video/${VSL.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             className="absolute inset-0 h-full w-full border-0"
-            title={vsl.title}
+            title={VSL.title}
           />
         </div>
         <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
@@ -98,14 +80,13 @@ export default function FreeGuideBookACall({
           Want to see how this could work for your parish?
         </p>
         <p className="mt-4 text-pretty text-lg text-navy/80">
-          Book a free {isPriest ? "30-min" : "10-min"} call with Joe to
-          review your social media and see if it makes sense to keep
-          talking.
+          Book a free 30-min call with Joe to review your social media
+          and see if it makes sense to keep talking.
         </p>
       </div>
 
       <div className="mx-auto mt-10 max-w-3xl">
-        <CalendlyEmbed url={calendlyUrl} />
+        <CalendlyEmbed url={CALENDLY_URL} />
       </div>
     </>
   );

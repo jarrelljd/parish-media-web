@@ -39,7 +39,7 @@ export default function ConsultBookingPage({
         <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
         <h1 className="mt-8 text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
           {variant === "priest" &&
-            "You’re Invited to a Free Consult, Father."}
+            "You’re Invited to a Free Consult."}
           {variant === "vocations" &&
             "You’re Invited to a Free Vocations Strategy Call."}
           {variant === "staff" && "Let’s Get You Scheduled."}

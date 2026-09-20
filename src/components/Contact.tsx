@@ -12,7 +12,7 @@ export default function Contact() {
   );
 
   return (
-    <section className="px-6 py-24 sm:py-32">
+    <section className="px-6 pt-14 pb-24 sm:pt-20 sm:pb-32">
       <div className="mx-auto max-w-xl">
         <div className="text-center">
           <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />

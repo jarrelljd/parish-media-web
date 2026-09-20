@@ -54,8 +54,9 @@ export default function FreeGuideBookACall() {
           </div>
         </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
-          Watch this quick video, then reserve your no-cost 30-minute
-          parish outreach consult below.
+          It should be in your email in a couple minutes. In the
+          meantime, watch this quick video and reserve your no-cost
+          30-minute parish outreach{" "}consult{" "}below.
         </p>
       </div>
 

@@ -72,4 +72,12 @@ export const clients: {
     photoPosition: "50% 0%",
     photoZoom: 1.3,
   },
+  {
+    name: "Fr. Adam Marchese, Pastor",
+    org: "Holy Name of Jesus Catholic Church, Indialantic, FL",
+    diocese: "Diocese of Orlando",
+    photo: "/images/clients/fr-adam-marchese.png",
+    photoPosition: "50% 25%",
+    photoZoom: 1.8,
+  },
 ];

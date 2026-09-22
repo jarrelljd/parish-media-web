@@ -77,7 +77,7 @@ export const clients: {
     org: "Holy Name of Jesus Catholic Church, Indialantic, FL",
     diocese: "Diocese of Orlando",
     photo: "/images/clients/fr-adam-marchese.png",
-    photoPosition: "50% 25%",
-    photoZoom: 1.8,
+    photoPosition: "50% 20%",
+    photoZoom: 1.4,
   },
 ];

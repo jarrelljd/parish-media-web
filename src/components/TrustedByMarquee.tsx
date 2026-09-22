@@ -43,8 +43,8 @@ function ClientBadge({ client }: { client: (typeof clients)[number] }) {
           <Image
             src={client.photo}
             alt={client.name}
-            width={56}
-            height={56}
+            width={224}
+            height={224}
             draggable={false}
             className="h-full w-full object-cover"
             style={{

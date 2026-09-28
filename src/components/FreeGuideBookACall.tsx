@@ -54,9 +54,14 @@ export default function FreeGuideBookACall() {
           </div>
         </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
-          It should be in your email in a couple minutes. In the
-          meantime, watch this quick video and reserve your no-cost
-          30-minute parish outreach{" "}consult{" "}below.
+          It should be in your email in a couple minutes.
+        </p>
+        <p className="mt-3 text-pretty text-lg text-navy/70">
+          While you wait, every parish that downloads the book is given a
+          free 30-minute social media consultation, where we create a
+          gameplan for the parish to use social media to bring more people
+          to the parish. If that sounds useful, watch the video below and
+          reserve your spot.
         </p>
       </div>
 

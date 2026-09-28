@@ -96,7 +96,8 @@ export default function BookACallModal({
               htmlFor="modal-confirmEligible"
               className="text-sm text-navy/80"
             >
-              I confirm I&rsquo;m a priest or deacon.
+              I confirm I&rsquo;m a Catholic priest or deacon (not parish
+              staff or a{" "}volunteer).
             </label>
           </div>
 

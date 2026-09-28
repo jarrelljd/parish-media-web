@@ -126,7 +126,8 @@ export default function FreeGuideForm() {
           className="mt-1 h-4 w-4 shrink-0 rounded border-navy/30 text-navy focus:ring-navy"
         />
         <label htmlFor="eligible" className="text-sm text-navy/80">
-          I am a priest or deacon at a parish, diocese, or religious order.
+          I confirm I am a Catholic priest or deacon (not parish staff or
+          a{" "}volunteer).
         </label>
       </div>
 

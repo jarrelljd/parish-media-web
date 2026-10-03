@@ -34,6 +34,15 @@ export default function ParishGrowthContent() {
             turn interest into real conversations, without adding more work
             to your&nbsp;staff.
           </p>
+          <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-2xl bg-navy shadow-lg">
+            <iframe
+              src="https://player.vimeo.com/video/1156503108?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Parish Media VSL 1"
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
           <div className="mt-8">
             <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
               Book 30-Min Parish Growth Strategy&nbsp;Call

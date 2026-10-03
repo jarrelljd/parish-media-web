@@ -21,20 +21,17 @@ export default function ParishGrowthContent() {
   return (
     <>
       {/* Hero */}
-      <section className="px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">
+      <section className="px-6 pt-4 pb-16 sm:pt-8 sm:pb-20">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h1 className="mt-8 text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
-            Help Your Parish Generate 30&ndash;50 Young-Adult Inquiries in 90
-            Days
+          <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
+            Help Your Parish Reach More Young Adults and&nbsp;Families
           </h1>
-          <p className="mt-6 text-pretty text-lg text-navy/70">
-            We help Catholic parishes use Facebook and Instagram to reach
-            nearby young adults, promote meaningful parish opportunities, and
-            turn interest into real conversations, without adding more work
-            to your&nbsp;staff.
+          <p className="mt-5 text-pretty text-lg text-navy/70">
+            We help Catholic parishes reach nearby young adults through
+            Facebook and Instagram, give them clear next steps, and generate
+            inquiries without adding work for&nbsp;staff.
           </p>
-          <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-2xl bg-navy shadow-lg">
+          <div className="relative mx-auto mt-8 aspect-video w-full max-w-2xl overflow-hidden rounded-2xl bg-navy shadow-lg">
             <iframe
               src="https://player.vimeo.com/video/1156503108?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"

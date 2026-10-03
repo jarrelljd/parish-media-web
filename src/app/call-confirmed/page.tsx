@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import ScheduleTracker from "@/components/ScheduleTracker";
 
 export const metadata: Metadata = {
   title: "Call Confirmed | Parish Media Company",
@@ -24,6 +25,7 @@ export default function CallConfirmedPage() {
   return (
     <>
       <Nav />
+      <ScheduleTracker />
       <main className="flex flex-1 flex-col">
         <section className="px-6 py-16 sm:py-20">
           <div className="mx-auto max-w-2xl text-center">

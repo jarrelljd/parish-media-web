@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const CALENDLY_URL_PARISH = "https://calendly.com/parishmedia/consult";
+const CALENDLY_URL_VOCATIONS =
+  "https://calendly.com/parishmedia/free-consultation-joe-jarrell-clone";
+
 export default function BookACallModal({
   open,
   onClose,
@@ -28,11 +32,10 @@ export default function BookACallModal({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setRedirecting(true);
-    const destination =
+    window.location.href =
       purpose === "Vocations Outreach"
-        ? "/free-consult/vocations"
-        : "/free-consult";
-    window.location.href = destination;
+        ? CALENDLY_URL_VOCATIONS
+        : CALENDLY_URL_PARISH;
   }
 
   return (
@@ -78,8 +81,9 @@ export default function BookACallModal({
               Book a Call
             </p>
             <p className="mt-1 text-sm text-navy/60">
-              Due to increased demand, we&rsquo;re only providing free
-              consultations with Catholic priests or deacons.
+              Pastor attendance is required so we can tailor the
+              conversation to your parish. Others may book on the
+              pastor&rsquo;s&nbsp;behalf.
             </p>
           </div>
 
@@ -96,13 +100,13 @@ export default function BookACallModal({
               htmlFor="modal-confirmEligible"
               className="text-sm text-navy/80"
             >
-              I confirm I&rsquo;m a Catholic priest or deacon (not parish
-              staff or a{" "}volunteer).
+              I confirm I&rsquo;m the pastor, or the pastor will join
+              the&nbsp;call.
             </label>
           </div>
 
           <p className="text-xs text-navy/50">
-            Not eligible?{" "}
+            Pastor can&rsquo;t join?{" "}
             <Link
               href="/contact"
               onClick={onClose}

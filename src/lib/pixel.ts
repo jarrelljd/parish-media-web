@@ -17,3 +17,24 @@ export function trackSchedule() {
   const fbq = (window as unknown as { fbq?: Fbq }).fbq;
   fbq?.("track", "Schedule");
 }
+
+// Calendly redirects to /call-confirmed after a booking, which also fires
+// Schedule. When an on-site embed already fired it (see CalendlyEmbed), this
+// flag tells /call-confirmed to skip so the booking isn't counted twice.
+const SCHEDULE_FLAG = "pmc_schedule_tracked";
+
+export function markScheduleTracked() {
+  try {
+    sessionStorage.setItem(SCHEDULE_FLAG, "1");
+  } catch {}
+}
+
+export function consumeScheduleTracked(): boolean {
+  try {
+    const tracked = sessionStorage.getItem(SCHEDULE_FLAG) === "1";
+    sessionStorage.removeItem(SCHEDULE_FLAG);
+    return tracked;
+  } catch {
+    return false;
+  }
+}

@@ -1,7 +1,11 @@
 import Image from "next/image";
-import BookACallButton from "./BookACallButton";
+import CalendlyEmbed from "./CalendlyEmbed";
+import ScrollToBookingButton from "./ScrollToBookingButton";
 import parishesAdsResults from "../../public/images/proof/parishes-ads-results.png";
 import stJosephReport from "../../public/images/proof/st-joseph-monthly-report.png";
+
+const CALENDLY_URL =
+  "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -41,9 +45,9 @@ export default function ParishGrowthContent() {
             />
           </div>
           <div className="mt-8">
-            <BookACallButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
               Book 30-Min Parish Growth Strategy&nbsp;Call
-            </BookACallButton>
+            </ScrollToBookingButton>
           </div>
           <p className="mt-8 text-pretty text-navy/80">
             <span className="font-semibold text-navy">
@@ -326,21 +330,26 @@ export default function ParishGrowthContent() {
         </div>
       </section>
 
-      {/* Next step */}
-      <section className="border-t border-navy/10 px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-xl text-center">
+      {/* Before you book + Calendly */}
+      <section
+        id="book"
+        className="scroll-mt-20 border-t border-navy/10 px-6 py-16 sm:py-20"
+      >
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Let&rsquo;s Talk
+            Before You Book&hellip;
           </h2>
-          <p className="mt-3 text-pretty text-navy/70">
-            If this sounds like it could serve your parish, the next step is
-            a short conversation.
+          <p className="mt-4 text-pretty text-navy/80">
+            To make this conversation as useful as possible for your parish,
+            we ask that the pastor join the call. Assistant priests, deacons,
+            and office staff are welcome to book, provided they can bring the
+            pastor into the&nbsp;meeting.
           </p>
-          <div className="mt-8">
-            <BookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
-              Book 30-Min Parish Growth Strategy&nbsp;Call
-            </BookACallButton>
-          </div>
+        </div>
+        <div className="mx-auto mt-10 max-w-3xl">
+          {/* No trackScheduleEvent here: Calendly redirects to
+              /call-confirmed after booking, which fires Schedule. */}
+          <CalendlyEmbed url={CALENDLY_URL} />
         </div>
       </section>
     </>

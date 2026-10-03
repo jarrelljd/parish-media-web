@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Script from "next/script";
-import { trackSchedule } from "@/lib/pixel";
+import { markScheduleTracked, trackSchedule } from "@/lib/pixel";
 
 export default function CalendlyEmbed({
   url,
@@ -20,6 +20,7 @@ export default function CalendlyEmbed({
     function handleMessage(event: MessageEvent) {
       if (event.data?.event === "calendly.event_scheduled") {
         trackSchedule();
+        markScheduleTracked();
       }
     }
 

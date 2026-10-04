@@ -8,6 +8,36 @@ import stepFollowUp from "../../public/images/events/st-rose/2026-picnic-enhance
 const CALENDLY_URL =
   "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
 
+const FAQS = [
+  {
+    question:
+      "We already have someone handling our social media. Do we still need this?",
+    answer: [
+      "Possibly. We’re not here to replace someone who knows your parish. We provide the strategy, campaigns, and execution needed to consistently reach nearby young adults and families, promote specific parish activities, and generate inquiries. We’ll bring the inquiries to the parish so your staff member can focus less on posting and more on what they do best: ministry work for the new inquirers.",
+    ],
+  },
+  {
+    question: "How much does it cost?",
+    answer: [
+      "Pricing depends on your parish’s goals, location, campaign scope, and the level of support needed. We’ll walk through the recommended plan on the call and give you a clear investment before anything moves forward.",
+    ],
+  },
+  {
+    question:
+      "We have other priorities right now. Why should this be one of them?",
+    answer: [
+      "That’s exactly why we focus on a 90-day plan. The goal isn’t to create another ongoing project for your parish. It’s to help more people discover what your parish already offers and take a clear next step toward participating.",
+      "If reaching more young adults and families is a priority, this gives your parish a practical system for doing it.",
+    ],
+  },
+  {
+    question: "We’re already too busy. How would we manage this?",
+    answer: [
+      "You shouldn’t have to manage it. We handle the campaign strategy, content coordination, advertising, and reporting. Your staff’s main responsibility is helping us understand parish events and responding when interested people raise their hands.",
+    ],
+  },
+];
+
 const PRIEST_TESTIMONIALS = [
   {
     name: "Fr. Dave Aufiero",
@@ -94,6 +124,11 @@ export default function ParishGrowthContent() {
                 </p>
               </div>
             ))}
+          </div>
+          <div className="mt-12 text-center">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+              Book 30-Min Parish Growth Strategy&nbsp;Call
+            </ScrollToBookingButton>
           </div>
         </div>
       </section>
@@ -193,6 +228,53 @@ export default function ParishGrowthContent() {
           {/* No trackScheduleEvent here: Calendly redirects to
               /call-confirmed after booking, which fires Schedule. */}
           <CalendlyEmbed url={CALENDLY_URL} />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-navy/5 px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <h2 className="text-balance text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-10 space-y-3">
+            {FAQS.map((faq) => (
+              <details
+                key={faq.question}
+                className="group rounded-2xl border border-navy/10 bg-white shadow-sm open:border-gold/40"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left font-semibold text-navy [&::-webkit-details-marker]:hidden">
+                  <span className="text-pretty">{faq.question}</span>
+                  <span
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.25}
+                      className="h-4 w-4"
+                    >
+                      <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="space-y-3 px-6 pb-6 text-navy/80">
+                  {faq.answer.map((paragraph) => (
+                    <p key={paragraph} className="text-pretty">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+              Book 30-Min Parish Growth Strategy&nbsp;Call
+            </ScrollToBookingButton>
+          </div>
         </div>
       </section>
     </>

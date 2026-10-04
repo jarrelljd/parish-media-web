@@ -39,9 +39,8 @@ export default function ParishGrowthContent() {
               Help Your Parish Reach More Young Adults and&nbsp;Families
             </h1>
             <p className="mt-5 text-pretty text-lg text-offwhite/75">
-              We help Catholic parishes reach nearby young adults through
-              Facebook and Instagram, give them clear next steps, and
-              generate inquiries without adding work for&nbsp;staff.
+              Reach nearby people, show them what&rsquo;s happening at your
+              parish, and make it easy to get&nbsp;involved.
             </p>
           </div>
         </div>
@@ -58,9 +57,9 @@ export default function ParishGrowthContent() {
         </div>
         <div className="mx-auto max-w-3xl px-6 text-center">
           <p className="mx-auto mt-8 max-w-2xl text-pretty text-navy/80">
-            Over 90 days, we turn your parish&rsquo;s existing events,
-            ministries, and Masses into a consistent stream of local
-            attention, clear invitations, and young-adult&nbsp;inquiries.
+            We use your parish&rsquo;s existing events, ministries, and Mass
+            schedule to reach local young adults and families and give them
+            a clear next&nbsp;step.
           </p>
           <div className="mt-8">
             <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">

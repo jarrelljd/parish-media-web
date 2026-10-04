@@ -39,8 +39,9 @@ export default function ParishGrowthContent() {
               Help Your Parish Reach More Young Adults and&nbsp;Families
             </h1>
             <p className="mt-5 text-pretty text-lg text-offwhite/75">
-              Reach nearby people, show them what&rsquo;s happening at your
-              parish, and make it easy to get&nbsp;involved.
+              Reach nearby young adults, show them what&rsquo;s happening at
+              your parish, and make it easy to get involved, all through
+              Facebook and&nbsp;Instagram.
             </p>
           </div>
         </div>

@@ -49,44 +49,15 @@ export default function ParishGrowthContent() {
               className="absolute inset-0 h-full w-full border-0"
             />
           </div>
+          <p className="mx-auto mt-8 max-w-2xl text-pretty text-navy/80">
+            Over 90 days, we turn your parish&rsquo;s existing events,
+            ministries, and Masses into a consistent stream of local
+            attention, clear invitations, and young-adult&nbsp;inquiries.
+          </p>
           <div className="mt-8">
             <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
               Book 30-Min Parish Growth Strategy&nbsp;Call
             </ScrollToBookingButton>
-          </div>
-          <p className="mt-8 text-pretty text-navy/80">
-            <span className="font-semibold text-navy">
-              Fr. Dave&rsquo;s parish generated 65 young-adult inquiries in 60
-              days.
-            </span>{" "}
-            The campaign gave interested young adults a simple way to raise
-            their hand and take the next step with the parish.
-          </p>
-          <div className="mx-auto mt-8 flex max-w-md items-center gap-4 rounded-2xl border border-gold/30 bg-white px-6 py-4 text-left shadow-sm">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              className="h-10 w-10 shrink-0 text-gold"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M12 3c-2.755 0-5.455.386-8.032 1.113a1.125 1.125 0 0 0-.734 1.352 1.125 1.125 0 0 0 .01.104C3.2 12.4 6.4 18.9 12 21c5.6-2.1 8.8-8.6 8.756-15.43a1.125 1.125 0 0 0-.734-1.352A48.424 48.424 0 0 0 12 3Z"
-              />
-            </svg>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-gold">
-                The Guarantee
-              </p>
-              <p className="mt-1 text-pretty text-sm text-navy/70">
-                If we don&rsquo;t generate the agreed number of qualified
-                young-adult inquiries within 90&nbsp;days, you don&rsquo;t pay
-                our management&nbsp;fee.
-              </p>
-            </div>
           </div>
         </div>
       </section>

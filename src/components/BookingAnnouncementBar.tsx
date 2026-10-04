@@ -1,0 +1,42 @@
+import ScrollToBookingButton from "./ScrollToBookingButton";
+
+// Top bar for landing pages without the main nav: the whole bar is a
+// scroll-to-booking CTA, with a ringing phone to draw the eye.
+export default function BookingAnnouncementBar() {
+  return (
+    <ScrollToBookingButton className="group sticky top-0 z-50 block overflow-hidden bg-navy text-offwhite transition-colors hover:bg-[#22355c]">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-gold/15 to-transparent motion-safe:animate-shimmer"
+      />
+      <span className="relative mx-auto flex max-w-6xl items-center justify-center gap-3 px-4 py-3">
+        <span className="relative flex h-8 w-8 shrink-0 items-center justify-center">
+          <span className="absolute inset-0 rounded-full bg-gold/60 motion-safe:animate-ping" />
+          <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gold text-navy">
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+              className="h-4 w-4 origin-center motion-safe:animate-phone-ring"
+            >
+              <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.21 2.2Z" />
+            </svg>
+          </span>
+        </span>
+        <span className="text-balance text-sm font-semibold tracking-tight sm:text-base">
+          Book 30-Min Parish Growth&nbsp;Assessment
+        </span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0 text-gold motion-safe:animate-bounce"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0-6-6m6 6 6-6" />
+        </svg>
+      </span>
+    </ScrollToBookingButton>
+  );
+}

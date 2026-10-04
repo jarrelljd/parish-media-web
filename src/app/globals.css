@@ -11,3 +11,23 @@
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
+
+@theme {
+  --animate-phone-ring: phone-ring 2.4s ease-in-out infinite;
+  --animate-shimmer: shimmer 4s ease-in-out infinite;
+
+  @keyframes phone-ring {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    64% { transform: rotate(-16deg); }
+    68% { transform: rotate(14deg); }
+    72% { transform: rotate(-12deg); }
+    76% { transform: rotate(10deg); }
+    80% { transform: rotate(-6deg); }
+    84% { transform: rotate(0deg); }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    50%, 100% { transform: translateX(100%); }
+  }
+}

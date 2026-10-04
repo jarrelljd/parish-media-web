@@ -30,17 +30,23 @@ export default function ParishGrowthContent() {
   return (
     <>
       {/* Hero */}
-      <section className="px-6 pt-4 pb-16 sm:pt-8 sm:pb-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
-            Help Your Parish Reach More Young Adults and&nbsp;Families
-          </h1>
-          <p className="mt-5 text-pretty text-lg text-navy/70">
-            We help Catholic parishes reach nearby young adults through
-            Facebook and Instagram, give them clear next steps, and generate
-            inquiries without adding work for&nbsp;staff.
-          </p>
-          <div className="relative mx-auto mt-8 aspect-video w-full max-w-2xl overflow-hidden rounded-2xl bg-navy shadow-lg">
+      <section className="pb-16 sm:pb-20">
+        {/* Navy band runs behind the headline and the top ~2/3 of the
+            video, then breaks to off-white so the video sits on the seam. */}
+        <div className="bg-navy px-6 pt-10 sm:pt-14">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-offwhite sm:text-5xl">
+              Help Your Parish Reach More Young Adults and&nbsp;Families
+            </h1>
+            <p className="mt-5 text-pretty text-lg text-offwhite/75">
+              We help Catholic parishes reach nearby young adults through
+              Facebook and Instagram, give them clear next steps, and
+              generate inquiries without adding work for&nbsp;staff.
+            </p>
+          </div>
+        </div>
+        <div className="bg-linear-to-b from-navy from-65% to-transparent to-65% px-6 pt-8">
+          <div className="relative mx-auto aspect-video w-full max-w-2xl overflow-hidden rounded-2xl bg-navy shadow-2xl ring-1 ring-gold/30">
             <iframe
               src="https://player.vimeo.com/video/1156503108?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
@@ -49,6 +55,8 @@ export default function ParishGrowthContent() {
               className="absolute inset-0 h-full w-full border-0"
             />
           </div>
+        </div>
+        <div className="mx-auto max-w-3xl px-6 text-center">
           <p className="mx-auto mt-8 max-w-2xl text-pretty text-navy/80">
             Over 90 days, we turn your parish&rsquo;s existing events,
             ministries, and Masses into a consistent stream of local

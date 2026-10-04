@@ -133,12 +133,12 @@ export default function ParishGrowthContent() {
         </div>
       </section>
 
-      {/* How it works */}
+      {/* What we do for your parish */}
       <section className="pb-16 sm:pb-20">
         <div className="bg-navy px-6 py-10 sm:py-12">
           <span className="mx-auto block h-1 w-12 rounded-full bg-gold" />
-          <h2 className="mt-5 text-center font-serif text-3xl font-semibold text-offwhite sm:text-4xl">
-            How It Works
+          <h2 className="mt-5 text-balance text-center font-serif text-3xl font-semibold text-offwhite sm:text-4xl">
+            What We Do For Your&nbsp;Parish
           </h2>
         </div>
         <div className="mx-auto mt-12 grid max-w-5xl gap-12 px-6 sm:mt-16 md:grid-cols-3 md:gap-8">

@@ -66,7 +66,7 @@ export default function ParishGrowthContent() {
         <div className="bg-navy px-6 pt-10 sm:pt-14">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-offwhite sm:text-5xl">
-              Help Your Parish Reach More Young Adults and&nbsp;Families
+              Help Your Parish Reach More Young&nbsp;Adults
             </h1>
             <p className="mt-5 text-pretty text-lg text-offwhite/75">
               Show them what&rsquo;s happening at your parish and make it

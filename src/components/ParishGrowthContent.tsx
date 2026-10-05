@@ -156,11 +156,9 @@ export default function ParishGrowthContent() {
               />
             </div>
             <p className="mt-5 text-pretty text-navy/80">
-              Consistent posts and targeted ads introduce your parish to{" "}
-              <strong className="font-semibold text-navy">
-                nearby young adults and families
-              </strong>{" "}
-              and keep them&nbsp;connected.
+              Consistent posts aren&apos;t enough. We need to consistently post
+              content that gets the viewer to know, like, and trust the parish.
+              Over and over, week after&nbsp;week.
             </p>
           </div>
           <div className="text-center">
@@ -177,11 +175,10 @@ export default function ParishGrowthContent() {
               />
             </div>
             <p className="mt-5 text-pretty text-navy/80">
-              Clear invitations give interested people a simple way to{" "}
-              <strong className="font-semibold text-navy">
-                raise their hand
-              </strong>{" "}
-              for an event, ministry, or volunteer&nbsp;opportunity.
+              Once they&apos;re nurtured, they&apos;re more likely to respond
+              positively to an ask (attend, volunteer, etc.). We ask through
+              social media ads, because that&apos;s where everyone spends
+              their&nbsp;time.
             </p>
           </div>
           <div className="text-center">
@@ -198,11 +195,10 @@ export default function ParishGrowthContent() {
               />
             </div>
             <p className="mt-5 text-pretty text-navy/80">
-              Your parish{" "}
-              <strong className="font-semibold text-navy">
-                reaches out personally
-              </strong>{" "}
-              and helps each person take the next&nbsp;step.
+              Finally, when people respond to the ad, we do the next step. If
+              it&apos;s a &ldquo;Plan Your Visit&rdquo; ad, we reach out and
+              talk with them. If it&apos;s an event ad, we add the event to
+              their&nbsp;calendar.
             </p>
           </div>
         </div>

@@ -93,7 +93,7 @@ export default function ParishGrowthContent() {
           </p>
           <div className="mt-8">
             <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book 30-Min Parish Growth Strategy&nbsp;Call
+              Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function ParishGrowthContent() {
           </div>
           <div className="mt-12 text-center">
             <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book 30-Min Parish Growth Strategy&nbsp;Call
+              Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function ParishGrowthContent() {
           </div>
           <div className="mt-12 text-center">
             <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
-              Book 30-Min Parish Growth Strategy&nbsp;Call
+              Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>
         </div>

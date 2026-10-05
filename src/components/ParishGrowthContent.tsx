@@ -77,7 +77,7 @@ export default function ParishGrowthContent() {
         <div className="bg-linear-to-b from-navy from-65% to-transparent to-65% px-6 pt-8">
           <div className="relative mx-auto aspect-video w-full max-w-2xl overflow-hidden rounded-2xl bg-navy shadow-2xl ring-1 ring-gold/30">
             <iframe
-              src="https://player.vimeo.com/video/1156503108?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
+              src="https://player.vimeo.com/video/1233188537?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               title="Parish Media VSL 1"

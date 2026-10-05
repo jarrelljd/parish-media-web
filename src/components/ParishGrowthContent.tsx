@@ -1,7 +1,7 @@
 import Image from "next/image";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
-import stepNurture from "../../public/images/events/st-patrick/tug-of-war.jpg";
+import stepNurture from "../../public/images/proof/st-joseph-instagram-grid.png";
 import stepAsk from "../../public/images/proof/ad-on-phone.png";
 import stepFollowUp from "../../public/images/events/st-rose/2026-picnic-enhanced.png";
 
@@ -146,13 +146,13 @@ export default function ParishGrowthContent() {
             <h3 className="font-serif text-xl font-semibold text-navy">
               #1: Nurture
             </h3>
-            <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl shadow-md">
+            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl shadow-md">
               <Image
                 src={stepNurture}
-                alt="Families playing tug-of-war at a parish picnic"
+                alt="St. Joseph Catholic Church Instagram grid with the pastor's homily clips and parish events"
                 fill
                 sizes="(min-width: 768px) 320px, 100vw"
-                className="object-cover"
+                className="object-cover object-bottom"
               />
             </div>
             <p className="mt-5 text-pretty text-navy/80">
@@ -165,7 +165,7 @@ export default function ParishGrowthContent() {
             <h3 className="font-serif text-xl font-semibold text-navy">
               #2: Ask
             </h3>
-            <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl bg-gold/10 shadow-md">
+            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl bg-gold/10 shadow-md">
               <Image
                 src={stepAsk}
                 alt="A parish picnic invitation ad on Facebook"
@@ -185,7 +185,7 @@ export default function ParishGrowthContent() {
             <h3 className="font-serif text-xl font-semibold text-navy">
               #3: Follow-Up
             </h3>
-            <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl shadow-md">
+            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl shadow-md">
               <Image
                 src={stepFollowUp}
                 alt="A parish priest greeting parishioners at a picnic"

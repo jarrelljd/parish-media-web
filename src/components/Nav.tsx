@@ -18,7 +18,6 @@ const serviceLinks = [
 
 const freeStuffLinks = [
   { href: "/free-guide", label: "Free Book" },
-  { href: "/free-audit", label: "Free Parish Audit" },
 ];
 
 export default function Nav() {
@@ -33,7 +32,7 @@ export default function Nav() {
   const openBookACall = useBookACallModal();
   const servicesActive = pathname.startsWith("/services");
   const freeStuffActive =
-    pathname.startsWith("/free-guide") || pathname.startsWith("/free-audit");
+    pathname.startsWith("/free-guide");
 
   useEffect(() => {
     if (!servicesOpen) return;

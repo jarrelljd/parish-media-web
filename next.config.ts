@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         destination: "/results",
         permanent: true,
       },
+      {
+        source: "/free-audit/:path*",
+        destination: "/free-consult",
+        permanent: true,
+      },
     ];
   },
 };

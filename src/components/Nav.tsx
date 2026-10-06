@@ -12,7 +12,7 @@ const links = [
 ];
 
 const serviceLinks = [
-  { href: "/services/parish-growth", label: "Parish/Diocese Growth" },
+  { href: "/services/parish-growth", label: "Parish Growth" },
   { href: "/services/vocations", label: "Vocations Outreach" },
 ];
 
@@ -79,7 +79,12 @@ export default function Nav() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <div className="relative" ref={servicesRef}>
+          <div
+            className="relative"
+            ref={servicesRef}
+            onPointerEnter={(e) => e.pointerType === "mouse" && setServicesOpen(true)}
+            onPointerLeave={(e) => e.pointerType === "mouse" && setServicesOpen(false)}
+          >
             <button
               type="button"
               onClick={() => setServicesOpen((v) => !v)}
@@ -101,7 +106,7 @@ export default function Nav() {
             </button>
 
             {servicesOpen && (
-              <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-navy/10 bg-white p-2 shadow-lg">
+              <div className="absolute left-0 top-full mt-2 w-56 rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
                 {serviceLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -118,7 +123,12 @@ export default function Nav() {
             )}
           </div>
 
-          <div className="relative" ref={freeStuffRef}>
+          <div
+            className="relative"
+            ref={freeStuffRef}
+            onPointerEnter={(e) => e.pointerType === "mouse" && setFreeStuffOpen(true)}
+            onPointerLeave={(e) => e.pointerType === "mouse" && setFreeStuffOpen(false)}
+          >
             <button
               type="button"
               onClick={() => setFreeStuffOpen((v) => !v)}
@@ -140,7 +150,7 @@ export default function Nav() {
             </button>
 
             {freeStuffOpen && (
-              <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-navy/10 bg-white p-2 shadow-lg">
+              <div className="absolute left-0 top-full mt-2 w-56 rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
                 {freeStuffLinks.map((link) => (
                   <Link
                     key={link.href}

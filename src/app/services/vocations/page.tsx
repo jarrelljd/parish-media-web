@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
+import BookingAnnouncementBar from "@/components/BookingAnnouncementBar";
 import VocationsContent from "@/components/VocationsContent";
 
 export const metadata: Metadata = {
   title: "Vocations | Parish Media Company",
   description:
-    "Targeted outreach that reaches young men discerning a vocation, for vocation offices and religious orders.",
+    "Facebook and Instagram outreach that helps more Catholic men reach out to your vocations office about the priesthood and religious life.",
 };
 
 export default function VocationsPage() {
   return (
     <>
-      <Nav />
+      {/* Landing page: no nav links, just a booking CTA bar so visitors stay focused. */}
+      <BookingAnnouncementBar label="Book 30-Min Vocations Outreach Assessment" />
       <main className="flex flex-1 flex-col">
         <VocationsContent />
       </main>

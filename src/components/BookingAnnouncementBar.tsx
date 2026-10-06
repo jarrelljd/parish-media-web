@@ -2,7 +2,11 @@ import ScrollToBookingButton from "./ScrollToBookingButton";
 
 // Top bar for landing pages without the main nav: the whole bar is a
 // scroll-to-booking CTA, with a ringing phone to draw the eye.
-export default function BookingAnnouncementBar() {
+export default function BookingAnnouncementBar({
+  label = "Book 30-Min Parish Growth Assessment",
+}: {
+  label?: string;
+}) {
   return (
     <ScrollToBookingButton className="group sticky top-0 z-50 block overflow-hidden bg-navy text-offwhite transition-colors hover:bg-[#22355c]">
       <span
@@ -24,7 +28,7 @@ export default function BookingAnnouncementBar() {
           </span>
         </span>
         <span className="whitespace-nowrap text-[clamp(11px,3.4vw,14px)] font-semibold tracking-tight sm:text-base">
-          Book 30-Min Parish Growth Assessment
+          {label}
         </span>
         <svg
           viewBox="0 0 24 24"

@@ -3,7 +3,7 @@ import BookingAnnouncementBar from "@/components/BookingAnnouncementBar";
 import ParishGrowthContent from "@/components/ParishGrowthContent";
 
 export const metadata: Metadata = {
-  title: "Parish & Diocese Growth | Parish Media Company",
+  title: "Parish Growth | Parish Media Company",
   description:
     "Organic social media content and targeted Meta ads for Catholic parishes and dioceses. See exactly how we grow your reach.",
 };

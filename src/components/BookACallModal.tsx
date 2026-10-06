@@ -142,8 +142,8 @@ export default function BookACallModal({
                 <option value="" disabled>
                   Select one...
                 </option>
-                <option value="Parish/Diocese Growth">
-                  Parish/Diocese Growth
+                <option value="Parish Growth">
+                  Parish Growth
                 </option>
                 <option value="Vocations Outreach">Vocations Outreach</option>
               </select>

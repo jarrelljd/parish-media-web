@@ -1,11 +1,10 @@
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 
 const CALENDLY_URL_PRIEST = "https://calendly.com/parishmedia/consult";
-const CALENDLY_URL_STAFF = "https://calendly.com/parishmedia/triage";
 const CALENDLY_URL_VOCATIONS =
   "https://calendly.com/parishmedia/free-consultation-joe-jarrell-clone?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
 
-export type ConsultVariant = "priest" | "vocations" | "staff";
+export type ConsultVariant = "priest" | "vocations";
 
 function CheckItem({ children }: { children: React.ReactNode }) {
   return (
@@ -27,11 +26,7 @@ export default function ConsultBookingPage({
   variant: ConsultVariant;
 }) {
   const calendlyUrl =
-    variant === "staff"
-      ? CALENDLY_URL_STAFF
-      : variant === "vocations"
-        ? CALENDLY_URL_VOCATIONS
-        : CALENDLY_URL_PRIEST;
+    variant === "vocations" ? CALENDLY_URL_VOCATIONS : CALENDLY_URL_PRIEST;
 
   return (
     <>
@@ -42,15 +37,12 @@ export default function ConsultBookingPage({
             "You’re Invited to a Free Consult."}
           {variant === "vocations" &&
             "You’re Invited to a Free Vocations Strategy Call."}
-          {variant === "staff" && "Let’s Get You Scheduled."}
         </h1>
         <p className="mt-4 text-pretty text-lg text-navy/70">
           {variant === "priest" &&
             "Before you close this page, reserve your no-cost 30-minute parish outreach consult."}
           {variant === "vocations" &&
             "Before you close this page, reserve your no-cost 30-minute vocations strategy call below."}
-          {variant === "staff" &&
-            "Before you close this page, book a quick 10-minute triage call to see if a full consult for Father makes sense."}
         </p>
       </div>
 
@@ -123,50 +115,11 @@ export default function ConsultBookingPage({
             </p>
           </>
         )}
-
-        {variant === "staff" && (
-          <>
-            <p className="text-pretty text-navy/80">
-              Because you indicated you&rsquo;re parish staff, the next step
-              is a brief 10-minute triage call. The goal is to see whether a
-              full consult with your priest would actually be helpful right
-              now.
-            </p>
-
-            <p className="mt-6 font-semibold text-navy">
-              On this short call we will:
-            </p>
-            <ul className="mt-3 space-y-2">
-              <CheckItem>
-                Clarify what you&rsquo;re hoping to improve (Mass attendance,
-                events, volunteers, etc.)
-              </CheckItem>
-              <CheckItem>
-                Get a quick picture of your current Facebook / Instagram
-                efforts and any limits (time, budget, diocesan policies)
-              </CheckItem>
-              <CheckItem>
-                Decide whether it makes sense to recommend a full consult
-                with Father or simply email you a short custom action plan
-                you can use in-house or share with him
-              </CheckItem>
-            </ul>
-
-            <p className="mt-6 text-pretty text-sm text-navy/60">
-              No pressure. It&rsquo;s just to give you clear next steps
-              without wasting your time or Father&rsquo;s.
-            </p>
-
-            <p className="mt-4 text-pretty text-navy/80">
-              Please choose a time on the calendar below.
-            </p>
-          </>
-        )}
       </div>
 
       <div className="mx-auto mt-10 max-w-3xl">
-        {/* Priest, vocations, and staff triage calls all count as a booked
-            call for Meta ad tracking. */}
+        {/* Priest and vocations calls both count as a booked call for Meta
+            ad tracking. */}
         <CalendlyEmbed url={calendlyUrl} trackScheduleEvent />
       </div>
     </>

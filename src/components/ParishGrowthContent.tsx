@@ -3,7 +3,7 @@ import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import stepNurture from "../../public/images/proof/st-joseph-instagram-grid.png";
 import stepAsk from "../../public/images/proof/ad-on-phone.png";
-import stepFollowUp from "../../public/images/events/st-rose/2026-picnic-enhanced.png";
+import stepFollowUp from "../../public/images/parish-growth/young-adults-with-priest.png";
 
 const CALENDLY_URL =
   "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
@@ -188,10 +188,10 @@ export default function ParishGrowthContent() {
             <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl shadow-md">
               <Image
                 src={stepFollowUp}
-                alt="A parish priest greeting parishioners at a picnic"
+                alt="Fr. Nicholas Fleming taking a selfie with a large group of young adults at Ss. John and James Catholic Parish in West Warwick, RI"
                 fill
                 sizes="(min-width: 768px) 320px, 100vw"
-                className="object-cover object-top"
+                className="object-cover object-left"
               />
             </div>
             <p className="mt-5 text-pretty text-navy/80">

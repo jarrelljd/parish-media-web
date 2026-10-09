@@ -214,8 +214,11 @@ export default function ParishGrowthContent() {
             Before You Book&hellip;
           </h2>
           <p className="mt-4 text-pretty text-navy/80">
-            To make this conversation as useful as possible for your parish,
-            we ask that the pastor join the call. Assistant priests, deacons,
+            To make this conversation as useful as possible for your parish,{" "}
+            <strong className="font-semibold text-navy">
+              we ask that the pastor join the call.
+            </strong>{" "}
+            Assistant priests, deacons,
             and office staff are welcome to book, provided they can bring the
             pastor into the&nbsp;meeting.
           </p>

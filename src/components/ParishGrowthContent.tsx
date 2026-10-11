@@ -64,11 +64,11 @@ export default function ParishGrowthContent() {
         {/* Navy band runs behind the headline and the top ~2/3 of the
             video, then breaks to off-white so the video sits on the seam. */}
         <div className="bg-navy px-6 pt-10 sm:pt-14">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-offwhite sm:text-5xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="text-balance font-serif text-4xl font-semibold leading-tight text-offwhite sm:text-6xl">
               Help Your Catholic Parish Reach More Young&nbsp;Adults
             </h1>
-            <p className="mt-5 text-pretty text-lg text-offwhite/75">
+            <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-offwhite/75">
               Show them what&rsquo;s happening at your parish and make it
               easy to get involved, all through Facebook and&nbsp;Instagram.
             </p>

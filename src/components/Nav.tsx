@@ -12,8 +12,8 @@ const links = [
 ];
 
 const serviceLinks = [
-  { href: "/services/parish-growth", label: "Parish Growth" },
-  { href: "/services/vocations", label: "Vocations Outreach" },
+  { href: "/parish", label: "Parish Growth" },
+  { href: "/vocations", label: "Vocations Outreach" },
 ];
 
 const freeStuffLinks = [
@@ -30,7 +30,9 @@ export default function Nav() {
   const freeStuffRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const openBookACall = useBookACallModal();
-  const servicesActive = pathname.startsWith("/services");
+  const servicesActive =
+    pathname.startsWith("/services") ||
+    serviceLinks.some((link) => pathname === link.href);
   const freeStuffActive =
     pathname.startsWith("/free-guide");
 

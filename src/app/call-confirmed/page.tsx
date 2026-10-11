@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import ScheduleTracker from "@/components/ScheduleTracker";
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 export default function CallConfirmedPage() {
   return (
     <>
-      <Nav />
       <ScheduleTracker />
       <main className="flex flex-1 flex-col">
         <section className="pb-16 sm:pb-20">

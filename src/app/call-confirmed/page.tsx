@@ -7,59 +7,42 @@ export const metadata: Metadata = {
   description: "Your call with Parish Media Company is confirmed.",
 };
 
-function CheckItem({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex items-start gap-2.5 text-navy/80">
-      <span
-        className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs font-bold text-gold"
-        aria-hidden="true"
-      >
-        &#10003;
-      </span>
-      <span className="text-pretty">{children}</span>
-    </li>
-  );
-}
-
 export default function CallConfirmedPage() {
   return (
     <>
       <Nav />
       <ScheduleTracker />
       <main className="flex flex-1 flex-col">
-        <section className="px-6 py-16 sm:py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-            <h1 className="mt-8 text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
-              You&rsquo;re All Set!
-            </h1>
-            <p className="mt-4 text-pretty text-lg text-navy/70">
-              Your appointment has been scheduled.
-            </p>
+        <section className="pb-16 sm:pb-20">
+          {/* Navy band behind the headline and the top ~2/3 of the video,
+              matching the Parish Growth hero. */}
+          <div className="bg-navy px-6 pt-8 sm:pt-10">
+            <div className="mx-auto max-w-3xl text-center">
+              <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-offwhite sm:text-5xl">
+                You&rsquo;re Confirmed!&nbsp;✅
+              </h1>
+              <p className="mt-3 text-pretty font-semibold text-gold sm:text-lg">
+                Your Zoom calendar invitation has been sent to
+                your&nbsp;email.
+              </p>
+              <p className="mt-5 text-pretty text-lg text-offwhite/75">
+                Please watch this entire video before our call. It contains
+                important information about how the conversation will work
+                and what we&rsquo;ll need from you to make the
+                meeting&nbsp;productive.
+              </p>
+            </div>
           </div>
-
-          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-navy/10 bg-white p-8 shadow-sm">
-            <p className="font-semibold text-navy">
-              A few quick notes before we talk:
-            </p>
-            <ul className="mt-3 space-y-3">
-              <CheckItem>
-                Please join from a laptop or desktop (not your phone) so we
-                can share screens if needed.
-              </CheckItem>
-              <CheckItem>
-                This is just a conversation about your parish and goals;
-                there&rsquo;s no obligation to commit to anything.
-              </CheckItem>
-              <CheckItem>
-                If you need to cancel or reschedule, please do so early so
-                we can offer the time to another parish.
-              </CheckItem>
-            </ul>
-            <p className="mt-6 text-pretty text-sm text-navy/60">
-              You&rsquo;ll get a confirmation email shortly with the details
-              and Zoom link.
-            </p>
+          <div className="bg-linear-to-b from-navy from-65% to-transparent to-65% px-6 pt-8">
+            <div className="relative mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-2xl bg-navy shadow-2xl ring-1 ring-gold/30">
+              <iframe
+                src="https://player.vimeo.com/video/1234880550?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="Parish Growth"
+                className="absolute inset-0 h-full w-full border-0"
+              />
+            </div>
           </div>
         </section>
       </main>

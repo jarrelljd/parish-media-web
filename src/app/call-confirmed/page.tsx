@@ -25,8 +25,11 @@ export default function CallConfirmedPage() {
                 Your Zoom calendar invitation has been sent to
                 your&nbsp;email.
               </p>
-              <p className="mt-5 text-pretty text-lg text-offwhite/75">
-                Please watch this entire video before our call. It contains
+              <p className="mt-5 text-balance text-lg text-offwhite/75">
+                <strong className="font-semibold text-offwhite">
+                  Please watch this entire video before our call.
+                </strong>{" "}
+                It contains
                 important information about how the conversation will work
                 and what we&rsquo;ll need from you to make the
                 meeting&nbsp;productive.

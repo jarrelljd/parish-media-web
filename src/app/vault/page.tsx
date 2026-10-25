@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
-import BookACallButton from "@/components/BookACallButton";
+import Link from "next/link";
 import VaultExplorer from "@/components/VaultExplorer";
 
 export const metadata: Metadata = {
@@ -50,12 +50,16 @@ export default function VaultPage() {
               Want us to run it for you?
             </h2>
             <p className="mt-3 text-balance text-white/70">
-              Book a free call and we&rsquo;ll walk through what growth could
-              look like for your&nbsp;parish.
+              Everything in the Vault is yours to use. If you&rsquo;d rather
+              have it done for you, see how we help parishes reach more
+              young&nbsp;adults.
             </p>
-            <BookACallButton className="mt-7 rounded-full bg-gold px-8 py-3 font-semibold text-navy shadow-[0_0_30px_-5px_rgba(201,162,39,0.6)] transition-colors hover:bg-gold/90">
-              Book a Free Call
-            </BookACallButton>
+            <Link
+              href="/parish"
+              className="mt-7 inline-block rounded-full bg-gold px-8 py-3 font-semibold text-navy shadow-[0_0_30px_-5px_rgba(201,162,39,0.6)] transition-colors hover:bg-gold/90"
+            >
+              See What We Do for Parishes
+            </Link>
           </div>
         </section>
       </main>

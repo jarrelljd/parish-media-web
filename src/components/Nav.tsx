@@ -17,6 +17,7 @@ const serviceLinks = [
 ];
 
 const freeStuffLinks = [
+  { href: "/vault", label: "The Vault" },
   { href: "/free-guide", label: "Free Book" },
 ];
 
@@ -34,7 +35,7 @@ export default function Nav() {
     pathname.startsWith("/services") ||
     serviceLinks.some((link) => pathname === link.href);
   const freeStuffActive =
-    pathname.startsWith("/free-guide");
+    pathname.startsWith("/free-guide") || pathname.startsWith("/vault");
 
   useEffect(() => {
     if (!servicesOpen) return;

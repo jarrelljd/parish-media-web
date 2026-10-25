@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   isComingSoon,
   vaultItemHref,
@@ -220,12 +219,78 @@ function LockIcon({ open }: { open: boolean }) {
   );
 }
 
-function VideoItem({
+type Metal = (typeof METALS)[VaultMetal];
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+// The book (or any link resource): a borderless feature at the top of a vault.
+function FeatureItem({ item, m }: { item: VaultItem; m: Metal }) {
+  const href = vaultItemHref(item);
+  const external = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
+  const buttons = item.buttons?.length ? item.buttons : [{ label: `${item.cta} →`, href }];
+
+  return (
+    <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-center sm:gap-10 sm:text-left">
+      {item.image && (
+        <div className="w-36 shrink-0 drop-shadow-[0_18px_28px_rgba(0,0,0,0.65)] sm:w-44">
+          <Image src={item.image} alt={item.title} width={352} height={440} className="h-auto w-full" />
+        </div>
+      )}
+      <div className="min-w-0">
+        <p className="font-mono text-[11px] uppercase tracking-[0.25em]" style={{ color: m.hi, opacity: 0.75 }}>
+          {item.kind === "book" ? "Free Book" : "Resource"}
+        </p>
+        <h4 className="mt-2 text-balance font-serif text-2xl font-semibold text-white sm:text-3xl">{item.title}</h4>
+        <p className="mt-3 text-pretty text-white/65">{item.description}</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3 sm:justify-start">
+          {buttons.map((button, i) => (
+            <a
+              key={button.href}
+              href={button.href}
+              {...external(button.href)}
+              className="rounded-full border px-6 py-2.5 text-sm font-semibold transition-all hover:brightness-110"
+              style={
+                i === 0
+                  ? {
+                      borderColor: m.mid,
+                      background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`,
+                      color: "#0e1628",
+                      boxShadow: `0 0 30px -10px rgba(${m.rgb},0.9)`,
+                    }
+                  : { borderColor: `rgba(${m.rgb},0.6)`, color: m.hi }
+              }
+            >
+              {button.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RowNumber({ n, m }: { n: number; m: Metal }) {
+  return (
+    <span
+      className="w-10 shrink-0 font-serif text-3xl font-semibold tabular-nums sm:w-14 sm:text-4xl"
+      style={{ color: m.mid, opacity: 0.8 }}
+    >
+      {pad2(n)}
+    </span>
+  );
+}
+
+// A video in the vault's ledger: one clean row that expands to play.
+function VideoRow({
   item,
+  n,
+  m,
   expanded,
   onToggle,
 }: {
   item: VaultItem;
+  n: number;
+  m: Metal;
   expanded: boolean;
   onToggle: () => void;
 }) {
@@ -233,55 +298,42 @@ function VideoItem({
   const panelId = `vault-video-${item.slug}`;
 
   return (
-    <div
-      className={`overflow-hidden rounded-xl border bg-white/[0.03] transition-colors duration-300 ${
-        expanded ? "border-gold/60" : "border-gold/25 hover:border-gold/60"
-      }`}
-    >
+    <div>
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={expanded}
         aria-controls={panelId}
-        className="group flex w-full items-center gap-4 p-3 text-left sm:gap-5 sm:p-4"
+        className="group flex w-full items-center gap-4 rounded-lg px-2 py-5 text-left transition-colors hover:bg-[var(--tint)] sm:gap-6 sm:px-4"
+        style={{ "--tint": `rgba(${m.rgb},0.08)` } as React.CSSProperties}
       >
-        <span className="relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-md bg-black ring-1 ring-gold/30 sm:w-28">
-          {video.thumbnail && (
-            // eslint-disable-next-line @next/next/no-img-element -- remote Loom thumbnail
-            <img src={video.thumbnail} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-          )}
-          <span className="absolute inset-0 flex items-center justify-center bg-navy/40 transition-colors group-hover:bg-navy/20">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_20px_rgba(201,162,39,0.6)] transition-transform group-hover:scale-110">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 h-4 w-4" aria-hidden="true">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
-          </span>
-        </span>
+        <RowNumber n={n} m={m} />
         <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-gold/80">
-            Video
-            {video.duration && (
-              <>
-                <span className="h-1 w-1 rounded-full bg-gold/50" />
-                {video.duration}
-              </>
-            )}
-          </span>
-          <span className="mt-1 block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+          <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
             {item.title}
           </span>
+          <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
+            Video{video.duration ? ` · ${video.duration}` : ""}
+          </span>
         </span>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          className={`h-5 w-5 shrink-0 text-gold transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
-          aria-hidden="true"
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-110"
+          style={
+            expanded
+              ? { borderColor: m.mid, color: m.hi }
+              : { borderColor: m.mid, background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`, color: "#0e1628" }
+          }
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-        </svg>
+          {expanded ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-4 w-4" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 15l6-6 6 6" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 h-4 w-4" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </span>
       </button>
 
       <div
@@ -292,11 +344,11 @@ function VideoItem({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="px-3 pb-4 sm:px-4">
+          <div className="px-2 pb-6 sm:pl-[6rem] sm:pr-4">
             <p className="text-pretty text-sm text-white/60 sm:text-base">{item.description}</p>
             <div
-              style={{ aspectRatio: video.aspect ?? 16 / 9 }}
-              className="relative mt-4 w-full overflow-hidden rounded-lg bg-black ring-1 ring-gold/30"
+              style={{ aspectRatio: video.aspect ?? 16 / 9, boxShadow: `0 20px 60px -25px rgba(${m.rgb},0.6)` }}
+              className="relative mt-4 w-full overflow-hidden rounded-lg bg-black"
             >
               {/* Only mount the player while expanded, so collapsing it stops playback. */}
               {expanded && (
@@ -317,67 +369,19 @@ function VideoItem({
   );
 }
 
-function LinkItem({ item }: { item: VaultItem }) {
-  const href = vaultItemHref(item);
-  const external = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
-  const hasButtons = !!item.buttons?.length;
-
-  const content = (
-    <>
-      {item.image && (
-        <div className="w-24 shrink-0 drop-shadow-[0_12px_20px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105 sm:w-32">
-          <Image src={item.image} alt={item.title} width={256} height={320} className="h-auto w-full" />
-        </div>
-      )}
-      <div className="min-w-0">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-gold/80">
-          {item.kind === "book" ? "Free Book" : "Resource"}
-        </p>
-        <h4 className="mt-2 text-balance font-serif text-xl font-semibold text-white sm:text-2xl">{item.title}</h4>
-        <p className="mt-2 text-pretty text-sm text-white/60 sm:text-base">{item.description}</p>
-        {hasButtons ? (
-          <div className="mt-5 flex flex-wrap gap-3">
-            {item.buttons!.map((button, i) => (
-              <a
-                key={button.href}
-                href={button.href}
-                {...external(button.href)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-                  i === 0
-                    ? "bg-gold text-navy hover:bg-gold/90"
-                    : "border border-gold/50 text-gold hover:bg-gold/10"
-                }`}
-              >
-                {button.label}
-              </a>
-            ))}
-          </div>
-        ) : (
-          <span className="mt-4 inline-block font-medium text-gold">{item.cta} →</span>
-        )}
-      </div>
-    </>
-  );
-
-  const cardClass =
-    "group flex flex-col items-start gap-5 rounded-xl border border-gold/25 sm:flex-row sm:items-center bg-white/[0.03] p-5 transition-all duration-300 hover:border-gold/70 hover:shadow-[0_0_40px_-10px_rgba(201,162,39,0.5)] sm:gap-7 sm:p-6";
-
-  if (hasButtons) {
-    return <div className={cardClass}>{content}</div>;
-  }
+function SealedRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
   return (
-    <Link href={href} {...external(href)} className={cardClass}>
-      {content}
-    </Link>
-  );
-}
-
-function SealedItem({ item }: { item: VaultItem }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">Coming soon</p>
-      <h4 className="mt-2 font-serif text-xl font-semibold text-white/70">{item.title}</h4>
-      <p className="mt-2 text-pretty text-sm text-white/50">{item.description}</p>
+    <div className="flex items-center gap-4 px-2 py-5 opacity-55 sm:gap-6 sm:px-4">
+      <RowNumber n={n} m={m} />
+      <span className="min-w-0 flex-1">
+        <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+          {item.title}
+        </span>
+        <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">Coming soon</span>
+      </span>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/60">
+        <LockIcon open={false} />
+      </span>
     </div>
   );
 }
@@ -400,7 +404,16 @@ function VaultContents({
   // One video open at a time per vault.
   const [expanded, setExpanded] = useState<{ slug: string; openCount: number } | null>(null);
   const items = section ? vaultItems.filter((item) => item.section === section.id) : [];
-  const rgb = METALS[section?.metal ?? "brass"].rgb;
+  const m = METALS[section?.metal ?? "brass"];
+
+  // Books/links are featured on top; videos (and anything coming soon) form the ledger.
+  const features = items.filter((item) => item.kind !== "video" && !isComingSoon(item));
+  const rows = items.filter((item) => !features.includes(item));
+
+  const riseClass = `transition-all duration-700 ease-out motion-reduce:transition-none ${
+    open ? "translate-y-0 scale-100 opacity-100 blur-0" : "translate-y-12 scale-[0.97] opacity-0 blur-[2px]"
+  }`;
+  const riseDelay = (i: number) => ({ transitionDelay: open ? `${300 + i * 150}ms` : "0ms" });
 
   return (
     <div
@@ -421,47 +434,49 @@ function VaultContents({
               }`}
               style={{
                 left: `${beamAt}%`,
-                background: `radial-gradient(ellipse at top, rgba(${rgb},0.35), transparent 70%)`,
+                background: `radial-gradient(ellipse at top, rgba(${m.rgb},0.35), transparent 70%)`,
               }}
             />
             <div
-              className="relative rounded-3xl border px-5 py-8 sm:px-10 sm:py-10"
+              className="relative rounded-3xl px-4 py-8 sm:px-10 sm:py-12"
               style={{
-                borderColor: `rgba(${rgb},0.3)`,
-                background: `linear-gradient(to bottom, rgba(${rgb},0.08), rgba(255,255,255,0.01))`,
+                background: `linear-gradient(to bottom, rgba(${m.rgb},0.1), rgba(255,255,255,0.01) 70%)`,
+                boxShadow: `inset 0 1px 0 rgba(${m.rgb},0.35)`,
               }}
             >
               <div className="mx-auto max-w-3xl">
-                <div className="flex flex-col gap-4">
-                  {items.map((item, i) => (
-                    <div
-                      key={item.slug}
-                      className={`transition-all duration-700 ease-out motion-reduce:transition-none ${
-                        open ? "translate-y-0 scale-100 opacity-100 blur-0" : "translate-y-12 scale-[0.97] opacity-0 blur-[2px]"
-                      }`}
-                      style={{ transitionDelay: open ? `${300 + i * 150}ms` : "0ms" }}
-                    >
-                      {isComingSoon(item) ? (
-                        <SealedItem item={item} />
-                      ) : item.kind === "video" ? (
-                        <VideoItem
-                          item={item}
-                          // Collapse videos again each time the vault reopens.
-                          expanded={open && expanded?.slug === item.slug && expanded.openCount === openCount}
-                          onToggle={() =>
-                            setExpanded((cur) =>
-                              cur?.slug === item.slug && cur.openCount === openCount
-                                ? null
-                                : { slug: item.slug, openCount },
-                            )
-                          }
-                        />
-                      ) : (
-                        <LinkItem item={item} />
-                      )}
-                    </div>
-                  ))}
-                </div>
+                {features.map((item, i) => (
+                  <div key={item.slug} className={`${riseClass} mb-10 last:mb-0`} style={riseDelay(i)}>
+                    <FeatureItem item={item} m={m} />
+                  </div>
+                ))}
+
+                {rows.length > 0 && (
+                  <div className="divide-y divide-white/10 border-y border-white/10">
+                    {rows.map((item, i) => (
+                      <div key={item.slug} className={riseClass} style={riseDelay(features.length + i)}>
+                        {isComingSoon(item) ? (
+                          <SealedRow item={item} n={i + 1} m={m} />
+                        ) : (
+                          <VideoRow
+                            item={item}
+                            n={i + 1}
+                            m={m}
+                            // Collapse videos again each time the vault reopens.
+                            expanded={open && expanded?.slug === item.slug && expanded.openCount === openCount}
+                            onToggle={() =>
+                              setExpanded((cur) =>
+                                cur?.slug === item.slug && cur.openCount === openCount
+                                  ? null
+                                  : { slug: item.slug, openCount },
+                              )
+                            }
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

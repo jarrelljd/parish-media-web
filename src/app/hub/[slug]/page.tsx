@@ -21,7 +21,7 @@ export async function generateMetadata({
   const item = getVaultItem(slug);
   if (!item) return {};
   return {
-    title: `${item.title} | The Vault`,
+    title: `${item.title} | The Parish Communications Hub`,
     description: item.description,
   };
 }
@@ -42,10 +42,10 @@ export default async function VaultVideoPage({
         <section className="relative bg-[radial-gradient(ellipse_at_top,rgba(201,162,39,0.18),transparent_60%)] px-6 pt-12 sm:pt-16">
           <div className="mx-auto max-w-3xl">
             <Link
-              href="/vault"
+              href="/hub"
               className="font-mono text-xs uppercase tracking-[0.25em] text-gold/80 transition-colors hover:text-gold"
             >
-              ← Back to The Vault
+              ← Back to The Hub
             </Link>
             <h1 className="mt-6 text-balance text-center font-serif text-3xl font-semibold text-white sm:text-4xl">
               {item.title}
@@ -90,10 +90,10 @@ export default async function VaultVideoPage({
                 Book a Free Call
               </BookACallButton>
               <Link
-                href="/vault"
+                href="/hub"
                 className="text-sm font-medium text-gold underline decoration-gold/50 decoration-2 underline-offset-4"
               >
-                See everything in The Vault
+                See everything in The Hub
               </Link>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useBookACallModal } from "@/components/BookACallModalProvider";
 
 const links = [
-  { href: "/vault", label: "The Vault" },
+  { href: "/hub", label: "The Hub" },
   { href: "/results", label: "Results" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -27,7 +27,7 @@ export default function Nav() {
   const servicesActive =
     pathname.startsWith("/services") ||
     serviceLinks.some((link) => pathname === link.href);
-  // Also highlight a tab on its sub-pages (e.g. /vault/ai-flyers).
+  // Also highlight a tab on its sub-pages (e.g. /hub/ai-flyers).
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   useEffect(() => {

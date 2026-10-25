@@ -4,7 +4,7 @@ import Link from "next/link";
 import VaultExplorer from "@/components/VaultExplorer";
 
 export const metadata: Metadata = {
-  title: "The Parish Communications Resource Center | Parish Media Company",
+  title: "The Parish Communications Hub | Parish Media Company",
   description:
     "Every free Parish Media Company resource in one place: books, video tutorials, and tools for growing your parish.",
 };
@@ -22,8 +22,8 @@ export default function VaultPage() {
               <span className="block text-balance text-2xl italic text-gold sm:text-3xl">
                 The Parish Communications
               </span>
-              <span className="mt-2 block text-balance bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-6xl leading-[0.95] tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(201,162,39,0.35)] motion-safe:animate-vault-shine sm:text-8xl">
-                Resource Center
+              <span className="mt-1 block bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-8xl leading-none tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(201,162,39,0.35)] motion-safe:animate-vault-shine sm:text-9xl">
+                Hub
               </span>
             </h1>
             <p className="mt-5 whitespace-nowrap font-serif text-lg italic text-white/90 sm:text-2xl">
@@ -47,12 +47,12 @@ export default function VaultPage() {
         {/* CTA */}
         <section className="border-t border-gold/15 px-6 py-16 text-center">
           <div className="mx-auto max-w-xl">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold/80">Beyond the Vault</p>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold/80">Beyond the Hub</p>
             <h2 className="mt-3 text-balance font-serif text-2xl font-semibold sm:text-3xl">
               Want us to run it for you?
             </h2>
             <p className="mt-3 text-balance text-white/70">
-              Everything in the Vault is yours to use. If you&rsquo;d rather
+              Everything in the Hub is yours to use. If you&rsquo;d rather
               have it done for you, see how we help parishes reach more
               young&nbsp;adults.
             </p>

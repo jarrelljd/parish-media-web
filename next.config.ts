@@ -3,12 +3,23 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // The free book now lives in The Vault. Temporary (not permanent) so the
+      // The free book now lives in The Hub. Temporary (not permanent) so the
       // /free-guide landing page can be turned back on by deleting this.
       {
         source: "/free-guide",
-        destination: "/vault",
+        destination: "/hub",
         permanent: false,
+      },
+      // The Hub used to be called The Vault; keep old links (DMs) working.
+      {
+        source: "/vault",
+        destination: "/hub",
+        permanent: true,
+      },
+      {
+        source: "/vault/:slug",
+        destination: "/hub/:slug",
+        permanent: true,
       },
       {
         source: "/services/parish-growth",

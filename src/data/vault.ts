@@ -1,10 +1,11 @@
-// Everything in The Vault (/vault). To add a resource, add one object here.
+// Everything in The Parish Communications Hub (/hub), grouped into three
+// vaults. To add a resource, add one object here.
 //
 // - kind "book": featured at the top of its vault, linking to `href` or
 //   showing `buttons`.
 // - kind "link": a row in the vault's list that opens `href` (a document,
 //   PDF, or page) in a new tab if external.
-// - kind "video": gets its own page at /vault/<slug> with the video embedded.
+// - kind "video": gets its own page at /hub/<slug> with the video embedded.
 //   Set `video` to a Vimeo or Loom ID (the last part of the share link).
 //   It plays right inside the open vault. `thumbnail` and `duration` are
 //   optional (for Loom, get the thumbnail from
@@ -164,7 +165,7 @@ export function getVaultItem(slug: string) {
 }
 
 export function vaultItemHref(item: VaultItem) {
-  return item.kind === "video" ? `/vault/${item.slug}` : (item.href ?? "#");
+  return item.kind === "video" ? `/hub/${item.slug}` : (item.href ?? "#");
 }
 
 export function isComingSoon(item: VaultItem) {

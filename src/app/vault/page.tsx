@@ -4,7 +4,7 @@ import Link from "next/link";
 import VaultExplorer from "@/components/VaultExplorer";
 
 export const metadata: Metadata = {
-  title: "The Vault | Parish Media Company",
+  title: "The Parish Communications Resource Center | Parish Media Company",
   description:
     "Every free Parish Media Company resource in one place: books, video tutorials, and tools for growing your parish.",
 };
@@ -17,11 +17,13 @@ export default function VaultPage() {
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pb-12 pt-20 text-center sm:pb-16 sm:pt-24">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,162,39,0.18),transparent_60%)]" />
-          <div className="relative mx-auto max-w-2xl">
+          <div className="relative mx-auto max-w-4xl">
             <h1 className="font-serif font-semibold">
-              <span className="block text-2xl italic text-gold sm:text-3xl">The</span>
-              <span className="-mt-1 block bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-2 text-8xl leading-none tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(201,162,39,0.35)] motion-safe:animate-vault-shine sm:text-9xl">
-                Vault
+              <span className="block text-balance text-2xl italic text-gold sm:text-3xl">
+                The Parish Communications
+              </span>
+              <span className="mt-2 block text-balance bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-6xl leading-[0.95] tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(201,162,39,0.35)] motion-safe:animate-vault-shine sm:text-8xl">
+                Resource Center
               </span>
             </h1>
             <p className="mt-5 whitespace-nowrap font-serif text-lg italic text-white/90 sm:text-2xl">

@@ -1,7 +1,9 @@
 // Everything in The Vault (/vault). To add a resource, add one object here.
 //
-// - kind "book" / "link": clicking the card goes to `href` (internal page or
-//   external URL).
+// - kind "book": featured at the top of its vault, linking to `href` or
+//   showing `buttons`.
+// - kind "link": a row in the vault's list that opens `href` (a document,
+//   PDF, or page) in a new tab if external.
 // - kind "video": gets its own page at /vault/<slug> with the video embedded.
 //   Set `video` to a Vimeo or Loom ID (the last part of the share link).
 //   It plays right inside the open vault. `thumbnail` and `duration` are
@@ -13,6 +15,8 @@ export type VaultItem = {
   slug: string;
   kind: "book" | "video" | "link";
   title: string;
+  // Small tag shown on list rows, e.g. "SOP" (defaults to "Video"/"Document").
+  label?: string;
   description: string;
   section: string;
   href?: string;
@@ -115,7 +119,7 @@ export const vaultItems: VaultItem[] = [
     slug: "ai-flyers",
     kind: "video",
     section: "social-media",
-    title: "Upgrading Your Parish Flyers",
+    title: "Making Flyers That Actually Get Engagement",
     description:
       "Made a flyer with ChatGPT? Watch me bring it into Canva and make it fully editable, so you can fix the text and polish the design.",
     video: {
@@ -126,6 +130,16 @@ export const vaultItems: VaultItem[] = [
       aspect: 4 / 3,
     },
     cta: "Watch the Video",
+  },
+  {
+    slug: "flyer-sop",
+    kind: "link",
+    label: "SOP",
+    section: "social-media",
+    title: "Flyer Creation SOP",
+    description: "A step-by-step checklist for making parish flyers.",
+    // TODO: add the document link (shows as "Coming soon" until then)
+    cta: "Open the SOP",
   },
   {
     slug: "meta-ads-mass",

@@ -313,7 +313,7 @@ function VideoRow({
             {item.title}
           </span>
           <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
-            Video{video.duration ? ` · ${video.duration}` : ""}
+            {item.label ?? "Video"}{video.duration ? ` · ${video.duration}` : ""}
           </span>
         </span>
         <span
@@ -369,6 +369,38 @@ function VideoRow({
   );
 }
 
+// A document or link in the vault's list: opens in a new tab.
+function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
+  const href = vaultItemHref(item);
+  const external = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="group flex w-full items-center gap-4 rounded-lg px-2 py-5 transition-colors hover:bg-[var(--tint)] sm:gap-6 sm:px-4"
+      style={{ "--tint": `rgba(${m.rgb},0.08)` } as React.CSSProperties}
+    >
+      <RowNumber n={n} m={m} />
+      <span className="min-w-0 flex-1">
+        <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+          {item.title}
+        </span>
+        <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
+          {item.label ?? "Document"}
+        </span>
+      </span>
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-110"
+        style={{ borderColor: m.mid, background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`, color: "#0e1628" }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-4 w-4" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+        </svg>
+      </span>
+    </a>
+  );
+}
+
 function SealedRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
   return (
     <div className="flex items-center gap-4 px-2 py-5 opacity-55 sm:gap-6 sm:px-4">
@@ -377,7 +409,9 @@ function SealedRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
         <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
           {item.title}
         </span>
-        <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">Coming soon</span>
+        <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
+          {item.label ? `${item.label} · ` : ""}Coming soon
+        </span>
       </span>
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/60">
         <LockIcon open={false} />
@@ -407,7 +441,7 @@ function VaultContents({
   const m = METALS[section?.metal ?? "brass"];
 
   // Books/links are featured on top; videos (and anything coming soon) form the ledger.
-  const features = items.filter((item) => item.kind !== "video" && !isComingSoon(item));
+  const features = items.filter((item) => item.kind === "book" && !isComingSoon(item));
   const rows = items.filter((item) => !features.includes(item));
 
   const riseClass = `transition-all duration-700 ease-out motion-reduce:transition-none ${
@@ -457,6 +491,8 @@ function VaultContents({
                       <div key={item.slug} className={riseClass} style={riseDelay(features.length + i)}>
                         {isComingSoon(item) ? (
                           <SealedRow item={item} n={i + 1} m={m} />
+                        ) : item.kind !== "video" ? (
+                          <LinkRow item={item} n={i + 1} m={m} />
                         ) : (
                           <VideoRow
                             item={item}

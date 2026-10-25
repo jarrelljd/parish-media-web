@@ -39,11 +39,14 @@ function VaultDoor({
   metal,
   spinning,
   open,
+  nudge = false,
 }: {
   number: string;
   metal: VaultMetal;
   spinning: boolean;
   open: boolean;
+  // Hovering the vault turns the wheel slightly, as if it's ready to open.
+  nudge?: boolean;
 }) {
   const m = METALS[metal];
   const id = `vault-${number}`;
@@ -156,8 +159,8 @@ function VaultDoor({
               style={{
                 transformBox: "view-box",
                 transformOrigin: `${C}px ${C}px`,
-                transform: unlocked ? "rotate(-200deg)" : "rotate(0deg)",
-                transitionDuration: `${SPIN_MS}ms`,
+                transform: unlocked ? "rotate(-200deg)" : nudge ? "rotate(-22deg)" : "rotate(0deg)",
+                transitionDuration: unlocked ? `${SPIN_MS}ms` : "400ms",
               }}
             >
               <circle cx={C} cy={C} r="34" fill="none" stroke={m.lo} strokeWidth="5" />
@@ -525,6 +528,7 @@ function VaultContents({
 export default function VaultExplorer() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [spinningId, setSpinningId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   // Keep the last-opened vault's contents rendered while the desktop panel closes.
   const [shownId, setShownId] = useState<string | null>(null);
   // Bumped on every open so the light burst replays and video players reset.
@@ -576,11 +580,30 @@ export default function VaultExplorer() {
           const sealed = vaultItems.every((item) => item.section !== section.id);
           const isOpen = openId === section.id;
           const isSpinning = spinningId === section.id;
+          const isHovered = hoveredId === section.id;
 
           return (
             <div key={section.id}>
-              <div className="flex flex-col items-center text-center">
-                <div className={`relative w-44 sm:w-52 ${sealed ? "opacity-40 grayscale" : ""}`}>
+              <div
+                className="flex flex-col items-center text-center"
+                onPointerEnter={(e) => e.pointerType === "mouse" && setHoveredId(section.id)}
+                onPointerLeave={(e) => e.pointerType === "mouse" && setHoveredId(null)}
+              >
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  disabled={sealed}
+                  onClick={() => toggle(section.id)}
+                  className={`relative block w-44 transition-[transform,filter] duration-300 sm:w-52 ${
+                    sealed ? "cursor-not-allowed opacity-40 grayscale" : "cursor-pointer"
+                  } ${isHovered && !isOpen ? "scale-[1.03]" : ""}`}
+                  style={
+                    isHovered && !isOpen && !sealed
+                      ? { filter: `drop-shadow(0 0 22px rgba(${m.rgb},0.45))` }
+                      : undefined
+                  }
+                >
                   {isOpen && (
                     <span
                       key={openCount}
@@ -595,8 +618,9 @@ export default function VaultExplorer() {
                     metal={section.metal}
                     spinning={isSpinning}
                     open={isOpen}
+                    nudge={isHovered && !sealed}
                   />
-                </div>
+                </button>
                 <p className="mt-6 font-mono text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: m.mid }}>
                   Vault {String(i + 1).padStart(2, "0")}
                 </p>
@@ -606,24 +630,43 @@ export default function VaultExplorer() {
                   disabled={sealed}
                   onClick={() => toggle(section.id)}
                   aria-expanded={isOpen}
-                  className={`mt-5 flex items-center gap-2 rounded-full border px-7 py-2.5 text-sm font-semibold transition-all ${
-                    sealed ? "cursor-not-allowed border-white/15 text-white/40" : "hover:brightness-110"
+                  className={`relative mt-5 overflow-hidden rounded-full border px-7 py-2.5 text-sm font-semibold transition-all duration-100 ${
+                    sealed
+                      ? "cursor-not-allowed border-white/15 text-white/40"
+                      : isOpen
+                        ? "hover:bg-white/5"
+                        : isSpinning
+                          ? "translate-y-[3px] shadow-[0_1px_0_var(--edge),0_4px_14px_-6px_var(--glow)]"
+                          : "shadow-[0_4px_0_var(--edge),0_10px_30px_-8px_var(--glow)] hover:brightness-110 active:translate-y-[3px] active:shadow-[0_1px_0_var(--edge),0_4px_14px_-6px_var(--glow)]"
                   }`}
                   style={
                     sealed
                       ? undefined
                       : isOpen
                         ? { borderColor: m.mid, color: m.hi }
-                        : {
+                        : ({
                             borderColor: m.mid,
                             background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`,
                             color: "#0e1628",
-                            boxShadow: `0 0 30px -8px rgba(${m.rgb},0.8)`,
-                          }
+                            "--edge": m.lo,
+                            "--glow": `rgba(${m.rgb},0.8)`,
+                          } as React.CSSProperties)
                   }
                 >
-                  <LockIcon open={isOpen} />
-                  {sealed ? "Coming Soon" : isSpinning ? "Unlocking…" : isOpen ? "Close" : "Unlock"}
+                  {/* Light glinting across the metal */}
+                  {!sealed && !isOpen && !isSpinning && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 animate-shimmer bg-linear-to-r from-transparent from-35% via-white/60 to-transparent to-65% motion-reduce:hidden"
+                      style={{ animationDelay: `${i * 1.3}s` }}
+                    />
+                  )}
+                  <span className="relative flex items-center gap-2">
+                    <span key={isSpinning ? "pop" : "rest"} className={`inline-flex ${isSpinning ? "animate-lock-pop" : ""}`}>
+                      <LockIcon open={isOpen || isSpinning} />
+                    </span>
+                    {sealed ? "Coming Soon" : isSpinning ? "Unlocking…" : isOpen ? "Close" : "Unlock"}
+                  </span>
                 </button>
               </div>
 

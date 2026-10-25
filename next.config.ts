@@ -3,6 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      // The free book now lives in The Vault. Temporary (not permanent) so the
+      // /free-guide landing page can be turned back on by deleting this.
+      {
+        source: "/free-guide",
+        destination: "/vault",
+        permanent: false,
+      },
       {
         source: "/services/parish-growth",
         destination: "/parish",

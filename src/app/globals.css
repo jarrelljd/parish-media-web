@@ -16,6 +16,8 @@ body {
   --animate-phone-ring: phone-ring 2.4s ease-in-out infinite;
   --animate-shimmer: shimmer 4s ease-in-out infinite;
   --animate-vault-burst: vault-burst 1.1s ease-out forwards;
+  --animate-lock-pop: lock-pop 0.45s ease-out;
+  --animate-vault-shine: vault-shine 7s ease-in-out infinite;
 
   @keyframes phone-ring {
     0%, 60%, 100% { transform: rotate(0deg); }
@@ -32,6 +34,20 @@ body {
     0% { transform: scale(0.4); opacity: 0; }
     25% { opacity: 1; }
     100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  /* Padlock shackle springing open on the Vault's Unlock buttons */
+  @keyframes lock-pop {
+    0% { transform: translateY(0) rotate(0deg); }
+    40% { transform: translateY(-3px) rotate(-12deg); }
+    70% { transform: translateY(1px) rotate(4deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  /* Light sliding across the gold "Vault" heading */
+  @keyframes vault-shine {
+    0%, 15% { background-position: 100% 0; }
+    55%, 100% { background-position: 0% 0; }
   }
 
   @keyframes shimmer {

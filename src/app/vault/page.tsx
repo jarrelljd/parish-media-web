@@ -24,13 +24,9 @@ export default function VaultPage() {
                 Vault
               </span>
             </h1>
-            <div className="mt-5 flex items-center justify-center gap-4">
-              <span className="hidden h-px w-16 bg-linear-to-r from-transparent to-gold/70 sm:block" />
-              <p className="whitespace-nowrap font-serif text-lg italic text-white/90 sm:text-2xl">
-                Free Books, Videos, and SOPs
-              </p>
-              <span className="hidden h-px w-16 bg-linear-to-l from-transparent to-gold/70 sm:block" />
-            </div>
+            <p className="mt-5 whitespace-nowrap font-serif text-lg italic text-white/90 sm:text-2xl">
+              Free Books, Videos, and SOPs
+            </p>
             <p className="mx-auto mt-5 max-w-lg text-balance text-lg text-white/70">
               Every free resource we&rsquo;ve made for growing your parish,
               diocese, or religious order. All in one&nbsp;place.

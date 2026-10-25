@@ -26,22 +26,40 @@ export type VaultItem = {
   };
   image?: string;
   cta: string;
+  // Optional buttons shown instead of making the whole card one link.
+  // The first one is styled as the main button.
+  buttons?: { label: string; href: string }[];
 };
 
 // The vaults, in the order they show on the page. A vault with no items
 // shows as sealed.
-export const vaultSections = [
+// `metal` sets each vault door's color (see METALS in VaultExplorer.tsx).
+// They follow the liturgical colors: violet (Advent, where the year begins),
+// red (Pentecost, being sent out), green (Ordinary Time, growth).
+export type VaultMetal =
+  | "brass"
+  | "steel"
+  | "copper"
+  | "violet"
+  | "crimson"
+  | "emerald"
+  | "sapphire";
+
+export const vaultSections: { id: string; title: string; metal: VaultMetal }[] = [
   {
     id: "start-here",
     title: "Start Here",
+    metal: "violet",
   },
   {
     id: "social-media",
     title: "Engage",
+    metal: "crimson",
   },
   {
     id: "ads",
     title: "Grow",
+    metal: "emerald",
   },
 ];
 
@@ -53,9 +71,19 @@ export const vaultItems: VaultItem[] = [
     title: "Social Media for Catholic Churches",
     description:
       "A practical, Catholic-specific guide to parish Facebook and Instagram. Free for parish, diocese, and religious order staff.",
-    href: "/free-guide",
-    image: "/images/free-guide/book-cover.jpg",
-    cta: "Get the Book",
+    href: "https://drive.google.com/file/d/1F2sylV7C6tL11UB41Ew3miEgz2nq7f0x/view?usp=drive_link",
+    image: "/images/free-guide/book-hardcover.png",
+    cta: "Read the Book",
+    buttons: [
+      {
+        label: "Download the PDF",
+        href: "https://drive.google.com/uc?export=download&id=1F2sylV7C6tL11UB41Ew3miEgz2nq7f0x",
+      },
+      {
+        label: "Get it on Amazon",
+        href: "https://www.amazon.com/Social-Media-Catholic-Churches-Practical/dp/B0H3QTWDFL/",
+      },
+    ],
   },
   {
     slug: "social-media-system",

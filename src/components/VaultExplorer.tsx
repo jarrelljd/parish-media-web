@@ -10,76 +10,200 @@ import {
   vaultSections,
   videoEmbedUrl,
   type VaultItem,
+  type VaultMetal,
 } from "@/data/vault";
 
-// How long the dial spins before the door swings open.
-const SPIN_MS = 750;
+// How long the wheel spins (and the bolts retract) before the door swings open.
+const SPIN_MS = 900;
 
-function VaultDoor({ spinning, open }: { spinning: boolean; open: boolean }) {
-  const bolts = Array.from({ length: 12 }, (_, i) => i * 30);
+// Door colors for each vault. `rgb` drives the glow, light beam, and button.
+const METALS: Record<VaultMetal, { hi: string; mid: string; lo: string; rgb: string }> = {
+  brass: { hi: "#f7e6a6", mid: "#c9a227", lo: "#5c470e", rgb: "201,162,39" },
+  steel: { hi: "#f1f5fa", mid: "#a3b3c7", lo: "#34425a", rgb: "163,179,199" },
+  copper: { hi: "#f9cfae", mid: "#c8733f", lo: "#55250e", rgb: "200,115,63" },
+  violet: { hi: "#e6d4f7", mid: "#8a5cc0", lo: "#2c1446", rgb: "138,92,192" },
+  crimson: { hi: "#f9c9c6", mid: "#b8393e", lo: "#470d12", rgb: "184,57,62" },
+  emerald: { hi: "#cdf2db", mid: "#2f9461", lo: "#0b3820", rgb: "47,148,97" },
+  sapphire: { hi: "#d3e3fc", mid: "#3d72c9", lo: "#102657", rgb: "61,114,201" },
+};
+
+const C = 110; // center of the 220×220 door drawing
+// Rounded so server and browser render identical coordinates.
+const round = (n: number) => Math.round(n * 100) / 100;
+const polar = (r: number, deg: number) => ({
+  x: round(C + r * Math.cos((deg * Math.PI) / 180)),
+  y: round(C + r * Math.sin((deg * Math.PI) / 180)),
+});
+
+function VaultDoor({
+  number,
+  metal,
+  spinning,
+  open,
+}: {
+  number: string;
+  metal: VaultMetal;
+  spinning: boolean;
+  open: boolean;
+}) {
+  const m = METALS[metal];
+  const id = `vault-${number}`;
+  const unlocked = spinning || open;
+  const lockBolts = [-60, -20, 20, 60, 130, 230];
+  const spokes = [-90, -18, 54, 126, 198];
+  const rivets = Array.from({ length: 24 }, (_, i) => i * 15);
+  const frameRivets = [
+    [22, 22], [110, 14], [198, 22], [206, 110], [198, 198], [110, 206], [22, 198],
+  ];
+
   return (
     <div className="relative aspect-square w-full">
-      {/* What's behind the door */}
-      <div
-        className={`absolute inset-[6%] rounded-full transition-all duration-700 ${
-          open
-            ? "bg-[radial-gradient(circle,rgba(255,236,170,0.95),rgba(201,162,39,0.55)_45%,rgba(201,162,39,0.1)_75%)] shadow-[0_0_80px_10px_rgba(201,162,39,0.45)]"
-            : "bg-[radial-gradient(circle,rgba(201,162,39,0.35),transparent_70%)]"
-        }`}
-      />
-
-      {/* Frame */}
-      <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full text-gold" aria-hidden="true">
-        <circle cx="100" cy="100" r="97" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
-        <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" strokeOpacity="0.15" strokeWidth="6" />
+      {/* Frame + dark opening */}
+      <svg viewBox="0 0 220 220" className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <defs>
+          <linearGradient id={`${id}-frame`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#323b51" />
+            <stop offset="100%" stopColor="#0d1322" />
+          </linearGradient>
+          <radialGradient id={`${id}-hole`} cx="50%" cy="50%" r="50%">
+            <stop offset="70%" stopColor="#03060c" />
+            <stop offset="100%" stopColor="#141b2b" />
+          </radialGradient>
+        </defs>
+        <rect x="3" y="3" width="214" height="214" rx="24" fill={`url(#${id}-frame)`} stroke={m.mid} strokeOpacity="0.45" strokeWidth="1.5" />
+        <rect x="9" y="9" width="202" height="202" rx="19" fill="none" stroke="#ffffff" strokeOpacity="0.06" />
+        {frameRivets.map(([x, y]) => (
+          <g key={`${x}-${y}`}>
+            <circle cx={x} cy={y} r="3.2" fill={m.lo} />
+            <circle cx={x - 0.8} cy={y - 0.8} r="1.6" fill={m.hi} fillOpacity="0.8" />
+          </g>
+        ))}
+        <circle cx={C} cy={C} r="96" fill={`url(#${id}-hole)`} stroke={m.lo} strokeWidth="4" />
       </svg>
 
-      {/* Door */}
-      <div className="absolute inset-[6%] [perspective:900px]">
+      {/* Light behind the door */}
+      <div
+        className="absolute inset-[7%] rounded-full transition-all duration-700"
+        style={{
+          background: open
+            ? `radial-gradient(circle, rgba(255,245,215,0.95), rgba(${m.rgb},0.6) 45%, rgba(${m.rgb},0.1) 75%)`
+            : "transparent",
+          boxShadow: open ? `0 0 80px 10px rgba(${m.rgb},0.45)` : "none",
+        }}
+      />
+
+      {/* Door, hinged on its left edge (x = 22 of 220) */}
+      <div className="absolute inset-0 [perspective:1000px]">
         <div
-          className="h-full w-full origin-left transition-transform duration-700 ease-out motion-reduce:transition-none"
-          style={{ transform: open ? "rotateY(-75deg)" : "rotateY(0deg)" }}
+          className="h-full w-full transition-transform duration-700 ease-out motion-reduce:transition-none"
+          style={{ transformOrigin: "10% 50%", transform: open ? "rotateY(-78deg)" : "rotateY(0deg)" }}
         >
-          <svg viewBox="0 0 200 200" className="h-full w-full text-gold drop-shadow-[0_10px_25px_rgba(0,0,0,0.6)]" aria-hidden="true">
+          <svg
+            viewBox="0 0 220 220"
+            className="h-full w-full overflow-visible drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]"
+            aria-hidden="true"
+          >
             <defs>
-              <radialGradient id="vault-door-fill" cx="40%" cy="35%" r="75%">
-                <stop offset="0%" stopColor="#2a3c63" />
-                <stop offset="100%" stopColor="#121c33" />
+              <radialGradient id={`${id}-face`} cx="35%" cy="28%" r="80%">
+                <stop offset="0%" stopColor={m.hi} />
+                <stop offset="45%" stopColor={m.mid} />
+                <stop offset="100%" stopColor={m.lo} />
               </radialGradient>
+              <linearGradient id={`${id}-bar`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={m.hi} />
+                <stop offset="100%" stopColor={m.lo} />
+              </linearGradient>
             </defs>
-            <circle cx="100" cy="100" r="99" fill="url(#vault-door-fill)" stroke="currentColor" strokeOpacity="0.7" strokeWidth="2" />
-            {bolts.map((deg) => (
-              <circle
-                key={deg}
-                cx={100 + 86 * Math.cos((deg * Math.PI) / 180)}
-                cy={100 + 86 * Math.sin((deg * Math.PI) / 180)}
-                r="3"
-                fill="currentColor"
-                fillOpacity="0.75"
-              />
+
+            {/* Locking bolts: slide back into the door as it unlocks */}
+            {lockBolts.map((deg) => (
+              <g key={deg} transform={`rotate(${deg} ${C} ${C})`}>
+                <rect
+                  x={C + 78}
+                  y={C - 4.5}
+                  width="22"
+                  height="9"
+                  rx="2"
+                  fill={`url(#${id}-bar)`}
+                  stroke={m.lo}
+                  strokeWidth="1"
+                  className="transition-transform ease-in-out motion-reduce:transition-none"
+                  style={{
+                    transform: unlocked ? "translateX(-16px)" : "translateX(0px)",
+                    transitionDuration: `${SPIN_MS * 0.8}ms`,
+                  }}
+                />
+              </g>
             ))}
-            <circle cx="100" cy="100" r="74" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" />
+
+            {/* Door face */}
+            <circle cx={C} cy={C} r="88" fill={`url(#${id}-face)`} stroke={m.lo} strokeWidth="2" />
+            <circle cx={C} cy={C} r="83" fill="none" stroke={m.hi} strokeOpacity="0.55" strokeWidth="1" />
+            <circle cx={C} cy={C} r="78" fill="none" stroke={m.lo} strokeOpacity="0.7" strokeWidth="3" />
+            {rivets.map((deg) => {
+              const p = polar(70, deg);
+              return <circle key={deg} cx={p.x} cy={p.y} r="2.2" fill={m.lo} fillOpacity="0.75" />;
+            })}
+            <circle cx={C} cy={C} r="60" fill={m.lo} fillOpacity="0.22" stroke={m.hi} strokeOpacity="0.4" strokeWidth="1" />
+
+            {/* Hinges */}
+            {[68, 152].map((y) => (
+              <rect key={y} x="12" y={y - 12} width="18" height="24" rx="4" fill={`url(#${id}-bar)`} stroke={m.lo} strokeWidth="1" />
+            ))}
+
+            {/* Handle wheel */}
             <g
               className="transition-transform ease-in-out motion-reduce:transition-none"
               style={{
                 transformBox: "view-box",
-                transformOrigin: "100px 100px",
-                transform: spinning || open ? "rotate(300deg)" : "rotate(0deg)",
+                transformOrigin: `${C}px ${C}px`,
+                transform: unlocked ? "rotate(-200deg)" : "rotate(0deg)",
                 transitionDuration: `${SPIN_MS}ms`,
               }}
             >
-              <circle cx="100" cy="100" r="54" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="1" strokeDasharray="2 4" />
-              {[0, 120, 240].map((deg) => (
-                <g key={deg} transform={`rotate(${deg} 100 100)`}>
-                  <line x1="100" y1="100" x2="100" y2="46" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-                  <circle cx="100" cy="44" r="6" fill="currentColor" />
-                </g>
-              ))}
+              <circle cx={C} cy={C} r="34" fill="none" stroke={m.lo} strokeWidth="5" />
+              <circle cx={C} cy={C} r="34" fill="none" stroke={m.hi} strokeOpacity="0.6" strokeWidth="1.5" />
+              {spokes.map((deg) => {
+                const a = polar(24, deg);
+                const b = polar(46, deg);
+                return (
+                  <g key={deg}>
+                    <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={m.lo} strokeWidth="6" strokeLinecap="round" />
+                    <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={m.hi} strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round" />
+                    <circle cx={b.x} cy={b.y} r="6.5" fill={`url(#${id}-face)`} stroke={m.lo} strokeWidth="1.5" />
+                  </g>
+                );
+              })}
             </g>
-            <circle cx="100" cy="100" r="18" fill="#121c33" stroke="currentColor" strokeWidth="2" />
-            <circle cx="100" cy="100" r="6" fill="currentColor" />
-            <rect x="0" y="60" width="8" height="18" rx="2" fill="currentColor" fillOpacity="0.6" />
-            <rect x="0" y="122" width="8" height="18" rx="2" fill="currentColor" fillOpacity="0.6" />
+
+            {/* Hub with the vault number */}
+            <circle cx={C} cy={C} r="25" fill={`url(#${id}-face)`} stroke={m.lo} strokeWidth="2.5" />
+            <circle cx={C} cy={C} r="21" fill="none" stroke={m.hi} strokeOpacity="0.5" strokeWidth="1" />
+            <text
+              x={C}
+              y={C + 0.8}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              fontSize="19"
+              fontWeight="700"
+              fill={m.hi}
+              fillOpacity="0.6"
+            >
+              {number}
+            </text>
+            <text
+              x={C}
+              y={C}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              fontSize="19"
+              fontWeight="700"
+              fill={m.lo}
+            >
+              {number}
+            </text>
           </svg>
         </div>
       </div>
@@ -195,16 +319,14 @@ function VideoItem({
 
 function LinkItem({ item }: { item: VaultItem }) {
   const href = vaultItemHref(item);
-  const external = href.startsWith("http");
-  return (
-    <Link
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-5 rounded-xl border border-gold/25 bg-white/[0.03] p-5 transition-all duration-300 hover:border-gold/70 hover:shadow-[0_0_40px_-10px_rgba(201,162,39,0.5)] sm:gap-7 sm:p-6"
-    >
+  const external = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
+  const hasButtons = !!item.buttons?.length;
+
+  const content = (
+    <>
       {item.image && (
-        <div className="w-20 shrink-0 overflow-hidden rounded shadow-[0_10px_30px_rgba(0,0,0,0.6)] ring-1 ring-gold/30 transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-105 sm:w-28">
-          <Image src={item.image} alt={item.title} width={224} height={336} className="h-auto w-full" />
+        <div className="w-24 shrink-0 drop-shadow-[0_12px_20px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105 sm:w-32">
+          <Image src={item.image} alt={item.title} width={256} height={320} className="h-auto w-full" />
         </div>
       )}
       <div className="min-w-0">
@@ -213,8 +335,39 @@ function LinkItem({ item }: { item: VaultItem }) {
         </p>
         <h4 className="mt-2 text-balance font-serif text-xl font-semibold text-white sm:text-2xl">{item.title}</h4>
         <p className="mt-2 text-pretty text-sm text-white/60 sm:text-base">{item.description}</p>
-        <span className="mt-4 inline-block font-medium text-gold">{item.cta} →</span>
+        {hasButtons ? (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {item.buttons!.map((button, i) => (
+              <a
+                key={button.href}
+                href={button.href}
+                {...external(button.href)}
+                className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+                  i === 0
+                    ? "bg-gold text-navy hover:bg-gold/90"
+                    : "border border-gold/50 text-gold hover:bg-gold/10"
+                }`}
+              >
+                {button.label}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <span className="mt-4 inline-block font-medium text-gold">{item.cta} →</span>
+        )}
       </div>
+    </>
+  );
+
+  const cardClass =
+    "group flex flex-col items-start gap-5 rounded-xl border border-gold/25 sm:flex-row sm:items-center bg-white/[0.03] p-5 transition-all duration-300 hover:border-gold/70 hover:shadow-[0_0_40px_-10px_rgba(201,162,39,0.5)] sm:gap-7 sm:p-6";
+
+  if (hasButtons) {
+    return <div className={cardClass}>{content}</div>;
+  }
+  return (
+    <Link href={href} {...external(href)} className={cardClass}>
+      {content}
     </Link>
   );
 }
@@ -247,6 +400,7 @@ function VaultContents({
   // One video open at a time per vault.
   const [expanded, setExpanded] = useState<{ slug: string; openCount: number } | null>(null);
   const items = section ? vaultItems.filter((item) => item.section === section.id) : [];
+  const rgb = METALS[section?.metal ?? "brass"].rgb;
 
   return (
     <div
@@ -262,12 +416,21 @@ function VaultContents({
           <div className="relative pt-2">
             {/* Light spilling out of the open vault */}
             <div
-              className={`pointer-events-none absolute top-0 h-72 w-[70%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(201,162,39,0.35),transparent_70%)] transition-[left,opacity] duration-700 ${
+              className={`pointer-events-none absolute top-0 h-72 w-[70%] -translate-x-1/2 transition-[left,opacity] duration-700 ${
                 open ? "opacity-100" : "opacity-0"
               }`}
-              style={{ left: `${beamAt}%` }}
+              style={{
+                left: `${beamAt}%`,
+                background: `radial-gradient(ellipse at top, rgba(${rgb},0.35), transparent 70%)`,
+              }}
             />
-            <div className="relative rounded-3xl border border-gold/25 bg-linear-to-b from-gold/[0.07] to-white/[0.01] px-5 py-8 sm:px-10 sm:py-10">
+            <div
+              className="relative rounded-3xl border px-5 py-8 sm:px-10 sm:py-10"
+              style={{
+                borderColor: `rgba(${rgb},0.3)`,
+                background: `linear-gradient(to bottom, rgba(${rgb},0.08), rgba(255,255,255,0.01))`,
+              }}
+            >
               <div className="mx-auto max-w-3xl">
                 <div className="flex flex-col gap-4">
                   {items.map((item, i) => (
@@ -357,7 +520,8 @@ export default function VaultExplorer() {
   return (
     <div className="mx-auto max-w-5xl">
       <div className="grid gap-12 lg:grid-cols-3 lg:gap-6">
-        {vaultSections.map((section) => {
+        {vaultSections.map((section, i) => {
+          const m = METALS[section.metal];
           const sealed = vaultItems.every((item) => item.section !== section.id);
           const isOpen = openId === section.id;
           const isSpinning = spinningId === section.id;
@@ -369,24 +533,43 @@ export default function VaultExplorer() {
                   {isOpen && (
                     <span
                       key={openCount}
-                      className="pointer-events-none absolute inset-0 animate-vault-burst rounded-full bg-[radial-gradient(circle,rgba(255,236,170,0.9),rgba(201,162,39,0.4)_40%,transparent_70%)] motion-reduce:hidden"
+                      className="pointer-events-none absolute inset-0 animate-vault-burst rounded-full motion-reduce:hidden"
+                      style={{
+                        background: `radial-gradient(circle, rgba(255,245,215,0.9), rgba(${m.rgb},0.45) 40%, transparent 70%)`,
+                      }}
                     />
                   )}
-                  <VaultDoor spinning={isSpinning} open={isOpen} />
+                  <VaultDoor
+                    number={String(i + 1).padStart(2, "0")}
+                    metal={section.metal}
+                    spinning={isSpinning}
+                    open={isOpen}
+                  />
                 </div>
-                <h2 className="mt-6 font-serif text-2xl font-semibold text-white sm:text-3xl">{section.title}</h2>
+                <p className="mt-6 font-mono text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: m.mid }}>
+                  Vault {String(i + 1).padStart(2, "0")}
+                </p>
+                <h2 className="mt-1 font-serif text-2xl font-semibold text-white sm:text-3xl">{section.title}</h2>
                 <button
                   type="button"
                   disabled={sealed}
                   onClick={() => toggle(section.id)}
                   aria-expanded={isOpen}
-                  className={`mt-5 flex items-center gap-2 rounded-full px-7 py-2.5 text-sm font-semibold transition-all ${
-                    sealed
-                      ? "cursor-not-allowed border border-white/15 text-white/40"
-                      : isOpen
-                        ? "border border-gold/60 text-gold hover:bg-gold/10"
-                        : "bg-gold text-navy shadow-[0_0_30px_-8px_rgba(201,162,39,0.8)] hover:bg-gold/90"
+                  className={`mt-5 flex items-center gap-2 rounded-full border px-7 py-2.5 text-sm font-semibold transition-all ${
+                    sealed ? "cursor-not-allowed border-white/15 text-white/40" : "hover:brightness-110"
                   }`}
+                  style={
+                    sealed
+                      ? undefined
+                      : isOpen
+                        ? { borderColor: m.mid, color: m.hi }
+                        : {
+                            borderColor: m.mid,
+                            background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`,
+                            color: "#0e1628",
+                            boxShadow: `0 0 30px -8px rgba(${m.rgb},0.8)`,
+                          }
+                  }
                 >
                   <LockIcon open={isOpen} />
                   {sealed ? "Coming Soon" : isSpinning ? "Unlocking…" : isOpen ? "Close" : "Unlock"}

@@ -81,7 +81,7 @@ export default async function VaultVideoPage({
             <h2 className="text-balance font-serif text-2xl font-semibold text-white sm:text-3xl">
               Rather have us handle it?
             </h2>
-            <p className="mt-3 text-pretty text-white/70">
+            <p className="mt-3 text-balance text-white/70">
               Book a free call and we&rsquo;ll walk through what growth could
               look like for your&nbsp;parish.
             </p>

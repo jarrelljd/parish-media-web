@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Link from "next/link";
 import VaultExplorer from "@/components/VaultExplorer";
+import RoseWindow from "@/components/RoseWindow";
 
 export const metadata: Metadata = {
   title: "The Parish Communications Hub | Parish Media Company",
@@ -16,13 +17,16 @@ export default function VaultPage() {
       <main className="flex flex-1 flex-col bg-[#0e1628] text-white">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pb-12 pt-20 text-center sm:pb-16 sm:pt-24">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,162,39,0.18),transparent_60%)]" />
           <div className="relative mx-auto max-w-4xl">
+            {/* Rose window centered behind the word "Hub" */}
+            <div className="pointer-events-none absolute left-1/2 top-[88px] w-[420px] -translate-x-1/2 -translate-y-1/2 text-gold opacity-20 [mask-image:linear-gradient(to_bottom,black_55%,transparent_92%)] sm:top-[112px] sm:w-[640px]">
+              <RoseWindow className="block h-auto w-full motion-safe:animate-rose-spin" />
+            </div>
             <h1 className="font-serif font-semibold">
               <span className="block text-balance text-2xl italic text-gold sm:text-3xl">
                 The Parish Communications
               </span>
-              <span className="mt-1 block bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-8xl leading-none tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(201,162,39,0.35)] motion-safe:animate-vault-shine sm:text-9xl">
+              <span className="mt-1 block bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-8xl leading-none tracking-tight text-transparent motion-safe:animate-vault-shine sm:text-9xl">
                 Hub
               </span>
             </h1>

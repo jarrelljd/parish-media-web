@@ -120,7 +120,7 @@ export const vaultItems: VaultItem[] = [
     slug: "ai-flyers",
     kind: "video",
     section: "social-media",
-    title: "Making Flyers That Actually Get Engagement",
+    title: "How to Make Beautiful, Engaging Parish Flyers (Quickly)",
     description:
       "Made a flyer with ChatGPT? Watch me bring it into Canva and make it fully editable, so you can fix the text and polish the design.",
     video: {

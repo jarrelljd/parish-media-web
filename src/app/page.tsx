@@ -72,7 +72,7 @@ export default function Home() {
                 href="/hub"
                 className="rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
               >
-                Get My Free Guide
+                Access the Hub
               </Link>
               <BookACallButton className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5">
                 Book a Call
@@ -504,14 +504,14 @@ export default function Home() {
             Ready to Get More Young Adults at Your Parish?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-offwhite/70">
-            Grab your free guide now, or book a free consultation.
+            Explore the free Hub, or book a free&nbsp;consultation.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/hub"
               className="inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90"
             >
-              Get My Free Guide
+              Access the Hub
             </Link>
             <BookACallButton className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10">
               Book a Call

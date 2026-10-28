@@ -229,7 +229,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 // The book (or any link resource): a borderless feature at the top of a vault.
 function FeatureItem({ item, m }: { item: VaultItem; m: Metal }) {
   const href = vaultItemHref(item);
-  const external = (url: string) => (url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {});
+  const external = (url: string) => (url.startsWith("http") || url.toLowerCase().endsWith(".pdf") ? { target: "_blank", rel: "noopener noreferrer" } : {});
   const buttons = item.buttons?.length ? item.buttons : [{ label: `${item.cta} →`, href }];
 
   return (
@@ -386,7 +386,8 @@ function rowTitleClass(item: VaultItem) {
 function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
   const href = vaultItemHref(item);
   const external = href.startsWith("http");
-  const newTab = external || href.endsWith(".pdf");
+  const isPdf = href.toLowerCase().endsWith(".pdf");
+  const newTab = external || isPdf;
   return (
     <a
       href={href}
@@ -407,9 +408,17 @@ function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-110"
         style={{ borderColor: m.mid, background: `linear-gradient(to bottom, ${m.hi}, ${m.mid})`, color: "#0e1628" }}
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-4 w-4" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
-        </svg>
+        {isPdf ? (
+          // Document icon: a page with a folded corner and text lines
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} className="h-[18px] w-[18px]" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v5h5M9 13h6M9 17h4" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-4 w-4" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+          </svg>
+        )}
       </span>
     </a>
   );

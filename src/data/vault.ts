@@ -78,13 +78,13 @@ export const vaultItems: VaultItem[] = [
     title: "Social Media for Catholic Churches",
     description:
       "A practical, Catholic-specific guide to parish Facebook and Instagram. Free for parish, diocese, and religious order staff.",
-    href: "https://drive.google.com/file/d/1F2sylV7C6tL11UB41Ew3miEgz2nq7f0x/view?usp=drive_link",
+    href: "/downloads/social-media-for-catholic-churches.pdf",
     image: "/images/free-guide/book-hardcover.png",
     cta: "Read the Book",
     buttons: [
       {
         label: "Download the PDF",
-        href: "https://drive.google.com/uc?export=download&id=1F2sylV7C6tL11UB41Ew3miEgz2nq7f0x",
+        href: "/downloads/social-media-for-catholic-churches.pdf",
       },
       {
         label: "Get it on Amazon",

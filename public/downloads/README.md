@@ -1,9 +1,7 @@
-Drop the real ebook here as:
+PDFs served from parishmediacompany.com/downloads/<filename>.
 
-    social-media-for-catholic-churches.pdf
+- social-media-for-catholic-churches.pdf: the book (Hub, Start Here vault)
+- parish-flyer-sop.pdf: Flyer Creation SOP (Hub, Engage vault)
 
-This exact filename is what `src/app/actions.ts` (`submitEbookRequest`) reads
-to attach to the free-guide email, and what
-`src/components/FreeGuideForm.tsx`'s "Download Now" button links to. Until
-the real file is here, free-guide form submissions will show a friendly
-error instead of sending.
+To update a PDF, replace the file with the same name and push.
+Links to these are set in src/data/vault.ts.

@@ -4,7 +4,7 @@
 // - kind "book": featured at the top of its vault, linking to `href` or
 //   showing `buttons`.
 // - kind "link": a row in the vault's list that opens `href` (a document,
-//   PDF, or page) in a new tab if external.
+//   PDF, or page). External links and PDFs open in a new tab.
 // - kind "video": gets its own page at /hub/<slug> with the video embedded.
 //   Set `video` to a Vimeo or Loom ID (the last part of the share link).
 //   It plays right inside the open vault. `thumbnail` and `duration` are
@@ -158,7 +158,7 @@ export const vaultItems: VaultItem[] = [
     section: "social-media",
     title: "Flyer Creation SOP",
     description: "A step-by-step checklist for making parish flyers.",
-    // TODO: add the document link (shows as "Coming soon" until then)
+    href: "/downloads/parish-flyer-sop.pdf",
     cta: "Open the SOP",
   },
   {

@@ -386,10 +386,11 @@ function rowTitleClass(item: VaultItem) {
 function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
   const href = vaultItemHref(item);
   const external = href.startsWith("http");
+  const newTab = external || href.endsWith(".pdf");
   return (
     <a
       href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="group flex w-full items-center gap-4 rounded-lg px-2 py-5 transition-colors hover:bg-[var(--tint)] sm:gap-6 sm:px-4"
       style={{ "--tint": `rgba(${m.rgb},0.08)` } as React.CSSProperties}
     >

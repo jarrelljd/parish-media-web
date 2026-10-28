@@ -38,9 +38,9 @@ Reusable content (client rosters, etc.) lives in `src/data/*.ts` so multiple pag
 
 When writing multi-line headings, subheads, CTAs, or wrapped paragraphs, check how the text wraps at common widths (desktop ~1280px and mobile ~320–414px) before considering it done — either by screenshotting or reasoning through where line breaks fall. Avoid a final line that's visually much shorter than the lines above it (a single short word, or a lone word plus punctuation like "/ community."). Fix it by rephrasing to remove the awkward trailing fragment (e.g. "diocese / community" → "diocese or religious community") or, if the wording must stay, joining the last two words with `&nbsp;` so they wrap together. `text-balance` (headings) and `text-pretty` (paragraphs) help but don't catch every case — still verify at actual breakpoints.
 
-## Known open item
+## Hosted PDFs
 
-The `/free-guide` flow expects the real PDF at `public/downloads/social-media-for-catholic-churches.pdf` (see the README in that folder) — until it's there, submissions fail gracefully with a friendly error instead of sending.
+PDFs live in `public/downloads/` and are served at `/downloads/<filename>` (the book and the Flyer Creation SOP). Hub links to them are set in `src/data/vault.ts`; PDF links open in a new tab and show a document icon.
 
 ## Working style
 

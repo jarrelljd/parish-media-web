@@ -48,15 +48,14 @@ function ShelfIconShape({ icon, color }: { icon: ShelfIcon; color: string }) {
           <path {...line} d="M3.8 7l8.2 6 8.2-6" />
         </>
       );
-    case "website":
-      // Browser window
+    case "bulletin":
+      // Folded newsletter
       return (
         <>
-          <rect {...line} x="3" y="4.5" width="18" height="15" rx="2" />
-          <path {...line} d="M3 9h18" />
-          <circle cx="6" cy="6.8" r="0.9" fill={color} />
-          <circle cx="8.8" cy="6.8" r="0.9" fill={color} />
-          <path {...line} strokeWidth={1.8} d="M7 13h10M7 16h6" />
+          <path {...line} d="M4 5h13v14H6a2 2 0 0 1-2-2z" />
+          <path {...line} d="M17 9h3v8a2 2 0 0 1-2 2h-1" />
+          <rect x="7" y="8" width="7" height="3.2" rx="0.6" fill={color} />
+          <path {...line} strokeWidth={1.8} d="M7 14.5h7M7 17h5" />
         </>
       );
   }

@@ -58,7 +58,7 @@ export type VaultBook = { id: string; title: string; metal: VaultMetal };
 // Book colors follow the liturgical colors: violet (Advent, where the year
 // begins), red (Pentecost, being sent out), green (Ordinary Time, growth).
 // The symbol on a shelf's brass nameplate (drawn in LibraryExplorer.tsx).
-export type ShelfIcon = "social" | "email" | "website";
+export type ShelfIcon = "social" | "email" | "bulletin";
 
 export type Shelf = {
   id: string;
@@ -91,10 +91,10 @@ export const shelves: Shelf[] = [
     books: [],
   },
   {
-    id: "website",
-    icon: "website",
-    title: "Website",
-    blurb: "How to structure your parish website so newcomers find what they\u00a0need.",
+    id: "bulletin",
+    icon: "bulletin",
+    title: "Bulletin",
+    blurb: "How to make your weekly bulletin something parishioners actually\u00a0read.",
     metal: "steel",
     books: [],
   },

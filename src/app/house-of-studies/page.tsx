@@ -47,7 +47,7 @@ export default function HouseOfStudiesPage() {
         {/* CTA */}
         <section className="border-t border-gold/15 px-6 py-16 text-center">
           <div className="mx-auto max-w-xl">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold/80">Beyond the House of Studies</p>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold/80">Beyond the House of&nbsp;Studies</p>
             <h2 className="mt-3 text-balance font-serif text-2xl font-semibold sm:text-3xl">
               Don&rsquo;t Have the Resources to Implement All of&nbsp;This?
             </h2>

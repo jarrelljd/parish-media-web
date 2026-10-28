@@ -15,19 +15,17 @@ body {
 @theme {
   --animate-phone-ring: phone-ring 2.4s ease-in-out infinite;
   --animate-shimmer: shimmer 4s ease-in-out infinite;
-  --animate-vault-burst: vault-burst 1.1s ease-out forwards;
-  --animate-lock-pop: lock-pop 0.45s ease-out;
-  --animate-vault-shine: vault-shine 7s ease-in-out infinite;
+  --animate-title-shine: title-shine 7s ease-in-out infinite;
   --animate-rose-spin: rose-spin 240s linear infinite;
-  --animate-vault-fade: vault-fade 0.5s ease-out;
+  --animate-shelf-fade: shelf-fade 0.5s ease-out;
 
-  /* Vault name fading in as the carousel turns to a new vault (/hub) */
-  @keyframes vault-fade {
+  /* Shelf name fading in as the carousel turns (/house-of-studies) */
+  @keyframes shelf-fade {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Slow turn of the rose window behind the Hub heading */
+  /* Slow turn of the rose window behind the House of Studies title */
   @keyframes rose-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -43,23 +41,8 @@ body {
     84% { transform: rotate(0deg); }
   }
 
-  /* Gold light flooding out of a vault door as it opens (/hub) */
-  @keyframes vault-burst {
-    0% { transform: scale(0.4); opacity: 0; }
-    25% { opacity: 1; }
-    100% { transform: scale(2.4); opacity: 0; }
-  }
-
-  /* Padlock shackle springing open on the Vault's Unlock buttons */
-  @keyframes lock-pop {
-    0% { transform: translateY(0) rotate(0deg); }
-    40% { transform: translateY(-3px) rotate(-12deg); }
-    70% { transform: translateY(1px) rotate(4deg); }
-    100% { transform: translateY(0) rotate(0deg); }
-  }
-
-  /* Light sliding across the gold "Hub" heading */
-  @keyframes vault-shine {
+  /* Light sliding across the gold "House of Studies" title */
+  @keyframes title-shine {
     0%, 15% { background-position: 100% 0; }
     55%, 100% { background-position: 0% 0; }
   }

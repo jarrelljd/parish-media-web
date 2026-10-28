@@ -3,22 +3,24 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // The free book now lives in The Hub. Temporary (not permanent) so the
-      // /free-guide landing page can be turned back on by deleting this.
+      // The free book now lives in the House of Studies. Temporary (not
+      // permanent) so the /free-guide landing page can be turned back on by
+      // deleting this.
       {
         source: "/free-guide",
-        destination: "/hub",
+        destination: "/house-of-studies",
         permanent: false,
       },
-      // The Hub used to be called The Vault; keep old links (DMs) working.
+      // The House of Studies was called The Vault, then The Hub; keep old
+      // links (DMs, emails, posts) working.
       {
-        source: "/vault",
-        destination: "/hub",
+        source: "/:old(vault|hub)",
+        destination: "/house-of-studies",
         permanent: true,
       },
       {
-        source: "/vault/:slug",
-        destination: "/hub/:slug",
+        source: "/:old(vault|hub)/:slug",
+        destination: "/house-of-studies/:slug",
         permanent: true,
       },
       {

@@ -1,14 +1,14 @@
-// Everything in The Parish Communications Hub (/hub). Resources sit in books,
-// and books sit inside vaults (see `vaults` below). To add a resource, add
+// Everything in The Parish House of Studies (/house-of-studies). Resources sit
+// in books, and books sit on shelves (see `shelves` below). To add a resource, add
 // one object to `vaultItems` with `section` set to its book.
 //
-// - kind "book": featured at the top of its vault, linking to `href` or
+// - kind "book": featured at the top of its book, linking to `href` or
 //   showing `buttons`.
-// - kind "link": a row in the vault's list that opens `href` (a document,
+// - kind "link": a row in the book's list that opens `href` (a document,
 //   PDF, or page). External links and PDFs open in a new tab.
-// - kind "video": gets its own page at /hub/<slug> with the video embedded.
+// - kind "video": gets its own page at /house-of-studies/<slug> with the video embedded.
 //   Set `video` to a Vimeo or Loom ID (the last part of the share link).
-//   It plays right inside the open vault. `thumbnail` and `duration` are
+//   It plays right inside the open book. `thumbnail` and `duration` are
 //   optional (for Loom, get the thumbnail from
 //   https://www.loom.com/v1/oembed?url=<share link>).
 //   Leave `video` out to show the card as "Coming Soon".
@@ -19,7 +19,7 @@ export type VaultItem = {
   title: string;
   // Small tag shown on list rows, e.g. "SOP" (defaults to "Video"/"Document").
   label?: string;
-  // Main videos of a vault (e.g. the Core Four): bigger, bolder row title.
+  // Main videos of a book (e.g. the Core Four): bigger, bolder row title.
   featured?: boolean;
   description: string;
   section: string;
@@ -39,7 +39,7 @@ export type VaultItem = {
   buttons?: { label: string; href: string }[];
 };
 
-// Vault and book colors (see METALS in VaultExplorer.tsx).
+// Shelf and book colors (see METALS in LibraryExplorer.tsx).
 export type VaultMetal =
   | "brass"
   | "steel"
@@ -49,27 +49,27 @@ export type VaultMetal =
   | "emerald"
   | "sapphire";
 
-// A book inside a vault. Items point at a book with `section`.
+// A book on a shelf. Items point at a book with `section`.
 export type VaultBook = { id: string; title: string; metal: VaultMetal };
 
-// The big vaults you cycle through at the top of /hub, in order. Opening one
-// shows its books. A vault with no books shows as "Coming Soon";
-// a book with no items shows as sealed.
+// The bookshelves you cycle through at the top of /house-of-studies, in
+// order. Opening one shows its books. A shelf with no books shows as
+// "Coming Soon"; a book with no items shows as sealed.
 // Book colors follow the liturgical colors: violet (Advent, where the year
 // begins), red (Pentecost, being sent out), green (Ordinary Time, growth).
-// The symbol on a vault door (drawn in VaultExplorer.tsx).
-export type VaultIcon = "social" | "email" | "website";
+// The symbol on a shelf's brass nameplate (drawn in LibraryExplorer.tsx).
+export type ShelfIcon = "social" | "email" | "website";
 
-export type Vault = {
+export type Shelf = {
   id: string;
   title: string;
-  icon: VaultIcon;
+  icon: ShelfIcon;
   blurb: string;
   metal: VaultMetal;
   books: VaultBook[];
 };
 
-export const vaults: Vault[] = [
+export const shelves: Shelf[] = [
   {
     id: "social-media",
     icon: "social",
@@ -214,7 +214,7 @@ export function getVaultItem(slug: string) {
 }
 
 export function vaultItemHref(item: VaultItem) {
-  return item.kind === "video" ? `/hub/${item.slug}` : (item.href ?? "#");
+  return item.kind === "video" ? `/house-of-studies/${item.slug}` : (item.href ?? "#");
 }
 
 export function isComingSoon(item: VaultItem) {

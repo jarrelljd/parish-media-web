@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useBookACallModal } from "@/components/BookACallModalProvider";
 
 const links = [
-  { href: "/hub", label: "The Hub" },
+  { href: "/house-of-studies", label: "House of Studies" },
   { href: "/results", label: "Results" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -27,7 +27,7 @@ export default function Nav() {
   const servicesActive =
     pathname.startsWith("/services") ||
     serviceLinks.some((link) => pathname === link.href);
-  // Also highlight a tab on its sub-pages (e.g. /hub/ai-flyers).
+  // Also highlight a tab on its sub-pages (e.g. /house-of-studies/ai-flyers).
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function Nav() {
           Parish Media Company
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           <div
             className="relative"
             ref={servicesRef}
@@ -125,7 +125,7 @@ export default function Nav() {
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
           aria-expanded={open}
-          className="flex h-9 w-9 items-center justify-center text-navy md:hidden"
+          className="flex h-9 w-9 items-center justify-center text-navy lg:hidden"
         >
           <svg
             viewBox="0 0 24 24"
@@ -144,7 +144,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-navy/10 px-6 pb-4 md:hidden">
+        <nav className="flex flex-col gap-1 border-t border-navy/10 px-6 pb-4 lg:hidden">
           <div>
             <button
               type="button"

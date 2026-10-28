@@ -40,7 +40,7 @@ When writing multi-line headings, subheads, CTAs, or wrapped paragraphs, check h
 
 ## Hosted PDFs
 
-PDFs live in `public/downloads/` and are served at `/downloads/<filename>` (the book and the Flyer Creation SOP). Hub links to them are set in `src/data/vault.ts`; PDF links open in a new tab and show a document icon.
+PDFs live in `public/downloads/` and are served at `/downloads/<filename>` (the book and the Flyer Creation SOP). House of Studies (`/house-of-studies`, formerly `/hub`) links to them are set in `src/data/vault.ts`; PDF links open in a new tab and show a document icon.
 
 ## Working style
 

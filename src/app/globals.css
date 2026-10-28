@@ -19,6 +19,13 @@ body {
   --animate-lock-pop: lock-pop 0.45s ease-out;
   --animate-vault-shine: vault-shine 7s ease-in-out infinite;
   --animate-rose-spin: rose-spin 240s linear infinite;
+  --animate-vault-fade: vault-fade 0.5s ease-out;
+
+  /* Vault name fading in as the carousel turns to a new vault (/hub) */
+  @keyframes vault-fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* Slow turn of the rose window behind the Hub heading */
   @keyframes rose-spin {

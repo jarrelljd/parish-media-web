@@ -1,5 +1,6 @@
-// Everything in The Parish Communications Hub (/hub), grouped into three
-// vaults. To add a resource, add one object here.
+// Everything in The Parish Communications Hub (/hub). Resources sit in books,
+// and books sit inside vaults (see `vaults` below). To add a resource, add
+// one object to `vaultItems` with `section` set to its book.
 //
 // - kind "book": featured at the top of its vault, linking to `href` or
 //   showing `buttons`.
@@ -38,11 +39,7 @@ export type VaultItem = {
   buttons?: { label: string; href: string }[];
 };
 
-// The vaults, in the order they show on the page. A vault with no items
-// shows as sealed.
-// `metal` sets each vault door's color (see METALS in VaultExplorer.tsx).
-// They follow the liturgical colors: violet (Advent, where the year begins),
-// red (Pentecost, being sent out), green (Ordinary Time, growth).
+// Vault and book colors (see METALS in VaultExplorer.tsx).
 export type VaultMetal =
   | "brass"
   | "steel"
@@ -52,21 +49,54 @@ export type VaultMetal =
   | "emerald"
   | "sapphire";
 
-export const vaultSections: { id: string; title: string; metal: VaultMetal }[] = [
-  {
-    id: "start-here",
-    title: "Start Here",
-    metal: "violet",
-  },
+// A book inside a vault. Items point at a book with `section`.
+export type VaultBook = { id: string; title: string; metal: VaultMetal };
+
+// The big vaults you cycle through at the top of /hub, in order. Opening one
+// shows its books. A vault with no books shows as "Coming Soon";
+// a book with no items shows as sealed.
+// Book colors follow the liturgical colors: violet (Advent, where the year
+// begins), red (Pentecost, being sent out), green (Ordinary Time, growth).
+// The symbol on a vault door (drawn in VaultExplorer.tsx).
+export type VaultIcon = "social" | "email" | "website";
+
+export type Vault = {
+  id: string;
+  title: string;
+  icon: VaultIcon;
+  blurb: string;
+  metal: VaultMetal;
+  books: VaultBook[];
+};
+
+export const vaults: Vault[] = [
   {
     id: "social-media",
-    title: "Engage",
-    metal: "crimson",
+    icon: "social",
+    title: "Social Media",
+    blurb: "Facebook and Instagram for your parish, from your first post to your first\u00a0ad.",
+    metal: "brass",
+    books: [
+      { id: "start-here", title: "Start Here", metal: "violet" },
+      { id: "organic", title: "Organic Social Media", metal: "crimson" },
+      { id: "paid", title: "Paid Social Media", metal: "emerald" },
+    ],
   },
   {
-    id: "ads",
-    title: "Grow",
-    metal: "emerald",
+    id: "email",
+    icon: "email",
+    title: "Email",
+    blurb: "Parish emails people actually open, read, and act\u00a0on.",
+    metal: "sapphire",
+    books: [],
+  },
+  {
+    id: "website",
+    icon: "website",
+    title: "Website",
+    blurb: "How to structure your parish website so newcomers find what they\u00a0need.",
+    metal: "steel",
+    books: [],
   },
 ];
 
@@ -121,7 +151,7 @@ export const vaultItems: VaultItem[] = [
   {
     slug: "core-four-flyers",
     kind: "video",
-    section: "social-media",
+    section: "organic",
     featured: true,
     label: "Core Four",
     title: "Core Four: Flyers",
@@ -138,7 +168,7 @@ export const vaultItems: VaultItem[] = [
   {
     slug: "ai-flyers",
     kind: "video",
-    section: "social-media",
+    section: "organic",
     title: "Flyer Creation Example",
     description:
       "Made a flyer with ChatGPT? Watch me bring it into Canva and make it fully editable, so you can fix the text and polish the design.",
@@ -155,7 +185,7 @@ export const vaultItems: VaultItem[] = [
     slug: "flyer-sop",
     kind: "link",
     label: "SOP",
-    section: "social-media",
+    section: "organic",
     title: "Flyer Creation SOP",
     description: "A step-by-step checklist for making parish flyers.",
     href: "/downloads/parish-flyer-sop.pdf",
@@ -164,8 +194,8 @@ export const vaultItems: VaultItem[] = [
   {
     slug: "meta-ads-mass",
     kind: "video",
-    section: "ads",
-    title: "Running Plan Your Visit Campaigns - Pt. 1",
+    section: "paid",
+    title: "Running Plan Your Visit Campaigns -\u00a0Pt.\u00a01",
     description:
       "Watch how to set up Facebook and Instagram ads that invite people in your area to come to Mass.",
     video: {

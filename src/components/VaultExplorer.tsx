@@ -312,7 +312,10 @@ function VideoRow({
       >
         <RowNumber n={n} m={m} />
         <span className="min-w-0 flex-1">
-          <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+          <span
+            className={rowTitleClass(item)}
+            style={item.featured ? { color: m.hi } : undefined}
+          >
             {item.title}
           </span>
           <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
@@ -372,6 +375,13 @@ function VideoRow({
   );
 }
 
+// Row title style. Featured items (e.g. the Core Four) are bigger and bolder.
+function rowTitleClass(item: VaultItem) {
+  return item.featured
+    ? "block text-balance font-serif text-xl font-bold leading-snug sm:text-2xl"
+    : "block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl";
+}
+
 // A document or link in the vault's list: opens in a new tab.
 function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
   const href = vaultItemHref(item);
@@ -385,7 +395,7 @@ function LinkRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
     >
       <RowNumber n={n} m={m} />
       <span className="min-w-0 flex-1">
-        <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+        <span className={rowTitleClass(item)} style={item.featured ? { color: m.hi } : undefined}>
           {item.title}
         </span>
         <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
@@ -409,7 +419,7 @@ function SealedRow({ item, n, m }: { item: VaultItem; n: number; m: Metal }) {
     <div className="flex items-center gap-4 px-2 py-5 opacity-55 sm:gap-6 sm:px-4">
       <RowNumber n={n} m={m} />
       <span className="min-w-0 flex-1">
-        <span className="block text-balance font-serif text-lg font-semibold leading-snug text-white sm:text-xl">
+        <span className={rowTitleClass(item)} style={item.featured ? { color: m.hi } : undefined}>
           {item.title}
         </span>
         <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">

@@ -18,6 +18,8 @@ export type VaultItem = {
   title: string;
   // Small tag shown on list rows, e.g. "SOP" (defaults to "Video"/"Document").
   label?: string;
+  // Main videos of a vault (e.g. the Core Four): bigger, bolder row title.
+  featured?: boolean;
   description: string;
   section: string;
   href?: string;
@@ -114,6 +116,23 @@ export const vaultItems: VaultItem[] = [
     description:
       "The basics of running Facebook and Instagram ads for your parish.",
     // TODO: add the Loom video (shows as "Coming soon" until then)
+    cta: "Watch the Video",
+  },
+  {
+    slug: "core-four-flyers",
+    kind: "video",
+    section: "social-media",
+    featured: true,
+    label: "Core Four",
+    title: "Core Four: Flyers",
+    description:
+      "How to create parish flyers people actually stop and read, from layout to final design.",
+    video: {
+      provider: "loom",
+      id: "21eac7a294bf4a7aa26dc40b9e86c592",
+      duration: "18:55",
+      aspect: 4 / 3,
+    },
     cta: "Watch the Video",
   },
   {

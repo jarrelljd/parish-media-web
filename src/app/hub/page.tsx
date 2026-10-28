@@ -53,7 +53,7 @@ export default function VaultPage() {
           <div className="mx-auto max-w-xl">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold/80">Beyond the Hub</p>
             <h2 className="mt-3 text-balance font-serif text-2xl font-semibold sm:text-3xl">
-              Want us to run it for you?
+              Don&rsquo;t Have Time to Learn and Implement All of&nbsp;This?
             </h2>
             <p className="mt-3 text-balance text-white/70">
               Everything in the Hub is yours to use. If you&rsquo;d rather
@@ -64,7 +64,7 @@ export default function VaultPage() {
               href="/parish"
               className="mt-7 inline-block rounded-full bg-gold px-8 py-3 font-semibold text-navy shadow-[0_0_30px_-5px_rgba(201,162,39,0.6)] transition-colors hover:bg-gold/90"
             >
-              See What We Do for Parishes
+              See What We Do for&nbsp;Parishes
             </Link>
           </div>
         </section>

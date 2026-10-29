@@ -5,8 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useBookACallModal } from "@/components/BookACallModalProvider";
 
-const links = [
-  { href: "/house-of-studies", label: "House of Studies" },
+// `badge` shows a small gold tag next to the label (e.g. "Free").
+const links: { href: string; label: string; badge?: string }[] = [
+  { href: "/house-of-studies", label: "House of Studies", badge: "Free" },
   { href: "/results", label: "Results" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -16,6 +17,14 @@ const serviceLinks = [
   { href: "/parish", label: "Parish Growth" },
   { href: "/vocations", label: "Vocations Outreach" },
 ];
+
+function NavBadge({ text }: { text: string }) {
+  return (
+    <span className="rounded-full bg-gold px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wider text-navy">
+      {text}
+    </span>
+  );
+}
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -104,11 +113,12 @@ export default function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-navy ${
+              className={`flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-navy ${
                 isActive(link.href) ? "font-semibold text-navy" : "text-navy/80"
               }`}
             >
               {link.label}
+              {link.badge && <NavBadge text={link.badge} />}
             </Link>
           ))}
           <button
@@ -191,11 +201,12 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className={`py-2 text-sm font-medium ${
+              className={`flex items-center gap-2 py-2 text-sm font-medium ${
                 isActive(link.href) ? "font-semibold text-navy" : "text-navy/80"
               }`}
             >
               {link.label}
+              {link.badge && <NavBadge text={link.badge} />}
             </Link>
           ))}
           <button

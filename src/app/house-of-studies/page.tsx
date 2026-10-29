@@ -24,7 +24,7 @@ export default function HouseOfStudiesPage() {
                 <RoseWindow className="block h-auto w-full motion-safe:animate-rose-spin" />
               </div>
               <h1 className="relative font-serif font-semibold">
-                <span className="block text-2xl text-gold sm:text-3xl">The Parish</span>
+                <span className="block text-2xl text-gold sm:text-3xl">A Parish Comms</span>
                 <span className="mt-2 block text-balance bg-[linear-gradient(110deg,#a07c1a_0%,#e6c25e_30%,#fff6d6_45%,#e6c25e_60%,#a07c1a_100%)] bg-[length:250%_100%] bg-clip-text pb-3 text-6xl leading-[0.95] tracking-tight text-transparent motion-safe:animate-title-shine sm:text-8xl">
                   House of Studies
                 </span>

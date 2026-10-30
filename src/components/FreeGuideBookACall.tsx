@@ -4,8 +4,8 @@ import CalendlyEmbed from "@/components/CalendlyEmbed";
 const CALENDLY_URL = "https://calendly.com/parishmedia/consult";
 
 const VSL = {
-  videoId: "1220874027",
-  title: "Priest Consult VSL",
+  videoId: "1233188537",
+  title: "Parish Media VSL 1",
 };
 
 export default function FreeGuideBookACall() {
@@ -54,14 +54,9 @@ export default function FreeGuideBookACall() {
           </div>
         </div>
         <p className="mt-4 text-pretty text-lg text-navy/70">
-          It should be in your email in a couple minutes.
-        </p>
-        <p className="mt-3 text-pretty text-lg text-navy/70">
-          While you wait, every parish that downloads the book is given a
-          free 30-minute social media consultation, where we create a
-          gameplan for the parish to use social media to bring more people
-          to the parish. If that sounds useful, watch the video below and
-          reserve your spot.
+          Your book will arrive by email shortly. Watch the video below,
+          then reserve your free 30-minute Parish Growth Assessment to
+          create a practical social media plan for your&nbsp;parish.
         </p>
       </div>
 
@@ -83,11 +78,15 @@ export default function FreeGuideBookACall() {
 
       <div className="mx-auto mt-10 max-w-xl text-center">
         <p className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-          Want to see how this could work for your parish?
+          Before You Book&hellip;
         </p>
         <p className="mt-4 text-pretty text-lg text-navy/80">
-          Book a free 30-min call with Joe to review your social media
-          and see if it makes sense to keep talking.
+          To make this conversation as useful as possible for your parish,{" "}
+          <strong className="font-semibold text-navy">
+            we ask that the pastor join the call.
+          </strong>{" "}
+          Assistant priests, deacons, and office staff are welcome to book,
+          provided they can bring the pastor into the&nbsp;meeting.
         </p>
       </div>
 

@@ -2,7 +2,11 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
-import { freeGuideRoles } from "@/data/freeGuideRoles";
+import {
+  AMAZON_BOOK_URL,
+  NO_QUALIFYING_ROLE,
+  freeGuideRoles,
+} from "@/data/freeGuideRoles";
 
 const initialState: EbookRequestState = { status: "idle" };
 
@@ -15,8 +19,9 @@ export default function FreeGuideForm() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  const ineligible = role === NO_QUALIFYING_ROLE;
   const showMore =
-    name.trim() !== "" && email.trim() !== "" && role !== "";
+    name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible;
 
   useEffect(() => {
     if (state.status === "success") {
@@ -144,6 +149,21 @@ export default function FreeGuideForm() {
             </option>
           ))}
         </select>
+        {ineligible && (
+          <p className="mt-3 rounded-lg bg-gold/10 px-4 py-3 text-sm text-navy/80">
+            The free digital copy is only for the roles listed above. You
+            can{" "}
+            <a
+              href={AMAZON_BOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-gold decoration-2 underline-offset-4 hover:text-navy"
+            >
+              buy the book on&nbsp;Amazon
+            </a>
+            .
+          </p>
+        )}
       </div>
 
       <div
@@ -190,7 +210,7 @@ export default function FreeGuideForm() {
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending || ineligible}
         className="w-full rounded-full bg-gold px-8 py-3 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 disabled:opacity-60"
       >
         {pending ? "Sending..." : "Send Me the Free Digital Copy"}

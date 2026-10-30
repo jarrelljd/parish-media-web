@@ -3,7 +3,7 @@
 import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { Resend } from "resend";
-import { freeGuideRoles } from "@/data/freeGuideRoles";
+import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
@@ -180,6 +180,13 @@ export async function submitEbookRequest(
   // depth against a bypassed client.
   if (!(freeGuideRoles as readonly string[]).includes(role)) {
     return { status: "error", message: "Please select your role." };
+  }
+  if (role === NO_QUALIFYING_ROLE) {
+    return {
+      status: "error",
+      message:
+        "The free digital copy is only for the roles listed. You can buy the book on Amazon.",
+    };
   }
 
   if (phone.replace(/\D/g, "").length < 10) {

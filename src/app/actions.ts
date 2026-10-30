@@ -174,6 +174,8 @@ export async function submitEbookRequest(
   const role = String(formData.get("role") ?? "");
   const organization = String(formData.get("organization") ?? "");
   const cityState = String(formData.get("cityState") ?? "");
+  // Optional. Stored without the "@" so it can be pasted into Instagram search.
+  const instagram = String(formData.get("instagram") ?? "").trim().replace(/^@+/, "");
 
   // The free guide is a lead magnet for pastors and parish leaders. The role
   // dropdown in FreeGuideForm.tsx already requires a role; this is defense in
@@ -213,6 +215,7 @@ export async function submitEbookRequest(
         role,
         organization,
         cityState,
+        instagram,
       },
       "ZAPIER_WEBHOOK_FREE_GUIDE",
     );

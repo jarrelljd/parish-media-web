@@ -148,13 +148,58 @@ export const vaultItems: VaultItem[] = [
     // TODO: add the Loom video (shows as "Coming soon" until then)
     cta: "Watch the Video",
   },
+  // Core Four videos below without `video` show as "Coming Soon".
+  {
+    slug: "core-four-overview",
+    kind: "video",
+    section: "organic",
+    featured: true,
+    label: "Core Four",
+    title: "Overview of the Core Four Posts",
+    description:
+      "The four kinds of posts every parish should be making each week, and why they work.",
+    cta: "Watch the Video",
+  },
+  {
+    slug: "core-four-homily-clips",
+    kind: "video",
+    section: "organic",
+    featured: true,
+    label: "Core Four",
+    title: "Core Four (#1): Homily Clips",
+    description:
+      "How to turn Sunday’s homily into short clips that reach people who weren’t at Mass.",
+    cta: "Watch the Video",
+  },
+  {
+    slug: "core-four-activity-posts",
+    kind: "video",
+    section: "organic",
+    featured: true,
+    label: "Core Four",
+    title: "Core Four (#2): Activity Posts",
+    description:
+      "How to show what’s happening at your parish so people see a living, active community.",
+    cta: "Watch the Video",
+  },
+  {
+    slug: "core-four-connection-posts",
+    kind: "video",
+    section: "organic",
+    featured: true,
+    label: "Core Four",
+    title: "Core Four (#3): Connection Posts",
+    description:
+      "How to introduce the people of your parish so newcomers feel they already know someone.",
+    cta: "Watch the Video",
+  },
   {
     slug: "core-four-flyers",
     kind: "video",
     section: "organic",
     featured: true,
     label: "Core Four",
-    title: "Core Four: Flyers",
+    title: "Core Four (#4): Flyers",
     description:
       "How to create parish flyers people actually stop and read, from layout to final design.",
     video: {

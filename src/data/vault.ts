@@ -240,7 +240,9 @@ export const vaultItems: VaultItem[] = [
     slug: "meta-ads-mass",
     kind: "video",
     section: "paid",
-    title: "Running Plan Your Visit Campaigns -\u00a0Pt.\u00a01",
+    featured: true,
+    label: "Big Three",
+    title: "The Big Three (#1): Plan Your Visit\u00a0Campaigns",
     description:
       "Watch how to set up Facebook and Instagram ads that invite people in your area to come to Mass.",
     video: {
@@ -250,6 +252,28 @@ export const vaultItems: VaultItem[] = [
       duration: "9:54",
       aspect: 4 / 3,
     },
+    cta: "Watch the Video",
+  },
+  {
+    slug: "big-three-event-campaigns",
+    kind: "video",
+    section: "paid",
+    featured: true,
+    label: "Big Three",
+    title: "The Big Three (#2): Event\u00a0Campaigns",
+    description:
+      "How to fill parish events with ads that reach the right people in your area.",
+    cta: "Watch the Video",
+  },
+  {
+    slug: "big-three-volunteer-campaigns",
+    kind: "video",
+    section: "paid",
+    featured: true,
+    label: "Big Three",
+    title: "The Big Three (#3): Volunteer\u00a0Campaigns",
+    description:
+      "How to use ads to find new volunteers for your parish ministries.",
     cta: "Watch the Video",
   },
 ];

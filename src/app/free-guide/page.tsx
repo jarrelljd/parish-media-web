@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Script from "next/script";
-import Nav from "@/components/Nav";
 import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
 import FadeInOnScroll from "@/components/FadeInOnScroll";
@@ -77,7 +76,6 @@ const concepts = [
 export default function FreeGuidePage() {
   return (
     <>
-      <Nav />
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">

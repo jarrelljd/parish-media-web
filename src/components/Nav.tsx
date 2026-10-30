@@ -44,7 +44,7 @@ const menuExtraPaths: Record<string, string[]> = {
 
 function ComingSoonBadge() {
   return (
-    <span className="rounded-full bg-gold/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none tracking-wider text-gold">
+    <span className="shrink-0 whitespace-nowrap rounded-full bg-gold/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none tracking-wider text-gold">
       Coming Soon
     </span>
   );
@@ -124,7 +124,7 @@ export default function Nav() {
                 </button>
 
                 {openMenu === menu.id && (
-                  <div className="absolute left-0 top-full mt-2 w-64 rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
+                  <div className="absolute left-0 top-full mt-2 w-72 rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
                     {menu.items.map((item) =>
                       item.href ? (
                         <Link
@@ -141,7 +141,7 @@ export default function Nav() {
                         <span
                           key={item.label}
                           aria-disabled="true"
-                          className="flex cursor-default items-center gap-2 px-3 py-2 text-sm text-navy/40"
+                          className="flex cursor-default items-center gap-2 whitespace-nowrap px-3 py-2 text-sm text-navy/40"
                         >
                           {item.label}
                           <ComingSoonBadge />
@@ -233,7 +233,7 @@ export default function Nav() {
                       <span
                         key={item.label}
                         aria-disabled="true"
-                        className="flex items-center gap-2 py-1.5 text-sm text-navy/40"
+                        className="flex items-center gap-2 whitespace-nowrap py-1.5 text-sm text-navy/40"
                       >
                         {item.label}
                         <ComingSoonBadge />

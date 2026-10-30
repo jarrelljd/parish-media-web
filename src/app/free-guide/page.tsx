@@ -120,7 +120,7 @@ export default function FreeGuidePage() {
             </div>
 
             <p className="mt-4 text-pretty text-sm text-navy/70 sm:mt-8 sm:text-lg">
-              Priests and deacons: Get a free digital copy of my book,
+              Pastors &amp; parish leaders: Get a free digital copy of my book,
               &ldquo;Social Media for Catholic Churches,&rdquo; and see
               how we&rsquo;re helping parishes get 30&ndash;50 new people
               involved in parish life in just 90 days.

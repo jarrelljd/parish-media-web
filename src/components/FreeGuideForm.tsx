@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
+import { freeGuideRoles } from "@/data/freeGuideRoles";
 
 const initialState: EbookRequestState = { status: "idle" };
 
@@ -13,8 +14,9 @@ export default function FreeGuideForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [eligible, setEligible] = useState(false);
-  const showMore = name.trim() !== "" && email.trim() !== "" && eligible;
+  const [role, setRole] = useState("");
+  const showMore =
+    name.trim() !== "" && email.trim() !== "" && role !== "";
 
   useEffect(() => {
     if (state.status === "success") {
@@ -28,7 +30,7 @@ export default function FreeGuideForm() {
   if (state.status === "success") {
     return (
       <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
-        <p className="font-serif text-xl font-semibold text-navy">
+        <p className="text-balance font-serif text-xl font-semibold text-navy">
           Thank you!
         </p>
         <p className="mt-3 text-navy/70">
@@ -45,8 +47,8 @@ export default function FreeGuideForm() {
       className="space-y-5 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm"
     >
       <div>
-        <p className="font-serif text-xl font-semibold text-navy">
-          Get Your Free Copy
+        <p className="text-balance font-serif text-xl font-semibold text-navy">
+          Get the Free Social Media Guide for Catholic Churches
         </p>
         <p className="mt-1 text-sm text-navy/60">
           Tell us about your role and we&rsquo;ll send it your way.
@@ -79,10 +81,15 @@ export default function FreeGuideForm() {
         <label htmlFor="phone" className="block text-sm font-medium text-navy">
           Phone Number
         </label>
+        <p id="phone-help" className="mt-1 text-xs text-navy/50">
+          Phone number for your free copy and, if appropriate, a quick
+          follow-up from our&nbsp;team.
+        </p>
         <input
           id="phone"
           name="phone"
           type="tel"
+          aria-describedby="phone-help"
           required
           pattern="^(?:\D*\d){10,}\D*$"
           title="Please enter a valid phone number (at least 10 digits)"
@@ -114,35 +121,30 @@ export default function FreeGuideForm() {
         />
       </div>
 
-      <div className="flex items-start gap-3">
-        <input
-          id="eligible"
-          name="eligible"
-          type="checkbox"
-          required
-          value="yes"
-          checked={eligible}
-          onChange={(e) => setEligible(e.target.checked)}
-          className="mt-1 h-4 w-4 shrink-0 rounded border-navy/30 text-navy focus:ring-navy"
-        />
-        <label htmlFor="eligible" className="text-sm text-navy/80">
-          I confirm I am a Catholic priest or deacon (not parish staff or
-          a{" "}volunteer).
+      <div>
+        <label htmlFor="role" className="block text-sm font-medium text-navy">
+          Your Role
         </label>
-      </div>
-
-      <p className="text-sm text-navy/50">
-        Not eligible?{" "}
-        <a
-          href="https://www.amazon.com/Social-Media-Catholic-Churches-Practical/dp/B0H3QTWDFL/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline decoration-gold decoration-2 underline-offset-4 hover:text-navy"
+        <select
+          id="role"
+          name="role"
+          required
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className={`mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 outline-none focus:border-navy ${
+            role === "" ? "text-navy/50" : "text-navy"
+          }`}
         >
-          Buy the paperback on Amazon
-        </a>
-        .
-      </p>
+          <option value="" disabled>
+            Select your role
+          </option>
+          {freeGuideRoles.map((r) => (
+            <option key={r} value={r}>
+              {r}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div
         className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
@@ -152,34 +154,17 @@ export default function FreeGuideForm() {
         <div className="min-h-0 space-y-5">
           <div>
             <label
-              htmlFor="assignment"
-              className="block text-sm font-medium text-navy"
-            >
-              Your Assignment
-            </label>
-            <input
-              id="assignment"
-              name="assignment"
-              type="text"
-              required={showMore}
-              placeholder="Pastor, Parochial Vicar, Deacon, Vocations Director, etc."
-              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-            />
-          </div>
-
-          <div>
-            <label
               htmlFor="organization"
               className="block text-sm font-medium text-navy"
             >
-              Name of Parish, Diocese, or Religious Order
+              Name of Parish
             </label>
             <input
               id="organization"
               name="organization"
               type="text"
               required={showMore}
-              placeholder="St. Mary Parish, Diocese of Reno, etc."
+              placeholder="St. Mary Parish"
               className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
             />
           </div>
@@ -189,7 +174,7 @@ export default function FreeGuideForm() {
               htmlFor="cityState"
               className="block text-sm font-medium text-navy"
             >
-              City/State of Assignment
+              City/State
             </label>
             <input
               id="cityState"
@@ -208,7 +193,7 @@ export default function FreeGuideForm() {
         disabled={pending}
         className="w-full rounded-full bg-gold px-8 py-3 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 disabled:opacity-60"
       >
-        {pending ? "Sending..." : "Get the Free Book"}
+        {pending ? "Sending..." : "Send Me the Free Digital Copy"}
       </button>
     </form>
   );

@@ -3,14 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // The free book now lives in the House of Studies. Temporary (not
-      // permanent) so the /free-guide landing page can be turned back on by
-      // deleting this.
-      {
-        source: "/free-guide",
-        destination: "/house-of-studies",
-        permanent: false,
-      },
       // The House of Studies was called The Vault, then The Hub; keep old
       // links (DMs, emails, posts) working.
       {

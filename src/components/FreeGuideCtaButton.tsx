@@ -11,7 +11,7 @@ export default function FreeGuideCtaButton() {
       }
       className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90"
     >
-      Get the Free Book
+      Get the Free Digital Copy
     </button>
   );
 }

@@ -3,6 +3,7 @@
 import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { Resend } from "resend";
+import { freeGuideRoles } from "@/data/freeGuideRoles";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
@@ -170,21 +171,15 @@ export async function submitEbookRequest(
   const name = String(formData.get("name") ?? "");
   const phone = String(formData.get("phone") ?? "");
   const email = String(formData.get("email") ?? "");
-  const eligible = formData.get("eligible") === "yes";
-  const assignment = String(formData.get("assignment") ?? "");
+  const role = String(formData.get("role") ?? "");
   const organization = String(formData.get("organization") ?? "");
   const cityState = String(formData.get("cityState") ?? "");
 
-  // The free guide is reserved for priests and deacons — other roles don't
-  // convert into paying clients, so we don't want them in the CRM/Zapier
-  // pipeline at all. The checkbox in FreeGuideForm.tsx enforces this
-  // client-side already; this is defense in depth against a bypassed client.
-  if (!eligible) {
-    return {
-      status: "error",
-      message:
-        "This free guide is reserved for priests and deacons. Please use the Amazon link above to buy the paperback.",
-    };
+  // The free guide is a lead magnet for pastors and parish leaders. The role
+  // dropdown in FreeGuideForm.tsx already requires a role; this is defense in
+  // depth against a bypassed client.
+  if (!(freeGuideRoles as readonly string[]).includes(role)) {
+    return { status: "error", message: "Please select your role." };
   }
 
   if (phone.replace(/\D/g, "").length < 10) {
@@ -208,7 +203,7 @@ export async function submitEbookRequest(
         name,
         phone,
         email,
-        assignment,
+        role,
         organization,
         cityState,
       },

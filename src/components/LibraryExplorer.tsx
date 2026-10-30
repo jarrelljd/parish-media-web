@@ -40,12 +40,15 @@ function ShelfIconShape({ icon, color }: { icon: ShelfIcon; color: string }) {
           <path fill={color} d="M12 14.2l-3.1-3a1.9 1.9 0 0 1 2.7-2.7l.4.4.4-.4a1.9 1.9 0 0 1 2.7 2.7z" />
         </>
       );
-    case "email":
-      // Envelope
+    case "website":
+      // Browser window
       return (
         <>
-          <rect {...line} x="3" y="5.5" width="18" height="13" rx="2" />
-          <path {...line} d="M3.8 7l8.2 6 8.2-6" />
+          <rect {...line} x="3" y="4.5" width="18" height="15" rx="2" />
+          <path {...line} d="M3 9h18" />
+          <circle cx="6" cy="6.8" r="0.9" fill={color} />
+          <circle cx="8.8" cy="6.8" r="0.9" fill={color} />
+          <path {...line} strokeWidth={1.8} d="M7 13h10M7 16h6" />
         </>
       );
     case "bulletin":

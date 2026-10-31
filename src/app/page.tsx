@@ -17,7 +17,7 @@ import Reveal from "@/components/Reveal";
 import BookACallButton from "@/components/BookACallButton";
 import TrustedByMarquee from "@/components/TrustedByMarquee";
 import { buttonArrow, buttonClass } from "@/components/buttonStyles";
-import youngAdultsPhoto from "../../public/images/parish-growth/young-adults-with-priest.png";
+import youngAdultsPhoto from "../../public/images/parish-growth/young-adults-with-priest-smiling.jpg";
 import frDavePhoto from "../../public/images/clients/fr-dave-aufiero-headshot.png";
 
 // Arched "church window" photo frame (outer mat + inner photo).
@@ -107,7 +107,7 @@ export default function Home() {
                     priority
                     placeholder="blur"
                     sizes="(min-width: 1024px) 520px, 448px"
-                    className="object-cover object-[35%_50%]"
+                    className="object-cover object-[32%_50%]"
                   />
                 </div>
               </div>

@@ -4,7 +4,12 @@
   --color-navy: #1b2a4a;
   --color-gold: #c9a227;
   --color-offwhite: #faf8f4;
-  --font-sans: var(--font-inter);
+  /* Deeper gold for small text on light backgrounds (plain gold is too faint). */
+  --color-gold-deep: #8a6d2f;
+  /* Warm surfaces for alternating section bands and photo frames. */
+  --color-parchment: #f3ede2;
+  --color-linen: #e8dfcf;
+  --font-sans: var(--font-source-sans);
   --font-serif: var(--font-fraunces);
 }
 

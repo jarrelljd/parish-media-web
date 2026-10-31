@@ -1,5 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
+import { ArrowRight, Quote } from "lucide-react";
 import BookACallButton from "@/components/BookACallButton";
+import { buttonArrow, buttonClass } from "@/components/buttonStyles";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
@@ -127,16 +129,19 @@ const writtenTestimonials = [
   },
 ];
 
-function ClientSnapshotCard({ snap }: { snap: ClientSnapshot }) {
+const eyebrow = "text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep";
+const statLabel = "mt-2 max-w-xs text-sm font-semibold uppercase leading-snug tracking-[0.08em] text-navy/55";
+
+function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
   return (
-    <div className="rounded-3xl border border-navy/10 bg-white p-8 shadow-sm shadow-navy/5 sm:p-10">
-      <div className="grid gap-8 sm:grid-cols-[280px_1fr] sm:items-center sm:gap-10">
-        <div>
+    <article className="grid gap-10 py-14 first:pt-0 last:pb-0 sm:grid-cols-[260px_1fr] sm:items-center sm:gap-14 lg:grid-cols-[300px_1fr]">
+      <figure>
+        <div className="mx-auto w-full max-w-[260px] rounded-[2rem] bg-white p-2.5 shadow-2xl shadow-navy/10 ring-1 ring-navy/5 sm:max-w-none">
           <div
             className={
               snap.video.orientation === "portrait"
-                ? "relative mx-auto aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-xl sm:mx-0 sm:max-w-none"
-                : "relative aspect-video w-full overflow-hidden rounded-xl border border-navy/10 bg-navy/5"
+                ? "relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] bg-navy"
+                : "relative aspect-video w-full overflow-hidden rounded-[1.5rem] bg-navy/5"
             }
           >
             <iframe
@@ -148,207 +153,225 @@ function ClientSnapshotCard({ snap }: { snap: ClientSnapshot }) {
               title={snap.video.title}
             />
           </div>
-          <p className="mt-3 text-center text-sm font-medium text-navy/60 sm:text-left">
-            {snap.priestCaption}
-          </p>
         </div>
+        <figcaption className="mt-4 text-center text-sm text-navy/60">
+          {snap.priestCaption}
+        </figcaption>
+      </figure>
 
-        <div className="text-center sm:text-left">
-          <h3 className="text-balance font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            {snap.parish}
-          </h3>
-          <span className="mx-auto mt-3 block h-1 w-12 rounded-full bg-gold sm:mx-0" />
-          <p className="mt-3 text-lg font-medium text-navy/60">
-            {[snap.location, snap.diocese].filter(Boolean).join(" · ")}
-          </p>
+      <div className="text-left">
+        <p className={eyebrow}>
+          {[snap.location, snap.diocese].filter(Boolean).join(" · ")}
+        </p>
+        <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
+          {snap.parish}
+        </h3>
 
-          <div className="mt-5 rounded-xl border border-gold/20 bg-gold/5 px-6 py-6">
-            <p className="font-serif text-5xl font-semibold text-navy">
+        <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6">
+          <div className="border-l-2 border-gold pl-5 text-left">
+            <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
               {snap.stat}
             </p>
-            <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-              {snap.statLabel}
-            </p>
+            <p className={statLabel}>{snap.statLabel}</p>
           </div>
-          <p className="mt-4 text-navy/80">{snap.description}</p>
           {snap.secondaryStat && (
-            <div className="mt-4 rounded-xl border border-navy/10 bg-navy/[0.03] px-6 py-5">
-              <p className="font-serif text-3xl font-semibold text-navy">
+            <div className="border-l-2 border-navy/15 pl-5 text-left">
+              <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy/80">
                 {snap.secondaryStat.stat}
               </p>
-              <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                {snap.secondaryStat.label}
-              </p>
-            </div>
-          )}
-          {snap.thumbnail && (
-            <div className="mt-5 w-full">
-              <div className="overflow-hidden rounded-lg border border-navy/10">
-                <Image
-                  src={snap.thumbnail.src}
-                  alt={snap.thumbnail.alt}
-                  className="h-auto w-full"
-                />
-              </div>
-              <p className="mt-1.5 text-xs text-navy/50">
-                {snap.thumbnail.caption}
-              </p>
+              <p className={statLabel}>{snap.secondaryStat.label}</p>
             </div>
           )}
         </div>
+
+        <p className="mt-8 text-pretty text-lg leading-relaxed text-navy/70">
+          {snap.description}
+        </p>
+
+        {snap.thumbnail && (
+          <figure className="mt-8">
+            <div className="overflow-hidden rounded-2xl bg-white p-2 shadow-lg shadow-navy/5 ring-1 ring-navy/5">
+              <Image
+                src={snap.thumbnail.src}
+                alt={snap.thumbnail.alt}
+                className="h-auto w-full rounded-xl"
+              />
+            </div>
+            <figcaption className="mt-2 text-xs uppercase tracking-[0.12em] text-navy/50">
+              {snap.thumbnail.caption}
+            </figcaption>
+          </figure>
+        )}
       </div>
+    </article>
+  );
+}
+
+function Shot({ src, alt }: { src: StaticImageData; alt: string }) {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-white p-2 shadow-xl shadow-navy/10 ring-1 ring-navy/5">
+      <Image src={src} alt={alt} className="h-auto w-full rounded-xl" />
     </div>
   );
 }
 
 export default function Results() {
   return (
-    <section className="px-6 pt-14 pb-24 sm:pt-20 sm:pb-32">
-      <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h2 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            Client Snapshots
-          </h2>
-          <p className="mt-4 text-lg text-navy/70">
-            See results from parishes, dioceses, and religious orders like
-            yours.
-          </p>
-        </div>
+    <>
+      {/* Client Snapshots */}
+      <section className="px-6 pt-14 pb-20 sm:pt-20 sm:pb-28">
+        <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className={eyebrow}>Results</p>
+            <h1 className="mt-4 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-navy sm:text-6xl">
+              Client Snapshots
+            </h1>
+            <p className="mt-5 text-pretty text-lg leading-relaxed text-navy/70 sm:text-xl">
+              See results from parishes, dioceses, and religious orders
+              like&nbsp;yours.
+            </p>
+          </div>
 
-        {/* Client Snapshots */}
-        <div className="mx-auto mt-16 flex max-w-5xl flex-col gap-10">
-          {clientSnapshots.map((snap) => (
-            <ClientSnapshotCard key={snap.parish} snap={snap} />
-          ))}
+          <div className="mt-16 divide-y divide-navy/10">
+            {clientSnapshots.map((snap) => (
+              <ClientSnapshotRow key={snap.parish} snap={snap} />
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* More written testimonials */}
-        <div className="mx-auto mt-20 grid max-w-4xl gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:divide-x lg:divide-navy/10">
-          {writtenTestimonials.map((t) => (
-            <div
-              key={t.name}
-              className="flex flex-col items-center px-2 text-center sm:px-8"
-            >
-              <div className="h-16 w-16 overflow-hidden rounded-full bg-navy/5">
-                <Image
-                  src={t.photo}
-                  alt={`${t.name}, ${t.role}`}
-                  className="h-full w-full object-cover"
-                  style={{
-                    objectPosition: t.photoPosition ?? "50% 50%",
-                    transform: t.photoZoom
-                      ? `scale(${t.photoZoom})`
-                      : undefined,
-                  }}
-                />
-              </div>
-              <blockquote className="mt-5">
-                <p className="font-serif text-lg italic leading-relaxed text-navy">
-                  &ldquo;{t.quote}&rdquo;
+      {/* Written testimonials + Book a Call */}
+      <section className="bg-parchment px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl">
+          <ul className="grid gap-5 md:grid-cols-3">
+            {writtenTestimonials.map((t) => (
+              <li
+                key={t.name}
+                className="flex flex-col rounded-3xl bg-offwhite p-7 ring-1 ring-navy/5 sm:p-8"
+              >
+                <Quote className="h-7 w-7 text-gold" strokeWidth={1.5} aria-hidden="true" />
+                <blockquote className="mt-4 flex-1">
+                  <p className="font-serif text-xl italic leading-relaxed text-navy">
+                    {t.quote}
+                  </p>
+                </blockquote>
+                <div className="mt-6 flex items-center gap-3 border-t border-navy/10 pt-5">
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-navy/5">
+                    <Image
+                      src={t.photo}
+                      alt={`${t.name}, ${t.role}`}
+                      className="h-full w-full object-cover"
+                      style={{
+                        objectPosition: t.photoPosition ?? "50% 50%",
+                        transform: t.photoZoom ? `scale(${t.photoZoom})` : undefined,
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-navy">{t.name}</p>
+                    <p className="text-sm leading-snug text-navy/60">{t.role}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-14 flex justify-center">
+            <BookACallButton className={buttonClass("primary")}>
+              Book a Call
+              <ArrowRight className={buttonArrow} aria-hidden="true" />
+            </BookACallButton>
+          </div>
+        </div>
+      </section>
+
+      {/* More Results */}
+      <section className="px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className={eyebrow}>By the Numbers</p>
+            <h2 className="mt-4 font-serif text-4xl font-medium leading-[1.1] tracking-tight text-navy sm:text-5xl">
+              More Results
+            </h2>
+            <p className="mt-5 text-lg text-navy/70">
+              What we actually do for a parish, in two&nbsp;numbers.
+            </p>
+          </div>
+
+          {/* Idea one: organic growth */}
+          <div className="mt-16 grid items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div className="text-center md:text-left">
+              <p className={eyebrow}>Organic Growth</p>
+              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
+                We Grow Parish Social Media Accounts
+              </h3>
+              <div className="mt-8 inline-block border-l-2 border-gold pl-5 text-left">
+                <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
+                  0 &rarr; 941
                 </p>
-              </blockquote>
-              <p className="mt-4 text-sm font-medium text-navy/60">
-                {t.name}, {t.role}
+                <p className={statLabel}>Followers in 4 Months, St. Joseph Catholic Parish</p>
+              </div>
+              <p className="mt-6 text-pretty text-lg leading-relaxed text-navy/70">
+                Pure organic growth: homily clips, event photos, and flyers
+                people actually stop to look at. No ad spend behind
+                this&nbsp;number.
               </p>
             </div>
-          ))}
-        </div>
-
-        {/* Book a Call CTA */}
-        <div className="mt-20 flex justify-center">
-          <BookACallButton className="inline-block rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90">
-            Book a Call
-          </BookACallButton>
-        </div>
-
-        {/* More Results */}
-        <div className="mx-auto mt-24 max-w-2xl text-center">
-          <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h3 className="mt-8 font-serif text-3xl font-semibold text-navy sm:text-4xl">
-            More Results
-          </h3>
-          <p className="mt-4 text-lg text-navy/70">
-            What we actually do for a parish, in two numbers.
-          </p>
-        </div>
-
-        {/* Idea one: organic growth */}
-        <div className="mt-16 grid items-center gap-10 sm:grid-cols-2 sm:gap-14">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-              Organic Growth
-            </span>
-            <h4 className="mt-2 text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-              We Grow Parish Social Media Accounts
-            </h4>
-            <p className="mt-6 font-serif text-5xl font-semibold text-navy">
-              0 &rarr; 941
-            </p>
-            <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-              Followers in 4 Months, St. Joseph Catholic Parish
-            </p>
-            <p className="mt-4 text-navy/80">
-              Pure organic growth: homily clips, event photos, and flyers
-              people actually stop to look at. No ad spend behind this
-              number.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex-1 overflow-hidden rounded-xl border border-navy/10">
-              <Image
-                src={stJosephBefore}
-                alt="St. Joseph Catholic Parish Instagram at 0 followers, February 2026"
-                className="h-auto w-full"
-              />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex-1">
+                <Shot
+                  src={stJosephBefore}
+                  alt="St. Joseph Catholic Parish Instagram at 0 followers, February 2026"
+                />
+              </div>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold/15 text-gold-deep">
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <div className="flex-1">
+                <Shot
+                  src={stJosephAfter}
+                  alt="St. Joseph Catholic Parish Instagram at 941 followers, June 2026"
+                />
+              </div>
             </div>
-            <span className="shrink-0 text-xl text-gold">&rarr;</span>
-            <div className="flex-1 overflow-hidden rounded-xl border border-navy/10">
-              <Image
-                src={stJosephAfter}
-                alt="St. Joseph Catholic Parish Instagram at 941 followers, June 2026"
-                className="h-auto w-full"
+          </div>
+
+          {/* Idea two: ads */}
+          <div className="mt-24 grid items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div className="text-center md:order-2 md:text-left">
+              <p className={eyebrow}>Meta Ads</p>
+              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
+                We Get Consistent Attendance &amp;&nbsp;Volunteers
+              </h3>
+              <div className="mt-8 inline-block border-l-2 border-gold pl-5 text-left">
+                <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
+                  $2&ndash;3
+                </p>
+                <p className={statLabel}>Per Lead</p>
+              </div>
+              <p className="mt-6 text-pretty text-lg leading-relaxed text-navy/70">
+                Targeted ads promote your events and volunteer opportunities to
+                people nearby, capturing contact info that turns into a
+                calendar add or a text&nbsp;follow-up.
+              </p>
+            </div>
+            <div className="md:order-1">
+              <Shot
+                src={parishesAdsResults}
+                alt="Meta Ads Manager results showing a cost per lead of $2.42 and $2.53"
               />
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Idea two: ads */}
-        <div className="mt-20 grid items-center gap-10 sm:grid-cols-2 sm:gap-14">
-          <div className="sm:order-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
-              Meta Ads
-            </span>
-            <h4 className="mt-2 text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-              We Get Consistent Attendance &amp; Volunteers
-            </h4>
-            <p className="mt-6 font-serif text-5xl font-semibold text-navy">
-              $2&ndash;3
-            </p>
-            <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-              Per Lead
-            </p>
-            <p className="mt-4 text-navy/80">
-              Targeted ads promote your events and volunteer opportunities to
-              people nearby, capturing contact info that turns into a
-              calendar add or a text follow-up.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-xl border border-navy/10 sm:order-1">
-            <Image
-              src={parishesAdsResults}
-              alt="Meta Ads Manager results showing a cost per lead of $2.42 and $2.53"
-              className="h-auto w-full"
-            />
-          </div>
-        </div>
-
-        {/* Client roster */}
-        <div className="mt-24 border-t border-navy/10 pt-14 text-center">
-          <h3 className="font-serif text-xl font-semibold text-navy">
+      {/* Client roster */}
+      <section className="bg-parchment px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy/50">
             Also Trusted By
-          </h3>
-          <div className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-x-10 gap-y-6">
+          </p>
+          <ul className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {clients
               .filter(
                 (client) =>
@@ -358,18 +381,33 @@ export default function Results() {
                   client.name !== "Fr. Dave Aufiero, Pastor"
               )
               .map((client) => (
-                <div key={client.name}>
-                  <p className="font-medium text-navy">{client.name}</p>
-                  {client.org && (
-                    <p className="mt-0.5 text-sm text-navy/60">
-                      {client.org}
-                    </p>
-                  )}
-                </div>
+                <li key={client.name} className="flex items-center gap-4 text-left">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-navy/5 ring-1 ring-navy/10">
+                    {client.photo && (
+                      <Image
+                        src={client.photo}
+                        alt={client.name}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                        style={{
+                          objectPosition: client.photoPosition ?? "50% 50%",
+                          transform: client.photoZoom ? `scale(${client.photoZoom})` : undefined,
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-navy">{client.name}</p>
+                    {client.org && (
+                      <p className="text-sm leading-snug text-navy/60">{client.org}</p>
+                    )}
+                  </div>
+                </li>
               ))}
-          </div>
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

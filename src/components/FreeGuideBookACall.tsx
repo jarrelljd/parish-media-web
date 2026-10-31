@@ -53,11 +53,29 @@ export default function FreeGuideBookACall() {
             </span>
           </div>
         </div>
-        <p className="mt-4 text-pretty text-lg text-navy/70">
-          Your book will arrive by email shortly. Watch the video below,
-          then reserve your free 30-minute Parish Growth Assessment to
-          create a practical social media plan for your&nbsp;parish.
-        </p>
+      </div>
+
+      {/* A short note from Joe, set like a letter */}
+      <div className="mx-auto mt-8 max-w-xl rounded-2xl bg-white px-7 py-8 text-left shadow-lg shadow-navy/5 ring-1 ring-navy/10 sm:px-10 sm:py-10">
+        <div className="space-y-4 text-pretty text-lg leading-relaxed text-navy/80">
+          <p>
+            Your book will arrive by email in a couple of minutes. It explains
+            everything when it comes to social media for parishes, both organic
+            posting and paid&nbsp;ads.
+          </p>
+          <p>
+            If you feel like you don&rsquo;t have the time or resources to
+            implement the things in the book, like strategy, ad campaigns, and
+            video editing, we can handle it for&nbsp;you.
+          </p>
+          <p>
+            If you want to learn more, you can book a free 30-minute Parish
+            Growth Assessment below and we&rsquo;ll create a social media game
+            plan for your parish. You can keep the plan whether we work together
+            or&nbsp;not.
+          </p>
+        </div>
+        <p className="mt-6 font-serif text-2xl italic text-navy">&ndash; Joe Jarrell</p>
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl bg-navy/5 py-6 sm:py-8">

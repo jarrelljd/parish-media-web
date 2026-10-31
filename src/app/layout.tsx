@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Source_Sans_3 } from "next/font/google";
 import MetaPixel from "@/components/MetaPixel";
 import BookACallModalProvider from "@/components/BookACallModalProvider";
 import "./globals.css";
@@ -9,8 +9,8 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
 });
 
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-offwhite text-navy">
         <MetaPixel />

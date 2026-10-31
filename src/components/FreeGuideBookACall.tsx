@@ -116,7 +116,7 @@ export default function FreeGuideBookACall() {
 
       <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl bg-navy/5 py-6 sm:py-8">
         <h2 className="text-balance px-6 text-center font-serif text-2xl font-semibold text-navy sm:px-8 sm:text-3xl">
-          How Your Parish Can Reach More People Through Social Media
+          Watch: What to Expect on Your Parish Growth&nbsp;Assessment
         </h2>
         <div className="relative mt-6" style={{ paddingTop: "56.25%" }}>
           <iframe

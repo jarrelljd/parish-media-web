@@ -2,6 +2,7 @@ import Script from "next/script";
 import { Mrs_Saint_Delafield } from "next/font/google";
 import { BookOpen, Check, Mail } from "lucide-react";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
+import LetterGreeting from "@/components/LetterGreeting";
 
 // Handwritten signature on the letter
 const signature = Mrs_Saint_Delafield({ weight: "400", subsets: ["latin"] });
@@ -83,7 +84,7 @@ export default function FreeGuideBookACall() {
           </div>
 
           <div className="mt-7 space-y-5 text-pretty font-serif text-[1.075rem] leading-[1.8] text-navy/85">
-            <p>Dear Parish Leader,</p>
+            <LetterGreeting />
             <p>
               Your book will arrive by email in a couple of minutes. It explains
               everything when it comes to social media for parishes, both organic

@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
 import { trackLead } from "@/lib/pixel";
+import { LEAD_NAME_KEY } from "@/components/LetterGreeting";
 import {
   AMAZON_BOOK_URL,
   NO_QUALIFYING_ROLE,
@@ -33,12 +34,19 @@ export default function FreeGuideForm() {
       } catch (err) {
         console.error("Failed to fire Meta Pixel Lead (free guide):", err);
       }
+      // Lets the letter on the next page greet them by name. Kept out of the
+      // URL so it never reaches analytics or the pixel.
+      try {
+        sessionStorage.setItem(LEAD_NAME_KEY, name.trim());
+      } catch {
+        // Storage blocked: the letter falls back to "Dear Parish Leader".
+      }
       const timer = setTimeout(() => {
         window.location.href = "/free-guide/free-consult";
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [state.status, state.eventId]);
+  }, [state.status, state.eventId, name]);
 
   if (state.status === "success") {
     return (

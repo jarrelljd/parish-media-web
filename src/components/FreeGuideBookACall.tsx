@@ -93,12 +93,13 @@ export default function FreeGuideBookACall() {
               posting and paid&nbsp;ads.
             </p>
             <p>
-              If you feel like you don&rsquo;t have the time or resources to
-              put the book&rsquo;s ideas into practice, like strategy, ad campaigns, and
-              video editing, we can handle the implementation for&nbsp;you.
+              If you&rsquo;d rather not add strategy, ad campaigns, content
+              creation, and video editing to the staff&rsquo;s workload, we can
+              handle the implementation for you. That allows your team to focus
+              less on the technical side and more on ministry&nbsp;work.
             </p>
             <p>
-              If that sounds interesting, you can book a free 30-minute Parish
+              If that sounds helpful, book a free 30-minute Parish
               Growth Assessment below and we&rsquo;ll create a social media game
               plan for your parish. You can keep the plan whether we work together
               or&nbsp;not.

@@ -7,6 +7,7 @@ import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
+  sendGenericScheduleEvent,
 } from "@/lib/metaConversionsApi";
 
 // TODO: swap to joe@parishmediacompany.com once Google Workspace is live.
@@ -158,6 +159,8 @@ export async function submitEventRSVP(
 export type EbookRequestState = {
   status: "idle" | "success" | "error";
   message?: string;
+  // Shared with the browser pixel's Lead so Meta dedupes the two.
+  eventId?: string;
 };
 
 // The Zap behind this webhook sends the book (Joe's own automation handles
@@ -228,10 +231,11 @@ export async function submitEbookRequest(
     };
   }
 
+  const eventId = randomUUID();
   try {
     const headersList = await headers();
     await sendGenericLeadEvent({
-      eventId: randomUUID(),
+      eventId,
       contentName: "Free Guide Request",
       sourcePath: "/free-guide",
       email,
@@ -243,5 +247,37 @@ export async function submitEbookRequest(
     console.error("Failed to send Meta Conversions API event (ebook):", err);
   }
 
-  return { status: "success" };
+  return { status: "success", eventId };
+}
+
+// Server half of the Meta "Schedule" event for a booked Parish Growth
+// Assessment. Called from ScheduleTracker on /call-confirmed, which reads the
+// booking details Calendly adds to the redirect URL. eventId matches the
+// browser pixel's Schedule so Meta counts the booking once.
+export async function submitScheduleEvent({
+  eventId,
+  email,
+  fullName,
+}: {
+  eventId: string;
+  email?: string;
+  fullName?: string;
+}): Promise<void> {
+  if (!eventId) return;
+  const [firstName, ...rest] = (fullName ?? "").trim().split(/\s+/);
+  try {
+    const headersList = await headers();
+    await sendGenericScheduleEvent({
+      eventId,
+      contentName: "Parish Growth Assessment",
+      sourcePath: "/call-confirmed",
+      email: email || undefined,
+      firstName: firstName || undefined,
+      lastName: rest.length ? rest[rest.length - 1] : undefined,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (schedule):", err);
+  }
 }

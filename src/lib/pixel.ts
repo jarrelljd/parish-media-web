@@ -12,10 +12,16 @@ export function trackLead(contentName: string, eventId?: string) {
 }
 
 // Standard Meta "Schedule" event — for an actual booked appointment (e.g. a
-// completed Calendly booking), distinct from "Lead" above.
-export function trackSchedule() {
+// completed Calendly booking), distinct from "Lead" above. Pass eventId when
+// the server also sends this booking (see ScheduleTracker) so Meta dedupes.
+export function trackSchedule(contentName?: string, eventId?: string) {
   const fbq = (window as unknown as { fbq?: Fbq }).fbq;
-  fbq?.("track", "Schedule");
+  fbq?.(
+    "track",
+    "Schedule",
+    contentName ? { content_name: contentName } : {},
+    eventId ? { eventID: eventId } : undefined,
+  );
 }
 
 // Calendly redirects to /call-confirmed after a booking, which also fires

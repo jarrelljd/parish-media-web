@@ -106,23 +106,41 @@ export async function sendLeadConversionEvent({
 // (client RSVP leads) — the two are different audiences to Meta's algorithm
 // and shouldn't share optimization data. See components/MetaPixel.tsx for
 // the matching browser-side split.
-export async function sendGenericLeadEvent({
-  eventId,
-  contentName,
-  sourcePath,
-  email,
-  phone,
-  userAgent,
-  ipAddress,
-}: {
+type MarketingEventInput = {
   eventId: string;
   contentName: string;
   sourcePath: string;
   email?: string;
   phone?: string;
+  firstName?: string;
+  lastName?: string;
   userAgent?: string | null;
   ipAddress?: string | null;
-}): Promise<void> {
+};
+
+export async function sendGenericLeadEvent(input: MarketingEventInput): Promise<void> {
+  await sendMarketingEvent("Lead", input);
+}
+
+// Booked call (Calendly redirect to /call-confirmed). Same marketing pixel.
+export async function sendGenericScheduleEvent(input: MarketingEventInput): Promise<void> {
+  await sendMarketingEvent("Schedule", input);
+}
+
+async function sendMarketingEvent(
+  eventName: "Lead" | "Schedule",
+  {
+    eventId,
+    contentName,
+    sourcePath,
+    email,
+    phone,
+    firstName,
+    lastName,
+    userAgent,
+    ipAddress,
+  }: MarketingEventInput,
+): Promise<void> {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID_MARKETING;
   const accessToken = process.env.META_CONVERSIONS_API_TOKEN_MARKETING;
   if (!pixelId || !accessToken) {
@@ -135,13 +153,15 @@ export async function sendGenericLeadEvent({
     const digitsOnly = phone.replace(/[^0-9]/g, "");
     if (digitsOnly) userData.ph = [hashForMeta(digitsOnly)];
   }
+  if (firstName) userData.fn = [hashForMeta(firstName)];
+  if (lastName) userData.ln = [hashForMeta(lastName)];
   if (userAgent) userData.client_user_agent = userAgent;
   if (ipAddress) userData.client_ip_address = ipAddress;
 
   const body = {
     data: [
       {
-        event_name: "Lead",
+        event_name: eventName,
         event_time: Math.floor(Date.now() / 1000),
         event_id: eventId,
         action_source: "website",

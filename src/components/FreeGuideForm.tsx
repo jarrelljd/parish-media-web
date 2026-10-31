@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
+import { trackLead } from "@/lib/pixel";
 import {
   AMAZON_BOOK_URL,
   NO_QUALIFYING_ROLE,
@@ -25,12 +26,19 @@ export default function FreeGuideForm() {
 
   useEffect(() => {
     if (state.status === "success") {
+      // Browser half of the Lead; the server already sent the same eventId
+      // to the Conversions API. A tracking failure must never block the redirect.
+      try {
+        trackLead("Free Guide Request", state.eventId);
+      } catch (err) {
+        console.error("Failed to fire Meta Pixel Lead (free guide):", err);
+      }
       const timer = setTimeout(() => {
         window.location.href = "/free-guide/free-consult";
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [state.status]);
+  }, [state.status, state.eventId]);
 
   if (state.status === "success") {
     return (

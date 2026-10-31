@@ -91,8 +91,8 @@ export default function FreeGuideBookACall() {
             </p>
             <p>
               If you feel like you don&rsquo;t have the time or resources to
-              implement the things in the book, like strategy, ad campaigns, and
-              video editing, we can handle it for&nbsp;you.
+              put the book&rsquo;s ideas into practice, like strategy, ad campaigns, and
+              video editing, we can handle the implementation for&nbsp;you.
             </p>
             <p>
               If that sounds interesting, you can book a free 30-minute Parish

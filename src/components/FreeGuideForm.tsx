@@ -55,8 +55,7 @@ export default function FreeGuideForm() {
           Thank you!
         </p>
         <p className="mt-3 text-navy/70">
-          Your copy is on its way to your inbox. Taking you to book a quick
-          call&hellip;
+          Your copy is on its way to your&nbsp;inbox.
         </p>
       </div>
     );

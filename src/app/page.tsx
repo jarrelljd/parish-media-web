@@ -118,10 +118,10 @@ export default function Home() {
                 </span>
                 <span className="text-left leading-tight">
                   <span className="block font-serif text-lg font-medium text-navy">
-                    0 &rarr; 320 Instagram followers
+                    65 young adults inquired
                   </span>
                   <span className="block text-xs text-navy/60">
-                    in 30 days &middot; Ss. John &amp; James, RI
+                    about young adult events in 60 days &middot; St.&nbsp;Patrick&rsquo;s,&nbsp;MA
                   </span>
                 </span>
               </div>
@@ -275,7 +275,7 @@ export default function Home() {
 
             <div className="mt-10 text-center">
               <Link
-                href="/services"
+                href="/parish"
                 className="text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
               >
                 See how we track it →

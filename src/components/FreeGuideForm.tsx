@@ -57,6 +57,9 @@ export default function FreeGuideForm() {
         <p className="mt-3 text-navy/70">
           Your copy is on its way to your&nbsp;inbox.
         </p>
+        <p className="mt-4 font-serif text-lg italic text-navy">
+          While you wait, a quick note from&nbsp;Joe&hellip;
+        </p>
       </div>
     );
   }

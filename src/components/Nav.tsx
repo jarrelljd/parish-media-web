@@ -17,6 +17,7 @@ const menus: Menu[] = [
     items: [
       { href: "/parish", label: "Parish Growth" },
       { href: "/vocations", label: "Vocations Outreach" },
+      { label: "Parish Websites" },
     ],
   },
   {

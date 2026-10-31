@@ -69,10 +69,10 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
-                href="/house-of-studies"
+                href="/free-guide"
                 className="rounded-full bg-navy px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-navy/90"
               >
-                Visit the House of Studies
+                Get the Free Guide
               </Link>
               <BookACallButton className="rounded-full border border-navy px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-navy/5">
                 Book a Call
@@ -504,14 +504,14 @@ export default function Home() {
             Ready to Get More Young Adults at Your Parish?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-offwhite/70">
-            Explore the free House of Studies, or book a free&nbsp;consultation.
+            Get the free guide, or book a free&nbsp;consultation.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/house-of-studies"
+              href="/free-guide"
               className="inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90"
             >
-              Visit the House of Studies
+              Get the Free Guide
             </Link>
             <BookACallButton className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10">
               Book a Call

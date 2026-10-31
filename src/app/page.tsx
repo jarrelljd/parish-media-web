@@ -90,7 +90,7 @@ export default function Home() {
                 </BookACallButton>
               </div>
               <Link
-                href="/services#for-vocation-offices"
+                href="/vocations"
                 className="mt-7 inline-block text-balance text-sm font-medium text-navy/60 underline decoration-gold decoration-2 underline-offset-4 transition-colors hover:text-navy"
               >
                 We also help vocation offices reach young men discerning a&nbsp;call&nbsp;→
@@ -183,7 +183,7 @@ export default function Home() {
                   Repeats every month
                 </p>
                 <Link
-                  href="/services"
+                  href="/parish"
                   className="text-sm font-medium text-navy underline decoration-gold decoration-2 underline-offset-4 hover:text-navy/80"
                 >
                   See how it works in detail →

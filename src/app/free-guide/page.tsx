@@ -79,32 +79,13 @@ export default function FreeGuidePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">
-          {/*
-            Background: a faint feed-grid dot pattern (nod to a social
-            feed) plus a crisp radial wash behind the headline — no blur
-            filters, just gradient falloff, so it reads as a clean glow
-            rather than a smudgy blob.
-          */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, rgba(27,42,74,0.16) 1.5px, transparent 1.5px)",
-              backgroundSize: "24px 24px",
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10"
-            style={{
-              backgroundImage:
-                "radial-gradient(ellipse 640px 420px at 50% 0%, rgba(201,162,39,0.16), transparent 70%)",
-            }}
+            className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[30rem] w-[48rem] -translate-x-1/2 -translate-y-1/3 rounded-full bg-parchment blur-3xl"
           />
 
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-balance font-serif text-3xl font-semibold leading-tight text-navy sm:text-5xl">
+            <h1 className="text-balance font-serif text-4xl font-medium leading-[1.08] tracking-tight text-navy sm:text-6xl">
               Do You Want More Young Families at Your Parish?
             </h1>
 
@@ -117,7 +98,7 @@ export default function FreeGuidePage() {
               />
             </div>
 
-            <p className="mt-4 text-pretty text-sm text-navy/70 sm:mt-8 sm:text-lg">
+            <p className="mt-4 text-pretty text-sm leading-relaxed text-navy/70 sm:mt-8 sm:text-xl">
               Pastors &amp; parish leaders: Get a free digital copy of my book,
               &ldquo;Social Media for Catholic Churches,&rdquo; and see
               how we&rsquo;re helping parishes get 30&ndash;50 new people
@@ -140,19 +121,19 @@ export default function FreeGuidePage() {
               {testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="grid overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-sm sm:grid-cols-[260px_1fr]"
+                  className="grid overflow-hidden rounded-3xl bg-white shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:grid-cols-[260px_1fr]"
                 >
-                  <div className="flex items-end justify-center bg-navy/5 pt-6 sm:pt-0">
+                  <div className="flex items-end justify-center bg-parchment pt-6 sm:pt-0">
                     <Image
                       src={t.photo}
                       alt={t.name}
                       className="h-auto w-[85%] sm:w-full"
                     />
                   </div>
-                  <div className="flex flex-col justify-center gap-5 p-6 sm:p-8">
+                  <div className="flex flex-col justify-center gap-5 p-7 sm:p-10">
                     <div className="flex gap-4">
                       <span
-                        className="w-1 shrink-0 rounded-full bg-gold"
+                        className="w-0.5 shrink-0 rounded-full bg-gold"
                         aria-hidden="true"
                       />
                       <p className="text-pretty font-serif text-lg italic leading-relaxed text-navy sm:text-xl">
@@ -160,7 +141,7 @@ export default function FreeGuidePage() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold uppercase tracking-widest text-navy">
+                      <p className="text-sm font-semibold uppercase tracking-[0.15em] text-navy">
                         {t.name}
                       </p>
                       <p className="mt-0.5 text-sm text-navy/60">{t.role}</p>
@@ -175,11 +156,12 @@ export default function FreeGuidePage() {
         {/* VSL */}
         <section className="px-6 pb-16 sm:pb-20">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            <h2 className="text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
               Watch This 60-Second Overview of the Book
             </h2>
+            <div className="mt-8 rounded-[1.75rem] bg-white p-2.5 shadow-2xl shadow-navy/10 ring-1 ring-navy/5">
             <div
-              className="relative mt-8 overflow-hidden rounded-2xl shadow-lg"
+              className="relative overflow-hidden rounded-[1.25rem] bg-navy"
               style={{ paddingTop: "56.25%" }}
             >
               <iframe
@@ -189,6 +171,7 @@ export default function FreeGuidePage() {
                 className="absolute inset-0 h-full w-full border-0"
                 title="Free-Book VSL"
               />
+            </div>
             </div>
           </div>
         </section>
@@ -228,31 +211,31 @@ export default function FreeGuidePage() {
         </section>
 
         {/* What's Inside */}
-        <section className="bg-navy/5 px-6 py-20 sm:py-24">
+        <section className="bg-parchment px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
-              <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">
                 What&rsquo;s Inside
               </span>
-              <h2 className="mt-4 text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+              <h2 className="mt-4 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-5xl">
                 Three Ideas That Change How You Post
               </h2>
             </div>
 
-            <div className="mt-14 grid gap-10 sm:grid-cols-3">
+            <div className="mt-14 grid gap-5 sm:grid-cols-3">
               {concepts.map((concept, i) => (
                 <FadeInOnScroll key={concept.title} delay={i * 120}>
-                  <div className="text-center">
+                  <div className="h-full rounded-3xl bg-offwhite p-7 text-center ring-1 ring-navy/5">
                     <div
-                      className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold"
+                      className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-parchment text-gold-deep"
                       aria-hidden="true"
                     >
                       <div className="h-7 w-7">{concept.icon}</div>
                     </div>
-                    <h3 className="mt-5 font-serif text-lg font-semibold text-navy">
+                    <h3 className="mt-5 font-serif text-xl font-medium tracking-tight text-navy">
                       {concept.title}
                     </h3>
-                    <p className="mt-2 text-pretty text-sm text-navy/70">
+                    <p className="mt-3 text-pretty leading-relaxed text-navy/70">
                       {concept.description}
                     </p>
                   </div>
@@ -260,7 +243,7 @@ export default function FreeGuidePage() {
               ))}
             </div>
 
-            <p className="mx-auto mt-14 max-w-xl text-pretty text-center text-navy/70">
+            <p className="mx-auto mt-14 max-w-xl text-pretty text-center text-lg leading-relaxed text-navy/70">
               Whether your parish wants more event attendance, more
               volunteers, more young adult engagement, or simply a
               clearer social media strategy, this book gives you a
@@ -270,26 +253,25 @@ export default function FreeGuidePage() {
         </section>
 
         {/* About the Author */}
-        <section className="px-6 py-16 sm:py-20">
+        <section className="px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-            <span className="mt-6 block text-xs font-semibold uppercase tracking-widest text-gold">
+            <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">
               About the Author
             </span>
-            <h2 className="mt-3 font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            <h2 className="mt-4 font-serif text-4xl font-medium tracking-tight text-navy sm:text-5xl">
               Joe Jarrell
             </h2>
           </div>
 
-          <div className="mx-auto mt-10 max-w-4xl">
+          <div className="mx-auto mt-10 max-w-4xl rounded-[1.75rem] bg-white p-2.5 shadow-2xl shadow-navy/10 ring-1 ring-navy/5">
             <Image
               src={authorSigningPhoto}
               alt="Joe Jarrell signing copies of Social Media for Catholic Churches"
-              className="h-auto w-full rounded-2xl shadow-xl"
+              className="h-auto w-full rounded-[1.25rem]"
             />
           </div>
 
-          <p className="mx-auto mt-10 max-w-2xl text-pretty text-center text-navy/70">
+          <p className="mx-auto mt-10 max-w-2xl text-pretty text-center text-lg leading-relaxed text-navy/70">
             Joe spent three years building an online following and running
             a fitness program for Catholic men, working with over 200 men,
             including 20 priests, before founding Parish Media Company in
@@ -300,12 +282,12 @@ export default function FreeGuidePage() {
         </section>
 
         {/* Final CTA */}
-        <section className="border-t border-navy/10 px-6 py-16 sm:py-20">
+        <section className="bg-parchment px-6 py-20 sm:py-24">
           <div className="mx-auto max-w-xl text-center">
-            <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
+            <h2 className="text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-5xl">
               Get Your Free Copy of the Book
             </h2>
-            <p className="mt-3 text-navy/70">
+            <p className="mt-4 text-lg text-navy/70">
               Join the parishes already putting this playbook to work.
             </p>
             <div className="mt-8">

@@ -42,8 +42,8 @@ export default function FreeGuideForm() {
 
   if (state.status === "success") {
     return (
-      <div className="rounded-2xl border border-navy/10 bg-white p-8 text-center shadow-sm">
-        <p className="text-balance font-serif text-xl font-semibold text-navy">
+      <div className="rounded-3xl bg-white p-8 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
+        <p className="text-balance font-serif text-2xl font-medium tracking-tight text-navy">
           Thank you!
         </p>
         <p className="mt-3 text-navy/70">
@@ -57,10 +57,10 @@ export default function FreeGuideForm() {
   return (
     <form
       action={formAction}
-      className="space-y-5 rounded-2xl border border-navy/10 bg-white p-8 shadow-sm"
+      className="space-y-5 rounded-3xl bg-white p-8 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10"
     >
       <div>
-        <p className="text-balance font-serif text-xl font-semibold text-navy">
+        <p className="text-balance font-serif text-2xl font-medium tracking-tight text-navy">
           Get the Free Social Media Guide for Catholic Churches
         </p>
         <p className="mt-1 text-sm text-navy/60">
@@ -86,7 +86,7 @@ export default function FreeGuideForm() {
           placeholder="John Smith"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+          className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
         />
       </div>
 
@@ -109,7 +109,7 @@ export default function FreeGuideForm() {
           placeholder="(555) 123-4567"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+          className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
         />
       </div>
 
@@ -130,7 +130,7 @@ export default function FreeGuideForm() {
           placeholder="name@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+          className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
         />
       </div>
 
@@ -144,7 +144,7 @@ export default function FreeGuideForm() {
           required
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className={`mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 outline-none focus:border-navy ${
+          className={`mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30 ${
             role === "" ? "text-navy/50" : "text-navy"
           }`}
         >
@@ -193,7 +193,7 @@ export default function FreeGuideForm() {
               type="text"
               required={showMore}
               placeholder="St. Mary Parish"
-              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+              className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
             />
           </div>
 
@@ -210,7 +210,7 @@ export default function FreeGuideForm() {
               type="text"
               required={showMore}
               placeholder="Reno, NV"
-              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+              className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
             />
           </div>
 
@@ -230,7 +230,7 @@ export default function FreeGuideForm() {
               autoCorrect="off"
               spellCheck={false}
               placeholder="@yourhandle"
-              className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
+              className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
             />
           </div>
         </div>
@@ -239,7 +239,7 @@ export default function FreeGuideForm() {
       <button
         type="submit"
         disabled={pending || ineligible}
-        className="w-full rounded-full bg-gold px-8 py-3 text-sm font-semibold text-navy shadow-md transition-colors hover:bg-gold/90 disabled:opacity-60"
+        className="w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-lg shadow-gold/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/40 disabled:translate-y-0 disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       >
         {pending ? "Sending..." : "Send Me the Free Digital Copy"}
       </button>

@@ -1,8 +1,10 @@
 import Script from "next/script";
 import { Mrs_Saint_Delafield } from "next/font/google";
-import { BookOpen, Check, Mail } from "lucide-react";
+import { ArrowDown, BookOpen, Check, Mail } from "lucide-react";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 import LetterGreeting from "@/components/LetterGreeting";
+import ScrollToBookingButton from "@/components/ScrollToBookingButton";
+import { buttonClass } from "@/components/buttonStyles";
 
 // Handwritten signature on the letter
 const signature = Mrs_Saint_Delafield({ weight: "400", subsets: ["latin"] });
@@ -120,6 +122,14 @@ export default function FreeGuideBookACall() {
         </div>
       </div>
 
+      {/* Jump past the video to the booking section */}
+      <div className="mt-12 flex justify-center">
+        <ScrollToBookingButton className={buttonClass("primary")}>
+          Book Your Free Assessment
+          <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5 motion-reduce:transition-none" aria-hidden="true" />
+        </ScrollToBookingButton>
+      </div>
+
       <div className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-2xl bg-navy/5 py-6 sm:py-8">
         <h2 className="text-balance px-6 text-center font-serif text-2xl font-semibold text-navy sm:px-8 sm:text-3xl">
           Watch: What to Expect on Your Parish Growth&nbsp;Assessment
@@ -136,7 +146,7 @@ export default function FreeGuideBookACall() {
         <Script src="https://player.vimeo.com/api/player.js" strategy="afterInteractive" />
       </div>
 
-      <div className="mx-auto mt-10 max-w-xl text-center">
+      <div id="book" className="mx-auto mt-10 max-w-xl scroll-mt-8 text-center">
         <p className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
           Before You Book&hellip;
         </p>

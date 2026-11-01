@@ -57,8 +57,8 @@ export default function FreeGuideBookACall() {
             </p>
             <p>
               If you&rsquo;d rather not add strategy, ad campaigns, content
-              creation, and video editing to the staff&rsquo;s workload, we can
-              handle the implementation for you. Then your team can focus
+              creation, and video editing to your staff&rsquo;s workload, we can
+              handle the implementation for you. That way, your team can focus
               less on the technical side and more on ministry&nbsp;work.
             </p>
             <p>

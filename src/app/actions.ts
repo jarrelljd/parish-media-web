@@ -5,10 +5,12 @@ import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
+import { greetingFor } from "@/lib/greeting";
 import {
   buildReport,
   choiceLabel,
   parseAnswers,
+  reportToHtml,
   reportToText,
   type ChoiceId,
   type FollowerCount,
@@ -316,10 +318,11 @@ export type ScorecardOptInState = {
   eventId?: string;
 };
 
-// The full report is shown on the page right after opting in, so the lead
-// notification isn't what fulfills the promise here. It goes two ways
-// (Zapier → CRM, plus a Resend email to Joe as a backup), and the opt-in
-// only fails if both do, so a lead is never lost to one broken channel.
+// The Zap behind ZAPIER_WEBHOOK_SCORECARD emails the full report to the lead
+// (reportHtml, ready to send as-is) and adds them to Joe's CRM. That's what
+// fulfills the "your report is on its way" promise on /scorecard/summary,
+// so its failure blocks success. The Resend email to Joe is just a heads-up
+// and never blocks.
 export async function submitScorecardOptIn(
   _prevState: ScorecardOptInState,
   formData: FormData,
@@ -366,6 +369,7 @@ export async function submitScorecardOptIn(
   const population = lookupCityPopulation(answers.city, answers.state);
   const report = buildReport(answers, population);
   const reportText = reportToText(report);
+  const greeting = greetingFor(name);
   const countLabel = (c: FollowerCount) =>
     typeof c === "number" ? String(c) : c === "none" ? "No account" : "Not sure";
   const label = (id: ChoiceId) => choiceLabel(id, answers[id]);
@@ -373,6 +377,8 @@ export async function submitScorecardOptIn(
   const payload: Record<string, string> = {
     timestamp: new Date().toISOString(),
     name,
+    // Ready for the email's "Dear ___," line ("Fr. John Smith" -> "Father Smith").
+    greeting,
     email,
     phone,
     role,
@@ -399,6 +405,7 @@ export async function submitScorecardOptIn(
     followUpSpeed: label("followUp"),
     socialMediaOwner: label("team"),
     reportText,
+    reportHtml: reportToHtml(report, greeting),
   };
 
   const [zapier, mail] = await Promise.allSettled([
@@ -442,11 +449,11 @@ export async function submitScorecardOptIn(
   if (mail.status === "rejected") {
     console.error("Failed to send scorecard lead email:", mail.reason);
   }
-  if (zapier.status === "rejected" && mail.status === "rejected") {
+  if (zapier.status === "rejected") {
     return {
       status: "error",
       message:
-        "Something went wrong unlocking your report. Please try again or email joe@parishmediacompany.com.",
+        "Something went wrong sending your report. Please try again or email joe@parishmediacompany.com.",
     };
   }
 

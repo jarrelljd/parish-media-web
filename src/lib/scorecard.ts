@@ -321,6 +321,88 @@ export function reportToText(r: ScorecardReport): string {
   return out.join("\n");
 }
 
+// Where the report email's booking button points: the Parish Growth page's
+// "Before You Book" section, which explains the pastor must join the call.
+export const SCORECARD_BOOKING_URL = "https://parishmediacompany.com/parish#book";
+
+const esc = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+const emailTier: Record<Tier, { label: string; color: string }> = {
+  low: { label: "Needs attention", color: "#9c4532" },
+  mid: { label: "Room to grow", color: "#8a6d2f" },
+  high: { label: "Strong", color: "#1b2a4a" },
+};
+
+// Full report as a self-contained HTML email (inline styles only), sent to
+// Zapier so the Zap can email it to the lead.
+export function reportToHtml(r: ScorecardReport, greeting: string): string {
+  const navy = "#1b2a4a";
+  const font = "font-family:Georgia,'Times New Roman',serif;";
+  const sans = "font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;";
+  const priorities = r.priorities.length
+    ? r.priorities
+        .map(
+          (p, i) => `<tr><td style="padding:0 0 14px 0;">
+  <div style="background:#f3ede2;border-radius:12px;padding:16px 18px;">
+    <div style="${sans}font-size:15px;font-weight:700;color:${navy};">${i + 1}. ${esc(p.label)}</div>
+    <div style="${sans}font-size:15px;line-height:1.55;color:#3d4863;margin-top:4px;">${esc(p.fix)}</div>
+  </div></td></tr>`,
+        )
+        .join("")
+    : `<tr><td style="${sans}font-size:15px;line-height:1.6;color:#3d4863;padding-bottom:14px;">Every category scored strong. Keep protecting what&rsquo;s working.</td></tr>`;
+  const cats = r.categories
+    .map((c) => {
+      const t = emailTier[c.tier];
+      const facts = c.facts
+        .map((f) => `<li style="margin:0 0 6px 0;">${esc(f)}</li>`)
+        .join("");
+      const fix =
+        c.tier === "high"
+          ? ""
+          : `<div style="border-left:3px solid #c9a227;padding-left:12px;margin-top:12px;">
+    <div style="${sans}font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:#8a6d2f;">What to do</div>
+    <div style="${sans}font-size:15px;line-height:1.55;color:#3d4863;margin-top:2px;">${esc(c.fix)}</div></div>`;
+      return `<tr><td style="padding:0 0 16px 0;">
+  <div style="border:1px solid #e4e0d8;border-radius:12px;padding:18px 20px;">
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr>
+      <td style="${font}font-size:20px;color:${navy};">${esc(c.label)}</td>
+      <td align="right" style="${sans}font-size:14px;color:#6b7280;">${c.points}/${c.max}</td>
+    </tr></table>
+    <div style="${sans}font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:${t.color};margin-top:2px;">${t.label}</div>
+    <div style="${sans}font-size:15px;font-weight:600;line-height:1.55;color:${navy};margin-top:10px;">${esc(c.status)}</div>
+    <ul style="${sans}font-size:15px;line-height:1.55;color:#3d4863;margin:8px 0 0 0;padding-left:20px;">${facts}</ul>
+    ${fix}
+  </div></td></tr>`;
+    })
+    .join("");
+
+  return `<!doctype html><html><body style="margin:0;padding:0;background:#faf8f4;">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#faf8f4;"><tr><td align="center" style="padding:24px 12px;">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;">
+<tr><td style="${sans}font-size:16px;line-height:1.6;color:${navy};padding-bottom:16px;">
+  Dear ${esc(greeting)},<br><br>
+  Here is your full Parish Social Media Scorecard report: what to fix first, and a breakdown of every category with specific next steps.
+</td></tr>
+<tr><td style="background:${navy};border-radius:16px;padding:28px 24px;text-align:center;">
+  <div style="${sans}font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#c9a227;">Your Parish Social Media Score</div>
+  <div style="${font}font-size:56px;line-height:1.1;color:#faf8f4;margin-top:10px;">${r.score}<span style="font-size:20px;color:#b8bfcc;"> / 100</span></div>
+  <div style="${font}font-size:24px;color:#faf8f4;margin-top:6px;">${esc(r.band.label)}</div>
+  <div style="${sans}font-size:15px;line-height:1.55;color:#d5d9e1;margin-top:8px;">${esc(r.band.summary)}</div>
+</td></tr>
+<tr><td style="${font}font-size:24px;color:${navy};padding:28px 0 14px 0;">${r.priorities.length ? "What to Fix First" : "Your Priorities"}</td></tr>
+${priorities}
+<tr><td style="${font}font-size:24px;color:${navy};padding:14px 0 14px 0;">Your Breakdown by Category</td></tr>
+${cats}
+<tr><td style="background:#f3ede2;border-radius:16px;padding:26px 24px;text-align:center;">
+  <div style="${font}font-size:22px;color:${navy};">Want Help Closing These Gaps?</div>
+  <div style="${sans}font-size:15px;line-height:1.55;color:#3d4863;margin:8px 0 18px 0;">Book a free Parish Growth Assessment. We&rsquo;ll go over your scorecard together and map out what to fix first.</div>
+  <a href="${SCORECARD_BOOKING_URL}" style="${sans}display:inline-block;background:${navy};color:#faf8f4;text-decoration:none;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Book a Free Assessment</a>
+</td></tr>
+<tr><td style="${sans}font-size:15px;line-height:1.6;color:${navy};padding-top:22px;">God bless,<br>Joe Jarrell<br><span style="color:#6b7280;">Parish Media Company</span></td></tr>
+</table></td></tr></table></body></html>`;
+}
+
 // "saint paul" → "Saint Paul", so the report reads cleanly.
 export function titleCase(s: string): string {
   return s.replace(/\s+/g, " ").replace(/(^|[\s-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase());

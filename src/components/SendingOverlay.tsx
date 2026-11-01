@@ -1,8 +1,14 @@
-// Full-screen "sending" screen shown after the free-guide form succeeds. It
+// Full-screen "sending" screen shown after the free-guide and scorecard forms succeed. It
 // covers the whole viewport so the page underneath never jumps, whatever the
 // scroll position. A thin gold bar fills, then `leaving` fades the content
 // out just before we move on to the letter page (which delivers the payoff).
-export default function SendingOverlay({ leaving = false }: { leaving?: boolean }) {
+export default function SendingOverlay({
+  leaving = false,
+  message = "Sending your book…",
+}: {
+  leaving?: boolean;
+  message?: string;
+}) {
   return (
     <div
       role="status"
@@ -30,7 +36,7 @@ export default function SendingOverlay({ leaving = false }: { leaving?: boolean 
       `}</style>
       <div className={`pmc-sending-inner text-center ${leaving ? "is-leaving" : ""}`}>
         <p className="font-serif text-2xl font-medium italic tracking-tight text-navy">
-          Sending your book&hellip;
+          {message}
         </p>
         <div className="mx-auto mt-5 h-0.5 w-48 overflow-hidden rounded-full bg-navy/10">
           <div className="pmc-sending-bar h-full w-full origin-left rounded-full bg-gold" />

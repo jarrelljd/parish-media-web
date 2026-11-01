@@ -48,7 +48,15 @@ export const bandToneOnNavy: Record<BandTone, string> = {
   thriving: "#4fd68a",
 };
 
-export function ScoreRing({ score, color }: { score: number; color: string }) {
+export function ScoreRing({
+  score,
+  color,
+  small = false,
+}: {
+  score: number;
+  color: string;
+  small?: boolean;
+}) {
   const r = 52;
   const c = 2 * Math.PI * r;
   const [shown, setShown] = useState(0);
@@ -57,7 +65,7 @@ export function ScoreRing({ score, color }: { score: number; color: string }) {
     return () => cancelAnimationFrame(t);
   }, [score]);
   return (
-    <div className="relative h-40 w-40 sm:h-44 sm:w-44">
+    <div className={`relative shrink-0 ${small ? "h-24 w-24 sm:h-32 sm:w-32" : "h-40 w-40 sm:h-44 sm:w-44"}`}>
       <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90" aria-hidden="true">
         <circle cx="60" cy="60" r={r} fill="none" stroke="currentColor" strokeWidth="9" className="text-offwhite/15" />
         <circle
@@ -75,8 +83,16 @@ export function ScoreRing({ score, color }: { score: number; color: string }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-serif text-5xl font-medium text-offwhite sm:text-6xl">{score}</span>
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-offwhite/60">out of 100</span>
+        <span
+          className={`font-serif font-medium text-offwhite ${small ? "text-3xl sm:text-4xl" : "text-5xl sm:text-6xl"}`}
+        >
+          {score}
+        </span>
+        <span
+          className={`font-semibold uppercase text-offwhite/60 ${small ? "text-[9px] tracking-[0.15em] sm:text-[10px]" : "text-xs tracking-[0.2em]"}`}
+        >
+          out of 100
+        </span>
       </div>
     </div>
   );
@@ -85,11 +101,39 @@ export function ScoreRing({ score, color }: { score: number; color: string }) {
 export function ScoreHero({
   report,
   children,
+  compact = false,
 }: {
   report: ScorecardReport;
   children?: React.ReactNode;
+  // Ring beside the text instead of stacked: keeps the quiz results short
+  // so the opt-in form shows without much scrolling.
+  compact?: boolean;
 }) {
   const tone = bandToneOnNavy[report.band.tone];
+  if (compact) {
+    return (
+      <div className="overflow-hidden rounded-3xl bg-navy px-5 py-6 text-offwhite shadow-2xl shadow-navy/20 sm:px-8 sm:py-8">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold sm:text-xs">
+          Your Parish Social Media Score
+        </p>
+        <div className="mt-4 flex items-center gap-5 sm:gap-7">
+          <ScoreRing score={report.score} color={tone} small />
+          <div className="min-w-0">
+            <h2
+              className="text-balance font-serif text-2xl font-medium tracking-tight sm:text-3xl"
+              style={{ color: tone }}
+            >
+              {report.band.label}
+            </h2>
+            <p className="mt-1.5 text-pretty text-sm leading-relaxed text-offwhite/75 sm:text-base">
+              {report.band.summary}
+            </p>
+          </div>
+        </div>
+        {children}
+      </div>
+    );
+  }
   return (
     <div className="overflow-hidden rounded-3xl bg-navy px-6 py-10 text-center text-offwhite shadow-2xl shadow-navy/20 sm:px-12 sm:py-12">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">

@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, Check, Mail, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
 import {
   getScorecardPopulation,
   submitScorecardOptIn,
@@ -413,20 +413,20 @@ function Results({
     doc.problems.length
   ];
 
+  // Bring the results to the top of the screen so the score, the biggest
+  // problem, and the start of the opt-in form are all in view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   return (
-    <div className="space-y-6">
-      <ScoreHero report={report} />
+    <div ref={rootRef} className="scroll-mt-24 space-y-5">
+      <ScoreHero report={report} compact />
 
-      <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-        <h3 className="font-serif text-2xl font-medium tracking-tight text-navy">
-          Your Score by Category
-        </h3>
-        <div className="mt-6">
-          <CategoryBars report={report} />
-        </div>
-
-        {/* Free teaser */}
-        <div className="mt-8 rounded-2xl bg-parchment p-5 sm:p-6">
+      {/* Biggest problem, then straight into the opt-in */}
+      <div className="rounded-3xl bg-white p-5 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-8">
+        <div className="rounded-2xl bg-parchment p-5 sm:p-6">
           {topProblem ? (
             <>
               <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
@@ -451,26 +451,18 @@ function Results({
             </>
           )}
         </div>
+
+        <div className="pt-7 sm:pt-8">
+          <OptInForm answers={answers} population={report.population} />
+        </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-3xl bg-white shadow-xl shadow-navy/5 ring-1 ring-navy/5">
-        {/* Blurred preview of what's in the report. Decorative only. */}
-        <div aria-hidden="true" className="pointer-events-none select-none px-6 pt-8 blur-[6px] sm:px-10">
-          <p className="font-serif text-2xl text-navy">Your Full Report</p>
-          {(doc.problems.length
-            ? doc.problems.map((p) => ({ id: p.id, title: p.title, text: p.firstStep }))
-            : report.categories.slice(0, 3).map((c) => ({ id: c.id, title: c.label, text: c.status }))
-          ).map((p, i) => (
-            <div key={p.id} className="mt-4 rounded-2xl bg-offwhite p-4">
-              <p className="font-medium text-navy">
-                {i + 1}. {p.title}
-              </p>
-              <p className="mt-1 text-sm text-navy/70">{p.text}</p>
-            </div>
-          ))}
-        </div>
-        <div className="relative -mt-24 bg-gradient-to-b from-white/0 via-white to-white px-6 pb-8 pt-24 sm:px-10 sm:pb-10">
-          <OptInForm answers={answers} population={report.population} />
+      <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
+        <h3 className="font-serif text-2xl font-medium tracking-tight text-navy">
+          Your Score by Category
+        </h3>
+        <div className="mt-6">
+          <CategoryBars report={report} />
         </div>
       </div>
 
@@ -555,10 +547,7 @@ function OptInForm({
         )}
       <form action={formAction} className="mx-auto max-w-md space-y-4">
         <div className="text-center">
-          <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-gold/15 text-gold-deep">
-            <Mail className="h-5 w-5" aria-hidden="true" />
-          </span>
-          <h3 className="mt-4 text-balance font-serif text-2xl font-medium tracking-tight text-navy sm:text-3xl">
+          <h3 className="text-balance font-serif text-2xl font-medium tracking-tight text-navy sm:text-3xl">
             Where Should We Send Your Full Report?
           </h3>
           <p className="mt-2 text-pretty text-sm leading-relaxed text-navy/65">

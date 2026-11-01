@@ -4,6 +4,15 @@ import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
+import { lookupCityPopulation } from "@/lib/cityPopulation";
+import {
+  buildReport,
+  choiceLabel,
+  parseAnswers,
+  reportToText,
+  type ChoiceId,
+  type FollowerCount,
+} from "@/lib/scorecard";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
@@ -280,4 +289,182 @@ export async function submitScheduleEvent({
   } catch (err) {
     console.error("Failed to send Meta Conversions API event (schedule):", err);
   }
+}
+
+
+// ---------------------------------------------------------------------------
+// Parish Social Media Scorecard (/scorecard)
+// ---------------------------------------------------------------------------
+
+// Called once the quiz is finished, so the free score view can mention the
+// city's population. Returns null when the city isn't in the Census file.
+export async function getScorecardPopulation(
+  city: string,
+  state: string,
+): Promise<number | null> {
+  try {
+    return lookupCityPopulation(String(city).slice(0, 100), String(state).slice(0, 2));
+  } catch {
+    return null;
+  }
+}
+
+export type ScorecardOptInState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+  // Shared with the browser pixel's Lead so Meta dedupes the two.
+  eventId?: string;
+};
+
+// The full report is shown on the page right after opting in, so the lead
+// notification isn't what fulfills the promise here. It goes two ways
+// (Zapier → CRM, plus a Resend email to Joe as a backup), and the opt-in
+// only fails if both do, so a lead is never lost to one broken channel.
+export async function submitScorecardOptIn(
+  _prevState: ScorecardOptInState,
+  formData: FormData,
+): Promise<ScorecardOptInState> {
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
+  const role = String(formData.get("role") ?? "");
+  const organization = String(formData.get("organization") ?? "").trim();
+
+  if (!(freeGuideRoles as readonly string[]).includes(role)) {
+    return { status: "error", message: "Please select your role." };
+  }
+  if (role === NO_QUALIFYING_ROLE) {
+    return {
+      status: "error",
+      message: "The full report is only for the roles listed.",
+    };
+  }
+  if (!name) {
+    return { status: "error", message: "Please enter your name." };
+  }
+  if (phone.replace(/\D/g, "").length < 10) {
+    return { status: "error", message: "Please enter a valid phone number." };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return { status: "error", message: "Please enter a valid email address." };
+  }
+
+  let answers;
+  try {
+    answers = parseAnswers(JSON.parse(String(formData.get("answers") ?? "")));
+  } catch {
+    answers = null;
+  }
+  if (!answers) {
+    return {
+      status: "error",
+      message: "Something went wrong with your answers. Please retake the scorecard.",
+    };
+  }
+
+  // Re-score on the server so the numbers Joe sees match the answers.
+  const population = lookupCityPopulation(answers.city, answers.state);
+  const report = buildReport(answers, population);
+  const reportText = reportToText(report);
+  const countLabel = (c: FollowerCount) =>
+    typeof c === "number" ? String(c) : c === "none" ? "No account" : "Not sure";
+  const label = (id: ChoiceId) => choiceLabel(id, answers[id]);
+
+  const payload: Record<string, string> = {
+    timestamp: new Date().toISOString(),
+    name,
+    email,
+    phone,
+    role,
+    organization,
+    city: answers.city,
+    state: answers.state,
+    cityPopulation: population ? String(population) : "",
+    score: String(report.score),
+    band: report.band.label,
+    ...Object.fromEntries(
+      report.categories.map((c) => [`score_${c.id}`, `${c.points}/${c.max}`]),
+    ),
+    weekendAttendance: String(answers.attendance),
+    facebookFollowers: countLabel(answers.fbFollowers),
+    instagramFollowers: countLabel(answers.igFollowers),
+    typicalEngagement: label("engagement"),
+    followerGrowth: label("growth"),
+    ads: label("ads"),
+    postingFrequency: label("frequency"),
+    contentType: label("contentType"),
+    pastorOnCamera: label("pastorOnCamera"),
+    monthlyInquirers: label("inquirers"),
+    newcomerNextStep: label("nextStep"),
+    followUpSpeed: label("followUp"),
+    socialMediaOwner: label("team"),
+    reportText,
+  };
+
+  const [zapier, mail] = await Promise.allSettled([
+    notifyZapier(payload, "ZAPIER_WEBHOOK_SCORECARD"),
+    (async () => {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const { error } = await resend.emails.send({
+        from: "Parish Media Company <onboarding@resend.dev>",
+        to: NOTIFY_EMAIL,
+        replyTo: email,
+        subject: `Scorecard lead: ${name} (${organization}) scored ${report.score}/100`,
+        text: [
+          `Name: ${name}`,
+          `Role: ${role}`,
+          `Parish: ${organization}`,
+          `Email: ${email}`,
+          `Phone: ${phone}`,
+          `Location: ${answers.city}, ${answers.state}${population ? ` (pop. ${population.toLocaleString("en-US")})` : ""}`,
+          "",
+          "Answers:",
+          ...Object.entries(payload)
+            .filter(([k]) =>
+              [
+                "weekendAttendance", "facebookFollowers", "instagramFollowers",
+                "typicalEngagement", "followerGrowth", "ads", "postingFrequency",
+                "contentType", "pastorOnCamera", "monthlyInquirers",
+                "newcomerNextStep", "followUpSpeed", "socialMediaOwner",
+              ].includes(k),
+            )
+            .map(([k, v]) => `  ${k}: ${v}`),
+          "",
+          reportText,
+        ].join("\n"),
+      });
+      if (error) throw new Error(JSON.stringify(error));
+    })(),
+  ]);
+  if (zapier.status === "rejected") {
+    console.error("Failed to notify Zapier webhook (scorecard):", zapier.reason);
+  }
+  if (mail.status === "rejected") {
+    console.error("Failed to send scorecard lead email:", mail.reason);
+  }
+  if (zapier.status === "rejected" && mail.status === "rejected") {
+    return {
+      status: "error",
+      message:
+        "Something went wrong unlocking your report. Please try again or email joe@parishmediacompany.com.",
+    };
+  }
+
+  const eventId = randomUUID();
+  try {
+    const headersList = await headers();
+    await sendGenericLeadEvent({
+      eventId,
+      contentName: "Social Media Scorecard",
+      sourcePath: "/scorecard",
+      email,
+      phone,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (scorecard):", err);
+  }
+
+  return { status: "success", eventId };
 }

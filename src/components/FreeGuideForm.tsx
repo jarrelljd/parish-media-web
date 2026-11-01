@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import ThankYouOverlay from "@/components/ThankYouOverlay";
+import SendingOverlay from "@/components/SendingOverlay";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
 import { trackLead } from "@/lib/pixel";
 import { LEAD_NAME_KEY } from "@/components/LetterGreeting";
@@ -27,7 +27,7 @@ export default function FreeGuideForm() {
   const showMore =
     name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible;
   const done = state.status === "success";
-  // Fades the thank-you text out just before we leave for the letter page.
+  // Fades the sending screen out just before we leave for the letter page.
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
@@ -46,14 +46,14 @@ export default function FreeGuideForm() {
       } catch {
         // Storage blocked: the letter falls back to "Dear Parish Leader".
       }
-      // Full-screen thank-you covers the page wherever they were scrolled,
+      // Full-screen sending screen covers the page wherever they were scrolled,
       // so nothing jumps; then a soft fade carries them to the letter page.
       const prevOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-      const fade = setTimeout(() => setLeaving(true), 2000);
+      const fade = setTimeout(() => setLeaving(true), 1400);
       const go = setTimeout(() => {
         window.location.href = "/free-guide/free-consult";
-      }, 2300);
+      }, 1650);
       return () => {
         clearTimeout(fade);
         clearTimeout(go);
@@ -66,7 +66,7 @@ export default function FreeGuideForm() {
     <>
     {done &&
       createPortal(
-        <ThankYouOverlay leaving={leaving} />,
+        <SendingOverlay leaving={leaving} />,
         document.body,
       )}
     <form

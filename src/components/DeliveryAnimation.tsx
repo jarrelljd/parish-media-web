@@ -1,11 +1,10 @@
 import { BookOpen, Check, Mail } from "lucide-react";
 
 // Book → inbox: a gold dot travels the dotted line, then a check pops on the
-// envelope. `once` plays it a single time and leaves the check showing (used
-// on the free-guide thank-you screen); otherwise it loops.
-export default function DeliveryAnimation({ once = false }: { once?: boolean }) {
-  const dot = once ? "pmc-send-dot-once" : "pmc-send-dot";
-  const check = once ? "pmc-send-check-once" : "pmc-send-check";
+// envelope. Loops.
+export default function DeliveryAnimation() {
+  const dot = "pmc-send-dot";
+  const check = "pmc-send-check";
 
   return (
     <div className="mx-auto flex w-72 max-w-full items-center gap-3" aria-hidden="true">
@@ -22,24 +21,11 @@ export default function DeliveryAnimation({ once = false }: { once?: boolean }) 
           72%, 92% { transform: scale(1); opacity: 1; }
           100% { transform: scale(0); opacity: 0; }
         }
-        @keyframes pmc-send-dot-once {
-          0% { left: 0%; opacity: 0; }
-          15% { opacity: 1; }
-          85% { left: 100%; opacity: 1; }
-          100% { left: 100%; opacity: 0; }
-        }
-        @keyframes pmc-send-check-once {
-          0% { transform: scale(0); opacity: 0; }
-          70% { transform: scale(1.2); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
         .pmc-send-dot { animation: pmc-send-dot 3.2s ease-in-out infinite; }
         .pmc-send-check { animation: pmc-send-check 3.2s ease-out infinite; }
-        .pmc-send-dot-once { animation: pmc-send-dot-once 1.1s ease-in-out 0.35s both; }
-        .pmc-send-check-once { animation: pmc-send-check-once 0.35s ease-out 1.35s both; }
         @media (prefers-reduced-motion: reduce) {
-          .pmc-send-dot, .pmc-send-dot-once { animation: none; opacity: 0; }
-          .pmc-send-check, .pmc-send-check-once { animation: none; transform: none; opacity: 1; }
+          .pmc-send-dot { animation: none; opacity: 0; }
+          .pmc-send-check { animation: none; transform: none; opacity: 1; }
         }
       `}</style>
 

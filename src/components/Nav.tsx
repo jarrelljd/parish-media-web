@@ -24,7 +24,8 @@ const menus: Menu[] = [
     id: "free",
     label: "Free Stuff",
     items: [
-      { href: "/free-guide", label: "Free Book" },
+      // Non-breaking space keeps "Catholic Churches" together if it wraps.
+      { href: "/free-guide", label: "The Book: Social Media for Catholic Churches" },
       { href: "/house-of-studies", label: "House of Studies" },
       { href: "/scorecard", label: "Social Media Scorecard" },
     ],
@@ -125,7 +126,7 @@ export default function Nav() {
                 </button>
 
                 {openMenu === menu.id && (
-                  <div className="absolute left-0 top-full mt-2 w-72 rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
+                  <div className="absolute left-0 top-full mt-2 w-max min-w-72 max-w-[22rem] rounded-xl before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-[''] border border-navy/10 bg-white p-2 shadow-lg">
                     {menu.items.map((item) =>
                       item.href ? (
                         <Link

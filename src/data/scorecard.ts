@@ -163,10 +163,10 @@ export const questions: Question[] = [
     question: "Compared to a year ago, your follower count is…",
     choices: [
       { value: "shrinking", label: "Shrinking", points: 0 },
-      { value: "flat", label: "About the same", points: 2 },
+      { value: "flat", label: "About the same", points: 0 },
       { value: "little", label: "Growing a little", points: 5 },
       { value: "fast", label: "Growing fast", points: 8 },
-      { value: "unsure", label: "I'm not sure", points: 3 },
+      { value: "unsure", label: "I'm not sure", points: 1 },
     ],
   },
   {
@@ -177,8 +177,8 @@ export const questions: Question[] = [
       "Has your parish run paid Facebook or Instagram ads in the last 6 months?",
     choices: [
       { value: "none", label: "No", points: 0 },
-      { value: "boosted", label: "We boosted a post or two", points: 3 },
-      { value: "under250", label: "Yes, ongoing, under $250/month", points: 6 },
+      { value: "boosted", label: "We boosted a post or two", points: 1 },
+      { value: "under250", label: "Yes, ongoing, under $250/month", points: 5 },
       { value: "250-1000", label: "Yes, $250–$1,000/month", points: 8 },
       { value: "1000+", label: "Yes, more than $1,000/month", points: 10 },
     ],
@@ -190,7 +190,7 @@ export const questions: Question[] = [
     question: "How often does your parish post?",
     choices: [
       { value: "rarely", label: "A few times a month or less", points: 0 },
-      { value: "weekly", label: "About once a week", points: 2 },
+      { value: "weekly", label: "About once a week", points: 1 },
       { value: "few", label: "2–3 times a week", points: 4 },
       { value: "daily", label: "Daily or almost daily", points: 5 },
     ],
@@ -202,7 +202,7 @@ export const questions: Question[] = [
     question: "Do you post short clips of your pastor’s homilies?",
     choices: [
       { value: "no", label: "No", points: 0 },
-      { value: "occasionally", label: "Occasionally", points: 2 },
+      { value: "occasionally", label: "Occasionally", points: 1 },
       { value: "regularly", label: "Yes, every week", points: 5 },
     ],
   },
@@ -241,7 +241,7 @@ export const questions: Question[] = [
     choices: [
       { value: "untracked", label: "We don't track this", points: 0 },
       { value: "0", label: "None", points: 0 },
-      { value: "1-2", label: "1–2", points: 4 },
+      { value: "1-2", label: "1–2", points: 2 },
       { value: "3-5", label: "3–5", points: 8 },
       { value: "6-10", label: "6–10", points: 10 },
       { value: "10+", label: "More than 10", points: 12 },
@@ -255,8 +255,8 @@ export const questions: Question[] = [
       "If someone new finds your parish online, what's their clearest next step?",
     choices: [
       { value: "none", label: "There isn't really one", points: 0 },
-      { value: "massTimes", label: "Mass times on our website", points: 2 },
-      { value: "contactForm", label: "A general contact form", points: 5 },
+      { value: "massTimes", label: "Mass times on our website", points: 0 },
+      { value: "contactForm", label: "A general contact form", points: 3 },
       { value: "planVisit", label: "A dedicated “Plan Your Visit” page or form", points: 8 },
       { value: "metaForm", label: "A Facebook/Instagram form (name and phone)", points: 8 },
     ],
@@ -269,9 +269,9 @@ export const questions: Question[] = [
       "When someone new reaches out, how quickly does someone from the parish follow up personally?",
     choices: [
       { value: "sameDay", label: "The same day", points: 15 },
-      { value: "twoDays", label: "Within 2 days", points: 11 },
-      { value: "week", label: "Within a week", points: 6 },
-      { value: "longer", label: "Longer than a week", points: 2 },
+      { value: "twoDays", label: "Within 2 days", points: 10 },
+      { value: "week", label: "Within a week", points: 3 },
+      { value: "longer", label: "Longer than a week", points: 0 },
       { value: "noProcess", label: "We don't have a set process", points: 0 },
     ],
   },
@@ -282,8 +282,8 @@ export const questions: Question[] = [
     question: "Who runs your parish social media?",
     choices: [
       { value: "nobody", label: "Nobody, really", points: 0 },
-      { value: "volunteer", label: "A volunteer", points: 2 },
-      { value: "staff", label: "Paid parish staff", points: 4 },
+      { value: "volunteer", label: "A volunteer", points: 1 },
+      { value: "staff", label: "Paid parish staff", points: 3 },
       { value: "agency", label: "An outside agency or professional", points: 5 },
     ],
   },
@@ -297,7 +297,7 @@ export const followerRatioTiers = [
   { min: 0.5, points: 4 },
   { min: 0, points: 0 },
 ];
-export const FOLLOWER_RATIO_UNSURE_POINTS = 6;
+export const FOLLOWER_RATIO_UNSURE_POINTS = 3;
 
 // Typical likes + comments as a share of followers → points (max 15).
 export const engagementRateTiers = [
@@ -306,7 +306,7 @@ export const engagementRateTiers = [
   { min: 0.005, points: 5 },
   { min: 0, points: 0 },
 ];
-export const ENGAGEMENT_UNSURE_POINTS = 7;
+export const ENGAGEMENT_UNSURE_POINTS = 3;
 // Middle of each likes/comments range, used to estimate the rate.
 export const engagementMidpoints: Record<string, number> = {
   "0-5": 2.5,
@@ -361,31 +361,48 @@ export const categoryOrder: CategoryId[] = [
   "team",
 ];
 
+// Score caps (Joe, 2026-11-01): a parish can't score as "doing fine" without
+// an outreach system. Ads + Plan a Visit step + fast, tracked follow-up.
+// - No ongoing ads, or no Plan a Visit step: total capped at NO_SYSTEM_CAP.
+// - Both in place, but follow-up is slower than 2 days or inquiries aren't
+//   tracked (a "leak"): total capped at LEAK_CAP.
+export const NO_SYSTEM_CAP = 45;
+export const LEAK_CAP = 69;
+export const ONGOING_AD_VALUES = ["under250", "250-1000", "1000+"];
+export const PLAN_STEP_VALUES = ["planVisit", "metaForm"];
+export const FAST_FOLLOW_UP_VALUES = ["sameDay", "twoDays"];
+
 // Overall score bands (score is 0–100).
 export const bands = [
   {
-    min: 80,
-    label: "Being Found",
+    min: 85,
+    label: "Thriving",
     summary:
-      "Your parish is doing what most parishes aren’t: showing up, staying visible, and following up with new people. The work now is protecting what’s working and building on it.",
+      "Newcomers are finding your parish, responding, and hearing back fast. The work now is protecting what’s working and building on it.",
   },
   {
-    min: 60,
-    label: "Building Momentum",
+    min: 70,
+    label: "Strong, With Gaps",
     summary:
-      "You have real pieces in place. The work now is closing the gaps so your effort turns into steady growth instead of occasional wins.",
+      "Your outreach system works, but specific gaps are costing you families. Closing them is where your next growth comes from.",
   },
   {
-    min: 40,
-    label: "Present, Not Yet Growing",
+    min: 50,
+    label: "Stalled",
     summary:
-      "Your parish shows up online, but it isn’t yet turning into new faces at Mass. The gaps below are where new families are slipping away.",
+      "Your parish is active online, but it isn’t bringing new people to Mass. Effort is going in without a system to turn it into first visits.",
+  },
+  {
+    min: 30,
+    label: "At Risk",
+    summary:
+      "Most people near your parish don’t know you’re there or how to take a first step. Without an outreach system, new families aren’t coming.",
   },
   {
     min: 0,
-    label: "Hard to Find",
+    label: "Critical",
     summary:
-      "Right now, most people near your parish who might come to Mass have no easy way to find you, hear from you, or take a first step. The good news: every category below can be fixed.",
+      "To newcomers in your area, your parish is effectively invisible. Nothing is inviting them in, and there’s no clear way for them to respond.",
   },
 ];
 

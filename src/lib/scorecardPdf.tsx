@@ -26,7 +26,7 @@ import { proof } from "@/data/scorecard";
 
 type Style = Styles[string];
 import { SCORECARD_BOOKING_URL } from "@/lib/scorecard";
-import type { ReportProblem, ScorecardDoc } from "@/lib/scorecardReport";
+import { capNote, type ReportProblem, type ScorecardDoc } from "@/lib/scorecardReport";
 
 const fontDir = path.join(process.cwd(), "src", "assets", "fonts");
 const font = (file: string) => path.join(fontDir, file);
@@ -204,7 +204,8 @@ function Problem({ p, i }: { p: ReportProblem; i: number }) {
 
 function ReportPdf({ doc }: { doc: ScorecardDoc }) {
   const r = doc.report;
-  const strong = r.score >= 80;
+  const strong = r.score >= 85;
+  const note = capNote(r);
   const preparedFor = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location]
     .filter(Boolean)
     .join(", ");
@@ -292,6 +293,9 @@ function ReportPdf({ doc }: { doc: ScorecardDoc }) {
             <Text style={s.colTier}>{r.band.label}</Text>
             <Text style={[s.colScore, { fontWeight: 700, color: navy }]}>{r.score} / 100</Text>
           </View>
+          {note ? (
+            <Text style={{ fontSize: 9.5, fontStyle: "italic", color: muted, marginTop: 4 }}>{note}</Text>
+          ) : null}
         </View>
 
         {/* Next step + quote + sign-off move together, so the sign-off

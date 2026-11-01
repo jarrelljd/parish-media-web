@@ -5,7 +5,12 @@
 
 import {
   ENGAGEMENT_UNSURE_POINTS,
+  FAST_FOLLOW_UP_VALUES,
   FOLLOWER_RATIO_UNSURE_POINTS,
+  LEAK_CAP,
+  NO_SYSTEM_CAP,
+  ONGOING_AD_VALUES,
+  PLAN_STEP_VALUES,
   US_STATES,
   bands,
   categories,
@@ -125,8 +130,36 @@ export function scoreAnswers(a: ScorecardAnswers) {
     team: choicePoints("team", a.team),
   };
 
-  const total = categoryOrder.reduce((sum, id) => sum + byCategory[id], 0);
-  return { total: Math.round(total), byCategory };
+  const rawTotal = Math.round(categoryOrder.reduce((sum, id) => sum + byCategory[id], 0));
+  const cap = scoreCap(a);
+  const total = cap ? Math.min(rawTotal, cap.at) : rawTotal;
+  return {
+    total,
+    rawTotal,
+    // Only reported when it actually lowered the score.
+    cap: cap && rawTotal > cap.at ? cap : null,
+    byCategory,
+  };
+}
+
+export type ScoreCap = { at: number; reason: "noSystem" | "leak" };
+
+// See NO_SYSTEM_CAP / LEAK_CAP in data/scorecard.ts.
+export function outreachStatus(a: Pick<ScorecardAnswers, "ads" | "nextStep" | "followUp" | "inquirers">) {
+  const hasAds = ONGOING_AD_VALUES.includes(a.ads);
+  const hasPlanStep = PLAN_STEP_VALUES.includes(a.nextStep);
+  const fastFollow = FAST_FOLLOW_UP_VALUES.includes(a.followUp);
+  const tracked = a.inquirers !== "untracked";
+  const missing = !hasAds || !hasPlanStep;
+  const leak = !missing && (!fastFollow || !tracked);
+  return { hasAds, hasPlanStep, fastFollow, tracked, missing, leak };
+}
+
+function scoreCap(a: ScorecardAnswers): ScoreCap | null {
+  const o = outreachStatus(a);
+  if (o.missing) return { at: NO_SYSTEM_CAP, reason: "noSystem" };
+  if (o.leak) return { at: LEAK_CAP, reason: "leak" };
+  return null;
 }
 
 export function bandFor(score: number) {
@@ -289,6 +322,9 @@ export type CategoryResult = {
 
 export type ScorecardReport = {
   score: number;
+  // Sum of the category points, before any cap.
+  rawScore: number;
+  cap: ScoreCap | null;
   band: (typeof bands)[number];
   population: number | null;
   categories: CategoryResult[];
@@ -296,7 +332,7 @@ export type ScorecardReport = {
 };
 
 export function buildReport(a: ScorecardAnswers, population: number | null): ScorecardReport {
-  const { total, byCategory } = scoreAnswers(a);
+  const { total, rawTotal, cap, byCategory } = scoreAnswers(a);
   const results: CategoryResult[] = categoryOrder.map((id) => {
     const max = categories[id].max;
     const points = byCategory[id];
@@ -319,7 +355,7 @@ export function buildReport(a: ScorecardAnswers, population: number | null): Sco
     .filter((c) => c.tier !== "high")
     .sort((x, y) => x.points / x.max - y.points / y.max || y.max - x.max)
     .slice(0, 3);
-  return { score: total, band: bandFor(total), population, categories: results, priorities };
+  return { score: total, rawScore: rawTotal, cap, band: bandFor(total), population, categories: results, priorities };
 }
 
 // Plain-text version for the lead notification (email + Zapier).

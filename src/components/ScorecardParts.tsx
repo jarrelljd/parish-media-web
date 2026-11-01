@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Tier } from "@/data/scorecard";
 import type { ScorecardAnswers, ScorecardReport } from "@/lib/scorecard";
+import { capNote } from "@/lib/scorecardReport";
 
 // Pieces shared by the scorecard quiz (/scorecard) and its summary page
 // (/scorecard/summary).
@@ -98,7 +99,14 @@ export function ScoreHero({
 }
 
 export function CategoryBars({ report }: { report: ScorecardReport }) {
+  const note = capNote(report);
   return (
+    <>
+    {note && (
+      <p className="mb-5 rounded-xl bg-[#b4533c]/10 px-4 py-3 text-pretty text-sm leading-relaxed text-[#7d3424]">
+        {note}
+      </p>
+    )}
     <ul className="space-y-5">
       {report.categories.map((c) => (
         <li key={c.id}>
@@ -120,5 +128,6 @@ export function CategoryBars({ report }: { report: ScorecardReport }) {
         </li>
       ))}
     </ul>
+    </>
   );
 }

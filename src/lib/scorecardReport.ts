@@ -17,6 +17,7 @@ import {
   SCORECARD_BOOKING_URL,
   buildReport,
   choiceLabel,
+  outreachStatus,
   type ScorecardAnswers,
   type ScorecardReport,
 } from "@/lib/scorecard";
@@ -55,9 +56,6 @@ function roundPopulation(n: number) {
   return fmt(Math.round(n / step) * step);
 }
 
-const ONGOING_ADS = ["under250", "250-1000", "1000+"];
-const PLAN_STEPS = ["planVisit", "metaForm"];
-const FAST_FOLLOW_UP = ["sameDay", "twoDays"];
 
 function adsLine(a: ScorecardAnswers) {
   if (a.ads === "none") return "No paid ads in the last 6 months.";
@@ -128,12 +126,14 @@ export function buildScorecardDoc(
   const pastor = isPastor ? "you" : "your pastor";
   const Pastor = sentence(pastor);
 
-  const hasAds = ONGOING_ADS.includes(a.ads);
-  const hasPlanStep = PLAN_STEPS.includes(a.nextStep);
-  const fastFollow = FAST_FOLLOW_UP.includes(a.followUp);
-  const tracked = a.inquirers !== "untracked";
-  const outreachMissing = !hasAds || !hasPlanStep;
-  const outreachLeak = !outreachMissing && (!fastFollow || !tracked);
+  const {
+    hasAds,
+    hasPlanStep,
+    fastFollow,
+    tracked,
+    missing: outreachMissing,
+    leak: outreachLeak,
+  } = outreachStatus(a);
 
   const missingTypes = postTypes.filter(
     (t) => t.value !== "flyers" && !a.contentMix.includes(t.value),
@@ -396,6 +396,15 @@ export function coverEmailHtml(d: ScorecardDoc, pdfUrl: string): string {
 </div></body></html>`;
 }
 
+// One sentence explaining why the total is lower than the categories add up
+// to. Null when no cap applied.
+export function capNote(r: ScorecardReport): string | null {
+  if (!r.cap) return null;
+  return r.cap.reason === "noSystem"
+    ? `Your categories add up to ${r.rawScore}, but without an outreach system (ongoing ads and a Plan a Visit step) the total is capped at ${r.cap.at}.`
+    : `Your categories add up to ${r.rawScore}, but until new inquiries get a personal reply within two days and are tracked, the total is capped at ${r.cap.at}.`;
+}
+
 // Plain-text version for the CRM / lead notification.
 export function docToText(d: ScorecardDoc): string {
   const out = [
@@ -409,5 +418,7 @@ export function docToText(d: ScorecardDoc): string {
   });
   out.push("What's working:", ...d.strengths.map((s) => `- ${s}`), "", "Scores:");
   for (const c of d.report.categories) out.push(`- ${c.label}: ${c.points}/${c.max}`);
+  const note = capNote(d.report);
+  if (note) out.push(note);
   return out.join("\n");
 }

@@ -4,8 +4,9 @@
 // Points add up to 100: Reach 30, Engagement 15, Content 15,
 // Newcomer Pipeline 20, Follow-Up 15, Team 5.
 //
-// Content (15) = frequency 5 + homily clips 5 + content mix 3 + pastor on
-// camera 2.
+// Content (15) = frequency 5 + homily clips 7 + content mix 3. (A separate
+// "pastor on camera" question was dropped: homily clips and the content-mix
+// question already cover it.)
 //
 // Copy rule: the report only quotes the parish's own numbers back to them,
 // plus the client results in `proof` below (all published on /results).
@@ -202,8 +203,8 @@ export const questions: Question[] = [
     question: "Do you post short clips of your pastor’s homilies?",
     choices: [
       { value: "no", label: "No", points: 0 },
-      { value: "occasionally", label: "Occasionally", points: 1 },
-      { value: "regularly", label: "Yes, every week", points: 5 },
+      { value: "occasionally", label: "Occasionally", points: 2 },
+      { value: "regularly", label: "Yes, every week", points: 7 },
     ],
   },
   {
@@ -218,17 +219,6 @@ export const questions: Question[] = [
       { value: "connection", label: "The pastor’s story, vision, or staff introductions", points: 1 },
       { value: "activity", label: "Event photos, sacraments, or milestones", points: 1 },
       { value: "flyers", label: "Flyers and event announcements", points: 0 },
-    ],
-  },
-  {
-    kind: "choice",
-    id: "pastorOnCamera",
-    category: "content",
-    question: "Does your pastor appear on camera in your posts?",
-    choices: [
-      { value: "never", label: "Never or almost never", points: 0 },
-      { value: "sometimes", label: "Occasionally", points: 1 },
-      { value: "regularly", label: "Regularly", points: 2 },
     ],
   },
   {

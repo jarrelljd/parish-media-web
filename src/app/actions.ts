@@ -402,7 +402,6 @@ export async function submitScorecardOptIn(
     postingFrequency: label("frequency"),
     homilyClips: label("homilyClips"),
     contentMix: answers.contentMix.join(", ") || "None",
-    pastorOnCamera: label("pastorOnCamera"),
     monthlyInquirers: label("inquirers"),
     newcomerNextStep: label("nextStep"),
     followUpSpeed: label("followUp"),

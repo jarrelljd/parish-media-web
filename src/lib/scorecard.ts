@@ -41,7 +41,6 @@ export type ScorecardAnswers = {
   homilyClips: string;
   // Post types they publish monthly (values from postTypes in data/scorecard).
   contentMix: string[];
-  pastorOnCamera: string;
   inquirers: string;
   nextStep: string;
   followUp: string;
@@ -123,8 +122,7 @@ export function scoreAnswers(a: ScorecardAnswers) {
     content:
       choicePoints("frequency", a.frequency) +
       choicePoints("homilyClips", a.homilyClips) +
-      contentMixPoints(a.contentMix) +
-      choicePoints("pastorOnCamera", a.pastorOnCamera),
+      contentMixPoints(a.contentMix),
     pipeline: choicePoints("inquirers", a.inquirers) + choicePoints("nextStep", a.nextStep),
     followUp: choicePoints("followUp", a.followUp),
     team: choicePoints("team", a.team),
@@ -253,13 +251,6 @@ function factsFor(id: CategoryId, a: ScorecardAnswers, population: number | null
       } else if (a.contentMix.length === 1 && a.contentMix[0] === "flyers") {
         lines.push("Most of what you post is flyers and announcements.");
       }
-      lines.push(
-        {
-          never: "Your pastor rarely appears on camera. For most newcomers, the pastor is the parish.",
-          sometimes: "Your pastor appears occasionally. More of him would help newcomers feel they know him before they arrive.",
-          regularly: "Your pastor appears regularly, which helps newcomers feel they know him before they visit.",
-        }[a.pastorOnCamera] ?? "",
-      );
       break;
     }
     case "pipeline": {

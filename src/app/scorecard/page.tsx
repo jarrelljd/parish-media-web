@@ -4,7 +4,7 @@ import Scorecard from "@/components/Scorecard";
 export const metadata: Metadata = {
   title: "Parish Social Media Scorecard | Parish Media Company",
   description:
-    "Answer 15 quick questions and get a free score out of 100 for how well your parish reaches new people on Facebook and Instagram.",
+    "Answer 14 quick questions and get a free score out of 100 for how well your parish reaches new people on Facebook and Instagram.",
   // Soft launch: not linked in the nav yet ("Coming Soon" in Nav.tsx).
   // Remove this when the scorecard goes live.
   robots: { index: false, follow: false },
@@ -27,7 +27,7 @@ export default function ScorecardPage() {
             How Well Is Your Parish Reaching New People?
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-navy/70 sm:text-xl">
-            Answer 15 quick questions about your Facebook, Instagram, and
+            Answer 14 quick questions about your Facebook, Instagram, and
             newcomer follow-up. In about 3 minutes, you&rsquo;ll get your
             parish&rsquo;s score out of&nbsp;100.
           </p>

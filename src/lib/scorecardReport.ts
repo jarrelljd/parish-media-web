@@ -111,7 +111,6 @@ function listJoin(items: string[]) {
   return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
 }
 
-const sentence = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export function buildScorecardDoc(
   a: ScorecardAnswers,
@@ -123,8 +122,6 @@ export function buildScorecardDoc(
   const parish = org || "Your parish";
   const parishMid = org || "your parish";
   const isPastor = lead.role === "Pastor";
-  const pastor = isPastor ? "you" : "your pastor";
-  const Pastor = sentence(pastor);
 
   const {
     hasAds,
@@ -140,7 +137,7 @@ export function buildScorecardDoc(
   );
   const onlyFlyers = a.contentMix.length === 1 && a.contentMix[0] === "flyers";
   const infrequent = a.frequency === "rarely" || a.frequency === "weekly";
-  const homilyGap = a.homilyClips !== "regularly" || a.pastorOnCamera === "never";
+  const homilyGap = a.homilyClips !== "regularly";
   const postingGap = infrequent || missingTypes.length > 0;
 
   const problems: ReportProblem[] = [];
@@ -192,43 +189,28 @@ export function buildScorecardDoc(
     });
   }
 
-  // 2. Homily clips / pastor on camera
+  // 2. Homily clips (no clips also means the pastor isn't on camera)
   if (homilyGap) {
     const noClips = a.homilyClips === "no";
-    const neverOnCamera = a.pastorOnCamera === "never";
     const saw = [
-      {
-        never: `${Pastor} rarely appear${isPastor ? "" : "s"} on camera.`,
-        sometimes: `${Pastor} appear${isPastor ? "" : "s"} on camera occasionally.`,
-        regularly: `${Pastor} appear${isPastor ? "" : "s"} on camera regularly.`,
-      }[a.pastorOnCamera] ?? "",
-      {
-        no: "The parish doesn’t post homily clips.",
-        occasionally: "Homily clips are posted only occasionally.",
-        regularly: "Homily clips go out every week.",
-      }[a.homilyClips] ?? "",
+      noClips
+        ? "The parish doesn’t post homily clips."
+        : "Homily clips are posted only occasionally.",
     ];
     if (onlyFlyers) saw.push("Most of what you post is flyers and announcements.");
     problems.push({
       id: "homily",
-      title:
-        noClips && neverOnCamera
-          ? `${isPastor ? "You’re" : "Your pastor isn’t"}${isPastor ? " not" : ""} on camera, and there are no homily clips`
-          : noClips
-            ? "There are no homily clips"
-            : a.homilyClips === "occasionally"
-              ? "Homily clips aren’t a weekly habit yet"
-              : `${isPastor ? "You’re" : "Your pastor isn’t"}${isPastor ? " not" : ""} on camera`,
-      saw: saw.filter(Boolean),
+      title: noClips
+        ? `${isPastor ? "You’re not" : "Your pastor isn’t"} on camera, and there are no homily clips`
+        : "Homily clips aren’t a weekly habit yet",
+      saw,
       why: [
         "Homily clips are what people expect to see from their parish, and they’re the strongest content a parish has. Each clip gives something of value for free. That builds goodwill, and goodwill is what makes people say yes later, when you invite them to Mass or ask them to volunteer or give." +
           (onlyFlyers ? " Flyers only ask. They never give." : ""),
       ],
       proof: proof.stJoseph,
       firstStep:
-        a.homilyClips === "regularly"
-          ? `Get ${isPastor ? "yourself" : "your pastor"} on camera beyond the homily, too: a short weekly message, a welcome to newcomers, or the story of ${isPastor ? "your" : "his"} vocation.`
-          : noClips
+        noClips
             ? "Start filming the homily every Sunday, even on a phone and tripod. If no one on staff can edit video, hire a clipper. Turning homilies into short clips every week is one of the things we handle for parishes."
             : "Make it weekly: film every Sunday homily and post at least one clip a week. If editing is the bottleneck, hire a clipper. Turning homilies into short clips every week is one of the things we handle for parishes.",
     });

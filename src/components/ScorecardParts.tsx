@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Tier } from "@/data/scorecard";
+import type { BandTone, Tier } from "@/data/scorecard";
 import type { ScorecardAnswers, ScorecardReport } from "@/lib/scorecard";
 import { capNote } from "@/lib/scorecardReport";
 
@@ -39,7 +39,16 @@ export const tierLabel: Record<Tier, string> = {
   high: "Strong",
 };
 
-export function ScoreRing({ score }: { score: number }) {
+// Band colors on the navy score card (brighter than the PDF's print colors).
+export const bandToneOnNavy: Record<BandTone, string> = {
+  critical: "#f26b5b",
+  atRisk: "#f5934a",
+  stalled: "#e8c14a",
+  gaps: "#a6d16a",
+  thriving: "#4fd68a",
+};
+
+export function ScoreRing({ score, color }: { score: number; color: string }) {
   const r = 52;
   const c = 2 * Math.PI * r;
   const [shown, setShown] = useState(0);
@@ -61,7 +70,8 @@ export function ScoreRing({ score }: { score: number }) {
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={c * (1 - shown / 100)}
-          className="text-gold transition-[stroke-dashoffset] duration-[1200ms] ease-out motion-reduce:transition-none"
+          style={{ color }}
+          className="transition-[stroke-dashoffset] duration-[1200ms] ease-out motion-reduce:transition-none"
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -79,15 +89,19 @@ export function ScoreHero({
   report: ScorecardReport;
   children?: React.ReactNode;
 }) {
+  const tone = bandToneOnNavy[report.band.tone];
   return (
     <div className="overflow-hidden rounded-3xl bg-navy px-6 py-10 text-center text-offwhite shadow-2xl shadow-navy/20 sm:px-12 sm:py-12">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
         Your Parish Social Media Score
       </p>
       <div className="mt-6 flex justify-center">
-        <ScoreRing score={report.score} />
+        <ScoreRing score={report.score} color={tone} />
       </div>
-      <h2 className="mt-6 text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl">
+      <h2
+        className="mt-6 text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl"
+        style={{ color: tone }}
+      >
         {report.band.label}
       </h2>
       <p className="mx-auto mt-3 max-w-lg text-pretty leading-relaxed text-offwhite/75">

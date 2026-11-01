@@ -22,7 +22,7 @@ import {
   renderToBuffer,
 } from "@react-pdf/renderer";
 import type { Styles } from "@react-pdf/renderer";
-import { proof } from "@/data/scorecard";
+import { proof, type BandTone } from "@/data/scorecard";
 
 type Style = Styles[string];
 import { SCORECARD_BOOKING_URL } from "@/lib/scorecard";
@@ -63,6 +63,14 @@ const rule = "#d9d4c9";
 const gold = "#b08d2a";
 const missingRed = "#8c3b2b";
 const tierLabel = { low: "Needs attention", mid: "Room to grow", high: "Strong" } as const;
+// Band colors, chosen to stay readable printed on white.
+const bandColor: Record<BandTone, string> = {
+  critical: "#b3261e",
+  atRisk: "#c25a14",
+  stalled: "#a77a00",
+  gaps: "#5b8a2e",
+  thriving: "#1f7a3f",
+};
 
 // Printed form of the booking link, readable on paper.
 const BOOKING_DISPLAY = SCORECARD_BOOKING_URL.replace(/^https?:\/\//, "").replace(/#.*$/, "");
@@ -205,6 +213,7 @@ function Problem({ p, i }: { p: ReportProblem; i: number }) {
 function ReportPdf({ doc }: { doc: ScorecardDoc }) {
   const r = doc.report;
   const strong = r.score >= 85;
+  const toneColor = bandColor[r.band.tone];
   const note = capNote(r);
   const preparedFor = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location]
     .filter(Boolean)
@@ -239,10 +248,11 @@ function ReportPdf({ doc }: { doc: ScorecardDoc }) {
         </View>
         <View style={s.memoRow}>
           <Text style={s.memoLabel}>Score</Text>
-          <Text style={s.memoValue}>
+          <View style={[s.memoValue, { flexDirection: "row", alignItems: "center" }]}>
             <Text style={{ fontWeight: 700, color: navy }}>{r.score} out of 100</Text>
-            {`  ·  ${r.band.label}`}
-          </Text>
+            <View style={{ width: 7, height: 7, borderRadius: 3.5, backgroundColor: toneColor, marginLeft: 10, marginRight: 5 }} />
+            <Text style={{ fontWeight: 700, color: toneColor }}>{r.band.label}</Text>
+          </View>
         </View>
         <View style={s.memoRule} />
 
@@ -290,8 +300,8 @@ function ReportPdf({ doc }: { doc: ScorecardDoc }) {
           ))}
           <View style={[s.scoreRow, { borderBottomWidth: 0 }]}>
             <Text style={[s.colLabel, { fontWeight: 700, color: navy }]}>Total</Text>
-            <Text style={s.colTier}>{r.band.label}</Text>
-            <Text style={[s.colScore, { fontWeight: 700, color: navy }]}>{r.score} / 100</Text>
+            <Text style={[s.colTier, { fontWeight: 700, color: toneColor }]}>{r.band.label}</Text>
+            <Text style={[s.colScore, { fontWeight: 700, color: toneColor }]}>{r.score} / 100</Text>
           </View>
           {note ? (
             <Text style={{ fontSize: 9.5, fontStyle: "italic", color: muted, marginTop: 4 }}>{note}</Text>

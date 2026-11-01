@@ -372,35 +372,43 @@ export const ONGOING_AD_VALUES = ["under250", "250-1000", "1000+"];
 export const PLAN_STEP_VALUES = ["planVisit", "metaForm"];
 export const FAST_FOLLOW_UP_VALUES = ["sameDay", "twoDays"];
 
-// Overall score bands (score is 0–100).
-export const bands = [
+// Overall score bands (score is 0–100). `tone` drives the band's color in
+// the PDF and on the results pages (red for critical through green).
+export type BandTone = "critical" | "atRisk" | "stalled" | "gaps" | "thriving";
+
+export const bands: { min: number; label: string; tone: BandTone; summary: string }[] = [
   {
     min: 85,
     label: "Thriving",
+    tone: "thriving",
     summary:
       "Newcomers are finding your parish, responding, and hearing back fast. The work now is protecting what’s working and building on it.",
   },
   {
     min: 70,
     label: "Strong, With Gaps",
+    tone: "gaps",
     summary:
       "Your outreach system works, but specific gaps are costing you families. Closing them is where your next growth comes from.",
   },
   {
     min: 50,
     label: "Stalled",
+    tone: "stalled",
     summary:
       "Your parish is active online, but it isn’t bringing new people to Mass. Effort is going in without a system to turn it into first visits.",
   },
   {
     min: 30,
     label: "At Risk",
+    tone: "atRisk",
     summary:
       "Most people near your parish don’t know you’re there or how to take a first step. Without an outreach system, new families aren’t coming.",
   },
   {
     min: 0,
     label: "Critical",
+    tone: "critical",
     summary:
       "To newcomers in your area, your parish is effectively invisible. Nothing is inviting them in, and there’s no clear way for them to respond.",
   },

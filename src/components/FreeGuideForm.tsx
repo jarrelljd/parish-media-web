@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import ThankYouOverlay from "@/components/ThankYouOverlay";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
 import { trackLead } from "@/lib/pixel";
 import { LEAD_NAME_KEY } from "@/components/LetterGreeting";
@@ -24,6 +26,9 @@ export default function FreeGuideForm() {
   const ineligible = role === NO_QUALIFYING_ROLE;
   const showMore =
     name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible;
+  const done = state.status === "success";
+  // Fades the thank-you text out just before we leave for the letter page.
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     if (state.status === "success") {
@@ -41,30 +46,29 @@ export default function FreeGuideForm() {
       } catch {
         // Storage blocked: the letter falls back to "Dear Parish Leader".
       }
-      const timer = setTimeout(() => {
+      // Full-screen thank-you covers the page wherever they were scrolled,
+      // so nothing jumps; then a soft fade carries them to the letter page.
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const fade = setTimeout(() => setLeaving(true), 2000);
+      const go = setTimeout(() => {
         window.location.href = "/free-guide/free-consult";
-      }, 1500);
-      return () => clearTimeout(timer);
+      }, 2300);
+      return () => {
+        clearTimeout(fade);
+        clearTimeout(go);
+        document.body.style.overflow = prevOverflow;
+      };
     }
   }, [state.status, state.eventId, name]);
 
-  if (state.status === "success") {
-    return (
-      <div className="rounded-3xl bg-white p-8 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-        <p className="text-balance font-serif text-2xl font-medium tracking-tight text-navy">
-          Thank you!
-        </p>
-        <p className="mt-3 text-navy/70">
-          Your copy is on its way to your&nbsp;inbox.
-        </p>
-        <p className="mt-4 font-serif text-lg italic text-navy">
-          While you wait, a quick note from&nbsp;Joe&hellip;
-        </p>
-      </div>
-    );
-  }
-
   return (
+    <>
+    {done &&
+      createPortal(
+        <ThankYouOverlay leaving={leaving} />,
+        document.body,
+      )}
     <form
       action={formAction}
       className="space-y-5 rounded-3xl bg-white p-8 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10"
@@ -248,11 +252,24 @@ export default function FreeGuideForm() {
 
       <button
         type="submit"
-        disabled={pending || ineligible}
-        className="w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-lg shadow-gold/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/40 disabled:translate-y-0 disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        disabled={pending || done || ineligible}
+        className={`w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-lg shadow-gold/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/40 disabled:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${
+          ineligible ? "disabled:opacity-60" : "disabled:cursor-wait"
+        }`}
       >
-        {pending ? "Sending..." : "Send Me the Free Digital Copy"}
+        {pending || done ? (
+          <span className="inline-flex items-center justify-center gap-2.5">
+            <span
+              className="h-4 w-4 animate-spin rounded-full border-2 border-navy/25 border-t-navy motion-reduce:animate-none"
+              aria-hidden="true"
+            />
+            Sending&hellip;
+          </span>
+        ) : (
+          "Send Me the Free Digital Copy"
+        )}
       </button>
     </form>
+    </>
   );
 }

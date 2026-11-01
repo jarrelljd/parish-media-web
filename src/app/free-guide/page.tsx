@@ -76,6 +76,11 @@ const concepts = [
 export default function FreeGuidePage() {
   return (
     <>
+      {/* Lets the thank-you screen cross-fade into /free-guide/free-consult */}
+      <style>{`
+          @view-transition { navigation: auto; }
+          ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; }
+      `}</style>
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pt-6 pb-16 sm:pt-14 sm:pb-20">

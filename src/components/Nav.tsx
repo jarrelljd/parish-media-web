@@ -26,7 +26,7 @@ const menus: Menu[] = [
     items: [
       { href: "/free-guide", label: "Free Book" },
       { href: "/house-of-studies", label: "House of Studies" },
-      { label: "Social Media Scorecard" },
+      { href: "/scorecard", label: "Social Media Scorecard" },
     ],
   },
 ];

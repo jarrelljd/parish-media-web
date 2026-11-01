@@ -5,9 +5,6 @@ export const metadata: Metadata = {
   title: "Parish Social Media Scorecard | Parish Media Company",
   description:
     "Answer 14 quick questions and get a free score out of 100 for how well your parish reaches new people on Facebook and Instagram.",
-  // Soft launch: not linked in the nav yet ("Coming Soon" in Nav.tsx).
-  // Remove this when the scorecard goes live.
-  robots: { index: false, follow: false },
 };
 
 export default function ScorecardPage() {

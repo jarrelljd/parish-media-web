@@ -7,14 +7,13 @@ import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
 import { greetingFor } from "@/lib/greeting";
 import {
-  buildReport,
   choiceLabel,
   parseAnswers,
-  reportToHtml,
-  reportToText,
   type ChoiceId,
   type FollowerCount,
 } from "@/lib/scorecard";
+import { createReportQuery } from "@/lib/scorecardLink";
+import { buildScorecardDoc, coverEmailHtml, docToText } from "@/lib/scorecardReport";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
@@ -316,22 +315,25 @@ export type ScorecardOptInState = {
   message?: string;
   // Shared with the browser pixel's Lead so Meta dedupes the two.
   eventId?: string;
+  // Link to the lead's PDF report, for the summary page's download button.
+  pdfUrl?: string;
 };
 
-// The Zap behind ZAPIER_WEBHOOK_SCORECARD emails the full report to the lead
-// (reportHtml, ready to send as-is) and adds them to Joe's CRM. That's what
-// fulfills the "your report is on its way" promise on /scorecard/summary,
-// so its failure blocks success. The Resend email to Joe is just a heads-up
-// and never blocks.
+// The Zap behind ZAPIER_WEBHOOK_SCORECARD emails the lead their report:
+// `emailHtml` is a short cover note ready to send, and `reportPdfUrl` is the
+// PDF to attach (signed link, rebuilt on demand by
+// /api/scorecard/report). It also adds the lead to Joe's CRM. That Zap is
+// what fulfills "your report is on its way" on /scorecard/summary, so its
+// failure blocks success. The Resend email to Joe is just a heads-up.
 export async function submitScorecardOptIn(
   _prevState: ScorecardOptInState,
   formData: FormData,
 ): Promise<ScorecardOptInState> {
-  const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
+  const name = String(formData.get("name") ?? "").trim().slice(0, 120);
+  const email = String(formData.get("email") ?? "").trim().slice(0, 200);
+  const phone = String(formData.get("phone") ?? "").trim().slice(0, 40);
   const role = String(formData.get("role") ?? "");
-  const organization = String(formData.get("organization") ?? "").trim();
+  const organization = String(formData.get("organization") ?? "").trim().slice(0, 120);
 
   if (!(freeGuideRoles as readonly string[]).includes(role)) {
     return { status: "error", message: "Please select your role." };
@@ -367,12 +369,46 @@ export async function submitScorecardOptIn(
 
   // Re-score on the server so the numbers Joe sees match the answers.
   const population = lookupCityPopulation(answers.city, answers.state);
-  const report = buildReport(answers, population);
-  const reportText = reportToText(report);
   const greeting = greetingFor(name);
+  const doc = buildScorecardDoc(answers, population, {
+    name,
+    organization,
+    role,
+    greeting,
+  });
+  const report = doc.report;
+
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "parishmediacompany.com";
+  const proto = headersList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const pdfUrl = `${proto}://${host}/api/scorecard/report?${createReportQuery({
+    a: answers,
+    n: name,
+    o: organization,
+    r: role,
+    t: Date.now(),
+  })}`;
+
   const countLabel = (c: FollowerCount) =>
     typeof c === "number" ? String(c) : c === "none" ? "No account" : "Not sure";
   const label = (id: ChoiceId) => choiceLabel(id, answers[id]);
+  const answerFields: Record<string, string> = {
+    weekendAttendance: String(answers.attendance),
+    facebookFollowers: countLabel(answers.fbFollowers),
+    instagramFollowers: countLabel(answers.igFollowers),
+    typicalEngagement: label("engagement"),
+    followerGrowth: label("growth"),
+    ads: label("ads"),
+    postingFrequency: label("frequency"),
+    homilyClips: label("homilyClips"),
+    contentMix: answers.contentMix.join(", ") || "None",
+    pastorOnCamera: label("pastorOnCamera"),
+    monthlyInquirers: label("inquirers"),
+    newcomerNextStep: label("nextStep"),
+    followUpSpeed: label("followUp"),
+    socialMediaOwner: label("team"),
+  };
+  const reportText = docToText(doc);
 
   const payload: Record<string, string> = {
     timestamp: new Date().toISOString(),
@@ -388,24 +424,16 @@ export async function submitScorecardOptIn(
     cityPopulation: population ? String(population) : "",
     score: String(report.score),
     band: report.band.label,
+    topProblem: doc.problems[0]?.title ?? "",
     ...Object.fromEntries(
       report.categories.map((c) => [`score_${c.id}`, `${c.points}/${c.max}`]),
     ),
-    weekendAttendance: String(answers.attendance),
-    facebookFollowers: countLabel(answers.fbFollowers),
-    instagramFollowers: countLabel(answers.igFollowers),
-    typicalEngagement: label("engagement"),
-    followerGrowth: label("growth"),
-    ads: label("ads"),
-    postingFrequency: label("frequency"),
-    contentType: label("contentType"),
-    pastorOnCamera: label("pastorOnCamera"),
-    monthlyInquirers: label("inquirers"),
-    newcomerNextStep: label("nextStep"),
-    followUpSpeed: label("followUp"),
-    socialMediaOwner: label("team"),
+    ...answerFields,
+    reportPdfUrl: pdfUrl,
+    reportPdfFilename: `Parish Social Media Scorecard - ${doc.parish}.pdf`,
+    emailSubject: `Your Parish Social Media Scorecard: ${doc.parish}`,
+    emailHtml: coverEmailHtml(doc, pdfUrl),
     reportText,
-    reportHtml: reportToHtml(report, greeting),
   };
 
   const [zapier, mail] = await Promise.allSettled([
@@ -424,18 +452,10 @@ export async function submitScorecardOptIn(
           `Email: ${email}`,
           `Phone: ${phone}`,
           `Location: ${answers.city}, ${answers.state}${population ? ` (pop. ${population.toLocaleString("en-US")})` : ""}`,
+          `PDF report: ${pdfUrl}`,
           "",
           "Answers:",
-          ...Object.entries(payload)
-            .filter(([k]) =>
-              [
-                "weekendAttendance", "facebookFollowers", "instagramFollowers",
-                "typicalEngagement", "followerGrowth", "ads", "postingFrequency",
-                "contentType", "pastorOnCamera", "monthlyInquirers",
-                "newcomerNextStep", "followUpSpeed", "socialMediaOwner",
-              ].includes(k),
-            )
-            .map(([k, v]) => `  ${k}: ${v}`),
+          ...Object.entries(answerFields).map(([k, v]) => `  ${k}: ${v}`),
           "",
           reportText,
         ].join("\n"),
@@ -443,13 +463,11 @@ export async function submitScorecardOptIn(
       if (error) throw new Error(JSON.stringify(error));
     })(),
   ]);
-  if (zapier.status === "rejected") {
-    console.error("Failed to notify Zapier webhook (scorecard):", zapier.reason);
-  }
   if (mail.status === "rejected") {
     console.error("Failed to send scorecard lead email:", mail.reason);
   }
   if (zapier.status === "rejected") {
+    console.error("Failed to notify Zapier webhook (scorecard):", zapier.reason);
     return {
       status: "error",
       message:
@@ -459,7 +477,6 @@ export async function submitScorecardOptIn(
 
   const eventId = randomUUID();
   try {
-    const headersList = await headers();
     await sendGenericLeadEvent({
       eventId,
       contentName: "Social Media Scorecard",
@@ -473,5 +490,5 @@ export async function submitScorecardOptIn(
     console.error("Failed to send Meta Conversions API event (scorecard):", err);
   }
 
-  return { status: "success", eventId };
+  return { status: "success", eventId, pdfUrl };
 }

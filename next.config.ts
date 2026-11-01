@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Scorecard PDFs (src/lib/scorecardPdf.tsx) render on the server; keep
+  // react-pdf out of the bundle so it loads like a normal Node package.
+  serverExternalPackages: ["@react-pdf/renderer"],
   async redirects() {
     return [
       // The House of Studies was called The Vault, then The Hub; keep old

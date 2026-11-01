@@ -16,6 +16,10 @@ export type StoredScorecardResult = {
   population: number | null;
   name: string;
   email: string;
+  organization?: string;
+  role?: string;
+  // Signed link to their PDF report (for the download button).
+  pdfUrl?: string;
 };
 
 export const tierBar: Record<Tier, string> = {

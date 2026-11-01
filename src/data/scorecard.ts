@@ -4,9 +4,31 @@
 // Points add up to 100: Reach 30, Engagement 15, Content 15,
 // Newcomer Pipeline 20, Follow-Up 15, Team 5.
 //
-// Copy rule: the report only quotes the parish's own numbers back to them.
+// Content (15) = frequency 5 + homily clips 5 + content mix 3 + pastor on
+// camera 2.
+//
+// Copy rule: the report only quotes the parish's own numbers back to them,
+// plus the client results in `proof` below (all published on /results).
 // No invented benchmarks ("the average parish scores…") until there's real
 // scorecard data to back them up.
+//
+// The written report (diagnosis + major problems) is built in
+// src/lib/scorecardReport.ts.
+
+// Client results the report may quote. Joe approved these for the report.
+export const proof = {
+  adsCost:
+    "For parishes we work with, each person who fills out the form usually costs $2–3 in ads.",
+  stPatrick:
+    "At St. Patrick’s in South Hadley, MA, targeted ads plus steady posting brought in 65 young adult inquiries in 60 days and helped the parish build a young adult ministry from nothing.",
+  stJoseph:
+    "St. Joseph Parish in Los Banos, CA grew from 0 to 941 Instagram followers between February and June 2026, largely through consistent homily clips.",
+  quote: {
+    text: "Joe’s work has been great. Easter Mass was the most packed it’s ever been.",
+    name: "Fr. Jared DeLeo",
+    role: "Pastor, St. Monica Catholic Parish, Palatka, FL",
+  },
+};
 
 export type CategoryId =
   | "reach"
@@ -36,11 +58,51 @@ export type CountQuestion = {
   fallbacks: { value: "unsure" | "none"; label: string }[];
 };
 
+// Pick-all-that-apply. Each picked choice adds its points.
+export type MultiQuestion = {
+  kind: "multi";
+  id: "contentMix";
+  category: CategoryId;
+  question: string;
+  hint?: string;
+  choices: Choice[];
+};
+
 export type Question =
   | { kind: "location"; id: "location"; question: string; hint?: string }
   | { kind: "attendance"; id: "attendance"; question: string; hint?: string }
   | CountQuestion
-  | ChoiceQuestion;
+  | ChoiceQuestion
+  | MultiQuestion;
+
+// The four kinds of organic posts (know, like, trust, ask). Values match the
+// contentMix choices below.
+export const postTypes = [
+  {
+    value: "value",
+    label: "Value posts",
+    purpose: "make people like the parish",
+    examples: "homily clips, short teachings",
+  },
+  {
+    value: "connection",
+    label: "Connection posts",
+    purpose: "help people know the parish",
+    examples: "the pastor’s vocation story, his vision for the parish, staff introductions",
+  },
+  {
+    value: "activity",
+    label: "Activity posts",
+    purpose: "help people trust the parish",
+    examples: "event group photos, sacraments, milestones",
+  },
+  {
+    value: "flyers",
+    label: "Flyers",
+    purpose: "are the asks",
+    examples: "Mass times, events, volunteering. They work best when the other three are already in place",
+  },
+] as const;
 
 export const questions: Question[] = [
   {
@@ -130,18 +192,32 @@ export const questions: Question[] = [
       { value: "rarely", label: "A few times a month or less", points: 0 },
       { value: "weekly", label: "About once a week", points: 2 },
       { value: "few", label: "2–3 times a week", points: 4 },
-      { value: "daily", label: "Daily or almost daily", points: 6 },
+      { value: "daily", label: "Daily or almost daily", points: 5 },
     ],
   },
   {
     kind: "choice",
-    id: "contentType",
+    id: "homilyClips",
     category: "content",
-    question: "What do you mostly post?",
+    question: "Do you post short clips of your pastor’s homilies?",
     choices: [
-      { value: "flyers", label: "Flyers, bulletin graphics, announcements", points: 1 },
-      { value: "photos", label: "Photos of real people and parish life", points: 4 },
-      { value: "video", label: "Regular short videos or Reels", points: 6 },
+      { value: "no", label: "No", points: 0 },
+      { value: "occasionally", label: "Occasionally", points: 2 },
+      { value: "regularly", label: "Yes, every week", points: 5 },
+    ],
+  },
+  {
+    kind: "multi",
+    id: "contentMix",
+    category: "content",
+    question: "Which of these do you post at least once a month?",
+    hint: "Pick all that apply.",
+    // Values match postTypes above. Flyers are asks, so they score 0 here.
+    choices: [
+      { value: "value", label: "Homily clips or short teachings", points: 1 },
+      { value: "connection", label: "The pastor’s story, vision, or staff introductions", points: 1 },
+      { value: "activity", label: "Event photos, sacraments, or milestones", points: 1 },
+      { value: "flyers", label: "Flyers and event announcements", points: 0 },
     ],
   },
   {
@@ -151,8 +227,8 @@ export const questions: Question[] = [
     question: "Does your pastor appear on camera in your posts?",
     choices: [
       { value: "never", label: "Never or almost never", points: 0 },
-      { value: "sometimes", label: "Occasionally", points: 2 },
-      { value: "regularly", label: "Regularly", points: 3 },
+      { value: "sometimes", label: "Occasionally", points: 1 },
+      { value: "regularly", label: "Regularly", points: 2 },
     ],
   },
   {
@@ -182,6 +258,7 @@ export const questions: Question[] = [
       { value: "massTimes", label: "Mass times on our website", points: 2 },
       { value: "contactForm", label: "A general contact form", points: 5 },
       { value: "planVisit", label: "A dedicated “Plan Your Visit” page or form", points: 8 },
+      { value: "metaForm", label: "A Facebook/Instagram form (name and phone)", points: 8 },
     ],
   },
   {
@@ -342,7 +419,7 @@ export const categoryCopy: Record<
       mid: "Your content has good moments, but it isn’t consistent or personal enough yet.",
       high: "You post often, and your content shows real people and real parish life.",
     },
-    fix: "Swap flyers for short videos of real people: your pastor, parishioners, and volunteers. Aim for 3 posts a week before trying to post every day.",
+    fix: "Post 3–4 times a week, with at least one homily clip, and mix in posts that help people know, like, and trust the parish.",
   },
   pipeline: {
     status: {
@@ -350,7 +427,7 @@ export const categoryCopy: Record<
       mid: "Some new people find their way to you, but the path isn’t clear or measured yet.",
       high: "New people have a clear first step, and they’re taking it.",
     },
-    fix: "Build a simple Plan Your Visit page with Mass times, parking, what to expect, and a short form. Then count every form, call, and message each month.",
+    fix: "Give newcomers a simple Plan Your Visit form, usually a Facebook/Instagram form asking for name and phone number, and send ads to it. Then count every response each month.",
   },
   followUp: {
     status: {

@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, Mail, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Mail, RotateCcw } from "lucide-react";
 import {
   getScorecardPopulation,
   submitScorecardOptIn,
@@ -24,6 +24,7 @@ import {
   type ScorecardAnswers,
   type ScorecardReport,
 } from "@/lib/scorecard";
+import { buildScorecardDoc } from "@/lib/scorecardReport";
 import { US_STATES, questions, type Question } from "@/data/scorecard";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 
@@ -62,6 +63,7 @@ export default function Scorecard() {
     const full: ScorecardAnswers = {
       ...(d as ScorecardAnswers),
       engagement: d.engagement ?? "unsure",
+      contentMix: d.contentMix ?? [],
     };
     setAnswers(full);
     setPhase("calculating");
@@ -165,6 +167,7 @@ function QuizCard({
         ? draft[q.id]
         : undefined;
   const [num, setNum] = useState(typeof initialNumber === "number" ? String(initialNumber) : "");
+  const [picked, setPicked] = useState<string[]>(draft.contentMix ?? []);
   const firstInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -251,6 +254,48 @@ function QuizCard({
               </button>
             );
           })}
+        </div>
+      ) : q.kind === "multi" ? (
+        <div className="mt-6 space-y-4">
+          <div className="grid gap-2.5" role="group" aria-label={q.question}>
+            {q.choices.map((c) => {
+              const on = picked.includes(c.value);
+              return (
+                <button
+                  key={c.value}
+                  type="button"
+                  role="checkbox"
+                  aria-checked={on}
+                  onClick={() =>
+                    setPicked((p) => (on ? p.filter((v) => v !== c.value) : [...p, c.value]))
+                  }
+                  className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-base transition-colors ${
+                    on
+                      ? "border-navy bg-navy text-offwhite"
+                      : "border-navy/15 bg-offwhite text-navy hover:border-navy/40 hover:bg-white"
+                  }`}
+                >
+                  <span
+                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 ${
+                      on ? "border-gold bg-gold" : "border-navy/30"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {on && <Check className="h-3 w-3 text-navy" strokeWidth={3} />}
+                  </span>
+                  {c.label}
+                </button>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            onClick={() => onNext({ contentMix: picked })}
+            className={buttonClass("primary", "w-full")}
+          >
+            {picked.length ? "Continue" : "None of These"}
+            <ArrowRight className={buttonArrow} aria-hidden="true" />
+          </button>
         </div>
       ) : (
         <form onSubmit={submitText} className="mt-6 space-y-4">
@@ -359,11 +404,14 @@ function Results({
   answers: ScorecardAnswers;
   onRestart: () => void;
 }) {
-  // Lowest-scoring category, even for a parish that's strong everywhere.
-  const weakest =
-    report.priorities[0] ??
-    [...report.categories].sort((x, y) => x.points / x.max - y.points / y.max)[0];
-  const hasPriorities = report.priorities.length > 0;
+  // The written report's problems (no name/parish yet, so it's generic).
+  const doc = useMemo(() => buildScorecardDoc(answers, report.population), [answers, report.population]);
+  const topProblem = doc.problems[0];
+  // Lowest-scoring category, for a parish with no major problems.
+  const weakest = [...report.categories].sort((x, y) => x.points / x.max - y.points / y.max)[0];
+  const problemCount = ["", "one major problem", "two major problems", "three major problems"][
+    doc.problems.length
+  ];
 
   return (
     <div className="space-y-6">
@@ -379,12 +427,29 @@ function Results({
 
         {/* Free teaser */}
         <div className="mt-8 rounded-2xl bg-parchment p-5 sm:p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
-            {hasPriorities ? "Your Biggest Opportunity" : "Your Lowest Category"}: {weakest.label}
-          </p>
-          <p className="mt-2 text-pretty font-serif text-lg leading-snug text-navy sm:text-xl">
-            {weakest.status}
-          </p>
+          {topProblem ? (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
+                The Biggest Problem We Found
+              </p>
+              <p className="mt-2 text-pretty font-serif text-lg leading-snug text-navy sm:text-xl">
+                {topProblem.title}.
+              </p>
+              <p className="mt-2 text-pretty text-sm leading-relaxed text-navy/70">
+                Your full report covers {problemCount}: what we saw, why each
+                one matters, and the first step to fix&nbsp;it.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
+                Your Lowest Category: {weakest.label}
+              </p>
+              <p className="mt-2 text-pretty font-serif text-lg leading-snug text-navy sm:text-xl">
+                {weakest.status}
+              </p>
+            </>
+          )}
         </div>
       </div>
 
@@ -392,12 +457,15 @@ function Results({
         {/* Blurred preview of what's in the report. Decorative only. */}
         <div aria-hidden="true" className="pointer-events-none select-none px-6 pt-8 blur-[6px] sm:px-10">
           <p className="font-serif text-2xl text-navy">Your Full Report</p>
-          {(hasPriorities ? report.priorities : report.categories.slice(0, 3)).map((p, i) => (
+          {(doc.problems.length
+            ? doc.problems.map((p) => ({ id: p.id, title: p.title, text: p.firstStep }))
+            : report.categories.slice(0, 3).map((c) => ({ id: c.id, title: c.label, text: c.status }))
+          ).map((p, i) => (
             <div key={p.id} className="mt-4 rounded-2xl bg-offwhite p-4">
               <p className="font-medium text-navy">
-                {i + 1}. {p.label}
+                {i + 1}. {p.title}
               </p>
-              <p className="mt-1 text-sm text-navy/70">{hasPriorities ? p.fix : p.status}</p>
+              <p className="mt-1 text-sm text-navy/70">{p.text}</p>
             </div>
           ))}
         </div>
@@ -433,6 +501,7 @@ function OptInForm({
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [organization, setOrganization] = useState("");
   const ineligible = role === NO_QUALIFYING_ROLE;
   const answersJson = useMemo(() => JSON.stringify(answers), [answers]);
   const done = state.status === "success";
@@ -456,6 +525,9 @@ function OptInForm({
         population,
         name: name.trim(),
         email: email.trim(),
+        organization: organization.trim(),
+        role,
+        pdfUrl: state.pdfUrl,
       };
       sessionStorage.setItem(SCORECARD_RESULT_KEY, JSON.stringify(result));
     } catch {
@@ -472,7 +544,7 @@ function OptInForm({
       clearTimeout(go);
       document.body.style.overflow = prevOverflow;
     };
-  }, [state.status, state.eventId, answers, population, name, email]);
+  }, [state.status, state.eventId, state.pdfUrl, answers, population, name, email, organization, role]);
 
   return (
     <>
@@ -545,7 +617,16 @@ function OptInForm({
           />
         </Field>
         <Field id="sc-org" label="Name of Parish">
-          <input id="sc-org" name="organization" type="text" required placeholder="St. Mary Parish" className={inputClass} />
+          <input
+            id="sc-org"
+            name="organization"
+            type="text"
+            required
+            placeholder="St. Mary Parish"
+            value={organization}
+            onChange={(e) => setOrganization(e.target.value)}
+            className={inputClass}
+          />
         </Field>
         <Field id="sc-role" label="Your Role">
           <select

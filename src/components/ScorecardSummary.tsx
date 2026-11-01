@@ -2,7 +2,7 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, FileText, Mail } from "lucide-react";
 import { useBookACallModal } from "@/components/BookACallModalProvider";
 import { buttonArrow, buttonClass } from "@/components/buttonStyles";
 import {
@@ -12,9 +12,16 @@ import {
   type StoredScorecardResult,
 } from "@/components/ScorecardParts";
 import { greetingFor } from "@/lib/greeting";
-import { buildReport, parseAnswers, type ScorecardReport } from "@/lib/scorecard";
+import { parseAnswers, type ScorecardReport } from "@/lib/scorecard";
+import { buildScorecardDoc, type ScorecardDoc } from "@/lib/scorecardReport";
 
-type Loaded = { report: ScorecardReport; greeting: string; email: string };
+type Loaded = {
+  report: ScorecardReport;
+  doc: ScorecardDoc;
+  greeting: string;
+  email: string;
+  pdfUrl: string | null;
+};
 
 // The stored result never changes while this page is open.
 const subscribeNever = () => () => {};
@@ -42,10 +49,24 @@ export default function ScorecardSummary() {
       const answers = parseAnswers(stored.answers);
       if (!answers) return null;
       const population = typeof stored.population === "number" ? stored.population : null;
+      const greeting = greetingFor(String(stored.name ?? "").slice(0, 80));
+      const doc = buildScorecardDoc(answers, population, {
+        name: String(stored.name ?? "").slice(0, 120),
+        organization: String(stored.organization ?? "").slice(0, 120),
+        role: String(stored.role ?? ""),
+        greeting,
+      });
+      // Only our own report links, never an arbitrary URL from storage.
+      const pdfUrl =
+        typeof stored.pdfUrl === "string" && /^https?:\/\/[^/]+\/api\/scorecard\/report\?/.test(stored.pdfUrl)
+          ? stored.pdfUrl
+          : null;
       return {
-        report: buildReport(answers, population),
-        greeting: greetingFor(String(stored.name ?? "").slice(0, 80)),
+        report: doc.report,
+        doc,
+        greeting,
         email: String(stored.email ?? "").slice(0, 120),
+        pdfUrl,
       };
     } catch {
       return null;
@@ -84,7 +105,7 @@ export default function ScorecardSummary() {
           {data?.email ? (
             <>
               We sent your complete scorecard to{" "}
-              <strong className="break-all font-semibold text-navy">{data.email}</strong>.
+              <strong className="font-semibold text-navy [overflow-wrap:anywhere]">{data.email}</strong>.
               If you don&rsquo;t see it, check your spam folder.
             </>
           ) : (
@@ -95,6 +116,17 @@ export default function ScorecardSummary() {
           )}
           {report && " Here’s a quick summary in the meantime."}
         </p>
+        {data?.pdfUrl && (
+          <a
+            href={data.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonClass("ghost", "mt-6")}
+          >
+            <FileText className="h-4 w-4" aria-hidden="true" />
+            Download Your Report (PDF)
+          </a>
+        )}
       </div>
 
       {report ? (
@@ -110,33 +142,40 @@ export default function ScorecardSummary() {
           </ScoreHero>
 
           <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-            <h2 className="font-serif text-2xl font-medium tracking-tight text-navy sm:text-3xl">
-              {report.priorities.length ? "What to Fix First" : "Every Category Scored Strong"}
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">
+              Our Diagnosis
+            </p>
+            <h2 className="mt-2 text-balance font-serif text-2xl font-medium leading-snug tracking-tight text-navy sm:text-3xl">
+              {data.doc.diagnosis.lead}
             </h2>
-            {report.priorities.length > 0 ? (
+            <p className="mt-3 text-pretty leading-relaxed text-navy/75">{data.doc.diagnosis.body}</p>
+            {data.doc.problems.length > 0 && (
               <>
-                <ol className="mt-6 space-y-3">
-                  {report.priorities.map((p, i) => (
+                <h3 className="mt-8 font-serif text-xl font-medium tracking-tight text-navy">
+                  {data.doc.problems.length === 1
+                    ? "The Biggest Problem We Found"
+                    : "The Biggest Problems We Found"}
+                </h3>
+                <ol className="mt-4 space-y-3">
+                  {data.doc.problems.map((p, i) => (
                     <li key={p.id} className="flex gap-4 rounded-2xl bg-parchment p-5">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy font-serif text-offwhite">
                         {i + 1}
                       </span>
                       <div>
-                        <p className="font-semibold text-navy">{p.label}</p>
-                        <p className="mt-1 text-pretty leading-relaxed text-navy/75">{p.status}</p>
+                        <p className="text-pretty font-semibold text-navy">{p.title}</p>
+                        <p className="mt-1 text-pretty text-sm leading-relaxed text-navy/70">
+                          {p.saw.join(" ")}
+                        </p>
                       </div>
                     </li>
                   ))}
                 </ol>
                 <p className="mt-4 text-pretty text-sm text-navy/60">
-                  Step-by-step fixes for each of these are in your&nbsp;email.
+                  Your report explains why each one matters and the first step
+                  to fix it.
                 </p>
               </>
-            ) : (
-              <p className="mt-3 text-pretty leading-relaxed text-navy/75">
-                Your parish is doing the things that bring new people to Mass.
-                Your email has the full breakdown of where you&rsquo;re&nbsp;strongest.
-              </p>
             )}
           </div>
 

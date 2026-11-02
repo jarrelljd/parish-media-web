@@ -6,7 +6,6 @@ import { ArrowRight, FileText, Mail } from "lucide-react";
 import { useBookACallModal } from "@/components/BookACallModalProvider";
 import { buttonArrow, buttonClass } from "@/components/buttonStyles";
 import {
-  CategoryBars,
   SCORECARD_RESULT_KEY,
   ScoreHero,
   type StoredScorecardResult,
@@ -177,15 +176,6 @@ export default function ScorecardSummary() {
                 </p>
               </>
             )}
-          </div>
-
-          <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-            <h2 className="font-serif text-2xl font-medium tracking-tight text-navy">
-              Your Score by Category
-            </h2>
-            <div className="mt-6">
-              <CategoryBars report={report} />
-            </div>
           </div>
         </>
       ) : null}

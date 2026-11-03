@@ -4,9 +4,10 @@
 // Points add up to 100: Reach 30, Engagement 15, Content 15,
 // Newcomer Pipeline 20, Follow-Up 15, Team 5.
 //
-// Content (15) = frequency 5 + homily clips 7 + content mix 3. (A separate
-// "pastor on camera" question was dropped: homily clips and the content-mix
-// question already cover it.)
+// Content (15) = frequency 5 + homily clips 7 + main content 3. A feed that's
+// mostly flyers (static event/announcement graphics) is treated as a serious
+// problem in the report, not just a lower score. (A separate "pastor on
+// camera" question was dropped: homily clips already cover it.)
 //
 // Copy rule: the report only quotes the parish's own numbers back to them,
 // plus the client results in `proof` below (all published on /results).
@@ -59,25 +60,14 @@ export type CountQuestion = {
   fallbacks: { value: "unsure" | "none"; label: string }[];
 };
 
-// Pick-all-that-apply. Each picked choice adds its points.
-export type MultiQuestion = {
-  kind: "multi";
-  id: "contentMix";
-  category: CategoryId;
-  question: string;
-  hint?: string;
-  choices: Choice[];
-};
-
 export type Question =
   | { kind: "location"; id: "location"; question: string; hint?: string }
   | { kind: "attendance"; id: "attendance"; question: string; hint?: string }
   | CountQuestion
-  | ChoiceQuestion
-  | MultiQuestion;
+  | ChoiceQuestion;
 
 // The four kinds of organic posts (know, like, trust, ask). Values match the
-// contentMix choices below.
+// mainContent choices below.
 export const postTypes = [
   {
     value: "value",
@@ -208,17 +198,18 @@ export const questions: Question[] = [
     ],
   },
   {
-    kind: "multi",
-    id: "contentMix",
+    kind: "choice",
+    id: "mainContent",
     category: "content",
-    question: "Which of these do you post at least once a month?",
-    hint: "Pick all that apply.",
-    // Values match postTypes above. Flyers are asks, so they score 0 here.
+    question: "What do you mostly post?",
+    hint: "Pick the one that makes up most of your feed.",
+    // Values match postTypes above. Labels stay neutral on purpose so people
+    // answer honestly; the flyers answer is the one the report calls out.
     choices: [
-      { value: "value", label: "Homily clips or short teachings", points: 1 },
-      { value: "connection", label: "The pastor’s story, vision, or staff introductions", points: 1 },
-      { value: "activity", label: "Event photos, sacraments, or milestones", points: 1 },
-      { value: "flyers", label: "Flyers and event announcements", points: 0 },
+      { value: "value", label: "Helpful videos, like homily clips or advice from the pastor", points: 3 },
+      { value: "connection", label: "Posts about the pastor, staff, or the parish’s story", points: 2 },
+      { value: "activity", label: "Photos from parish life (events, sacraments, groups)", points: 2 },
+      { value: "flyers", label: "Graphics announcing events, Mass times, and parish updates", points: 0 },
     ],
   },
   {
@@ -358,6 +349,8 @@ export const categoryOrder: CategoryId[] = [
 //   tracked (a "leak"): total capped at LEAK_CAP.
 export const NO_SYSTEM_CAP = 45;
 export const LEAK_CAP = 69;
+// A feed that's mostly flyers can't be "Thriving", however strong the rest is.
+export const FLYERS_CAP = 84;
 export const ONGOING_AD_VALUES = ["under250", "250-1000", "1000+"];
 export const PLAN_STEP_VALUES = ["planVisit", "metaForm"];
 export const FAST_FOLLOW_UP_VALUES = ["sameDay", "twoDays"];

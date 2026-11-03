@@ -29,8 +29,9 @@ export type ReportProblem = {
   why: string[];
   // Optional numbered steps ("what it looks like when it works").
   works?: { intro: string; steps: { label: string; text: string }[] };
-  // Optional list of the four post types, flagging the missing ones.
-  postTypes?: { label: string; text: string; missing: boolean }[];
+  // Optional list of the four post types. `note` flags the one that makes
+  // up most of their feed; `bad` when that's flyers.
+  postTypes?: { label: string; text: string; note?: string; bad?: boolean }[];
   proof?: string;
   firstStep: string;
 };
@@ -105,11 +106,6 @@ function frequencyLine(a: ScorecardAnswers) {
   );
 }
 
-function listJoin(items: string[]) {
-  if (items.length <= 1) return items.join("");
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
-}
 
 
 export function buildScorecardDoc(
@@ -132,13 +128,11 @@ export function buildScorecardDoc(
     leak: outreachLeak,
   } = outreachStatus(a);
 
-  const missingTypes = postTypes.filter(
-    (t) => t.value !== "flyers" && !a.contentMix.includes(t.value),
-  );
-  const onlyFlyers = a.contentMix.length === 1 && a.contentMix[0] === "flyers";
+  // A feed that's mostly flyers is a page of ads: always a major problem.
+  const mostlyFlyers = a.mainContent === "flyers";
   const infrequent = a.frequency === "rarely" || a.frequency === "weekly";
   const homilyGap = a.homilyClips !== "regularly";
-  const postingGap = infrequent || missingTypes.length > 0;
+  const postingGap = infrequent || mostlyFlyers;
 
   const problems: ReportProblem[] = [];
 
@@ -197,7 +191,6 @@ export function buildScorecardDoc(
         ? "The parish doesn’t post homily clips."
         : "Homily clips are posted only occasionally.",
     ];
-    if (onlyFlyers) saw.push("Most of what you post is flyers and announcements.");
     problems.push({
       id: "homily",
       title: noClips
@@ -206,7 +199,7 @@ export function buildScorecardDoc(
       saw,
       why: [
         "Homily clips are what people expect to see from their parish, and they’re the strongest content a parish has. Each clip gives something of value for free. That builds goodwill, and goodwill is what makes people say yes later, when you invite them to Mass or ask them to volunteer or give." +
-          (onlyFlyers ? " Flyers only ask. They never give." : ""),
+          (mostlyFlyers ? " Right now most of your feed is flyers, and flyers only ask. They never give." : ""),
       ],
       proof: proof.stJoseph,
       firstStep:
@@ -216,47 +209,35 @@ export function buildScorecardDoc(
     });
   }
 
-  // 3. Posting consistency + content mix
+  // 3. Posting: a feed of flyers, or too few posts
   if (postingGap) {
-    const posted = postTypes.filter((t) => a.contentMix.includes(t.value)).map((t) => t.label.toLowerCase());
     const saw = [frequencyLine(a)];
-    if (a.contentMix.length === 0) saw.push("None of the four main kinds of posts go out at least monthly.");
-    // The homily problem already says this when it's in the report.
-    else if (onlyFlyers && !homilyGap) saw.push("Most of what you post is flyers and announcements.");
-    else if (missingTypes.length && !onlyFlyers)
-      saw.push(
-        `You post ${listJoin(posted)}, but not ${listJoin(missingTypes.map((t) => t.label.toLowerCase()))}.`,
-      );
+    if (mostlyFlyers) saw.push("Most of what you post is graphics announcing events, Mass times, and parish updates.");
     if (a.growth === "flat") saw.push("Your follower count has been flat for a year.");
     if (a.growth === "shrinking") saw.push("Your follower count is shrinking.");
     problems.push({
       id: "posting",
-      title:
-        infrequent && missingTypes.length
-          ? "Posting is inconsistent and missing key post types"
-          : infrequent
-            ? "Posting isn’t consistent enough"
-            : "Your content mix is missing pieces",
+      title: mostlyFlyers ? "Your feed reads like a page of ads" : "Posting isn\u2019t consistent enough",
       saw,
-      why: [
-        "Regular posting has one job: keep the parish on people’s minds and build goodwill, so that when you do ask, people respond. People respond to those they know, like, and trust. A healthy parish feed has four kinds of posts:",
-      ],
+      why: mostlyFlyers
+        ? [
+            "Every flyer is an ask: come to this, sign up for that, here are the Mass times. A feed made mostly of asks is a page of ads, and people learn to scroll right past it. It builds no goodwill, so when you do need people to respond, they don\u2019t. A healthy parish feed has four kinds of posts, and the asks should be the smallest share:",
+          ]
+        : [
+            "Regular posting has one job: keep the parish on people\u2019s minds and build goodwill, so that when you do ask, people respond. People respond to those they know, like, and trust. A healthy parish feed has four kinds of posts:",
+          ],
       postTypes: postTypes.map((t) => ({
         label: t.label,
         text: `${t.purpose}: ${t.examples}.`,
-        missing: t.value !== "flyers" && !a.contentMix.includes(t.value),
+        note: t.value === a.mainContent ? "This is most of your feed." : undefined,
+        bad: t.value === a.mainContent && mostlyFlyers,
       })),
       // St. Joseph's story belongs with homily clips; only repeat it here
       // when the homily problem isn't in the report.
       proof: homilyGap ? undefined : proof.stJoseph,
-      firstStep:
-        "Aim for 3–4 posts a week, with at least one homily clip." +
-        (missingTypes.some((t) => t.value === "connection")
-          ? ` Add a connection post every week or two, like ${isPastor ? "your" : "your pastor’s"} vocation story or ${isPastor ? "your" : "his"} vision for the parish.`
-          : "") +
-        (missingTypes.some((t) => t.value === "activity")
-          ? " After every event, post a group photo."
-          : ""),
+      firstStep: mostlyFlyers
+        ? "Flip the ratio. Make most of your posts helpful videos, like homily clips or short advice from the pastor, and keep flyers to one or two a week. Aim for 3\u20134 posts a week in all."
+        : "Aim for 3\u20134 posts a week, with at least one homily clip.",
     });
   }
 
@@ -312,6 +293,7 @@ export function buildScorecardDoc(
   if (hasPlanStep) strengths.push("Newcomers have a clear way to raise their hand.");
   if (fastFollow) strengths.push("New people hear back from the parish quickly.");
   if (a.homilyClips === "regularly") strengths.push("You post homily clips every week, the strongest content a parish has.");
+  else if (a.mainContent === "value") strengths.push("Most of what you post is helpful video, the kind of content people value most.");
   if (a.frequency === "few" || a.frequency === "daily")
     strengths.push(`You post ${a.frequency === "daily" ? "almost every day" : "2–3 times a week"}, which keeps the parish on people’s minds.`);
   if (engagement && engagement.tier !== "low" && engagement.facts[0]?.startsWith("A typical post"))
@@ -382,9 +364,12 @@ export function coverEmailHtml(d: ScorecardDoc, pdfUrl: string): string {
 // to. Null when no cap applied.
 export function capNote(r: ScorecardReport): string | null {
   if (!r.cap) return null;
-  return r.cap.reason === "noSystem"
-    ? `Your categories add up to ${r.rawScore}, but without an outreach system (ongoing ads and a Plan a Visit step) the total is capped at ${r.cap.at}.`
-    : `Your categories add up to ${r.rawScore}, but until new inquiries get a personal reply within two days and are tracked, the total is capped at ${r.cap.at}.`;
+  const why = {
+    noSystem: "without an outreach system (ongoing ads and a Plan a Visit step)",
+    leak: "until new inquiries get a personal reply within two days and are tracked",
+    flyers: "while most of your feed is flyers",
+  }[r.cap.reason];
+  return `Your categories add up to ${r.rawScore}, but ${why} the total is capped at ${r.cap.at}.`;
 }
 
 // Plain-text version for the CRM / lead notification.

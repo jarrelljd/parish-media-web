@@ -171,7 +171,9 @@ function Problem({ p, i }: { p: ReportProblem; i: number }) {
               <Text style={s.listMark}>{"–"}</Text>
               <Text style={{ flex: 1 }}>
                 <Text style={{ fontWeight: 600, color: navy }}>{t.label}</Text> {t.text}
-                {t.missing ? <Text style={s.missing}>{" You’re missing these."}</Text> : null}
+                {t.note ? (
+                  <Text style={t.bad ? s.missing : { fontStyle: "italic", color: muted }}>{` ${t.note}`}</Text>
+                ) : null}
               </Text>
             </View>
           ))}

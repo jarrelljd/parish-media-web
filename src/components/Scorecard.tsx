@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import {
   getScorecardPopulation,
   submitScorecardOptIn,
@@ -63,7 +63,6 @@ export default function Scorecard() {
     const full: ScorecardAnswers = {
       ...(d as ScorecardAnswers),
       engagement: d.engagement ?? "unsure",
-      contentMix: d.contentMix ?? [],
     };
     setAnswers(full);
     setPhase("calculating");
@@ -167,7 +166,6 @@ function QuizCard({
         ? draft[q.id]
         : undefined;
   const [num, setNum] = useState(typeof initialNumber === "number" ? String(initialNumber) : "");
-  const [picked, setPicked] = useState<string[]>(draft.contentMix ?? []);
   const firstInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -254,48 +252,6 @@ function QuizCard({
               </button>
             );
           })}
-        </div>
-      ) : q.kind === "multi" ? (
-        <div className="mt-6 space-y-4">
-          <div className="grid gap-2.5" role="group" aria-label={q.question}>
-            {q.choices.map((c) => {
-              const on = picked.includes(c.value);
-              return (
-                <button
-                  key={c.value}
-                  type="button"
-                  role="checkbox"
-                  aria-checked={on}
-                  onClick={() =>
-                    setPicked((p) => (on ? p.filter((v) => v !== c.value) : [...p, c.value]))
-                  }
-                  className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-base transition-colors ${
-                    on
-                      ? "border-navy bg-navy text-offwhite"
-                      : "border-navy/15 bg-offwhite text-navy hover:border-navy/40 hover:bg-white"
-                  }`}
-                >
-                  <span
-                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 ${
-                      on ? "border-gold bg-gold" : "border-navy/30"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {on && <Check className="h-3 w-3 text-navy" strokeWidth={3} />}
-                  </span>
-                  {c.label}
-                </button>
-              );
-            })}
-          </div>
-          <button
-            type="button"
-            onClick={() => onNext({ contentMix: picked })}
-            className={buttonClass("primary", "w-full")}
-          >
-            {picked.length ? "Continue" : "None of These"}
-            <ArrowRight className={buttonArrow} aria-hidden="true" />
-          </button>
         </div>
       ) : (
         <form onSubmit={submitText} className="mt-6 space-y-4">

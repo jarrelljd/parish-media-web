@@ -6,6 +6,7 @@
 import {
   ENGAGEMENT_UNSURE_POINTS,
   FAST_FOLLOW_UP_VALUES,
+  FLYERS_CAP,
   FOLLOWER_RATIO_UNSURE_POINTS,
   LEAK_CAP,
   NO_SYSTEM_CAP,
@@ -22,7 +23,6 @@ import {
   questions,
   type CategoryId,
   type ChoiceQuestion,
-  type MultiQuestion,
   type Tier,
 } from "@/data/scorecard";
 
@@ -39,8 +39,8 @@ export type ScorecardAnswers = {
   ads: string;
   frequency: string;
   homilyClips: string;
-  // Post types they publish monthly (values from postTypes in data/scorecard).
-  contentMix: string[];
+  // What most of their feed is (values from postTypes in data/scorecard).
+  mainContent: string;
   inquirers: string;
   nextStep: string;
   followUp: string;
@@ -49,22 +49,12 @@ export type ScorecardAnswers = {
 
 export type ChoiceId = Exclude<
   keyof ScorecardAnswers,
-  "city" | "state" | "attendance" | "fbFollowers" | "igFollowers" | "contentMix"
+  "city" | "state" | "attendance" | "fbFollowers" | "igFollowers"
 >;
 
 const choiceQuestions = questions.filter(
   (q): q is ChoiceQuestion => q.kind === "choice",
 );
-const contentMixQuestion = questions.find(
-  (q): q is MultiQuestion => q.kind === "multi",
-)!;
-
-export function contentMixPoints(mix: string[]): number {
-  return contentMixQuestion.choices
-    .filter((c) => mix.includes(c.value))
-    .reduce((sum, c) => sum + c.points, 0);
-}
-
 function choiceFor(id: ChoiceId, value: string) {
   return choiceQuestions
     .find((q) => q.id === id)
@@ -122,7 +112,7 @@ export function scoreAnswers(a: ScorecardAnswers) {
     content:
       choicePoints("frequency", a.frequency) +
       choicePoints("homilyClips", a.homilyClips) +
-      contentMixPoints(a.contentMix),
+      choicePoints("mainContent", a.mainContent),
     pipeline: choicePoints("inquirers", a.inquirers) + choicePoints("nextStep", a.nextStep),
     followUp: choicePoints("followUp", a.followUp),
     team: choicePoints("team", a.team),
@@ -140,7 +130,7 @@ export function scoreAnswers(a: ScorecardAnswers) {
   };
 }
 
-export type ScoreCap = { at: number; reason: "noSystem" | "leak" };
+export type ScoreCap = { at: number; reason: "noSystem" | "leak" | "flyers" };
 
 // See NO_SYSTEM_CAP / LEAK_CAP in data/scorecard.ts.
 export function outreachStatus(a: Pick<ScorecardAnswers, "ads" | "nextStep" | "followUp" | "inquirers">) {
@@ -157,6 +147,7 @@ function scoreCap(a: ScorecardAnswers): ScoreCap | null {
   const o = outreachStatus(a);
   if (o.missing) return { at: NO_SYSTEM_CAP, reason: "noSystem" };
   if (o.leak) return { at: LEAK_CAP, reason: "leak" };
+  if (a.mainContent === "flyers") return { at: FLYERS_CAP, reason: "flyers" };
   return null;
 }
 
@@ -246,11 +237,14 @@ function factsFor(id: CategoryId, a: ScorecardAnswers, population: number | null
           regularly: "You post homily clips every week.",
         }[a.homilyClips] ?? "",
       );
-      if (a.contentMix.length === 0) {
-        lines.push("None of the four main post types go out at least monthly.");
-      } else if (a.contentMix.length === 1 && a.contentMix[0] === "flyers") {
-        lines.push("Most of what you post is flyers and announcements.");
-      }
+      lines.push(
+        {
+          value: "Most of what you post is helpful video.",
+          connection: "Most of what you post is about the pastor, staff, or the parish\u2019s story.",
+          activity: "Most of what you post is photos from parish life.",
+          flyers: "Most of what you post is graphics announcing events and updates.",
+        }[a.mainContent] ?? "",
+      );
       break;
     }
     case "pipeline": {
@@ -378,7 +372,7 @@ export function titleCase(s: string): string {
 // Validates untrusted answers (from the client) before scoring on the server.
 export function parseAnswers(raw: unknown): ScorecardAnswers | null {
   if (!raw || typeof raw !== "object") return null;
-  const r = raw as Record<string, unknown>;
+  let r = raw as Record<string, unknown>;
   const str = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 100) : "");
   const count = (v: unknown): FollowerCount | null =>
     v === "unsure" || v === "none"
@@ -395,11 +389,16 @@ export function parseAnswers(raw: unknown): ScorecardAnswers | null {
   if (!city || !US_STATES.some(([abbr]) => abbr === state)) return null;
   if (!(attendance >= 1 && attendance <= 100_000)) return null;
   if (fbFollowers === null || igFollowers === null) return null;
-  const mixRaw = Array.isArray(r.contentMix) ? r.contentMix : null;
-  if (!mixRaw) return null;
-  const contentMix = contentMixQuestion.choices
-    .map((c) => c.value)
-    .filter((v) => mixRaw.includes(v));
+  // Report links made before 2026-11-03 carry the old pick-all-that-apply
+  // "contentMix" answer instead of "mainContent". Map it to the best type
+  // they picked so those links keep working.
+  if (r.mainContent === undefined && Array.isArray(r.contentMix)) {
+    const mix = r.contentMix as unknown[];
+    r = {
+      ...r,
+      mainContent: ["value", "connection", "activity", "flyers"].find((v) => mix.includes(v)) ?? "flyers",
+    };
+  }
 
   const choices = {} as Record<ChoiceId, string>;
   for (const q of choiceQuestions) {
@@ -407,5 +406,5 @@ export function parseAnswers(raw: unknown): ScorecardAnswers | null {
     if (!q.choices.some((c) => c.value === v)) return null;
     choices[q.id as ChoiceId] = v;
   }
-  return { city, state, attendance, fbFollowers, igFollowers, contentMix, ...choices };
+  return { city, state, attendance, fbFollowers, igFollowers, ...choices };
 }

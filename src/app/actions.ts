@@ -401,7 +401,7 @@ export async function submitScorecardOptIn(
     ads: label("ads"),
     postingFrequency: label("frequency"),
     homilyClips: label("homilyClips"),
-    contentMix: answers.contentMix.join(", ") || "None",
+    mainContent: label("mainContent"),
     monthlyInquirers: label("inquirers"),
     newcomerNextStep: label("nextStep"),
     followUpSpeed: label("followUp"),

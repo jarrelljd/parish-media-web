@@ -3,6 +3,7 @@ import Script from "next/script";
 import { ArrowRight, ChevronDown, MapPin, Phone, Play } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import StMaryVisitForm from "@/components/st-mary/StMaryVisitForm";
+import StMaryStickyCta from "@/components/st-mary/StMaryStickyCta";
 import { stMary } from "@/data/stMaryLanding";
 
 // St. Mary in the Mountains landing page, in the design of the Capuchin Franciscans site:
@@ -195,13 +196,22 @@ function Lede() {
   );
 }
 
-function QuoteBand({ text, cite }: { text: string; cite: string }) {
+function QuoteBand({ text, cite, photo }: { text: string; cite: string; photo: { src: string; alt: string } }) {
   return (
     <section className="bg-[#7b2d26] py-20 text-[#fbf7f1] sm:py-28">
       <Reveal className="mx-auto max-w-4xl px-4 text-center sm:px-6">
         <figure>
           <blockquote className="font-serif text-3xl leading-snug font-medium text-balance italic sm:text-5xl">“{text}”</blockquote>
-          <figcaption className="mt-6 text-sm font-bold tracking-[0.2em] text-[#fbf7f1]/75 uppercase">{cite}</figcaption>
+          <figcaption className="mt-8 flex flex-col items-center gap-4">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              width={96}
+              height={96}
+              className="size-24 rounded-full object-cover object-top ring-4 ring-[#fbf7f1]/25"
+            />
+            <span className="text-sm font-bold tracking-[0.2em] text-[#fbf7f1]/75 uppercase">{cite}</span>
+          </figcaption>
         </figure>
       </Reveal>
     </section>
@@ -482,6 +492,7 @@ export default function StMaryLanding() {
         <Closing />
       </main>
       <Footer />
+      <StMaryStickyCta />
     </div>
   );
 }

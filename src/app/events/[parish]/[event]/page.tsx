@@ -27,7 +27,7 @@ const customPages: Record<string, { Page: () => React.ReactNode; metadata: Metad
       openGraph: {
         title: stMary.meta.title,
         description: stMary.meta.description,
-        images: [{ url: stMary.closing.photo.src }],
+        images: [{ url: stMary.plan.photo.src }],
       },
     },
   },

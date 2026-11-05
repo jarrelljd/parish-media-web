@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { events, getEvent } from "@/data/events";
 import { getParish } from "@/data/parishes";
 import EventPageContent from "@/components/EventPageContent";
+import StMaryLanding from "@/components/st-mary/StMaryLanding";
+import { stMary } from "@/data/stMaryLanding";
 
 function hexToRgba(hex: string, alpha: number): string {
   const clean = hex.replace("#", "");
@@ -14,11 +16,34 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+// Hand-designed landing pages that live under /events/ (so they get the parish-events
+// Meta Pixel) but don't use the shared EventPageContent template.
+const customPages: Record<string, { Page: () => React.ReactNode; metadata: Metadata }> = {
+  [`${stMary.parishSlug}/${stMary.eventSlug}`]: {
+    Page: StMaryLanding,
+    metadata: {
+      title: stMary.meta.title,
+      description: stMary.meta.description,
+      openGraph: {
+        title: stMary.meta.title,
+        description: stMary.meta.description,
+        images: [{ url: stMary.closing.photo.src }],
+      },
+    },
+  },
+};
+
 export async function generateStaticParams() {
-  return events.map((event) => ({
-    parish: event.parishSlug,
-    event: event.eventSlug,
-  }));
+  return [
+    ...events.map((event) => ({
+      parish: event.parishSlug,
+      event: event.eventSlug,
+    })),
+    ...Object.keys(customPages).map((key) => {
+      const [parish, event] = key.split("/");
+      return { parish, event };
+    }),
+  ];
 }
 
 export async function generateMetadata({
@@ -27,6 +52,8 @@ export async function generateMetadata({
   params: Promise<{ parish: string; event: string }>;
 }): Promise<Metadata> {
   const { parish, event: eventSlug } = await params;
+  const custom = customPages[`${parish}/${eventSlug}`];
+  if (custom) return custom.metadata;
   const event = getEvent(parish, eventSlug);
   if (!event) return {};
 
@@ -51,6 +78,8 @@ export default async function EventPage({
   params: Promise<{ parish: string; event: string }>;
 }) {
   const { parish: parishSlug, event: eventSlug } = await params;
+  const custom = customPages[`${parishSlug}/${eventSlug}`];
+  if (custom) return <custom.Page />;
   const event = getEvent(parishSlug, eventSlug);
   if (!event) notFound();
 

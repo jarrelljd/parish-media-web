@@ -19,7 +19,7 @@ export const stMary = {
   meta: {
     title: "Visit St. Mary in the Mountains | Virginia City, NV",
     description:
-      "Step inside Nevada's oldest Catholic church, standing above Virginia City since 1870. Free museum and gift shop, open daily 10 AM to 4 PM. Get the free visit guide.",
+      "Step inside Nevada's oldest Catholic church, standing above Virginia City since 1870. Church and gift shop open daily 10 AM to 4 PM, free museum 11 AM to 4 PM. Get the free visit guide.",
   },
 
   address: "111 S. E Street, Virginia City, NV 89440",
@@ -30,7 +30,7 @@ export const stMary = {
     eyebrow: "Virginia City · Since 1870",
     headline: "Step inside Nevada’s oldest Catholic church",
     intro:
-      "St. Mary in the Mountains has stood above the old silver-mining town since 1870. Come pray, light a candle, and see the free museum and gift shop. Open every day, 10 AM to 4 PM.",
+      "St. Mary in the Mountains has stood above the old silver-mining town since 1870. Come pray, light a candle, and see the free museum and gift shop. The church is open every day, 10 AM to 4 PM.",
     video: img("hero-drone.mp4"),
     poster: img("hero-drone-poster.jpg"),
   },
@@ -61,7 +61,7 @@ export const stMary = {
       "When silver made Virginia City one of the richest towns in the West, its people built a church to match. John Mackay, who struck the Big Bonanza, prayed here on Sundays and lived two blocks away. After the Great Fire of 1875, he helped pay to rebuild it.",
       "Today it is still the only working house of worship in Virginia City. Visitors of every background walk in, sit in a pew, and find it quiet.",
     ],
-    facts: ["Built 1870, rebuilt 1877", "Free museum and gift shop", "Open daily, 10 AM – 4 PM", "Sunday Mass, 11:30 AM"],
+    facts: ["Built 1870, rebuilt 1877", "Church open daily, 10 AM – 4 PM", "Free museum, 11 AM – 4 PM", "Sunday Mass, 11:30 AM"],
   },
 
   quote: {
@@ -142,14 +142,14 @@ export const stMary = {
   plan: {
     title: "Plan your visit",
     rows: [
-      { label: "Hours", value: "Church, museum, and gift shop open daily, 10 AM – 4 PM" },
+      { label: "Hours", value: "Church and gift shop daily, 10 AM – 4 PM. Free museum daily, 11 AM – 4 PM." },
       { label: "Mass", value: "Sunday 11:30 AM · Wednesday 9:00 AM" },
       { label: "Admission", value: "Free. Donations help preserve the church." },
       { label: "Where", value: "111 S. E Street, Virginia City, NV 89440" },
     ],
     giftShop: {
       title: "The museum and gift shop",
-      body: "Learn the story of Nevada’s first parish in the free museum, then browse the gift shop for rosaries, medals, and keepsakes from your trip.",
+      body: "Learn the story of Nevada’s first parish in the free museum (in the church basement, entrance through the south parking lot), then browse the gift shop for rosaries, medals, and keepsakes from your trip.",
       photo: { src: img("gift-shop.jpg"), alt: "Shelves of religious gifts in the St. Mary in the Mountains gift shop" },
     },
     photo: { src: img("aerial-town.jpg"), alt: "St. Mary in the Mountains from above, with Virginia City and the hills behind it" },

@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
         destination: "/house-of-studies/:slug",
         permanent: true,
       },
+      // St. Mary in the Mountains: the first-draft visit page now goes to the
+      // redesigned landing page. Temporary (307) so it's easy to undo.
+      {
+        source: "/events/st-mary-mountains/visit",
+        destination: "/events/st-mary-mountains/plan-your-visit",
+        permanent: false,
+      },
       {
         source: "/services/parish-growth",
         destination: "/parish",

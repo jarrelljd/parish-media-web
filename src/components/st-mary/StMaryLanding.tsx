@@ -199,19 +199,16 @@ function Lede() {
 function QuoteBand({ text, cite, photo }: { text: string; cite: string; photo: { src: string; alt: string } }) {
   return (
     <section className="bg-[#7b2d26] py-20 text-[#fbf7f1] sm:py-28">
-      <Reveal className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-        <figure>
-          <blockquote className="font-serif text-3xl leading-snug font-medium text-balance italic sm:text-5xl">“{text}”</blockquote>
-          <figcaption className="mt-8 flex flex-col items-center gap-4">
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              width={96}
-              height={96}
-              className="size-24 rounded-full object-cover object-top ring-4 ring-[#fbf7f1]/25"
-            />
-            <span className="text-sm font-bold tracking-[0.2em] text-[#fbf7f1]/75 uppercase">{cite}</span>
-          </figcaption>
+      {/* The Bishop's portrait beside his words: stacked and centered on phones. */}
+      <Reveal className="mx-auto max-w-6xl px-4 sm:px-6">
+        <figure className="grid items-center gap-10 text-center md:grid-cols-[16rem_1fr] md:gap-14 md:text-left lg:grid-cols-[18rem_1fr]">
+          <div className="relative mx-auto aspect-square w-48 overflow-hidden rounded-[2rem] shadow-2xl shadow-black/25 ring-1 ring-[#fbf7f1]/15 sm:w-56 md:w-full">
+            <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 18rem, 14rem" className="object-cover" />
+          </div>
+          <div>
+            <blockquote className="font-serif text-3xl leading-snug font-medium text-balance italic sm:text-4xl lg:text-5xl">“{text}”</blockquote>
+            <figcaption className="mt-6 text-sm font-bold tracking-[0.2em] text-[#fbf7f1]/75 uppercase">{cite}</figcaption>
+          </div>
         </figure>
       </Reveal>
     </section>

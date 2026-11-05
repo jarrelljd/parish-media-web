@@ -66,7 +66,7 @@ export const stMary = {
 
   quote: {
     text: "You really haven’t had a complete visit to Virginia City until you understand this part of the history as well.",
-    photo: { src: img("bishop-mueggenborg.jpg"), alt: "Bishop Daniel Mueggenborg" },
+    photo: { src: img("bishop-portrait.jpg"), alt: "Bishop Daniel Mueggenborg" },
     cite: "Bishop Daniel Mueggenborg, Bishop of Reno",
   },
 

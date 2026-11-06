@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 import Contact from "@/components/Contact";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function ContactPage() {
       <main className="flex flex-1 flex-col">
         <Contact />
       </main>
+      <SiteFooter />
     </>
   );
 }

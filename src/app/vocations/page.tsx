@@ -14,7 +14,6 @@ export default function VocationsPage() {
       {/* Landing page: no nav links, just a booking CTA bar so visitors stay focused. */}
       <BookingAnnouncementBar
         label="Book 30-Min Vocations Outreach Assessment"
-        theme="gold"
       />
       <main className="flex flex-1 flex-col">
         <VocationsContent />

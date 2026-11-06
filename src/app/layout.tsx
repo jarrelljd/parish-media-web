@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { EB_Garamond, Fraunces, Source_Sans_3 } from "next/font/google";
 import MetaPixel from "@/components/MetaPixel";
 import BookACallModalProvider from "@/components/BookACallModalProvider";
 import "./globals.css";
@@ -7,6 +7,12 @@ import "./globals.css";
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
+});
+
+const garamond = EB_Garamond({
+  variable: "--font-garamond",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 const sourceSans = Source_Sans_3({
@@ -29,9 +35,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${sourceSans.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${garamond.variable} ${sourceSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-offwhite text-navy">
+      <body className="min-h-full flex flex-col bg-vellum text-ink">
         <MetaPixel />
         <BookACallModalProvider>{children}</BookACallModalProvider>
       </body>

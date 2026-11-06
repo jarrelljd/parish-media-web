@@ -1,5 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
-import { ArrowRight, Quote } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import BookACallButton from "@/components/BookACallButton";
 import { buttonArrow, buttonClass } from "@/components/buttonStyles";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
@@ -51,10 +51,10 @@ const clientSnapshots: ClientSnapshot[] = [
       orientation: "portrait" as const,
     },
     stat: "200",
-    statLabel: "Men Reached Out to Discuss Their Vocation in 90 Days",
+    statLabel: "men reached out to discuss their vocation in 90\u00a0days",
     secondaryStat: {
       stat: "12+",
-      label: "Were Serious, Qualified Discerners That Moved on to the Next Step",
+      label: "were serious, qualified discerners who moved on to the next\u00a0step",
     },
     description:
       "Using targeted Meta ads across the province, we reached Catholic men who were actively open to learning more about religious life. Over 90 days, a $500 ad investment generated 200 inquiries, including 12+ serious discerners who were ready for personal follow-up with the Vocation Office. The campaign gave interested men an easy, low-friction way to take the first step, while helping the province identify which inquiries represented genuine vocational interest rather than casual curiosity.",
@@ -73,7 +73,7 @@ const clientSnapshots: ClientSnapshot[] = [
       orientation: "portrait" as const,
     },
     stat: "65",
-    statLabel: "Young Adults Inquired About Young Adult Events in 60 Days",
+    statLabel: "young adults inquired about young adult events in 60\u00a0days",
     description:
       "St. Patrick’s Catholic Church had a failing Facebook page, and no young adult ministry. To remedy this, we first ran a Meta ad campaign to hire a young adult ministry leader in the area. Then, we ran targeted ads to Catholics ages 21–35 in the area for monthly young adult events, all while posting content on the parish socials. The young adult leader texted the inquirers and added them to a group chat. After a few events, the parish had a full young adult ministry.",
   },
@@ -91,7 +91,7 @@ const clientSnapshots: ClientSnapshot[] = [
       orientation: "portrait" as const,
     },
     stat: "0 → 320",
-    statLabel: "Instagram Followers in the First 30 Days",
+    statLabel: "Instagram followers in the first 30 days",
     description:
       "Created and grew an Instagram account for the parish to 320 followers in 30 days, so the parish could reach more young adults. Also redesigned the parish bulletin.",
     thumbnail: {
@@ -129,19 +129,19 @@ const writtenTestimonials = [
   },
 ];
 
-const eyebrow = "text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep";
-const statLabel = "mt-2 max-w-xs text-sm font-semibold uppercase leading-snug tracking-[0.08em] text-navy/55";
+const eyebrow = "font-serif text-lg italic text-rubric";
+const statLabel = "mt-3 max-w-xs text-pretty text-[15px] leading-snug text-ink/60";
 
 function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
   return (
     <article className="grid gap-10 py-14 first:pt-0 last:pb-0 sm:grid-cols-[260px_1fr] sm:items-center sm:gap-14 lg:grid-cols-[300px_1fr]">
       <figure>
-        <div className="mx-auto w-full max-w-[260px] rounded-[2rem] bg-white p-2.5 shadow-2xl shadow-navy/10 ring-1 ring-navy/5 sm:max-w-none">
+        <div className="mx-auto w-full max-w-[260px] rounded-[2rem] bg-ink p-2 shadow-2xl shadow-ink/20 sm:max-w-none">
           <div
             className={
               snap.video.orientation === "portrait"
-                ? "relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] bg-navy"
-                : "relative aspect-video w-full overflow-hidden rounded-[1.5rem] bg-navy/5"
+                ? "relative aspect-[9/16] w-full overflow-hidden rounded-[1.6rem] bg-ink"
+                : "relative aspect-video w-full overflow-hidden rounded-[1.6rem] bg-ink"
             }
           >
             <iframe
@@ -154,7 +154,7 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
             />
           </div>
         </div>
-        <figcaption className="mt-4 text-center text-sm text-navy/60">
+        <figcaption className="mt-4 text-center font-serif text-base italic text-ink/60">
           {snap.priestCaption}
         </figcaption>
       </figure>
@@ -163,20 +163,20 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
         <p className={eyebrow}>
           {[snap.location, snap.diocese].filter(Boolean).join(" · ")}
         </p>
-        <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
+        <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-ink sm:text-4xl">
           {snap.parish}
         </h3>
 
         <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6">
-          <div className="border-l-2 border-gold pl-5 text-left">
-            <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
+          <div className="text-left">
+            <p className="font-serif text-6xl font-medium leading-none text-lapis">
               {snap.stat}
             </p>
             <p className={statLabel}>{snap.statLabel}</p>
           </div>
           {snap.secondaryStat && (
-            <div className="border-l-2 border-navy/15 pl-5 text-left">
-              <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy/80">
+            <div className="border-l border-ink/15 pl-10 text-left">
+              <p className="font-serif text-6xl font-medium leading-none text-lapis/80">
                 {snap.secondaryStat.stat}
               </p>
               <p className={statLabel}>{snap.secondaryStat.label}</p>
@@ -184,20 +184,20 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
           )}
         </div>
 
-        <p className="mt-8 text-pretty text-lg leading-relaxed text-navy/70">
+        <p className="mt-8 text-pretty text-lg leading-relaxed text-ink/70">
           {snap.description}
         </p>
 
         {snap.thumbnail && (
           <figure className="mt-8">
-            <div className="overflow-hidden rounded-2xl bg-white p-2 shadow-lg shadow-navy/5 ring-1 ring-navy/5">
+            <div className="overflow-hidden bg-white p-1.5 shadow-lg shadow-ink/10 ring-1 ring-ink/10">
               <Image
                 src={snap.thumbnail.src}
                 alt={snap.thumbnail.alt}
-                className="h-auto w-full rounded-xl"
+                className="h-auto w-full"
               />
             </div>
-            <figcaption className="mt-2 text-xs uppercase tracking-[0.12em] text-navy/50">
+            <figcaption className="mt-2 font-serif text-base italic text-ink/55">
               {snap.thumbnail.caption}
             </figcaption>
           </figure>
@@ -209,8 +209,8 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
 
 function Shot({ src, alt }: { src: StaticImageData; alt: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white p-2 shadow-xl shadow-navy/10 ring-1 ring-navy/5">
-      <Image src={src} alt={alt} className="h-auto w-full rounded-xl" />
+    <div className="overflow-hidden bg-white p-1.5 shadow-xl shadow-ink/10 ring-1 ring-ink/10">
+      <Image src={src} alt={alt} className="h-auto w-full" />
     </div>
   );
 }
@@ -219,20 +219,20 @@ export default function Results() {
   return (
     <>
       {/* Client Snapshots */}
-      <section className="px-6 pt-14 pb-20 sm:pt-20 sm:pb-28">
-        <div className="mx-auto max-w-5xl">
-          <div className="mx-auto max-w-2xl text-center">
+      <section className="px-6 pt-14 pb-20 sm:pt-20 sm:pb-28 lg:px-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-3xl">
             <p className={eyebrow}>Results</p>
-            <h1 className="mt-4 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-navy sm:text-6xl">
-              Client Snapshots
+            <h1 className="mt-3 font-serif text-5xl font-medium leading-[1.04] text-balance sm:text-7xl">
+              Real parishes, real&nbsp;numbers.
             </h1>
-            <p className="mt-5 text-pretty text-lg leading-relaxed text-navy/70 sm:text-xl">
+            <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/70 sm:text-xl">
               See results from parishes, dioceses, and religious orders
               like&nbsp;yours.
             </p>
           </div>
 
-          <div className="mt-16 divide-y divide-navy/10">
+          <div className="mt-16 divide-y divide-ink/15 border-t border-ink/15 pt-14">
             {clientSnapshots.map((snap) => (
               <ClientSnapshotRow key={snap.parish} snap={snap} />
             ))}
@@ -243,19 +243,16 @@ export default function Results() {
       {/* Written testimonials + Book a Call */}
       <section className="bg-parchment px-6 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl">
-          <ul className="grid gap-5 md:grid-cols-3">
+          <p className={eyebrow}>In their words</p>
+          <ul className="mt-8 grid gap-12 md:grid-cols-3 md:gap-10">
             {writtenTestimonials.map((t) => (
-              <li
-                key={t.name}
-                className="flex flex-col rounded-3xl bg-offwhite p-7 ring-1 ring-navy/5 sm:p-8"
-              >
-                <Quote className="h-7 w-7 text-gold" strokeWidth={1.5} aria-hidden="true" />
-                <blockquote className="mt-4 flex-1">
-                  <p className="font-serif text-xl italic leading-relaxed text-navy">
+              <li key={t.name} className="flex flex-col border-t-2 border-ink pt-6">
+                <blockquote className="flex-1">
+                  <p className="font-serif text-2xl leading-snug">
                     {t.quote}
                   </p>
                 </blockquote>
-                <div className="mt-6 flex items-center gap-3 border-t border-navy/10 pt-5">
+                <div className="mt-6 flex items-center gap-3">
                   <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-navy/5">
                     <Image
                       src={t.photo}
@@ -268,17 +265,17 @@ export default function Results() {
                     />
                   </div>
                   <div>
-                    <p className="font-semibold text-navy">{t.name}</p>
-                    <p className="text-sm leading-snug text-navy/60">{t.role}</p>
+                    <p className="font-semibold text-ink">{t.name}</p>
+                    <p className="text-sm leading-snug text-ink/60">{t.role}</p>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
 
-          <div className="mt-14 flex justify-center">
+          <div className="mt-14 flex">
             <BookACallButton className={buttonClass("primary")}>
-              Book a Call
+              Book a call
               <ArrowRight className={buttonArrow} aria-hidden="true" />
             </BookACallButton>
           </div>
@@ -288,12 +285,12 @@ export default function Results() {
       {/* More Results */}
       <section className="px-6 py-20 sm:py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className={eyebrow}>By the Numbers</p>
-            <h2 className="mt-4 font-serif text-4xl font-medium leading-[1.1] tracking-tight text-navy sm:text-5xl">
-              More Results
+          <div className="max-w-2xl">
+            <p className={eyebrow}>By the numbers</p>
+            <h2 className="mt-3 font-serif text-4xl font-medium leading-[1.08] sm:text-5xl">
+              More results
             </h2>
-            <p className="mt-5 text-lg text-navy/70">
+            <p className="mt-5 text-lg text-ink/70">
               What we actually do for a parish, in two&nbsp;numbers.
             </p>
           </div>
@@ -301,17 +298,17 @@ export default function Results() {
           {/* Idea one: organic growth */}
           <div className="mt-16 grid items-center gap-10 md:grid-cols-2 md:gap-16">
             <div className="text-center md:text-left">
-              <p className={eyebrow}>Organic Growth</p>
-              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
-                We Grow Parish Social Media Accounts
+              <p className={eyebrow}>Organic growth</p>
+              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+                We grow parish social media&nbsp;accounts
               </h3>
-              <div className="mt-8 inline-block border-l-2 border-gold pl-5 text-left">
-                <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
+              <div className="mt-8 inline-block text-left">
+                <p className="font-serif text-6xl font-medium leading-none text-lapis">
                   0 &rarr; 941
                 </p>
-                <p className={statLabel}>Followers in 4 Months, St. Joseph Catholic Parish</p>
+                <p className={statLabel}>followers in 4 months, St. Joseph Catholic&nbsp;Parish</p>
               </div>
-              <p className="mt-6 text-pretty text-lg leading-relaxed text-navy/70">
+              <p className="mt-6 text-pretty text-lg leading-relaxed text-ink/70">
                 Pure organic growth: homily clips, event photos, and flyers
                 people actually stop to look at. No ad spend behind
                 this&nbsp;number.
@@ -324,7 +321,7 @@ export default function Results() {
                   alt="St. Joseph Catholic Parish Instagram at 0 followers, February 2026"
                 />
               </div>
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold/15 text-gold-deep">
+              <span className="grid h-9 w-9 shrink-0 place-items-center text-rubric">
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="flex-1">
@@ -339,17 +336,17 @@ export default function Results() {
           {/* Idea two: ads */}
           <div className="mt-24 grid items-center gap-10 md:grid-cols-2 md:gap-16">
             <div className="text-center md:order-2 md:text-left">
-              <p className={eyebrow}>Meta Ads</p>
-              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-navy sm:text-4xl">
-                We Get Consistent Attendance &amp;&nbsp;Volunteers
+              <p className={eyebrow}>Meta ads</p>
+              <h3 className="mt-3 text-balance font-serif text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+                We get consistent attendance and&nbsp;volunteers
               </h3>
-              <div className="mt-8 inline-block border-l-2 border-gold pl-5 text-left">
-                <p className="font-serif text-6xl font-medium leading-none tracking-tight text-navy">
+              <div className="mt-8 inline-block text-left">
+                <p className="font-serif text-6xl font-medium leading-none text-lapis">
                   $2&ndash;3
                 </p>
-                <p className={statLabel}>Per Lead</p>
+                <p className={statLabel}>per lead</p>
               </div>
-              <p className="mt-6 text-pretty text-lg leading-relaxed text-navy/70">
+              <p className="mt-6 text-pretty text-lg leading-relaxed text-ink/70">
                 Targeted ads promote your events and volunteer opportunities to
                 people nearby, capturing contact info that turns into a
                 calendar add or a text&nbsp;follow-up.
@@ -368,9 +365,7 @@ export default function Results() {
       {/* Client roster */}
       <section className="bg-parchment px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-5xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy/50">
-            Also Trusted By
-          </p>
+          <p className="font-serif text-lg italic text-ink/55">Also trusted by</p>
           <ul className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {clients
               .filter(
@@ -398,9 +393,9 @@ export default function Results() {
                     )}
                   </div>
                   <div>
-                    <p className="font-semibold text-navy">{client.name}</p>
+                    <p className="font-semibold text-ink">{client.name}</p>
                     {client.org && (
-                      <p className="text-sm leading-snug text-navy/60">{client.org}</p>
+                      <p className="text-sm leading-snug text-ink/60">{client.org}</p>
                     )}
                   </div>
                 </li>

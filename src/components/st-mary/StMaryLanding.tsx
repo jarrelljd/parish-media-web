@@ -34,7 +34,7 @@ function Logo({ tone }: { tone: "light" | "dark" }) {
         <Mark className="size-8" />
       </span>
       <span className="leading-tight">
-        <span className={`block font-serif text-lg font-semibold ${tone === "light" ? "text-[#fbf7f1]" : "text-[#2e211c]"}`}>
+        <span className={`block font-classic text-lg font-semibold ${tone === "light" ? "text-[#fbf7f1]" : "text-[#2e211c]"}`}>
           St. Mary in the Mountains
         </span>
         <span className={`block text-xs font-semibold tracking-wide uppercase ${tone === "light" ? "text-[#fbf7f1]/75" : "text-[#6b5a50]"}`}>
@@ -105,7 +105,7 @@ function Hero() {
             <span className="h-px w-10 bg-[#c9a662]" aria-hidden="true" />
             {hero.eyebrow}
           </p>
-          <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.02] font-medium tracking-tight text-balance sm:text-7xl">
+          <h1 className="mt-5 max-w-3xl font-classic text-5xl leading-[1.02] font-medium tracking-tight text-balance sm:text-7xl">
             {hero.headline}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-[#fbf7f1]/85 sm:text-xl">{hero.intro}</p>
@@ -135,7 +135,7 @@ function VideoAndForm() {
       <div className="relative mx-auto grid max-w-6xl items-start gap-12 px-4 sm:px-6 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
         <Reveal>
           <Eyebrow>{vsl.eyebrow}</Eyebrow>
-          <h2 className="mt-4 font-serif text-4xl font-medium tracking-tight text-balance sm:text-5xl">{vsl.title}</h2>
+          <h2 className="mt-4 font-classic text-4xl font-medium tracking-tight text-balance sm:text-5xl">{vsl.title}</h2>
           <div className="mt-8 rounded-[1.75rem] bg-white p-2.5 shadow-2xl shadow-[#2e211c]/10 ring-1 ring-[#2e211c]/5">
             <div className="relative overflow-hidden rounded-[1.25rem] bg-[#1d2833]" style={{ paddingTop: "56.25%" }}>
               <iframe
@@ -169,13 +169,13 @@ function Lede() {
   return (
     <section className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.6fr_1fr] lg:gap-20">
       <Reveal>
-        <h2 className="font-serif text-4xl font-medium tracking-tight text-balance sm:text-5xl">{lede.title}</h2>
+        <h2 className="font-classic text-4xl font-medium tracking-tight text-balance sm:text-5xl">{lede.title}</h2>
         {lede.body.map((p, i) => (
           <p
             key={p}
             className={`mt-6 leading-relaxed text-pretty text-[#6b5a50] ${
               i === 0
-                ? "text-xl first-letter:float-left first-letter:mt-1 first-letter:mr-3 first-letter:font-serif first-letter:text-7xl first-letter:leading-[0.8] first-letter:text-[#7b2d26] sm:text-2xl"
+                ? "text-xl first-letter:float-left first-letter:mt-1 first-letter:mr-3 first-letter:font-classic first-letter:text-7xl first-letter:leading-[0.8] first-letter:text-[#7b2d26] sm:text-2xl"
                 : "text-lg"
             }`}
           >
@@ -186,7 +186,7 @@ function Lede() {
       <Reveal delayMs={120} className="self-end">
         <ul className="border-t-2 border-[#7b2d26]">
           {lede.facts.map((f) => (
-            <li key={f} className="border-b border-[#2e211c]/10 py-4 font-serif text-xl text-[#2e211c]">
+            <li key={f} className="border-b border-[#2e211c]/10 py-4 font-classic text-xl text-[#2e211c]">
               {f}
             </li>
           ))}
@@ -206,7 +206,7 @@ function QuoteBand({ text, cite, photo }: { text: string; cite: string; photo: {
             <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 18rem, 14rem" className="object-cover" />
           </div>
           <div>
-            <blockquote className="font-serif text-3xl leading-snug font-medium text-balance italic sm:text-4xl lg:text-5xl">“{text}”</blockquote>
+            <blockquote className="font-classic text-3xl leading-snug font-medium text-balance italic sm:text-4xl lg:text-5xl">“{text}”</blockquote>
             <figcaption className="mt-6 text-sm font-bold tracking-[0.2em] text-[#fbf7f1]/75 uppercase">{cite}</figcaption>
           </div>
         </figure>
@@ -222,7 +222,7 @@ function Inside() {
       <div className="mx-auto max-w-6xl px-4 pt-20 pb-12 sm:px-6 sm:pt-28">
         <Reveal>
           <Eyebrow>Inside the church</Eyebrow>
-          <h2 id="inside-title" className="mt-4 max-w-2xl font-serif text-4xl font-medium tracking-tight text-balance sm:text-5xl">
+          <h2 id="inside-title" className="mt-4 max-w-2xl font-classic text-4xl font-medium tracking-tight text-balance sm:text-5xl">
             Three things to see when you step inside
           </h2>
         </Reveal>
@@ -233,8 +233,8 @@ function Inside() {
             <Image src={b.photo.src} alt={b.photo.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           </Reveal>
           <Reveal delayMs={100} className="flex flex-col justify-center px-4 py-14 sm:px-12 lg:px-16 lg:py-24">
-            <p className="font-serif text-6xl leading-none font-medium text-[#2e211c]/15">{String(i + 1).padStart(2, "0")}</p>
-            <h3 className="mt-4 font-serif text-4xl font-medium tracking-tight text-balance">{b.title}</h3>
+            <p className="font-classic text-6xl leading-none font-medium text-[#2e211c]/15">{String(i + 1).padStart(2, "0")}</p>
+            <h3 className="mt-4 font-classic text-4xl font-medium tracking-tight text-balance">{b.title}</h3>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-[#6b5a50]">{b.body}</p>
           </Reveal>
         </div>
@@ -250,21 +250,21 @@ function Timeline() {
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>Since 1862</Eyebrow>
-          <h2 className="mt-4 font-serif text-4xl font-medium tracking-tight text-balance sm:text-5xl">Burned, rebuilt, and saved again</h2>
+          <h2 className="mt-4 font-classic text-4xl font-medium tracking-tight text-balance sm:text-5xl">Burned, rebuilt, and saved again</h2>
         </Reveal>
         <ol className="mt-14">
           {history.map((h, i) => (
             <li key={h.year} className="border-t border-[#2e211c]/15 py-10 first:border-t-0 first:pt-0 last:pb-0">
               <Reveal className="grid gap-4 sm:grid-cols-[11rem_1fr] sm:gap-10">
                 <p
-                  className={`font-serif text-6xl leading-none font-medium tracking-tight sm:text-7xl ${
+                  className={`font-classic text-6xl leading-none font-medium tracking-tight sm:text-7xl ${
                     i === history.length - 1 ? "text-[#7b2d26]" : "text-[#2e211c]/25"
                   }`}
                 >
                   {h.year}
                 </p>
                 <div>
-                  <h3 className="font-serif text-3xl font-medium tracking-tight text-balance">{h.title}</h3>
+                  <h3 className="font-classic text-3xl font-medium tracking-tight text-balance">{h.title}</h3>
                   <p className="mt-4 text-lg leading-relaxed text-pretty text-[#6b5a50]">{h.body}</p>
                 </div>
               </Reveal>
@@ -286,7 +286,7 @@ function Voices() {
         {stMary.voices.map((v, i) => (
           <Reveal key={v.cite} delayMs={i * 100}>
             <figure className="border-l-2 border-[#7b2d26] pl-6 sm:pl-8">
-              <blockquote className="font-serif text-2xl leading-snug font-medium text-pretty text-[#2e211c] italic sm:text-3xl">
+              <blockquote className="font-classic text-2xl leading-snug font-medium text-pretty text-[#2e211c] italic sm:text-3xl">
                 “{v.text}”
               </blockquote>
               <figcaption className="mt-5 text-sm font-bold tracking-[0.15em] text-[#6b5a50] uppercase">{v.cite}</figcaption>
@@ -313,7 +313,7 @@ function Gallery() {
   return (
     <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28">
       <Reveal>
-        <h2 className="mb-8 font-serif text-3xl font-medium tracking-tight">{gallery.title}</h2>
+        <h2 className="mb-8 font-classic text-3xl font-medium tracking-tight">{gallery.title}</h2>
       </Reveal>
       <ul className="grid grid-cols-12 gap-3 sm:gap-5">
         {gallery.photos.map((g, i) => (
@@ -338,7 +338,7 @@ function Plan() {
       <div className="grid lg:grid-cols-2">
         <Reveal className="flex flex-col justify-center px-4 py-16 sm:px-12 lg:py-24 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]">
           <Eyebrow light>Before you go</Eyebrow>
-          <h2 className="mt-4 font-serif text-5xl font-medium tracking-tight text-balance sm:text-6xl">{plan.title}</h2>
+          <h2 className="mt-4 font-classic text-5xl font-medium tracking-tight text-balance sm:text-6xl">{plan.title}</h2>
           <dl className="mt-10 border-t border-[#fbf7f1]/15">
             {plan.rows.map((r) => (
               <div key={r.label} className="grid gap-1 border-b border-[#fbf7f1]/15 py-5 sm:grid-cols-[8rem_1fr] sm:gap-6">
@@ -373,7 +373,7 @@ function Plan() {
           <Image src={plan.giftShop.photo.src} alt={plan.giftShop.photo.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
         </Reveal>
         <Reveal delayMs={100}>
-          <h3 className="font-serif text-4xl font-medium tracking-tight text-balance">{plan.giftShop.title}</h3>
+          <h3 className="font-classic text-4xl font-medium tracking-tight text-balance">{plan.giftShop.title}</h3>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-[#fbf7f1]/80">{plan.giftShop.body}</p>
         </Reveal>
       </div>
@@ -387,7 +387,7 @@ function Faq() {
       <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.6fr]">
         <Reveal className="lg:sticky lg:top-12 lg:self-start">
           <Eyebrow>Questions</Eyebrow>
-          <h2 className="mt-4 font-serif text-5xl font-medium tracking-tight text-balance sm:text-6xl">Good to know</h2>
+          <h2 className="mt-4 font-classic text-5xl font-medium tracking-tight text-balance sm:text-6xl">Good to know</h2>
           <p className="mt-5 text-lg leading-relaxed text-[#6b5a50]">
             Anything else? Call the parish office at{" "}
             <a href={`tel:${stMary.phone.replace(/\D/g, "")}`} className="font-bold whitespace-nowrap text-[#7b2d26] hover:underline">
@@ -400,7 +400,7 @@ function Faq() {
           {stMary.faq.map((item, i) => (
             <Reveal key={item.q} delayMs={i * 60}>
               <details className="group border-b border-[#2e211c]/15" open={i === 0}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left font-serif text-xl font-medium transition-colors hover:text-[#7b2d26] sm:text-2xl [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left font-classic text-xl font-medium transition-colors hover:text-[#7b2d26] sm:text-2xl [&::-webkit-details-marker]:hidden">
                   {item.q}
                   <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#f3e9dc] text-[#7b2d26] transition-all duration-300 group-open:rotate-180 group-open:bg-[#7b2d26] group-open:text-[#fbf7f1]">
                     <ChevronDown className="size-5" aria-hidden="true" />
@@ -424,7 +424,7 @@ function Closing() {
       <div className="absolute inset-0 bg-gradient-to-r from-[#1d2833] via-[#1d2833]/80 to-[#1d2833]/10" aria-hidden="true" />
       <Reveal className="relative mx-auto w-full max-w-6xl px-4 py-20 text-[#fbf7f1] sm:px-6">
         <div className="max-w-xl">
-          <h2 className="font-serif text-5xl font-medium tracking-tight text-balance sm:text-6xl">{closing.headline}</h2>
+          <h2 className="font-classic text-5xl font-medium tracking-tight text-balance sm:text-6xl">{closing.headline}</h2>
           <p className="mt-5 text-lg leading-relaxed text-pretty text-[#fbf7f1]/85">{closing.text}</p>
           <Button variant="light" className="mt-8 w-full sm:w-auto">
             {cta.label}

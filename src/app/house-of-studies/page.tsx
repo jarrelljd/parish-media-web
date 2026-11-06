@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 import Link from "next/link";
 import LibraryExplorer from "@/components/LibraryExplorer";
 import RoseWindow from "@/components/RoseWindow";
@@ -64,6 +65,7 @@ export default function HouseOfStudiesPage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import SiteFooter from "@/components/SiteFooter";
 import bookCover from "../../../public/images/free-guide/book-cover.jpg";
 
 export const metadata: Metadata = {
@@ -93,6 +94,7 @@ export default function FreeStuffPage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

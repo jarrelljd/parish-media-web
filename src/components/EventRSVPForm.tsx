@@ -55,7 +55,7 @@ export default function EventRSVPForm({
   if (state.status === "success") {
     return (
       <div className="rounded-2xl border border-[var(--brand-primary-10)] bg-white p-8 text-center shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-8px_var(--brand-shadow)]">
-        <p className="font-serif text-xl font-semibold text-[var(--brand-primary)]">
+        <p className="font-classic text-xl font-semibold text-[var(--brand-primary)]">
           {successMessage ?? t.defaultSuccessTitle}
         </p>
         {!successMessage && (
@@ -77,7 +77,7 @@ export default function EventRSVPForm({
           {title && (
             <>
               <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-[var(--brand-secondary)]" />
-              <p className="text-balance font-serif text-xl font-semibold tracking-tight text-[var(--brand-primary)]">
+              <p className="text-balance font-classic text-xl font-semibold tracking-tight text-[var(--brand-primary)]">
                 {title}
               </p>
             </>

@@ -6,7 +6,7 @@ import stepAsk from "../../public/images/proof/ad-on-phone.png";
 import stepFollowUp from "../../public/images/parish-growth/young-adults-with-priest.png";
 
 const CALENDLY_URL =
-  "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1b2a4a&primary_color=c9a227";
+  "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1d1a16&primary_color=1f3263";
 
 const FAQS = [
   {
@@ -63,19 +63,20 @@ export default function ParishGrowthContent() {
       <section className="pb-16 sm:pb-20">
         {/* Navy band runs behind the headline and the top ~2/3 of the
             video, then breaks to off-white so the video sits on the seam. */}
-        <div className="bg-navy px-6 pt-10 sm:pt-14">
+        <div className="bg-ink px-6 pt-12 sm:pt-16">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-balance font-serif text-4xl font-semibold leading-tight text-offwhite sm:text-6xl">
-              Help Your Catholic Parish Reach More Young&nbsp;Adults
+            <p className="font-serif text-xl italic text-[#e3a196]">Parish Growth</p>
+            <h1 className="mt-3 text-balance font-serif text-[2.6rem] font-medium leading-[1.05] text-vellum sm:text-6xl">
+              Help your Catholic parish reach more young&nbsp;adults
             </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-offwhite/75">
+            <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-vellum/75">
               Show them what&rsquo;s happening at your parish and make it
               easy to get involved, all through Facebook and&nbsp;Instagram.
             </p>
           </div>
         </div>
-        <div className="bg-linear-to-b from-navy from-65% to-transparent to-65% px-6 pt-8">
-          <div className="relative mx-auto aspect-video w-full max-w-2xl overflow-hidden rounded-2xl bg-navy shadow-2xl ring-1 ring-gold/30">
+        <div className="bg-linear-to-b from-ink from-65% to-transparent to-65% px-6 pt-10">
+          <div className="relative mx-auto aspect-video w-full max-w-2xl overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-vellum/10">
             <iframe
               src="https://player.vimeo.com/video/1233188537?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
@@ -86,13 +87,13 @@ export default function ParishGrowthContent() {
           </div>
         </div>
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="mx-auto mt-8 max-w-2xl text-pretty text-navy/80">
+          <p className="mx-auto mt-8 max-w-2xl text-pretty text-ink/80">
             We use your parish&rsquo;s existing events, ministries, and Mass
             schedule to reach local young adults and families and give them
             a clear next&nbsp;step.
           </p>
           <div className="mt-8">
-            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep">
               Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>
@@ -100,15 +101,16 @@ export default function ParishGrowthContent() {
       </section>
 
       {/* What other priests are saying */}
-      <section className="bg-navy/5 px-6 py-16 sm:py-20">
+      <section className="bg-vellum-deep px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            What Other Priests Are Saying
+          <p className="font-serif text-lg italic text-rubric">In their words</p>
+          <h2 className="mt-2 text-balance font-serif text-4xl font-medium sm:text-5xl">
+            What other priests are&nbsp;saying
           </h2>
           <div className="mt-10 grid gap-12 md:grid-cols-3 md:gap-8">
             {PRIEST_TESTIMONIALS.map((t) => (
               <div key={t.name}>
-                <div className="relative mx-auto aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-2xl bg-navy shadow-lg">
+                <div className="relative mx-auto aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-[1.6rem] border-[6px] border-ink bg-ink shadow-xl shadow-ink/20">
                   <iframe
                     src={`https://player.vimeo.com/video/${t.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
                     className="absolute inset-0 h-full w-full"
@@ -118,15 +120,15 @@ export default function ParishGrowthContent() {
                     title={`${t.name} testimonial for Parish Media Company`}
                   />
                 </div>
-                <p className="mt-5 font-semibold text-navy">{t.name}</p>
-                <p className="mx-auto mt-1 max-w-[280px] text-pretty text-sm text-navy/60">
+                <p className="mt-5 font-serif text-xl font-semibold">{t.name}</p>
+                <p className="mx-auto mt-1 max-w-[280px] text-pretty text-sm text-ink/60">
                   {t.role}
                 </p>
               </div>
             ))}
           </div>
           <div className="mt-12 text-center">
-            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep">
               Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>
@@ -135,18 +137,17 @@ export default function ParishGrowthContent() {
 
       {/* What we do for your parish */}
       <section className="pb-16 sm:pb-20">
-        <div className="bg-navy px-6 py-10 sm:py-12">
-          <span className="mx-auto block h-1 w-12 rounded-full bg-gold" />
-          <h2 className="mt-5 text-balance text-center font-serif text-3xl font-semibold text-offwhite sm:text-4xl">
-            What We Do For Your&nbsp;Parish
+        <div className="px-6 pt-16 text-center sm:pt-24">
+          <p className="font-serif text-lg italic text-rubric">How it works</p>
+          <h2 className="mt-2 text-balance font-serif text-4xl font-medium sm:text-5xl">
+            What we do for your&nbsp;parish
           </h2>
         </div>
         <div className="mx-auto mt-12 grid max-w-5xl gap-12 px-6 sm:mt-16 md:grid-cols-3 md:gap-8">
           <div className="text-center">
-            <h3 className="font-serif text-xl font-semibold text-navy">
-              #1: Nurture
-            </h3>
-            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl shadow-md">
+            <p className="font-serif text-5xl font-medium leading-none text-rubric">1</p>
+            <h3 className="mt-3 font-serif text-3xl font-medium">Nurture</h3>
+            <div className="relative mt-6 aspect-square overflow-hidden bg-black">
               <Image
                 src={stepNurture}
                 alt="St. Joseph Catholic Church Instagram grid with the pastor's homily clips and parish events"
@@ -155,17 +156,16 @@ export default function ParishGrowthContent() {
                 className="object-cover object-bottom"
               />
             </div>
-            <p className="mt-5 text-pretty text-navy/80">
+            <p className="mt-5 text-pretty text-ink/80">
               Consistent posts aren&apos;t enough. We need to consistently post
               content that gets the viewer to know, like, and trust the parish.
               Over and over, week after&nbsp;week.
             </p>
           </div>
           <div className="text-center">
-            <h3 className="font-serif text-xl font-semibold text-navy">
-              #2: Ask
-            </h3>
-            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl bg-gold/10 shadow-md">
+            <p className="font-serif text-5xl font-medium leading-none text-rubric">2</p>
+            <h3 className="mt-3 font-serif text-3xl font-medium">Ask</h3>
+            <div className="relative mt-6 aspect-square overflow-hidden bg-black">
               <Image
                 src={stepAsk}
                 alt="A parish picnic invitation ad on Facebook"
@@ -174,7 +174,7 @@ export default function ParishGrowthContent() {
                 className="object-contain py-3"
               />
             </div>
-            <p className="mt-5 text-pretty text-navy/80">
+            <p className="mt-5 text-pretty text-ink/80">
               Once they&apos;re nurtured, they&apos;re more likely to respond
               positively to an ask (attend, volunteer, etc.). We ask through
               social media ads, because that&apos;s where everyone spends
@@ -182,10 +182,9 @@ export default function ParishGrowthContent() {
             </p>
           </div>
           <div className="text-center">
-            <h3 className="font-serif text-xl font-semibold text-navy">
-              #3: Follow-Up
-            </h3>
-            <div className="relative mt-5 aspect-square overflow-hidden rounded-2xl shadow-md">
+            <p className="font-serif text-5xl font-medium leading-none text-rubric">3</p>
+            <h3 className="mt-3 font-serif text-3xl font-medium">Follow-up</h3>
+            <div className="relative mt-6 aspect-square overflow-hidden bg-black">
               <Image
                 src={stepFollowUp}
                 alt="Fr. Nicholas Fleming taking a selfie with a large group of young adults at Ss. John and James Catholic Parish in West Warwick, RI"
@@ -194,7 +193,7 @@ export default function ParishGrowthContent() {
                 className="object-cover object-left"
               />
             </div>
-            <p className="mt-5 text-pretty text-navy/80">
+            <p className="mt-5 text-pretty text-ink/80">
               Finally, when people respond to the ad, we do the next step. If
               it&apos;s a &ldquo;Plan Your Visit&rdquo; ad, we reach out and
               talk with them. If it&apos;s an event ad, we add the event to
@@ -207,15 +206,16 @@ export default function ParishGrowthContent() {
       {/* Before you book + Calendly */}
       <section
         id="book"
-        className="scroll-mt-20 border-t border-navy/10 px-6 py-16 sm:py-20"
+        className="scroll-mt-20 border-t border-ink/10 px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-balance font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Before You Book&hellip;
+          <p className="font-serif text-lg italic text-rubric">Book your assessment</p>
+          <h2 className="mt-2 text-balance font-serif text-4xl font-medium sm:text-5xl">
+            Before you book&hellip;
           </h2>
-          <p className="mt-4 text-pretty text-navy/80">
+          <p className="mt-4 text-pretty text-ink/80">
             To make this conversation as useful as possible for your parish,{" "}
-            <strong className="font-semibold text-navy">
+            <strong className="font-semibold text-ink">
               we ask that the pastor join the call.
             </strong>{" "}
             Assistant priests, deacons,
@@ -231,21 +231,22 @@ export default function ParishGrowthContent() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-navy/5 px-6 py-16 sm:py-20">
+      <section className="bg-vellum-deep px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-balance text-center font-serif text-2xl font-semibold text-navy sm:text-3xl">
-            Frequently Asked Questions
+          <p className="text-center font-serif text-lg italic text-rubric">Questions</p>
+          <h2 className="mt-2 text-balance text-center font-serif text-4xl font-medium sm:text-5xl">
+            Frequently asked&nbsp;questions
           </h2>
-          <div className="mt-10 space-y-3">
+          <div className="mt-10 border-t-2 border-ink">
             {FAQS.map((faq) => (
               <details
                 key={faq.question}
-                className="group rounded-2xl border border-navy/10 bg-white shadow-sm open:border-gold/40"
+                className="group border-b border-ink/15"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left font-semibold text-navy [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left font-serif text-xl font-medium [&::-webkit-details-marker]:hidden">
                   <span className="text-pretty">{faq.question}</span>
                   <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center text-rubric transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
                     aria-hidden="true"
                   >
                     <svg
@@ -259,7 +260,7 @@ export default function ParishGrowthContent() {
                     </svg>
                   </span>
                 </summary>
-                <div className="space-y-3 px-6 pb-6 text-navy/80">
+                <div className="space-y-3 pb-7 text-ink/75">
                   {faq.answer.map((paragraph) => (
                     <p key={paragraph} className="text-pretty">
                       {paragraph}
@@ -270,7 +271,7 @@ export default function ParishGrowthContent() {
             ))}
           </div>
           <div className="mt-12 text-center">
-            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-base font-semibold text-navy shadow-md transition-colors hover:bg-gold/90">
+            <ScrollToBookingButton className="inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep">
               Book 30-Min Parish Growth&nbsp;Assessment
             </ScrollToBookingButton>
           </div>

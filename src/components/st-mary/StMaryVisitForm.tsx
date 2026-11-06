@@ -36,7 +36,7 @@ export default function StMaryVisitForm() {
     return (
       <div className="py-10 text-center" role="status">
         <CheckCircle2 className="mx-auto size-14 text-[#7b2d26]" strokeWidth={1.5} aria-hidden="true" />
-        <h2 className="mt-5 font-serif text-3xl font-medium">Thank you!</h2>
+        <h2 className="mt-5 font-classic text-3xl font-medium">Thank you!</h2>
         <p className="mx-auto mt-3 max-w-sm text-lg leading-relaxed text-pretty text-[#6b5a50]">{form.success}</p>
       </div>
     );
@@ -45,7 +45,7 @@ export default function StMaryVisitForm() {
   return (
     <form action={formAction} className="space-y-5">
       <div>
-        <h2 className="font-serif text-3xl font-medium tracking-tight text-balance">{form.title}</h2>
+        <h2 className="font-classic text-3xl font-medium tracking-tight text-balance">{form.title}</h2>
         <p className="mt-2 leading-relaxed text-pretty text-[#6b5a50]">{form.intro}</p>
       </div>
 

@@ -2,13 +2,13 @@
 // Pair `primary` buttons with <ArrowRight className={buttonArrow} /> inside.
 
 const base =
-  "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0";
+  "group inline-flex items-center justify-center gap-2.5 rounded-[3px] px-7 py-4 text-base font-semibold transition-colors duration-300 motion-reduce:transition-none";
 
 const variants = {
-  primary: "bg-navy text-offwhite shadow-lg shadow-navy/20 hover:shadow-xl hover:shadow-navy/25",
-  ghost: "text-navy ring-1 ring-navy/20 hover:bg-parchment hover:ring-navy/30",
-  light: "bg-offwhite text-navy shadow-lg shadow-black/20 hover:bg-white",
-  ghostLight: "text-offwhite ring-1 ring-offwhite/35 hover:bg-offwhite/10",
+  primary: "bg-lapis text-vellum hover:bg-lapis-deep",
+  ghost: "text-lapis ring-1 ring-lapis/25 hover:bg-parchment hover:ring-lapis/40",
+  light: "bg-vellum text-ink hover:bg-white",
+  ghostLight: "text-vellum ring-1 ring-vellum/35 hover:bg-vellum/10",
 };
 
 export function buttonClass(variant: keyof typeof variants = "primary", extra = "") {

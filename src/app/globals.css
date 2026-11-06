@@ -1,16 +1,31 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-navy: #1b2a4a;
-  --color-gold: #c9a227;
-  --color-offwhite: #faf8f4;
+  /* Brand palette: the colors of a missal or illuminated manuscript.
+     Vellum page, lapis blue, rubric red, a little gold leaf. */
+  --color-vellum: #f4eee3;
+  --color-vellum-deep: #e8dfcd;
+  --color-ink: #1d1a16;
+  --color-lapis: #1f3263;
+  --color-lapis-deep: #152246;
+  --color-rubric: #a1281e;
+  --color-gilt: #a8832f;
+
+  /* Older names, now mapped onto the palette above so every page follows it. */
+  --color-navy: #1f3263;
+  --color-gold: #a8832f;
+  --color-offwhite: #f4eee3;
   /* Deeper gold for small text on light backgrounds (plain gold is too faint). */
-  --color-gold-deep: #8a6d2f;
+  --color-gold-deep: #86672b;
   /* Warm surfaces for alternating section bands and photo frames. */
-  --color-parchment: #f3ede2;
-  --color-linen: #e8dfcf;
+  --color-parchment: #ebe3d3;
+  --color-linen: #e0d5c0;
+
   --font-sans: var(--font-source-sans);
-  --font-serif: var(--font-fraunces);
+  --font-serif: var(--font-garamond);
+  --font-display: var(--font-garamond);
+  /* The event pages and St. Mary landing keep their original serif. */
+  --font-classic: var(--font-fraunces);
 }
 
 body {
@@ -23,6 +38,41 @@ body {
   --animate-title-shine: title-shine 7s ease-in-out infinite;
   --animate-rose-spin: rose-spin 240s linear infinite;
   --animate-shelf-fade: shelf-fade 0.5s ease-out;
+
+  /* Animated homepage hero */
+  --animate-kenburns: kenburns 9s ease-out both;
+  --animate-rise: rise 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-up: fade-up 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 2s ease-out both;
+  --animate-progress: progress 7s linear both;
+
+  /* Slow zoom-out on the active hero photo */
+  @keyframes kenburns {
+    from { transform: scale(1.1); }
+    to { transform: scale(1); }
+  }
+
+  /* Headline line rising out of its mask */
+  @keyframes rise {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Fills the bar under the current hero photo */
+  @keyframes progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
 
   /* Shelf name fading in as the carousel turns (/house-of-studies) */
   @keyframes shelf-fade {

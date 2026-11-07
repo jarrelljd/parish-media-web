@@ -17,20 +17,19 @@ import { hnjElc } from "@/data/hnjElcLanding";
 const { cta } = hnjElc;
 const tel = `tel:${hnjElc.phone.replace(/\D/g, "")}`;
 
+// The ELC's own full-color logo (from its 2026–27 tuition sheet). Its gray tagline needs
+// a light background, so on dark bands it sits on a cream card.
 function Logo({ tone }: { tone: "light" | "dark" }) {
-  return (
-    <span className="flex items-center gap-3">
-      <Image src={hnjElc.logo} alt="" width={48} height={48} className="size-12 shrink-0 rounded-full bg-white shadow-md shadow-black/10" />
-      <span className="leading-tight">
-        <span className={`block font-classic text-lg font-semibold ${tone === "light" ? "text-[#fbf8f1]" : "text-[#1f2a22]"}`}>
-          Holy Name of Jesus
-        </span>
-        <span className={`block text-xs font-semibold tracking-wide uppercase ${tone === "light" ? "text-[#fbf8f1]/75" : "text-[#5b6359]"}`}>
-          Early Learning Center
-        </span>
-      </span>
-    </span>
+  const img = (
+    <Image
+      src={hnjElc.elcLogo}
+      alt="Holy Name of Jesus Early Learning Center"
+      width={1415}
+      height={249}
+      className="h-10 w-auto sm:h-12"
+    />
   );
+  return tone === "dark" ? img : <span className="inline-block rounded-2xl bg-[#fbf8f1] px-4 py-3">{img}</span>;
 }
 
 function Button({ variant = "primary", className = "", children }: { variant?: "primary" | "light"; className?: string; children: React.ReactNode }) {
@@ -468,7 +467,7 @@ function Footer() {
           </p>
         </div>
         <p className="mt-12 border-t border-[#fbf8f1]/10 pt-8 text-center text-sm text-[#fbf8f1]/50 sm:text-left">
-          © {year} Holy Name of Jesus Catholic School · Diocese&nbsp;of&nbsp;Orlando
+          {`© ${year} Holy Name of Jesus Catholic School · Diocese of Orlando`}
         </p>
       </div>
     </footer>

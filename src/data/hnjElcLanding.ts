@@ -20,9 +20,9 @@ export const hnjElc = {
   guidePdf: "/downloads/hnj-elc-parent-guide.pdf",
 
   meta: {
-    title: "Holy Name of Jesus Early Learning Center | Indialantic, FL",
+    title: "Holy Name of Jesus Catholic Early Learning Center | Indialantic, FL",
     description:
-      "Faith-filled, play-based care for children 16 months to 3 years, Monday to Friday, 7:30 AM to 5 PM, year-round. Get the free ELC parent guide with schedules and 2026–27 tuition.",
+      "Catholic, play-based early learning for children 16 months to 3 years, Monday to Friday, 7:30 AM to 5 PM, year-round. Get the free ELC parent guide with schedules and 2026–27 tuition.",
   },
 
   address: "3060 N. Hwy A1A, Indialantic, FL 32903",
@@ -30,13 +30,13 @@ export const hnjElc = {
   email: "elc@hnj.org",
   schoolSite: "https://hnjcatholicschool.org/elc",
   facebook: "https://www.facebook.com/hnjschoolindialanticfl",
-  logo: img("hnj-school-logo.png"),
+  elcLogo: img("elc-logo.png"),
 
   hero: {
     eyebrow: "Indialantic · Ages 16 months to 3",
-    headline: "A faith-filled first classroom for your little one",
+    headline: "Your little one’s first Catholic classroom",
     intro:
-      "At Holy Name of Jesus Early Learning Center, toddlers learn through play, pray with their teachers, and are cared for like family. Open year-round, Monday to Friday, 7:30 AM to 5 PM.",
+      "At Holy Name of Jesus Early Learning Center, toddlers learn through play, pray with their teachers, and grow in the Catholic faith from day one. Open year-round, Monday to Friday, 7:30 AM to 5 PM.",
     photo: { src: img("hero.jpg"), alt: "Two toddlers gluing cotton balls onto a letter S at a classroom table" },
     badge: { value: "7:30–5", label: "Mon–Fri, year-round" },
   },
@@ -55,7 +55,7 @@ export const hnjElc = {
       "A typical day in the classroom, from drop-off to pickup",
       "What to pack, what to label, and what to leave home",
       "How teachers guide behavior with calm, not time-outs",
-      "How your child moves up to Holy Name of Jesus School",
+      "How your child moves up to Holy Name of Jesus Catholic School",
     ],
     photo: { src: img("handprints.jpg"), alt: "A toddler pressing painted hands together with a classmate" },
   },
@@ -69,7 +69,7 @@ export const hnjElc = {
   },
 
   lede: {
-    title: "Where little ones first learn they are loved by God",
+    title: "A Catholic home where little ones learn they are loved by God",
     body: [
       "Our Early Learning Center is part of Holy Name of Jesus Catholic School, just steps from the parish church in Indialantic. It is a warm, bright place where children 16 months to 3 years old spend their days playing, singing, exploring, and praying.",
       "Parents get photos and updates through the day, and families of enrolled children are welcome to stop in any time.",
@@ -90,8 +90,8 @@ export const hnjElc = {
       photo: { src: img("blocks.jpg"), alt: "A teacher on the rug building a block tower with two toddlers" },
     },
     {
-      title: "Faith is part of the day",
-      body: "Children pray together, hear about Jesus, and grow up knowing the parish church next door. Here, Fr. Adam Marchese, the pastor of Holy Name of Jesus, shows children the chalice used at Mass.",
+      title: "Catholic faith, every day",
+      body: "Children pray together, hear about Jesus, and grow up knowing their Catholic parish right next door. Here, Fr. Adam Marchese, the pastor of Holy Name of Jesus, shows children the chalice used at Mass.",
       photo: { src: img("fr-adam-chalice.jpg"), alt: "Fr. Adam Marchese kneeling to show a golden chalice to a group of children", position: "50% 30%" },
     },
     {
@@ -117,7 +117,7 @@ export const hnjElc = {
     steps: [
       { age: "16 mo", title: "PK1", body: "Children 16 months to 2½ years. Must be walking and off the bottle." },
       { age: "2½", title: "PK2", body: "Children 2½ to 3 years old by September 1." },
-      { age: "3+", title: "Holy Name of Jesus School", body: "Pre-K3 and VPK, then Kindergarten through 8th grade, right next door." },
+      { age: "3+", title: "Holy Name of Jesus Catholic School", body: "Pre-K3 and VPK, then Kindergarten through 8th grade, right next door." },
     ],
     photo: { src: img("hnj-students.jpg"), alt: "Young Holy Name of Jesus students in uniform working on a project together" },
   },
@@ -151,7 +151,7 @@ export const hnjElc = {
     },
     {
       q: "Do we need to be Catholic?",
-      a: "No. Our doors are open to every family who wants a loving, faith-filled start for their child, whatever your background.",
+      a: "No. We are a Catholic center, and our doors are open to every family who wants a loving, faith-filled start for their child, whatever your background.",
     },
     {
       q: "How will I know how my child’s day went?",
@@ -168,7 +168,7 @@ export const hnjElc = {
   ],
 
   closing: {
-    headline: "Give your child a joyful start",
+    headline: "Give your child a joyful Catholic start",
     text: "Get the free ELC guide with schedules, tuition, and what a day looks like, then come see us.",
     photo: { src: img("playground-circle.jpg"), alt: "Young children holding hands in a circle with their teacher on the playground" },
   },

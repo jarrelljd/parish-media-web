@@ -1,7 +1,8 @@
 import Image from "next/image";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
-import { comparison, methodSteps, proofFacts } from "@/data/method";
+import { comparison, proofFacts } from "@/data/method";
+import WhatWeDo from "./WhatWeDo";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
 import igScreen from "../../public/images/proof/ig-phone-screen.jpg";
 import fbAdScreen from "../../public/images/proof/fb-ad-screen.jpg";
@@ -58,17 +59,6 @@ const PRIEST_TESTIMONIALS = [
     videoId: "1225765800",
   },
 ];
-
-// Wording for each step on this page (images and captions come from
-// src/data/method.ts, shared with the homepage).
-const STEP_COPY = [
-  "Consistent posts aren’t enough. We need to consistently post content that gets the viewer to know, like, and trust the parish. Over and over, week after week.",
-  "Once they’re nurtured, they’re more likely to respond positively to an ask (attend, volunteer, etc.). We ask through social media ads, because that’s where everyone spends their time.",
-  "Finally, when people respond to the ad, we do the next step. If it’s a “Plan Your Visit” ad, we reach out and talk with them. If it’s an event ad, we add the event to their calendar. Every response is tracked and reported to you each month.",
-];
-
-// Platform tag shown under each step's name (none on the third step).
-const STEP_TAGS = ["Facebook & Instagram posts and Reels", "Facebook & Instagram ads", null];
 
 const BUTTON =
   "inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
@@ -187,45 +177,7 @@ export default function ParishGrowthContent() {
         </div>
       </section>
 
-      {/* How it works: same three steps as the homepage, shown with real work */}
-      <section className="px-6 py-20 sm:py-28 lg:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
-            <p className={rubric}>How it works</p>
-            <h2 className={`mt-3 ${h2}`}>Encounter, invitation, accompaniment.</h2>
-            <p className="mt-6 text-pretty text-lg leading-relaxed text-ink/70">
-              Here&rsquo;s what we do for your parish every month, and what
-              each part looks like in a real&nbsp;parish.
-            </p>
-          </div>
-
-          <div className="mt-14 space-y-16 lg:space-y-24">
-            {methodSteps.map((s, i) => (
-              <article key={s.title} className="grid items-center gap-8 border-t border-ink/15 pt-10 lg:grid-cols-2 lg:gap-16">
-                <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <p className="font-serif text-6xl font-medium leading-none text-rubric">{s.n}</p>
-                  <h3 className="mt-4 font-serif text-4xl font-medium">{s.title}</h3>
-                  <p className="mt-1 font-serif text-xl italic text-ink/60">{s.plain}</p>
-                  {STEP_TAGS[i] && (
-                    <p className="mt-3 flex items-center gap-1.5 text-sm text-ink/55">
-                      <FacebookIcon className="h-3.5 w-3.5" />
-                      <InstagramIcon className="h-3.5 w-3.5" />
-                      {STEP_TAGS[i]}
-                    </p>
-                  )}
-                  <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-ink/75">{STEP_COPY[i]}</p>
-                </div>
-                <figure className={i % 2 === 1 ? "lg:order-1" : ""}>
-                  <div className="flex h-[22rem] items-center justify-center overflow-hidden bg-black sm:h-[26rem]">
-                    <Image src={s.image} alt={s.alt} sizes="(min-width: 1024px) 560px, 100vw" className="h-full w-auto object-contain" />
-                  </div>
-                  <figcaption className="mt-3 font-serif text-base italic text-ink/60">{s.caption}</figcaption>
-                </figure>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <WhatWeDo />
 
       {/* The difference */}
       <section className="bg-vellum-deep px-6 py-20 sm:py-28 lg:px-10">

@@ -3,6 +3,10 @@ import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { comparison, methodSteps, proofFacts } from "@/data/method";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
+import igScreen from "../../public/images/proof/ig-phone-screen.jpg";
+import fbAdScreen from "../../public/images/proof/fb-ad-screen.jpg";
+import PhoneMockup from "./PhoneMockup";
+import { FacebookIcon, InstagramIcon } from "./SocialIcons";
 
 const CALENDLY_URL =
   "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1d1a16&primary_color=1f3263";
@@ -63,6 +67,9 @@ const STEP_COPY = [
   "Finally, when people respond to the ad, we do the next step. If it’s a “Plan Your Visit” ad, we reach out and talk with them. If it’s an event ad, we add the event to their calendar. Every response is tracked and reported to you each month.",
 ];
 
+// Platform tag shown under each step's name (none on the third step).
+const STEP_TAGS = ["Facebook & Instagram posts and Reels", "Facebook & Instagram ads", null];
+
 const BUTTON =
   "inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
 const BUTTON_LABEL = "Book your free 30-minute assessment";
@@ -94,9 +101,24 @@ export default function ParishGrowthContent() {
               Show them what&rsquo;s happening at your parish and make it
               easy to get involved, all through Facebook and&nbsp;Instagram.
             </p>
+            <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-vellum/60 motion-safe:animate-fade-up" style={{ animationDelay: "360ms" }}>
+              <li className="flex items-center gap-1.5"><FacebookIcon className="h-4 w-4" />Facebook</li>
+              <li aria-hidden="true" className="text-vellum/30">&middot;</li>
+              <li className="flex items-center gap-1.5"><InstagramIcon className="h-4 w-4" />Instagram</li>
+              <li aria-hidden="true" className="text-vellum/30">&middot;</li>
+              <li>Meta Ads</li>
+            </ul>
           </div>
         </div>
-        <div className="bg-linear-to-b from-ink from-65% to-transparent to-65% px-6 pt-10">
+        <div className="relative bg-linear-to-b from-ink from-65% to-transparent to-65% px-6 pt-10">
+          {/* A real parish Instagram feed and a real Facebook ad, framed as
+              phones on either side of the video (wide screens only). */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 hidden lg:block">
+            <div className="relative mx-auto max-w-7xl">
+              <PhoneMockup src={igScreen} alt="" screen="#0c1014" className="absolute left-10 top-24 w-44 -rotate-3 opacity-90 xl:left-24 xl:w-48" />
+              <PhoneMockup src={fbAdScreen} alt="" screen="#fff" className="absolute right-10 top-28 w-44 rotate-3 opacity-90 xl:right-24 xl:w-48" />
+            </div>
+          </div>
           <div className="relative mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-vellum/10">
             <iframe
               src="https://player.vimeo.com/video/1233188537?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
@@ -109,7 +131,7 @@ export default function ParishGrowthContent() {
         </div>
 
         {/* Real results, right under the video */}
-        <div className="mx-auto mt-12 max-w-5xl px-6">
+        <div className="mx-auto mt-12 max-w-5xl px-6 lg:mt-20">
           <dl className="grid divide-y divide-ink/10 border-y border-ink/15 md:grid-cols-3 md:divide-x md:divide-y-0">
             {proofFacts.map((f) => (
               <div key={f.who} className="py-6 text-center md:px-6">
@@ -184,6 +206,13 @@ export default function ParishGrowthContent() {
                   <p className="font-serif text-6xl font-medium leading-none text-rubric">{s.n}</p>
                   <h3 className="mt-4 font-serif text-4xl font-medium">{s.title}</h3>
                   <p className="mt-1 font-serif text-xl italic text-ink/60">{s.plain}</p>
+                  {STEP_TAGS[i] && (
+                    <p className="mt-3 flex items-center gap-1.5 text-sm text-ink/55">
+                      <FacebookIcon className="h-3.5 w-3.5" />
+                      <InstagramIcon className="h-3.5 w-3.5" />
+                      {STEP_TAGS[i]}
+                    </p>
+                  )}
                   <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-ink/75">{STEP_COPY[i]}</p>
                 </div>
                 <figure className={i % 2 === 1 ? "lg:order-1" : ""}>

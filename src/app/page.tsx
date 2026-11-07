@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
+import { comparison, methodSteps, proofFacts } from "@/data/method";
 import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import BookACallButton from "@/components/BookACallButton";
@@ -11,9 +12,6 @@ import navephoto from "../../public/images/events/st-mary-mountains/landing/nave
 import youngAdultsGroup from "../../public/images/clients/fr-nicholas-young-adult-group.jpg";
 import roseWindowPhoto from "../../public/images/events/st-mary-mountains/landing/organ-rose-window.jpg";
 import callingPainting from "../../public/images/art/calling-of-st-matthew.jpg";
-import igGrid from "../../public/images/proof/st-joseph-instagram-grid.png";
-import adOnPhone from "../../public/images/proof/ad-on-phone.png";
-import monthlyReport from "../../public/images/proof/st-joseph-monthly-report-crop.png";
 import bookHardcover from "../../public/images/free-guide/book-hardcover.png";
 import founderPhoto from "../../public/images/founder/joe-founder-photo.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
@@ -59,56 +57,24 @@ const heroSlides: Slide[] = [
 
 // ---- Content (every number and quote here is already on the live site) ----
 
-const facts = [
-  { stat: "65", label: "young adults asked about young adult events in 60 days", who: "St. Patrick’s, South Hadley, MA" },
-  { stat: "200", label: "men reached out about religious life in 90 days", who: "Capuchin Franciscans, Midwest Province" },
-  { stat: "0→320", label: "Instagram followers in the first 30 days", who: "Ss. John & James, West Warwick, RI" },
-];
+const facts = proofFacts;
 
-const steps: {
-  n: string;
-  title: string;
-  lead: string;
-  body: string;
-  image: StaticImageData;
-  alt: string;
-  caption: string;
-}[] = [
+// Homepage wording for each step (images and captions come from src/data/method.ts).
+const stepCopy = [
   {
-    n: "1",
-    title: "Encounter",
     lead: "Weekly content",
     body: "Homily clips and parish-life posts on Facebook and Instagram help people get to know, like, and trust your parish, with no extra work for your staff.",
-    image: igGrid,
-    alt: "St. Joseph Parish Instagram grid with homily clips, a festival flyer, and parish photos",
-    caption: "St. Joseph Parish, Los Banos, CA. Homily clips and parish life, every week.",
   },
   {
-    n: "2",
-    title: "Invitation",
     lead: "Targeted local campaigns",
     body: "We invite people in your area to one clear next step, like an event, a young adult night, or a warm welcome back to Mass, so they can raise their hand.",
-    image: adOnPhone,
-    alt: "Facebook ad inviting St. Patrick's parishioners and friends to the annual parish picnic",
-    caption: "A real invitation: the parish picnic at St. Patrick’s, South Hadley, MA.",
   },
   {
-    n: "3",
-    title: "Accompaniment",
     lead: "Follow-up and simple reports",
     body: "We track every response so you see real outcomes, like how many young adults asked about Mass in the last 90 days, and we use that to improve what comes next.",
-    image: monthlyReport,
-    alt: "Monthly community growth report for St. Joseph's Catholic Church, Los Banos",
-    caption: "The monthly report a pastor receives. St. Joseph’s, Los Banos, CA.",
   },
 ];
-
-const comparison = [
-  ["Posts to stay active, without a specific goal", "Clear goals for every campaign: event sign-ups, first-time visitors, volunteers"],
-  ["Announces events and hopes the right people see them", "Targeted, trackable campaigns that get people nearby to show up to parish events"],
-  ["Rarely reaches people who aren\u2019t already in the pews", "Plan Your Visit campaigns that invite newcomers to Mass, with personal follow-up"],
-  ["No way to tell what worked, or who came because of it", "Every response tracked, plus proven best practices from parishes in 12+ dioceses"],
-];
+const steps = methodSteps.map((step, i) => ({ ...step, ...stepCopy[i] }));
 
 const testimonials = [
   {
@@ -173,12 +139,6 @@ export default function Home() {
                 <ArrowRight className={arrow} aria-hidden="true" />
               </Link>
             </div>
-            <p className="mt-8 text-[15px] text-vellum/60 motion-safe:animate-fade-up" style={{ animationDelay: "1350ms" }}>
-              Vocation office?{" "}
-              <Link href="/vocations" className="underline decoration-vellum/30 underline-offset-4 hover:text-vellum">
-                See how we help reach young men discerning a&nbsp;call.
-              </Link>
-            </p>
           </div>
         </section>
 

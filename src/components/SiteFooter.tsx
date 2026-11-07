@@ -5,8 +5,7 @@ const columns = [
   {
     title: "Services",
     links: [
-      { href: "/parish", label: "Parish Growth" },
-      { href: "/vocations", label: "Vocations Outreach" },
+      { href: "/parish", label: "Social Media" },
       { href: "/results", label: "Results" },
     ],
   },

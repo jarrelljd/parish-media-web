@@ -16,9 +16,10 @@ const menus: Menu[] = [
     id: "services",
     label: "Services",
     items: [
-      { href: "/parish", label: "Parish Growth", note: "Weekly content, invitations, follow-up" },
-      { href: "/vocations", label: "Vocations Outreach", note: "For vocation offices and religious orders" },
-      { label: "Parish Websites" },
+      { href: "/parish", label: "Social Media", note: "Weekly content, invitations, follow-up" },
+      { label: "Websites" },
+      { label: "AI Receptionists" },
+      { label: "YouTube" },
     ],
   },
   {

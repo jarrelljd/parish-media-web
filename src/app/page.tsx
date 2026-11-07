@@ -14,7 +14,7 @@ import callingPainting from "../../public/images/art/calling-of-st-matthew.jpg";
 import igGrid from "../../public/images/proof/st-joseph-instagram-grid.png";
 import adOnPhone from "../../public/images/proof/ad-on-phone.png";
 import monthlyReport from "../../public/images/proof/st-joseph-monthly-report-crop.png";
-import bookCover from "../../public/images/free-guide/book-cover.jpg";
+import bookHardcover from "../../public/images/free-guide/book-hardcover.png";
 import founderPhoto from "../../public/images/founder/joe-founder-photo.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
@@ -104,9 +104,10 @@ const steps: {
 ];
 
 const comparison = [
-  ["Posting is one of many responsibilities", "Clear goals: new Mass attendees, event sign-ups, volunteer inquiries"],
-  ["Success means “we are active”", "Tracking from first click to first step into parish life"],
-  ["Platforms aren’t connected to invitations, follow-up, or data", "Lessons learned across 8 dioceses applied to your parish"],
+  ["Posts to stay active, without a specific goal", "Clear goals for every campaign: event sign-ups, first-time visitors, volunteers"],
+  ["Announces events and hopes the right people see them", "Targeted, trackable campaigns that get people nearby to show up to parish events"],
+  ["Rarely reaches people who aren\u2019t already in the pews", "Plan Your Visit campaigns that invite newcomers to Mass, with personal follow-up"],
+  ["No way to tell what worked, or who came because of it", "Every response tracked, plus proven best practices from parishes in 12+ dioceses"],
 ];
 
 const testimonials = [
@@ -148,9 +149,9 @@ export default function Home() {
             <p className="font-display text-xl italic text-[#e3a196] motion-safe:animate-fade-up" style={{ animationDelay: "300ms" }}>
               For Catholic parishes
             </p>
-            <h1 className="mt-5 max-w-4xl font-display text-[3.2rem] font-normal leading-[1.02] tracking-[-0.015em] sm:text-7xl lg:text-[6rem]">
+            <h1 className="mt-5 max-w-4xl font-display text-[3.2rem] font-normal leading-[1.08] tracking-[-0.015em] sm:text-7xl lg:text-[6rem]">
               {heroLines.map((line, i) => (
-                <span key={line} className="block overflow-hidden pb-[0.08em]">
+                <span key={line} className="-mx-[0.08em] -mb-[0.14em] block overflow-hidden px-[0.08em] pb-[0.14em]">
                   <span className="block motion-safe:animate-rise" style={{ animationDelay: `${450 + i * 140}ms` }}>
                     {i === 1 ? <em>{line}</em> : line}
                   </span>
@@ -302,9 +303,11 @@ export default function Home() {
             <p className={rubric}>The difference</p>
             <h2 className={`mt-3 ${h2}`}>&ldquo;We already have someone for social&nbsp;media.&rdquo;</h2>
             <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/70">
-              Most parishes do. But there&rsquo;s a difference between having
-              someone who posts and having a system that reliably brings new
-              people to&nbsp;Mass.
+              Most parishes do, and they&rsquo;re a blessing. But their job is
+              to post. Ours is to get people to show up: targeted, trackable
+              campaigns for your parish events, and Plan Your Visit campaigns
+              that bring newcomers to Mass. Most parish staff were never
+              trained to track that, and they shouldn&rsquo;t have to&nbsp;be.
             </p>
 
             <table className="mt-12 w-full border-collapse text-left">
@@ -317,8 +320,8 @@ export default function Home() {
               <tbody>
                 {comparison.map(([a, b]) => (
                   <tr key={a} className="border-b border-ink/15 align-top">
-                    <td className="py-5 pr-6 text-ink/55">{a}</td>
-                    <td className="py-5 font-medium text-ink">{b}</td>
+                    <td className="py-5 pr-6 text-pretty text-ink/55">{a}</td>
+                    <td className="py-5 text-pretty font-medium text-ink">{b}</td>
                   </tr>
                 ))}
               </tbody>
@@ -391,9 +394,14 @@ export default function Home() {
             <div>
               <p className={rubric}>Free resources</p>
               <h2 className={`mt-3 ${h2}`}>Start here, even if we never work&nbsp;together.</h2>
-              <div className="mt-10 hidden w-44 shadow-2xl shadow-ink/25 lg:block">
-                <Image src={bookCover} alt="Social Media for Catholic Churches, by Joe Jarrell" sizes="176px" />
-              </div>
+              <Link href="/free-guide" className="mt-8 block w-56 transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none sm:w-64 lg:mt-10 lg:w-72">
+                <Image
+                  src={bookHardcover}
+                  alt="Social Media for Catholic Churches, by Joe Jarrell, hardcover"
+                  sizes="(min-width: 1024px) 288px, 256px"
+                  className="h-auto w-full drop-shadow-[0_24px_30px_rgba(29,26,22,0.25)]"
+                />
+              </Link>
             </div>
             <ul className="border-t-2 border-ink">
               {resources.map((r) => (

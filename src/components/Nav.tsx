@@ -110,12 +110,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
         <Link href="/" className={`flex items-center gap-3 ${fade} ${solid ? "text-ink" : "text-vellum"}`}>
           <BrandMark className={`h-9 w-7 ${fade} ${solid ? "text-lapis" : "text-vellum"}`} />
-          <span className="leading-none">
-            <span className="block font-serif text-[1.4rem] font-semibold">Parish Media Company</span>
-            <span className={`mt-0.5 block font-serif text-[0.95rem] italic ${solid ? "text-ink/55" : "text-vellum/65"}`}>
-              Media for the Catholic parish
-            </span>
-          </span>
+          <span className="font-serif text-[1.45rem] font-semibold leading-none">Parish Media Company</span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

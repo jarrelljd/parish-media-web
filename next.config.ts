@@ -32,8 +32,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/services/vocations",
-        destination: "/vocations",
-        permanent: true,
+        destination: "/",
+        permanent: false,
+      },
+      // The Vocations page was retired; old links (ads, emails) go home.
+      // Temporary (307) so it's easy to bring back.
+      {
+        source: "/vocations",
+        destination: "/",
+        permanent: false,
       },
       {
         source: "/testimonials",

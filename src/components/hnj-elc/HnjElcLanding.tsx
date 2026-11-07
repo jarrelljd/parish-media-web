@@ -429,6 +429,7 @@ function Closing() {
       <div className="absolute inset-0 bg-gradient-to-r from-[#0f3a25] via-[#0f3a25]/85 to-[#0f3a25]/10" aria-hidden="true" />
       <Reveal className="relative mx-auto w-full max-w-6xl px-4 py-20 text-[#fbf8f1] sm:px-6">
         <div className="max-w-xl">
+          <p className="mb-4 font-classic text-xl text-balance text-[#e3a72f] italic sm:text-2xl">{closing.tagline}</p>
           <h2 className="font-classic text-5xl font-medium tracking-tight text-balance sm:text-6xl">{closing.headline}</h2>
           <p className="mt-5 text-lg leading-relaxed text-pretty text-[#fbf8f1]/85">{closing.text}</p>
           <Button variant="light" className="mt-8 w-full sm:w-auto">

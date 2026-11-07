@@ -168,6 +168,8 @@ export const hnjElc = {
   ],
 
   closing: {
+    // The ELC's own tagline, from its family guide.
+    tagline: "Where faith, family, and learning grow together.",
     headline: "Give your child a joyful Catholic start",
     text: "Get the free ELC guide with schedules, tuition, and what a day looks like, then come see us.",
     photo: { src: img("playground-circle.jpg"), alt: "Young children holding hands in a circle with their teacher on the playground" },

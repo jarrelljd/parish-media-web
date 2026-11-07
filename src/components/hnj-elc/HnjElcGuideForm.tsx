@@ -70,10 +70,8 @@ export default function HnjElcGuideForm() {
       </label>
 
       <label className="block">
-        <span className={label}>
-          Phone <span className="font-normal text-[#5b6359]">(optional, for tour questions)</span>
-        </span>
-        <input name="phone" type="tel" autoComplete="tel" className={input} />
+        <span className={label}>Phone</span>
+        <input name="phone" type="tel" required autoComplete="tel" className={input} />
       </label>
 
       {state.status === "error" && (

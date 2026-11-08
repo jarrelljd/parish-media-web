@@ -4,7 +4,8 @@ import { Mrs_Saint_Delafield } from "next/font/google";
 import DeliveryAnimation from "@/components/DeliveryAnimation";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 import LetterGreeting from "@/components/LetterGreeting";
-import LetterDate from "@/components/LetterDate";import ScrollToBookingButton from "@/components/ScrollToBookingButton";
+import LetterDate from "@/components/LetterDate";
+import WaxSeal from "@/components/WaxSeal";import ScrollToBookingButton from "@/components/ScrollToBookingButton";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
 
 // Handwritten signature on the letter
@@ -73,9 +74,6 @@ export default function FreeGuideBookACall() {
               className="relative overflow-hidden rounded-[2px] bg-[#fffcf5] px-7 pb-10 pt-9 text-left shadow-[0_1px_2px_rgba(29,26,22,0.12),0_10px_30px_-10px_rgba(29,26,22,0.35)] sm:px-14 sm:pb-14 sm:pt-12"
               style={{
                 backgroundImage: [
-                  // Tri-fold creases: a soft shadow just above each fold, a highlight just below
-                  "linear-gradient(to bottom, transparent calc(33.3% - 10px), rgba(29,26,22,0.035) calc(33.3% - 1px), rgba(255,255,255,0.9) 33.3%, transparent calc(33.3% + 8px))",
-                  "linear-gradient(to bottom, transparent calc(66.6% - 10px), rgba(29,26,22,0.035) calc(66.6% - 1px), rgba(255,255,255,0.9) 66.6%, transparent calc(66.6% + 8px))",
                   // Slight warmth toward the edges, like real paper
                   "radial-gradient(ellipse at center, transparent 55%, rgba(176,140,80,0.09) 100%)",
                   // Paper grain
@@ -142,8 +140,9 @@ export default function FreeGuideBookACall() {
               </p>
             </div>
 
-            {/* Sign-off */}
-            <div className="mt-8">
+            {/* Sign-off, sealed in wax */}
+            <div className="relative mt-8">
+              <WaxSeal className="absolute bottom-0 right-0 h-20 w-20 -rotate-12 sm:-right-2 sm:h-24 sm:w-24" />
               <p className="font-serif text-[1.075rem] italic text-ink/70">In Christ,</p>
               <p
                 className={`${signature.className} mt-1 -rotate-3 py-2 text-5xl leading-none text-lapis sm:text-6xl`}

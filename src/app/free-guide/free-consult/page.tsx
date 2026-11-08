@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BookingAnnouncementBar from "@/components/BookingAnnouncementBar";
 import FreeGuideBookACall from "@/components/FreeGuideBookACall";
 
 export const metadata: Metadata = {
@@ -25,10 +26,10 @@ export default function FreeGuideFreeConsultPage() {
             .pmc-rise { animation: none; }
           }
       `}</style>
+      {/* Landing page: no nav links, just a booking CTA bar, like /parish. */}
+      <BookingAnnouncementBar />
       <main className="flex flex-1 flex-col">
-        <section className="px-6 pb-16 pt-8 sm:pb-20 sm:pt-12">
-          <FreeGuideBookACall />
-        </section>
+        <FreeGuideBookACall />
       </main>
     </>
   );

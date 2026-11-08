@@ -54,6 +54,10 @@ export default function FreeGuideBookACall() {
             <div className="mt-8">
               <DeliveryAnimation />
             </div>
+            <p className="mx-auto mt-8 max-w-xl text-pretty text-lg text-vellum/80">
+              Before you start reading, I want to share one important thing
+              with&nbsp;you.
+            </p>
           </div>
         </div>
 

@@ -12,6 +12,8 @@ import {
   type ChoiceId,
   type FollowerCount,
 } from "@/lib/scorecard";
+import { getLookup } from "@/lib/parishLookupStore";
+import { profileToText } from "@/lib/parishProfile";
 import { createReportQuery } from "@/lib/scorecardLink";
 import { buildScorecardDoc, coverEmailHtml, docToText } from "@/lib/scorecardReport";
 import {
@@ -409,6 +411,17 @@ export async function submitScorecardOptIn(
   };
   const reportText = docToText(doc);
 
+  // What the parish lookup found on their pages (when it ran and finished).
+  // Answers stay exactly as the quiz sent them, so the score here matches
+  // the one they saw; this is extra context for Joe.
+  const lookup = answers.lookupId ? getLookup(answers.lookupId) : undefined;
+  const parishPages =
+    lookup?.status === "done"
+      ? profileToText(lookup.profile)
+      : lookup?.status === "pending"
+        ? "Lookup still running when they opted in."
+        : "No lookup (pages not checked).";
+
   const payload: Record<string, string> = {
     timestamp: new Date().toISOString(),
     name,
@@ -433,6 +446,7 @@ export async function submitScorecardOptIn(
     emailSubject: `Your Parish Social Media Scorecard: ${doc.parish}`,
     emailHtml: coverEmailHtml(doc, pdfUrl),
     reportText,
+    parishPages,
   };
 
   const [zapier, mail] = await Promise.allSettled([
@@ -455,6 +469,9 @@ export async function submitScorecardOptIn(
           "",
           "Answers:",
           ...Object.entries(answerFields).map(([k, v]) => `  ${k}: ${v}`),
+          "",
+          "What we found on their pages:",
+          parishPages,
           "",
           reportText,
         ].join("\n"),

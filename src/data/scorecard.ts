@@ -95,12 +95,16 @@ export const postTypes = [
   },
 ] as const;
 
+// Order matters: the five questions at the end (followers, engagement,
+// frequency, main content) can be answered by the parish lookup that starts
+// after the first question (src/lib/parishProfile.ts), so they come last and
+// are skipped when the lookup has the answer. See PAGE_QUESTION_IDS.
 export const questions: Question[] = [
   {
     kind: "location",
     id: "location",
-    question: "Where is your parish?",
-    hint: "We use this to see how many people live around you.",
+    question: "What’s your parish, and where is it?",
+    hint: "We use this to see how many people live around you and to look at your parish online.",
   },
   {
     kind: "attendance",
@@ -108,44 +112,6 @@ export const questions: Question[] = [
     question:
       "About how many people attend Mass across all your weekend Masses combined?",
     hint: "Include the Saturday vigil. Your most recent October count works.",
-  },
-  {
-    kind: "count",
-    id: "fbFollowers",
-    question: "How many followers does your parish Facebook page have?",
-    hint: "A rough number is fine.",
-    fallbacks: [
-      { value: "unsure", label: "I'm not sure" },
-      { value: "none", label: "We don't have a Facebook page" },
-    ],
-  },
-  {
-    kind: "count",
-    id: "igFollowers",
-    question: "How many followers does your parish Instagram have?",
-    hint: "A rough number is fine.",
-    fallbacks: [
-      { value: "unsure", label: "I'm not sure" },
-      { value: "none", label: "We don't have Instagram" },
-    ],
-  },
-  {
-    kind: "choice",
-    id: "engagement",
-    category: "engagement",
-    question:
-      "On a typical post, about how many likes and comments do you get combined?",
-    hint: "Think of an ordinary week, not your best post ever.",
-    // Points here are placeholders. Engagement is scored as a % of followers
-    // in src/lib/scorecard.ts, using the middle of each range.
-    choices: [
-      { value: "0-5", label: "0–5", points: 0 },
-      { value: "6-20", label: "6–20", points: 0 },
-      { value: "21-50", label: "21–50", points: 0 },
-      { value: "51-100", label: "51–100", points: 0 },
-      { value: "100+", label: "More than 100", points: 0 },
-      { value: "unsure", label: "I'm not sure", points: 0 },
-    ],
   },
   {
     kind: "choice",
@@ -176,18 +142,6 @@ export const questions: Question[] = [
   },
   {
     kind: "choice",
-    id: "frequency",
-    category: "content",
-    question: "How often does your parish post?",
-    choices: [
-      { value: "rarely", label: "A few times a month or less", points: 0 },
-      { value: "weekly", label: "About once a week", points: 1 },
-      { value: "few", label: "2–3 times a week", points: 4 },
-      { value: "daily", label: "Daily or almost daily", points: 5 },
-    ],
-  },
-  {
-    kind: "choice",
     id: "homilyClips",
     category: "content",
     question: "Do you post short clips of your pastor’s homilies?",
@@ -195,21 +149,6 @@ export const questions: Question[] = [
       { value: "no", label: "No", points: 0 },
       { value: "occasionally", label: "Occasionally", points: 2 },
       { value: "regularly", label: "Yes, every week", points: 7 },
-    ],
-  },
-  {
-    kind: "choice",
-    id: "mainContent",
-    category: "content",
-    question: "What do you mostly post?",
-    hint: "Pick the one that makes up most of your feed.",
-    // Values match postTypes above. Labels stay neutral on purpose so people
-    // answer honestly; the flyers answer is the one the report calls out.
-    choices: [
-      { value: "value", label: "Helpful videos, like homily clips or advice from the pastor", points: 3 },
-      { value: "connection", label: "Posts about the pastor, staff, or the parish’s story", points: 2 },
-      { value: "activity", label: "Photos from parish life (events, sacraments, groups)", points: 2 },
-      { value: "flyers", label: "Graphics announcing events, Mass times, and parish updates", points: 0 },
     ],
   },
   {
@@ -268,6 +207,71 @@ export const questions: Question[] = [
       { value: "agency", label: "An outside agency or professional", points: 5 },
     ],
   },
+  {
+    kind: "count",
+    id: "fbFollowers",
+    question: "How many followers does your parish Facebook page have?",
+    hint: "A rough number is fine.",
+    fallbacks: [
+      { value: "unsure", label: "I'm not sure" },
+      { value: "none", label: "We don't have a Facebook page" },
+    ],
+  },
+  {
+    kind: "count",
+    id: "igFollowers",
+    question: "How many followers does your parish Instagram have?",
+    hint: "A rough number is fine.",
+    fallbacks: [
+      { value: "unsure", label: "I'm not sure" },
+      { value: "none", label: "We don't have Instagram" },
+    ],
+  },
+  {
+    kind: "choice",
+    id: "engagement",
+    category: "engagement",
+    question:
+      "On a typical post, about how many likes and comments do you get combined?",
+    hint: "Think of an ordinary week, not your best post ever.",
+    // Points here are placeholders. Engagement is scored as a % of followers
+    // in src/lib/scorecard.ts, using the middle of each range.
+    choices: [
+      { value: "0-5", label: "0–5", points: 0 },
+      { value: "6-20", label: "6–20", points: 0 },
+      { value: "21-50", label: "21–50", points: 0 },
+      { value: "51-100", label: "51–100", points: 0 },
+      { value: "100+", label: "More than 100", points: 0 },
+      { value: "unsure", label: "I'm not sure", points: 0 },
+    ],
+  },
+  {
+    kind: "choice",
+    id: "frequency",
+    category: "content",
+    question: "How often does your parish post?",
+    choices: [
+      { value: "rarely", label: "A few times a month or less", points: 0 },
+      { value: "weekly", label: "About once a week", points: 1 },
+      { value: "few", label: "2–3 times a week", points: 4 },
+      { value: "daily", label: "Daily or almost daily", points: 5 },
+    ],
+  },
+  {
+    kind: "choice",
+    id: "mainContent",
+    category: "content",
+    question: "What do you mostly post?",
+    hint: "Pick the one that makes up most of your feed.",
+    // Values match postTypes above. Labels stay neutral on purpose so people
+    // answer honestly; the flyers answer is the one the report calls out.
+    choices: [
+      { value: "value", label: "Helpful videos, like homily clips or advice from the pastor", points: 3 },
+      { value: "connection", label: "Posts about the pastor, staff, or the parish’s story", points: 2 },
+      { value: "activity", label: "Photos from parish life (events, sacraments, groups)", points: 2 },
+      { value: "flyers", label: "Graphics announcing events, Mass times, and parish updates", points: 0 },
+    ],
+  },
 ];
 
 // Followers (FB + IG combined) per weekend Mass attendee → points (max 12).
@@ -296,6 +300,9 @@ export const engagementMidpoints: Record<string, number> = {
   "51-100": 75,
   "100+": 150,
 };
+
+// Questions the parish lookup can answer from their pages.
+export const PAGE_QUESTION_IDS = ["fbFollowers", "igFollowers", "engagement", "frequency", "mainContent"] as const;
 
 export const categories: Record<
   CategoryId,

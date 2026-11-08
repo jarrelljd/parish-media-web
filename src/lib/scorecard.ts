@@ -29,6 +29,12 @@ import {
 export type FollowerCount = number | "unsure" | "none";
 
 export type ScorecardAnswers = {
+  // Parish name from the first screen. Optional: report links made before
+  // 2026-11-08 don't have it.
+  parish?: string;
+  // The parish lookup started from the first screen (scorecardLookup.ts).
+  // The server uses its own copy of that lookup for the page-based answers.
+  lookupId?: string;
   city: string;
   state: string;
   attendance: number;
@@ -49,7 +55,7 @@ export type ScorecardAnswers = {
 
 export type ChoiceId = Exclude<
   keyof ScorecardAnswers,
-  "city" | "state" | "attendance" | "fbFollowers" | "igFollowers"
+  "parish" | "lookupId" | "city" | "state" | "attendance" | "fbFollowers" | "igFollowers"
 >;
 
 const choiceQuestions = questions.filter(
@@ -406,5 +412,7 @@ export function parseAnswers(raw: unknown): ScorecardAnswers | null {
     if (!q.choices.some((c) => c.value === v)) return null;
     choices[q.id as ChoiceId] = v;
   }
-  return { city, state, attendance, fbFollowers, igFollowers, ...choices };
+  const parish = str(r.parish).slice(0, 120) || undefined;
+  const lookupId = /^[0-9a-f-]{36}$/.test(str(r.lookupId)) ? str(r.lookupId) : undefined;
+  return { parish, lookupId, city, state, attendance, fbFollowers, igFollowers, ...choices };
 }

@@ -25,11 +25,17 @@ import {
   type ScorecardReport,
 } from "@/lib/scorecard";
 import { buildScorecardDoc } from "@/lib/scorecardReport";
-import { US_STATES, questions, type Question } from "@/data/scorecard";
+import { PAGE_QUESTION_IDS, US_STATES, questions, type Question } from "@/data/scorecard";
+import { checkParishLookup, startParishLookup } from "@/app/scorecardLookup";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 
 type Draft = Partial<ScorecardAnswers>;
-type Phase = "quiz" | "calculating" | "results";
+type Phase = "quiz" | "lookup" | "calculating" | "results";
+
+// How long the quiz waits on the parish lookup before asking the page
+// questions itself.
+const LOOKUP_WAIT_MS = 45_000;
+const isPageQuestion = (id: string) => (PAGE_QUESTION_IDS as readonly string[]).includes(id);
 
 const inputClass =
   "w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 text-navy outline-none transition-colors focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30";
@@ -37,10 +43,26 @@ const inputClass =
 const digitsOnly = (s: string) => s.replace(/\D/g, "").slice(0, 8);
 const withCommas = (s: string) => (s ? Number(s).toLocaleString("en-US") : "");
 
-// Skip the engagement question when the parish has neither account.
-function visibleQuestions(d: Draft): Question[] {
+// Polls the parish lookup until it finishes, fails, or LOOKUP_WAIT_MS runs
+// out. Reads the live ref so an id that arrives late is still picked up.
+async function waitForLookup(ref: { id: string | null; settled: boolean }) {
+  const deadline = Date.now() + LOOKUP_WAIT_MS;
+  while (Date.now() < deadline && !ref.settled) {
+    if (ref.id) {
+      const r = await checkParishLookup(ref.id).catch(() => ({ status: "failed" as const }));
+      if (r.status === "failed") return null;
+      if (r.status === "done") return r;
+    }
+    await new Promise((res) => setTimeout(res, 2000));
+  }
+  return null;
+}
+
+// Skips questions the parish lookup already answered, and the engagement
+// question when the parish has neither account.
+function visibleQuestions(d: Draft, answered: ReadonlySet<string> = new Set()): Question[] {
   const noAccounts = d.fbFollowers === "none" && d.igFollowers === "none";
-  return questions.filter((q) => !(noAccounts && q.id === "engagement"));
+  return questions.filter((q) => !answered.has(q.id) && !(noAccounts && q.id === "engagement"));
 }
 
 export default function Scorecard() {
@@ -50,8 +72,13 @@ export default function Scorecard() {
   const [report, setReport] = useState<ScorecardReport | null>(null);
   const [answers, setAnswers] = useState<ScorecardAnswers | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  // Page questions the parish lookup answered, so they're skipped.
+  const [answered, setAnswered] = useState<ReadonlySet<string>>(new Set());
+  // "settled" once we've used (or given up on) the lookup result.
+  const lookup = useRef<{ id: string | null; settled: boolean; started: string }>({ id: null, settled: false, started: "" });
+  const [lookupNote, setLookupNote] = useState<string | null>(null);
 
-  const visible = visibleQuestions(draft);
+  const visible = visibleQuestions(draft, answered);
   const q = visible[Math.min(step, visible.length - 1)];
 
   function keepCardInView() {
@@ -62,6 +89,7 @@ export default function Scorecard() {
   async function finish(d: Draft) {
     const full: ScorecardAnswers = {
       ...(d as ScorecardAnswers),
+      lookupId: lookup.current.id ?? d.lookupId,
       engagement: d.engagement ?? "unsure",
     };
     setAnswers(full);
@@ -75,12 +103,71 @@ export default function Scorecard() {
     setPhase("results");
   }
 
+  // Starts the parish lookup once we know the name and city. A changed
+  // name or city (they went back) starts a fresh one.
+  function startLookup(d: Draft) {
+    if (!d.parish || !d.city || !d.state) return;
+    const key = `${d.parish}|${d.city}|${d.state}`;
+    if (lookup.current.started === key) return;
+    lookup.current = { id: null, settled: false, started: key };
+    startParishLookup(d.parish, d.city, d.state)
+      .then(({ id }) => {
+        if (lookup.current.started !== key) return;
+        lookup.current.id = id;
+        // No lookup (limits hit or no keys): ask the page questions as usual.
+        if (!id) lookup.current.settled = true;
+      })
+      .catch(() => {
+        if (lookup.current.started === key) lookup.current.settled = true;
+      });
+  }
+
+  // Before the first page question: wait for the lookup, fill in what it
+  // found, and skip those questions.
+  async function applyLookup(d: Draft, fromId: string) {
+    setPhase("lookup");
+    keepCardInView();
+    const result = await waitForLookup(lookup.current);
+    const filled: Draft = result?.derived ?? {};
+    const found = result?.found ?? null;
+    lookup.current.settled = true;
+
+    const merged: Draft = { ...d, ...filled, lookupId: lookup.current.id ?? undefined };
+    const skip = new Set(Object.keys(filled));
+    setDraft(merged);
+    setAnswered(skip);
+
+    if (found && skip.size > 0) {
+      const where = [found.facebook && "Facebook", found.instagram && "Instagram"].filter(Boolean).join(" and ");
+      setLookupNote(
+        `We found ${merged.parish ?? "your parish"} on ${where} and looked at your recent posts, so we’ll skip a few questions.`,
+      );
+      await new Promise((res) => setTimeout(res, 4000));
+    }
+
+    const list = visibleQuestions(merged, skip);
+    const idx = list.findIndex((x) => x.id === fromId);
+    if (idx >= list.length - 1) {
+      void finish(merged);
+    } else {
+      setStep(idx + 1);
+      setPhase("quiz");
+      keepCardInView();
+    }
+  }
+
   function next(update: Draft = {}) {
     const d = { ...draft, ...update };
+    if (update.parish !== undefined || update.city !== undefined) startLookup(d);
     setDraft(d);
-    const list = visibleQuestions(d);
+    const list = visibleQuestions(d, answered);
     const idx = list.findIndex((x) => x.id === q.id);
-    if (idx >= list.length - 1) {
+    const upcoming = list[idx + 1];
+    const waitForLookup =
+      upcoming && isPageQuestion(upcoming.id) && !isPageQuestion(q.id) && lookup.current.started !== "" && !lookup.current.settled;
+    if (waitForLookup) {
+      void applyLookup(d, q.id);
+    } else if (idx >= list.length - 1) {
       void finish(d);
     } else {
       setStep(idx + 1);
@@ -93,6 +180,9 @@ export default function Scorecard() {
   }
 
   function restart() {
+    lookup.current = { id: null, settled: false, started: "" };
+    setAnswered(new Set());
+    setLookupNote(null);
     setDraft({});
     setStep(0);
     setReport(null);
@@ -113,6 +203,29 @@ export default function Scorecard() {
           onNext={next}
           onBack={back}
         />
+      )}
+
+      {phase === "lookup" && (
+        <div className="flex flex-col items-center rounded-3xl bg-white px-8 py-20 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5">
+          {lookupNote ? (
+            <p className="max-w-md text-pretty font-serif text-xl leading-snug text-navy" role="status">
+              {lookupNote}
+            </p>
+          ) : (
+            <>
+              <span
+                className="h-10 w-10 animate-spin rounded-full border-[3px] border-navy/15 border-t-gold motion-reduce:animate-none"
+                aria-hidden="true"
+              />
+              <p className="mt-6 text-balance font-serif text-2xl text-navy" role="status">
+                Looking up {draft.parish ?? "your parish"} online&hellip;
+              </p>
+              <p className="mt-2 text-pretty text-sm text-navy/60">
+                Finding your Facebook and Instagram and reading your recent&nbsp;posts.
+              </p>
+            </>
+          )}
+        </div>
       )}
 
       {phase === "calculating" && (
@@ -157,6 +270,7 @@ function QuizCard({
   onNext: (update?: Draft) => void;
   onBack: () => void;
 }) {
+  const [parish, setParish] = useState(draft.parish ?? "");
   const [city, setCity] = useState(draft.city ?? "");
   const [state, setState] = useState(draft.state ?? "");
   const initialNumber =
@@ -181,7 +295,8 @@ function QuizCard({
   function submitText(e: React.FormEvent) {
     e.preventDefault();
     if (q.kind === "location") {
-      if (city.trim() && state) onNext({ city: titleCase(city.trim()), state });
+      if (parish.trim() && city.trim() && state)
+        onNext({ parish: parish.trim().replace(/\s+/g, " "), city: titleCase(city.trim()), state });
     } else if (q.kind === "attendance") {
       if (Number(num) >= 1) onNext({ attendance: Number(num) });
     } else if (q.kind === "count") {
@@ -191,7 +306,7 @@ function QuizCard({
 
   const canContinue =
     q.kind === "location"
-      ? city.trim() !== "" && state !== ""
+      ? parish.trim() !== "" && city.trim() !== "" && state !== ""
       : q.kind === "attendance"
         ? Number(num) >= 1
         : num !== "";
@@ -256,13 +371,29 @@ function QuizCard({
       ) : (
         <form onSubmit={submitText} className="mt-6 space-y-4">
           {q.kind === "location" && (
+            <div>
+              <label htmlFor="sc-parish" className="block text-sm font-medium text-navy">
+                Parish name
+              </label>
+              <input
+                ref={firstInput}
+                id="sc-parish"
+                type="text"
+                autoComplete="organization"
+                placeholder="St. Mary Parish"
+                value={parish}
+                onChange={(e) => setParish(e.target.value)}
+                className={`mt-2 ${inputClass}`}
+              />
+            </div>
+          )}
+          {q.kind === "location" && (
             <div className="grid gap-3 sm:grid-cols-[1fr_12rem]">
               <div>
                 <label htmlFor="sc-city" className="block text-sm font-medium text-navy">
                   City
                 </label>
                 <input
-                  ref={firstInput}
                   id="sc-city"
                   type="text"
                   autoComplete="address-level2"
@@ -449,7 +580,7 @@ function OptInForm({
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [organization, setOrganization] = useState("");
+  const [organization, setOrganization] = useState(answers.parish ?? "");
   const ineligible = role === NO_QUALIFYING_ROLE;
   const answersJson = useMemo(() => JSON.stringify(answers), [answers]);
   const done = state.status === "success";

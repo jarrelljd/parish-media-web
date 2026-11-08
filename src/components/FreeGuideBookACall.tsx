@@ -4,7 +4,7 @@ import { Mrs_Saint_Delafield } from "next/font/google";
 import DeliveryAnimation from "@/components/DeliveryAnimation";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
 import LetterGreeting from "@/components/LetterGreeting";
-import ScrollToBookingButton from "@/components/ScrollToBookingButton";
+import LetterDate from "@/components/LetterDate";import ScrollToBookingButton from "@/components/ScrollToBookingButton";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
 
 // Handwritten signature on the letter
@@ -48,8 +48,7 @@ export default function FreeGuideBookACall() {
           />
           <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/70 to-ink" />
           <div className="pmc-rise relative mx-auto max-w-3xl text-center">
-            <p className="font-serif text-xl italic text-[#e3a196]">Your free book</p>
-            <h1 className="mt-3 text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum sm:text-6xl">
+            <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum sm:text-6xl">
               Your book is on its&nbsp;way.
             </h1>
             <div className="mt-8">
@@ -58,25 +57,42 @@ export default function FreeGuideBookACall() {
           </div>
         </div>
 
-        {/* A short note from Joe, set like a letter on stacked paper */}
-        <div className="pmc-rise pmc-rise-2 relative mx-auto -mt-28 max-w-xl px-5 sm:px-0">
-          {/* Second sheet peeking out behind */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-y-0 left-5 right-5 rotate-[2.2deg] rounded-sm bg-[#f6efe1] shadow-md shadow-ink/20 ring-1 ring-ink/5 sm:left-0 sm:right-0"
-          />
-          <div className="relative -rotate-[0.6deg] rounded-sm bg-[#fffdf8] px-7 pb-9 pt-8 text-left shadow-2xl shadow-ink/25 ring-1 ring-ink/10 sm:px-12 sm:pb-12 sm:pt-10">
-            {/* Letterhead */}
-            <div className="flex items-center justify-between gap-4 border-b border-rubric/25 pb-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-ink/45">
-                Parish Media Company
-              </p>
-              <svg viewBox="0 0 24 24" className="h-4 w-4 text-rubric/70" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-                <path d="M12 3v18M7 8h10" strokeLinecap="round" />
-              </svg>
-            </div>
+        {/* A short note from Joe on a sheet of letter paper: grain, tri-fold
+            creases, lifted corners, and a proper letterhead. */}
+        <div className="pmc-rise pmc-rise-2 relative mx-auto -mt-28 max-w-xl px-4 sm:px-0">
+          <div className="relative -rotate-[0.6deg]">
+            {/* Lifted-corner shadows */}
+            <div aria-hidden="true" className="absolute bottom-3 left-3 h-1/4 w-2/5 -rotate-3 bg-transparent shadow-[0_18px_22px_rgba(29,26,22,0.35)]" />
+            <div aria-hidden="true" className="absolute bottom-3 right-3 h-1/4 w-2/5 rotate-3 bg-transparent shadow-[0_18px_22px_rgba(29,26,22,0.35)]" />
 
-            <div className="mt-7 space-y-5 text-pretty font-serif text-[1.075rem] leading-[1.8] text-ink/85">
+            <div
+              className="relative overflow-hidden rounded-[2px] bg-[#fffcf5] px-7 pb-10 pt-9 text-left shadow-[0_1px_2px_rgba(29,26,22,0.12),0_10px_30px_-10px_rgba(29,26,22,0.35)] sm:px-14 sm:pb-14 sm:pt-12"
+              style={{
+                backgroundImage: [
+                  // Tri-fold creases: a soft shadow just above each fold, a highlight just below
+                  "linear-gradient(to bottom, transparent calc(33.3% - 10px), rgba(29,26,22,0.035) calc(33.3% - 1px), rgba(255,255,255,0.9) 33.3%, transparent calc(33.3% + 8px))",
+                  "linear-gradient(to bottom, transparent calc(66.6% - 10px), rgba(29,26,22,0.035) calc(66.6% - 1px), rgba(255,255,255,0.9) 66.6%, transparent calc(66.6% + 8px))",
+                  // Slight warmth toward the edges, like real paper
+                  "radial-gradient(ellipse at center, transparent 55%, rgba(176,140,80,0.09) 100%)",
+                  // Paper grain
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.28 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                ].join(","),
+              }}
+            >
+              {/* Letterhead */}
+              <div className="flex flex-col items-center text-center">
+                <p className="font-serif text-lg font-semibold tracking-[0.04em] text-ink">
+                  Parish Media Company
+                </p>
+                <p className="mt-0.5 text-[11px] uppercase tracking-[0.25em] text-ink/45">
+                  parishmediacompany.com
+                </p>
+                <div aria-hidden="true" className="mt-5 w-full border-t border-b border-rubric/30 pt-[3px]" />
+              </div>
+
+              <LetterDate className="mt-7 text-right font-serif text-[1.075rem] italic text-ink/60" />
+
+              <div className="mt-5 space-y-5 text-pretty font-serif text-[1.075rem] leading-[1.8] text-ink/85">
               <LetterGreeting />
               <p>
                 Your book will arrive by email in a few minutes. It explains how
@@ -136,6 +152,7 @@ export default function FreeGuideBookACall() {
               </p>
               <p className="text-sm text-ink/60">Founder, Parish Media Company</p>
             </div>
+          </div>
           </div>
         </div>
 

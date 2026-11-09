@@ -1,32 +1,31 @@
-// Scorecard report PDF (US Letter), rendered on the server with
-// @react-pdf/renderer. Content comes from buildScorecardDoc
-// (src/lib/scorecardReport.ts); this file is layout only.
+// Scorecard letter PDF (US Letter), rendered on the server with
+// @react-pdf/renderer. Content comes from the letter written at opt-in
+// (src/lib/scorecardLetter.ts) plus the scores (buildScorecardDoc); this
+// file is layout only.
 //
-// Designed to read like a real letter from a consultant, not a generated
-// template: plain letterhead, a memo block instead of a score badge, run-in
-// paragraph heads instead of tiny caps labels, rules instead of boxes, and
-// a printed (not button) booking link so it still works on paper.
+// Reads like a signed letter on letterhead, per the Scorecard Letter Voice
+// Guide: no headings, bullets, or score badge in the letter itself; the
+// score lives in the P.S. A separate "What we found" page shows the
+// evidence (their recent posts, pages, and category scores), with no prose.
 //
-// Fonts are the site's own (Fraunces + Source Sans 3), bundled as WOFF in
-// src/assets/fonts. They're Latin-only, so avoid symbols like "→" in copy.
+// Fonts are bundled as WOFF in src/assets/fonts (Fraunces, Source Sans 3,
+// and Mrs Saint Delafield for the signature, the same hand as the free-guide
+// letter). They're Latin-only, so avoid symbols like "→" in copy.
 
 import path from "path";
-import {
-  Document,
-  Font,
-  Link,
-  Page,
-  StyleSheet,
-  Text,
-  View,
-  renderToBuffer,
-} from "@react-pdf/renderer";
-import type { Styles } from "@react-pdf/renderer";
-import { proof, type BandTone } from "@/data/scorecard";
-
-type Style = Styles[string];
+import { Circle, Document, Font, Link, Page, Path, StyleSheet, Svg, Text, View, renderToBuffer } from "@react-pdf/renderer";
+import type { BandTone } from "@/data/scorecard";
+import type { PostType } from "@/lib/parishProfile";
 import { SCORECARD_BOOKING_URL } from "@/lib/scorecard";
-import { capNote, type ReportProblem, type ScorecardDoc } from "@/lib/scorecardReport";
+import {
+  BOOKING_DISPLAY,
+  fixedClosing,
+  resourceLink,
+  type LetterEvidence,
+  type LetterResource,
+  type ScorecardLetter,
+} from "@/lib/scorecardLetter";
+import { capNote, type ScorecardDoc } from "@/lib/scorecardReport";
 
 const fontDir = path.join(process.cwd(), "src", "assets", "fonts");
 const font = (file: string) => path.join(fontDir, file);
@@ -51,6 +50,7 @@ function registerFonts() {
       { src: font("source-sans-3-latin-400-italic.woff"), fontWeight: 400, fontStyle: "italic" },
     ],
   });
+  Font.register({ family: "Signature", src: font("mrs-saint-delafield-latin-400-normal.woff") });
   // No mid-word hyphen breaks.
   Font.registerHyphenationCallback((word) => [word]);
   fontsReady = true;
@@ -61,7 +61,9 @@ const ink = "#232a38";
 const muted = "#6a6f7b";
 const rule = "#d9d4c9";
 const gold = "#b08d2a";
+const paper = "#faf8f4";
 const missingRed = "#8c3b2b";
+const lapis = "#1f3263";
 const tierLabel = { low: "Needs attention", mid: "Room to grow", high: "Strong" } as const;
 // Band colors, chosen to stay readable printed on white.
 const bandColor: Record<BandTone, string> = {
@@ -72,8 +74,14 @@ const bandColor: Record<BandTone, string> = {
   thriving: "#1f7a3f",
 };
 
-// Printed form of the booking link, readable on paper.
-const BOOKING_DISPLAY = SCORECARD_BOOKING_URL.replace(/^https?:\/\//, "").replace(/#.*$/, "");
+const POST_LABEL: Record<PostType, { label: string; color: string }> = {
+  homily_clip: { label: "Homily clip", color: navy },
+  value_video: { label: "Teaching video", color: navy },
+  activity: { label: "Parish life", color: gold },
+  connection: { label: "Story", color: gold },
+  flyer: { label: "Flyer", color: missingRed },
+  filler: { label: "Filler", color: muted },
+};
 
 const s = StyleSheet.create({
   page: {
@@ -81,263 +89,304 @@ const s = StyleSheet.create({
     paddingBottom: 64,
     paddingHorizontal: 72,
     fontFamily: "Source Sans",
-    fontSize: 10.5,
+    fontSize: 11,
     lineHeight: 1.55,
     color: ink,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fffdf8",
   },
-  // Letterhead
-  letterhead: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    paddingBottom: 8,
-    borderBottomWidth: 0.75,
-    borderBottomColor: navy,
-  },
-  wordmark: { fontFamily: "Fraunces", fontSize: 13, color: navy },
-  letterheadSite: { fontSize: 8.5, color: muted },
-  goldRule: { height: 1.5, backgroundColor: gold, width: 36, marginTop: 3 },
-  // Title + memo block
-  title: { fontFamily: "Fraunces", fontSize: 21, color: navy, marginTop: 26, marginBottom: 12, lineHeight: 1.2 },
-  memoRow: { flexDirection: "row", marginBottom: 2 },
-  memoLabel: { width: 82, color: muted, fontSize: 9.5, paddingTop: 0.5 },
-  memoValue: { flex: 1 },
-  memoRule: { borderBottomWidth: 0.5, borderBottomColor: rule, marginTop: 12, marginBottom: 20 },
-  // Letter body
-  p: { marginBottom: 9 },
-  lead: { fontFamily: "Fraunces", fontSize: 14, color: navy, lineHeight: 1.35, marginBottom: 6 },
-  h2: { fontFamily: "Fraunces", fontSize: 15, color: navy, lineHeight: 1.3 },
-  problemHead: { flexDirection: "row", marginTop: 16, marginBottom: 7 },
-  problemNum: { width: 20, fontFamily: "Fraunces", fontSize: 15, color: gold },
-  indent: { paddingLeft: 20 },
-  runIn: { fontWeight: 700, color: navy },
-  proof: { fontStyle: "italic", color: "#4a5163" },
-  listRow: { flexDirection: "row", marginBottom: 3 },
-  listMark: { width: 14, color: muted },
-  missing: { fontStyle: "italic", color: missingRed },
-  sectionHead: { fontFamily: "Fraunces", fontSize: 15, color: navy, marginTop: 16, marginBottom: 6 },
-  // Scores table
-  scoreRow: {
-    flexDirection: "row",
-    paddingVertical: 4,
-    borderBottomWidth: 0.5,
-    borderBottomColor: rule,
-  },
+  // Letterhead (page 1): centered mark, spaced wordmark, ornament rule, address.
+  letterhead: { alignItems: "center" },
+  wordmark: { fontFamily: "Fraunces", fontSize: 15.5, color: navy, letterSpacing: 3.2, marginTop: 7 },
+  ornament: { flexDirection: "row", alignItems: "center", width: "100%", marginTop: 8 },
+  ornamentLine: { flex: 1, height: 0.6, backgroundColor: gold },
+  diamond: { width: 4.5, height: 4.5, backgroundColor: gold, transform: "rotate(45deg)", marginHorizontal: 7 },
+  address: { fontSize: 7.5, color: muted, letterSpacing: 1.4, marginTop: 6 },
+  // Compact letterhead (evidence page)
+  miniHead: { flexDirection: "row", alignItems: "center", paddingBottom: 8, borderBottomWidth: 0.6, borderBottomColor: gold },
+  miniWordmark: { fontFamily: "Fraunces", fontSize: 11.5, color: navy, letterSpacing: 2.2, marginLeft: 8, flex: 1 },
+  date: { marginTop: 26, marginBottom: 14 },
+  recipient: { marginBottom: 16, color: ink },
+  reLine: { flexDirection: "row", alignItems: "baseline", marginBottom: 18 },
+  p: { marginBottom: 10 },
+  link: { color: navy, textDecoration: "underline" },
+  signature: { fontFamily: "Signature", fontSize: 34, color: lapis, marginTop: 2, marginBottom: 6, lineHeight: 1.35 },
+  ps: { marginTop: 22 },
+  footer: { position: "absolute", bottom: 38, left: 72, right: 72, fontSize: 7.5, color: muted, letterSpacing: 1, textAlign: "center" },
+  // Evidence page
+  h1: { fontFamily: "Fraunces", fontSize: 19, color: navy, marginTop: 18, marginBottom: 2 },
+  sub: { color: muted, fontSize: 9.5, marginTop: 2, marginBottom: 2 },
+  h2: { fontFamily: "Fraunces", fontSize: 13, color: navy, marginTop: 14, marginBottom: 5 },
+  grid: { flexDirection: "row", flexWrap: "wrap", marginHorizontal: -4 },
+  tile: { width: "33.333%", padding: 4 },
+  tileInner: { backgroundColor: paper, borderRadius: 4, paddingVertical: 6, paddingHorizontal: 9, borderLeftWidth: 3 },
+  tileTop: { flexDirection: "row", justifyContent: "space-between", fontSize: 8.5, color: muted },
+  tileType: { fontFamily: "Fraunces", fontSize: 11.5, marginTop: 1, lineHeight: 1.3 },
+  tileMeta: { fontSize: 8.5, color: muted, marginTop: 1 },
+  stats: { flexDirection: "row", borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: rule, paddingVertical: 6 },
+  stat: { flex: 1, paddingRight: 8 },
+  statLabel: { fontSize: 8.5, color: muted },
+  statValue: { fontSize: 10, color: navy },
+  scoreRow: { flexDirection: "row", paddingVertical: 3, borderBottomWidth: 0.5, borderBottomColor: rule, fontSize: 10 },
   scoreHeader: { fontSize: 8.5, color: muted, borderBottomColor: navy, borderBottomWidth: 0.75 },
   colLabel: { flex: 1 },
   colTier: { width: 120, color: muted },
   colScore: { width: 56, textAlign: "right" },
-  // Closing
-  quote: {
-    fontFamily: "Fraunces",
-    fontStyle: "italic",
-    fontSize: 11.5,
-    color: navy,
-    lineHeight: 1.45,
-  },
-  quoteWrap: { marginTop: 4, marginBottom: 14, paddingLeft: 14, borderLeftWidth: 0.75, borderLeftColor: gold },
-  link: { color: navy, textDecoration: "underline" },
-  footer: { position: "absolute", bottom: 30, left: 72, right: 72, fontSize: 8, color: muted },
 });
 
-function RunIn({ head, children, style }: { head: string; children: React.ReactNode; style?: Style }) {
+export const PMC_ADDRESS = "808 W. Main St., Suite C  ·  Visalia, CA";
+
+// The site's church-window mark (src/components/BrandMark.tsx), redrawn for the PDF.
+function Mark({ size = 26 }: { size?: number }) {
   return (
-    <Text style={style ? [s.p, s.indent, style] : [s.p, s.indent]}>
-      <Text style={s.runIn}>{head} </Text>
-      {children}
+    <Svg viewBox="0 0 28 36" width={(size * 28) / 36} height={size}>
+      <Path d="M1.5 35V14a12.5 12.5 0 0 1 25 0v21z" stroke={gold} strokeWidth={1.5} fill="none" />
+      <Path d="M5 35V14.5a9 9 0 0 1 18 0V35" stroke={gold} strokeWidth={0.9} fill="none" />
+      <Circle cx={14} cy={12} r={3.2} stroke={gold} strokeWidth={0.9} fill="none" />
+      <Circle cx={14} cy={12} r={0.9} fill={gold} />
+      <Path d="M14 15.2V35M8.5 22h11" stroke={gold} strokeWidth={0.9} fill="none" />
+      <Path d="M0 35h28" stroke={gold} strokeWidth={1.5} fill="none" />
+    </Svg>
+  );
+}
+
+function Letterhead() {
+  return (
+    <View style={s.letterhead}>
+      <Mark />
+      <Text style={s.wordmark}>PARISH MEDIA COMPANY</Text>
+      <View style={s.ornament}>
+        <View style={s.ornamentLine} />
+        <View style={s.diamond} />
+        <View style={s.ornamentLine} />
+      </View>
+      <Text style={s.address}>{`${PMC_ADDRESS.toUpperCase()}  ·  PARISHMEDIACOMPANY.COM`}</Text>
+    </View>
+  );
+}
+
+function MiniLetterhead() {
+  return (
+    <View style={s.miniHead}>
+      <Mark size={18} />
+      <Text style={s.miniWordmark}>PARISH MEDIA COMPANY</Text>
+      <Text style={{ fontSize: 7.5, color: muted, letterSpacing: 1 }}>PARISHMEDIACOMPANY.COM</Text>
+    </View>
+  );
+}
+
+// Footer address, on every page.
+function PageChrome() {
+  return (
+    <>
+      {/* Plain text: react-pdf's render-prop footers (page numbers) don't print here. */}
+      <Text style={s.footer} fixed>{`Parish Media Company  ·  ${PMC_ADDRESS}`}</Text>
+    </>
+  );
+}
+
+// The recommended House of Studies resources: title (linked), why it fits,
+// and the printed address so it still works on paper.
+function Resources({ res }: { res: LetterResource[] }) {
+  const links = res.map(resourceLink).filter((r): r is NonNullable<ReturnType<typeof resourceLink>> => r !== null);
+  return (
+    <View style={{ marginTop: -2, marginBottom: 12, paddingLeft: 14, borderLeftWidth: 1.5, borderLeftColor: gold }}>
+      {links.map((r, i) => (
+        <View key={r.url} style={{ marginTop: i ? 7 : 0 }} wrap={false}>
+          <Text>
+            <Link src={r.url} style={{ fontWeight: 700, color: navy, textDecoration: "none" }}>
+              {r.title}
+            </Link>
+            <Text style={{ color: muted }}>{r.kind === "video" ? "  (video)" : ""}</Text>
+          </Text>
+          <Text style={{ fontSize: 10, color: ink }}>{r.why.charAt(0).toUpperCase() + r.why.slice(1)}.</Text>
+          <Link src={r.url} style={[s.link, { fontSize: 9, color: muted }]}>
+            {r.display}
+          </Link>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+// Prints the booking address as a real link.
+function Linked({ text }: { text: string }) {
+  const parts = text.split(new RegExp(`(${BOOKING_DISPLAY.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`));
+  return (
+    <Text style={s.p}>
+      {parts.map((part, i) =>
+        part === BOOKING_DISPLAY ? (
+          <Link key={i} src={SCORECARD_BOOKING_URL} style={s.link}>
+            {part}
+          </Link>
+        ) : (
+          part
+        ),
+      )}
     </Text>
   );
 }
 
-function Problem({ p, i }: { p: ReportProblem; i: number }) {
+const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
+const followers = (v: number | null | false) => (v === false ? "Not found" : v === null ? "Found" : `${fmt(v)} followers`);
+
+function Evidence({ ev }: { ev: LetterEvidence }) {
   return (
     <View>
-      <View style={s.problemHead} minPresenceAhead={110} wrap={false}>
-        <Text style={s.problemNum}>{i + 1}.</Text>
-        <Text style={[s.h2, { flex: 1 }]}>{p.title}</Text>
-      </View>
-
-      <RunIn head="What we saw.">{p.saw.join(" ")}</RunIn>
-
-      <RunIn head="Why it matters." style={p.postTypes ? { marginBottom: 5 } : undefined}>
-        {p.why.join(" ")}
-      </RunIn>
-
-      {p.postTypes && (
-        <View style={[s.indent, { marginBottom: 9 }]}>
-          {p.postTypes.map((t) => (
-            <View key={t.label} style={s.listRow} wrap={false}>
-              <Text style={s.listMark}>{"–"}</Text>
-              <Text style={{ flex: 1 }}>
-                <Text style={{ fontWeight: 600, color: navy }}>{t.label}</Text> {t.text}
-                {t.note ? (
-                  <Text style={t.bad ? s.missing : { fontStyle: "italic", color: muted }}>{` ${t.note}`}</Text>
-                ) : null}
-              </Text>
-            </View>
-          ))}
-        </View>
+      {ev.posts.length > 0 && (
+        <>
+          <Text style={s.h2}>Your last {ev.posts.length} posts</Text>
+          <View style={s.grid}>
+            {ev.posts.map((p, i) => {
+              const t = p.t ? POST_LABEL[p.t] : { label: "Post", color: muted };
+              return (
+                <View key={i} style={s.tile} wrap={false}>
+                  <View style={[s.tileInner, { borderLeftColor: t.color }]}>
+                    <View style={s.tileTop}>
+                      <Text>{p.p === "fb" ? "Facebook" : "Instagram"}</Text>
+                      <Text>{p.d}</Text>
+                    </View>
+                    <Text style={[s.tileType, { color: t.color }]}>{t.label}</Text>
+                    <Text style={s.tileMeta}>
+                      {p.v ? "Video  ·  " : ""}
+                      {fmt(p.r)} {p.r === 1 ? "like or comment" : "likes and comments"}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </>
       )}
-
-      {p.works && (
-        <View style={[s.indent, { marginBottom: 9 }]} wrap={false}>
-          <Text style={{ marginBottom: 3 }}>
-            <Text style={s.runIn}>What it looks like when it works. </Text>
-            {p.works.intro}
-          </Text>
-          {p.works.steps.map((st, j) => (
-            <View key={st.label} style={s.listRow}>
-              <Text style={s.listMark}>{j + 1}.</Text>
-              <Text style={{ flex: 1 }}>
-                <Text style={{ fontWeight: 600, color: navy }}>{st.label}</Text> {st.text}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-
-      {p.proof && (
-        <Text style={[s.p, s.indent, s.proof]} wrap={false}>
-          {p.proof}
-        </Text>
-      )}
-
-      <View wrap={false}>
-        <RunIn head="First step." style={{ color: navy }}>
-          {p.firstStep}
-        </RunIn>
+      <Text style={s.h2}>Your pages</Text>
+      <View style={s.stats}>
+        {[
+          ["Website", ev.web ?? "Not found"],
+          ["Facebook", followers(ev.fb)],
+          ["Instagram", followers(ev.ig)],
+          ...(ev.ads === "none" ? [["Meta’s Ad Library", "No active ads"]] : []),
+        ].map(([label, value]) => (
+          <View key={label} style={s.stat}>
+            <Text style={s.statLabel}>{label}</Text>
+            <Text style={s.statValue}>{value}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
 }
 
-function ReportPdf({ doc }: { doc: ScorecardDoc }) {
+function Scores({ doc, title = true }: { doc: ScorecardDoc; title?: boolean }) {
   const r = doc.report;
-  const strong = r.score >= 85;
   const toneColor = bandColor[r.band.tone];
   const note = capNote(r);
-  const preparedFor = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location]
-    .filter(Boolean)
-    .join(", ");
   return (
-    <Document
-      title={`Parish Social Media Scorecard: ${doc.parish}`}
-      author="Parish Media Company"
-      subject="Parish Social Media Scorecard"
-    >
+    <View wrap={false}>
+      {title ? <Text style={s.h2}>Your scores</Text> : null}
+      <View style={[s.scoreRow, s.scoreHeader]}>
+        <Text style={s.colLabel}>Category</Text>
+        <Text style={[s.colTier, { color: muted }]}>Assessment</Text>
+        <Text style={s.colScore}>Score</Text>
+      </View>
+      {r.categories.map((c) => (
+        <View key={c.id} style={s.scoreRow}>
+          <Text style={[s.colLabel, { color: navy }]}>{c.label}</Text>
+          <Text style={[s.colTier, c.tier === "low" ? { color: missingRed } : {}]}>{tierLabel[c.tier]}</Text>
+          <Text style={s.colScore}>
+            {c.points} / {c.max}
+          </Text>
+        </View>
+      ))}
+      <View style={[s.scoreRow, { borderBottomWidth: 0 }]}>
+        <Text style={[s.colLabel, { fontWeight: 700, color: navy }]}>Total</Text>
+        <Text style={[s.colTier, { fontWeight: 700, color: toneColor }]}>{r.band.label}</Text>
+        <Text style={[s.colScore, { fontWeight: 700, color: toneColor }]}>{r.score} / 100</Text>
+      </View>
+      {note ? <Text style={{ fontSize: 9, fontStyle: "italic", color: muted, marginTop: 4 }}>{note}</Text> : null}
+    </View>
+  );
+}
+
+export type LetterPdfInput = {
+  doc: ScorecardDoc;
+  letter: ScorecardLetter;
+  greeting: string; // "Hi Father,"
+  isPastor: boolean;
+};
+
+function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
+  const parishName = doc.parish === "Your parish" ? "the parish" : doc.parish;
+  const recipient = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location].filter(Boolean);
+  const closing = fixedClosing(letter, parishName, isPastor);
+  const psParish = doc.parish === "Your parish" ? "Your parish" : doc.parish;
+  return (
+    <Document title={`A letter for ${parishName}`} author="Joe Jarrell, Parish Media Company" subject="Parish Social Media Scorecard">
       <Page size="LETTER" style={s.page}>
-        <Text style={s.footer} fixed>
-          {`Parish Social Media Scorecard  ·  ${doc.parish}`}
-        </Text>
-
-        <View style={s.letterhead}>
-          <View>
-            <Text style={s.wordmark}>Parish Media Company</Text>
-            <View style={s.goldRule} />
-          </View>
-          <Text style={s.letterheadSite}>parishmediacompany.com</Text>
+        <PageChrome />
+        <Letterhead />
+        <Text style={s.date}>{doc.date}</Text>
+        <View style={s.recipient}>
+          {recipient.map((line) => (
+            <Text key={line}>{line}</Text>
+          ))}
         </View>
 
-        <Text style={s.title}>Parish Social Media Scorecard</Text>
-        <View style={s.memoRow}>
-          <Text style={s.memoLabel}>Prepared for</Text>
-          <Text style={s.memoValue}>{preparedFor}</Text>
+        <View style={s.reLine}>
+          <Text style={{ fontWeight: 700, color: navy, width: 30 }}>Re:</Text>
+          <Text style={{ color: navy }}>Your Parish Social Media Scorecard</Text>
+          <Text style={{ color: muted, marginHorizontal: 8 }}>·</Text>
+          <Text style={{ fontWeight: 700, color: bandColor[doc.report.band.tone] }}>
+            {doc.report.score} out of 100 ({doc.report.band.label})
+          </Text>
         </View>
-        <View style={s.memoRow}>
-          <Text style={s.memoLabel}>Date</Text>
-          <Text style={s.memoValue}>{doc.date}</Text>
+
+        <Text style={s.p}>{greeting}</Text>
+        {letter.body.map((para, i) => (
+          <Text key={i} style={s.p} orphans={2} widows={2}>
+            {para}
+          </Text>
+        ))}
+        <View wrap={false}>
+          <Text style={s.p}>{closing.resourcesIntro}</Text>
+          <Resources res={letter.res} />
         </View>
-        <View style={s.memoRow}>
-          <Text style={s.memoLabel}>Score</Text>
-          <View style={[s.memoValue, { flexDirection: "row", alignItems: "center" }]}>
-            <Text style={{ fontWeight: 700, color: navy }}>{r.score} out of 100</Text>
-            <View style={{ width: 7, height: 7, borderRadius: 3.5, backgroundColor: toneColor, marginLeft: 10, marginRight: 5 }} />
-            <Text style={{ fontWeight: 700, color: toneColor }}>{r.band.label}</Text>
-          </View>
-        </View>
-        <View style={s.memoRule} />
-
-        <Text style={s.p}>Dear {doc.greeting},</Text>
-        <Text style={s.p}>
-          Thank you for taking the Parish Social Media Scorecard. We read through your answers,{" "}
-          {strong
-            ? "and there’s a lot here to be encouraged by."
-            : "and we’re going to be direct, because we think you’d want us to be."}
-        </Text>
-
-        <Text style={s.lead}>{doc.diagnosis.lead}</Text>
-        <Text style={s.p}>{doc.diagnosis.body}</Text>
-        {doc.problemsIntro ? <Text style={s.p}>{doc.problemsIntro}</Text> : null}
-
-        {doc.problems.map((p, i) => (
-          <Problem key={p.id} p={p} i={i} />
+        {closing.rest.slice(0, -2).map((para, i) => (
+          <Linked key={`c${i}`} text={para} />
         ))}
 
+        {/* The last two closing paragraphs, sign-off, and P.S. move together so
+            the signature never sits alone on a page. */}
         <View wrap={false}>
-          <Text style={s.sectionHead}>{"What’s working"}</Text>
-          {doc.strengths.map((st) => (
-            <View key={st} style={s.listRow}>
-              <Text style={s.listMark}>{"–"}</Text>
-              <Text style={{ flex: 1 }}>{st}</Text>
-            </View>
+          {closing.rest.slice(-2).map((para, i) => (
+            <Linked key={`e${i}`} text={para} />
           ))}
-        </View>
-
-        <View wrap={false}>
-          <Text style={s.sectionHead}>Your scores</Text>
-          <View style={[s.scoreRow, s.scoreHeader]}>
-            <Text style={s.colLabel}>Category</Text>
-            <Text style={[s.colTier, { color: muted }]}>Assessment</Text>
-            <Text style={s.colScore}>Score</Text>
-          </View>
-          {r.categories.map((c) => (
-            <View key={c.id} style={s.scoreRow}>
-              <Text style={[s.colLabel, { color: navy }]}>{c.label}</Text>
-              <Text style={[s.colTier, c.tier === "low" ? { color: missingRed } : {}]}>{tierLabel[c.tier]}</Text>
-              <Text style={s.colScore}>
-                {c.points} / {c.max}
-              </Text>
-            </View>
-          ))}
-          <View style={[s.scoreRow, { borderBottomWidth: 0 }]}>
-            <Text style={[s.colLabel, { fontWeight: 700, color: navy }]}>Total</Text>
-            <Text style={[s.colTier, { fontWeight: 700, color: toneColor }]}>{r.band.label}</Text>
-            <Text style={[s.colScore, { fontWeight: 700, color: toneColor }]}>{r.score} / 100</Text>
-          </View>
-          {note ? (
-            <Text style={{ fontSize: 9.5, fontStyle: "italic", color: muted, marginTop: 4 }}>{note}</Text>
-          ) : null}
-        </View>
-
-        {/* Next step + quote + sign-off move together, so the sign-off
-            never ends up alone on the last page. */}
-        <View wrap={false}>
-          <Text style={s.sectionHead}>Your next step</Text>
-          <Text style={s.p}>{doc.nextStep}</Text>
-          <Text style={s.p}>
-            Book a time at{" "}
-            <Link src={SCORECARD_BOOKING_URL} style={s.link}>
-              {BOOKING_DISPLAY}
-            </Link>
-            .
-          </Text>
-          <View style={s.quoteWrap}>
-            <Text style={s.quote}>&ldquo;{proof.quote.text}&rdquo;</Text>
-            <Text style={{ fontSize: 9, color: muted, marginTop: 2 }}>
-              {proof.quote.name}, {proof.quote.role}
-            </Text>
-          </View>
-          <Text>God bless,</Text>
-          <Text style={{ fontFamily: "Fraunces", fontSize: 12.5, color: navy, marginTop: 10 }}>Joe Jarrell</Text>
+          <Text style={{ marginTop: 4 }}>God bless,</Text>
+          <Text style={s.signature}>Joe Jarrell</Text>
+          <Text style={{ fontWeight: 600, color: navy }}>Joe Jarrell</Text>
           <Text style={{ color: muted }}>Founder, Parish Media Company</Text>
+          <Text style={s.ps}>
+            <Text style={{ fontWeight: 700 }}>P.S. </Text>
+            {psParish} scored {doc.report.score} out of 100. {letter.ps}
+          </Text>
         </View>
+      </Page>
+
+      <Page size="LETTER" style={s.page}>
+        <PageChrome />
+        <MiniLetterhead />
+        <Text style={s.h1}>{letter.ev ? "What we found" : "Your scores"}</Text>
+        <Text style={[s.sub, letter.ev ? {} : { marginBottom: 12 }]}>
+          {letter.ev
+            ? `What we saw on ${parishName}’s public pages, and how your answers scored.`
+            : "How your answers scored, by category."}
+        </Text>
+        {letter.ev ? <Evidence ev={letter.ev} /> : null}
+        <Scores doc={doc} title={!!letter.ev} />
       </Page>
     </Document>
   );
 }
 
-export async function renderScorecardPdf(doc: ScorecardDoc): Promise<Buffer> {
+export async function renderScorecardPdf(input: LetterPdfInput): Promise<Buffer> {
   registerFonts();
-  return renderToBuffer(<ReportPdf doc={doc} />);
+  return renderToBuffer(<LetterPdf {...input} />);
 }

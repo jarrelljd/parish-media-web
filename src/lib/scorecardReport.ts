@@ -336,27 +336,22 @@ export function buildScorecardDoc(
 const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-// Short cover email for the Zap to send with the PDF attached. Inline styles
-// only. Includes a "view your report" link in case the attachment is lost.
-export function coverEmailHtml(d: ScorecardDoc, pdfUrl: string): string {
+// Short cover email for the Zap to send with the letter PDF attached, per
+// the voice guide's sample (a plain personal email, not a branded one).
+// Inline styles only. Links to the letter in case the attachment is lost.
+export function coverEmailHtml(d: ScorecardDoc, pdfUrl: string, greeting: string, topProblem: string): string {
   const navy = "#1b2a4a";
   const sans = "font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;";
   const p = `${sans}font-size:16px;line-height:1.6;color:${navy};margin:0 0 16px 0;`;
-  const top = d.problems[0];
-  const btn = (href: string, text: string, filled: boolean) =>
-    `<a href="${esc(href)}" style="${sans}display:inline-block;${
-      filled ? `background:${navy};color:#faf8f4;` : `color:${navy};border:1px solid ${navy};`
-    }text-decoration:none;font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;margin:0 8px 8px 0;">${text}</a>`;
+  const a = `color:${navy};font-weight:600;`;
+  const parish = d.parish === "Your parish" ? "your parish" : d.parish;
   return `<!doctype html><html><body style="margin:0;padding:24px 16px;background:#ffffff;">
 <div style="max-width:560px;">
-<p style="${p}">Dear ${esc(d.greeting)},</p>
-<p style="${p}">Thank you for taking the Parish Social Media Scorecard. Your full report for ${esc(d.parish === "Your parish" ? "your parish" : d.parish)} is attached.</p>
-<p style="${p}"><strong>Your score: ${d.report.score} out of 100 (${esc(d.report.band.label)}).</strong>${
-    top ? ` The biggest thing holding the parish back: ${esc(top.title.charAt(0).toLowerCase() + top.title.slice(1))}.` : ""
-  } The report walks through what we saw, why it matters, and the first step for each problem.</p>
-<p style="${p}">If you&rsquo;d like help putting it into practice, book a free Parish Growth Assessment. We&rsquo;ll go over your scorecard with you.</p>
-<p style="margin:0 0 16px 0;">${btn(SCORECARD_BOOKING_URL, "Book a Free Assessment", true)}${btn(pdfUrl, "View Your Report", false)}</p>
-<p style="${p}">God bless,<br>Joe Jarrell<br><span style="color:#6b7280;">Parish Media Company</span></p>
+<p style="${p}">${esc(greeting)}</p>
+<p style="${p}">Thank you for taking the Parish Social Media Scorecard. Your letter for ${esc(parish)} is attached (you can also <a href="${esc(pdfUrl)}" style="${a}">open it here</a>).</p>
+<p style="${p}">Your score is ${d.report.score} out of 100. The biggest thing holding the parish back right now: ${esc(topProblem)}. The letter walks through what we found and the first step.</p>
+<p style="${p}">If you&rsquo;d like help putting it into practice, I&rsquo;m happy to go over it with you on a <a href="${esc(SCORECARD_BOOKING_URL)}" style="${a}">free call</a>. No need to make any decisions.</p>
+<p style="${p}">God bless,<br>Joe Jarrell</p>
 </div></body></html>`;
 }
 

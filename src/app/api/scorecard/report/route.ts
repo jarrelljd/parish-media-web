@@ -1,12 +1,14 @@
-// GET /api/scorecard/report?d=…&s=… → the lead's scorecard PDF.
-// The link is created by submitScorecardOptIn (actions.ts) and handed to the
-// Zap (to attach to the email) and to the summary page's download button.
+// GET /api/scorecard/report?d=…&s=… → the lead's scorecard letter (PDF).
+// The link is created by submitScorecardOptIn (actions.ts), carries the
+// letter written for them at opt-in, and is handed to the Zap (to attach to
+// the email) and to the summary page's download button. Links made before
+// the letter existed get the template letter.
 
 import type { NextRequest } from "next/server";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
-import { greetingFor } from "@/lib/greeting";
 import { parseAnswers } from "@/lib/scorecard";
 import { readReportQuery } from "@/lib/scorecardLink";
+import { letterGreeting, templateLetter } from "@/lib/scorecardLetter";
 import { renderScorecardPdf } from "@/lib/scorecardPdf";
 import { buildScorecardDoc } from "@/lib/scorecardReport";
 
@@ -24,10 +26,15 @@ export async function GET(request: NextRequest) {
     name: payload.n,
     organization: payload.o,
     role: payload.r,
-    greeting: greetingFor(payload.n ?? ""),
     date: new Date(payload.t),
   });
-  const pdf = await renderScorecardPdf(doc);
+  const letter = payload.l?.v === 1 ? payload.l : templateLetter(doc);
+  const pdf = await renderScorecardPdf({
+    doc,
+    letter,
+    greeting: letterGreeting(payload.n ?? "", payload.r ?? ""),
+    isPastor: payload.r === "Pastor",
+  });
 
   const slug =
     (payload.o || "parish")

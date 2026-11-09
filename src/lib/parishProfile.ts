@@ -248,7 +248,7 @@ const DAY = 86_400_000;
 
 // The platform with more recent posts speaks for the feed (most parishes post
 // the same thing to both, so we don't add them together).
-function mainFeed(profile: ParishProfile, now: number) {
+export function mainFeed(profile: ParishProfile, now = Date.now()) {
   const recent = (platform: ProfilePost["platform"]) =>
     profile.posts
       .filter((p) => p.platform === platform && Date.parse(p.date) > now - 28 * DAY)

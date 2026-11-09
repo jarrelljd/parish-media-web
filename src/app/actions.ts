@@ -15,6 +15,7 @@ import {
 import { getLookup } from "@/lib/parishLookupStore";
 import { profileToText } from "@/lib/parishProfile";
 import { createReportQuery } from "@/lib/scorecardLink";
+import { letterGreeting, writeScorecardLetter } from "@/lib/scorecardLetter";
 import { buildScorecardDoc, coverEmailHtml, docToText } from "@/lib/scorecardReport";
 import {
   sendLeadConversionEvent,
@@ -380,6 +381,27 @@ export async function submitScorecardOptIn(
   });
   const report = doc.report;
 
+  // What the parish lookup found on their pages (when it ran and finished).
+  // Answers stay exactly as the quiz sent them, so the score here matches
+  // the one they saw; the lookup feeds the letter and Joe's notification.
+  // The quiz usually waits for it already; give a straggler a few seconds.
+  let lookup = answers.lookupId ? getLookup(answers.lookupId) : undefined;
+  for (let i = 0; i < 12 && lookup?.status === "pending"; i++) {
+    await new Promise((r) => setTimeout(r, 1000));
+    lookup = getLookup(answers.lookupId!);
+  }
+  const profile = lookup?.status === "done" ? lookup.profile : null;
+  const parishPages = profile
+    ? profileToText(profile)
+    : lookup?.status === "pending"
+      ? "Lookup still running when they opted in."
+      : "No lookup (pages not checked).";
+
+  // The personal letter (about 5 seconds). Falls back to the template
+  // letter on its own if OpenAI is down, so it never blocks the lead.
+  const letter = await writeScorecardLetter(doc, answers, profile, { role });
+  const letterHi = letterGreeting(name, role);
+
   const headersList = await headers();
   const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "parishmediacompany.com";
   const proto = headersList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
@@ -389,6 +411,7 @@ export async function submitScorecardOptIn(
     o: organization,
     r: role,
     t: Date.now(),
+    l: letter,
   })}`;
 
   const countLabel = (c: FollowerCount) =>
@@ -409,24 +432,22 @@ export async function submitScorecardOptIn(
     followUpSpeed: label("followUp"),
     socialMediaOwner: label("team"),
   };
-  const reportText = docToText(doc);
-
-  // What the parish lookup found on their pages (when it ran and finished).
-  // Answers stay exactly as the quiz sent them, so the score here matches
-  // the one they saw; this is extra context for Joe.
-  const lookup = answers.lookupId ? getLookup(answers.lookupId) : undefined;
-  const parishPages =
-    lookup?.status === "done"
-      ? profileToText(lookup.profile)
-      : lookup?.status === "pending"
-        ? "Lookup still running when they opted in."
-        : "No lookup (pages not checked).";
+  const reportText = [
+    docToText(doc),
+    "",
+    `Letter (${letter.src === "ai" ? "written by AI" : "template, AI unavailable"}):`,
+    letterHi,
+    ...letter.body,
+    `P.S. ${doc.parish} scored ${report.score} out of 100. ${letter.ps}`,
+  ].join("\n\n");
 
   const payload: Record<string, string> = {
     timestamp: new Date().toISOString(),
     name,
-    // Ready for the email's "Dear ___," line ("Fr. John Smith" -> "Father Smith").
+    // "Fr. John Smith" -> "Father Smith" (older Zap steps use this).
     greeting,
+    // The letter's own greeting ("Hi Fr. John,"), per the voice guide.
+    letterGreeting: letterHi,
     email,
     phone,
     role,
@@ -444,7 +465,8 @@ export async function submitScorecardOptIn(
     reportPdfUrl: pdfUrl,
     reportPdfFilename: `Parish Social Media Scorecard - ${doc.parish}.pdf`,
     emailSubject: `Your Parish Social Media Scorecard: ${doc.parish}`,
-    emailHtml: coverEmailHtml(doc, pdfUrl),
+    emailHtml: coverEmailHtml(doc, pdfUrl, letterHi, letter.cover),
+    letterSource: letter.src,
     reportText,
     parishPages,
   };

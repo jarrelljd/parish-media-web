@@ -89,7 +89,7 @@ const s = StyleSheet.create({
     paddingBottom: 64,
     paddingHorizontal: 72,
     fontFamily: "Source Sans",
-    fontSize: 11,
+    fontSize: 10.5,
     lineHeight: 1.55,
     color: ink,
     backgroundColor: "#fffdf8",
@@ -107,10 +107,10 @@ const s = StyleSheet.create({
   date: { marginTop: 26, marginBottom: 14 },
   recipient: { marginBottom: 16, color: ink },
   reLine: { flexDirection: "row", alignItems: "baseline", marginBottom: 18 },
-  p: { marginBottom: 10 },
+  p: { marginBottom: 8 },
   link: { color: navy, textDecoration: "underline" },
   signature: { fontFamily: "Signature", fontSize: 34, color: lapis, marginTop: 2, marginBottom: 6, lineHeight: 1.35 },
-  ps: { marginTop: 22 },
+  ps: { marginTop: 18 },
   footer: { position: "absolute", bottom: 38, left: 72, right: 72, fontSize: 7.5, color: muted, letterSpacing: 1, textAlign: "center" },
   // Evidence page
   h1: { fontFamily: "Fraunces", fontSize: 19, color: navy, marginTop: 18, marginBottom: 2 },
@@ -184,24 +184,24 @@ function PageChrome() {
   );
 }
 
-// The recommended House of Studies resources: title (linked), why it fits,
-// and the printed address so it still works on paper.
+// The recommended House of Studies resources, typed the way a person would
+// in a letter: a simple numbered list in body text, the title in italics,
+// why it fits, and the address on its own line so it still works on paper.
 function Resources({ res }: { res: LetterResource[] }) {
   const links = res.map(resourceLink).filter((r): r is NonNullable<ReturnType<typeof resourceLink>> => r !== null);
   return (
-    <View style={{ marginTop: -2, marginBottom: 12, paddingLeft: 14, borderLeftWidth: 1.5, borderLeftColor: gold }}>
+    <View style={{ marginBottom: 10 }}>
       {links.map((r, i) => (
-        <View key={r.url} style={{ marginTop: i ? 7 : 0 }} wrap={false}>
-          <Text>
-            <Link src={r.url} style={{ fontWeight: 700, color: navy, textDecoration: "none" }}>
-              {r.title}
+        <View key={r.url} style={{ flexDirection: "row", marginBottom: 6 }} wrap={false}>
+          <Text style={{ width: 22, paddingLeft: 6 }}>{i + 1}.</Text>
+          <View style={{ flex: 1 }}>
+            <Text>
+              <Text style={{ fontStyle: "italic" }}>{r.title}</Text>, {r.why}.
+            </Text>
+            <Link src={r.url} style={s.link}>
+              {r.display}
             </Link>
-            <Text style={{ color: muted }}>{r.kind === "video" ? "  (video)" : ""}</Text>
-          </Text>
-          <Text style={{ fontSize: 10, color: ink }}>{r.why.charAt(0).toUpperCase() + r.why.slice(1)}.</Text>
-          <Link src={r.url} style={[s.link, { fontSize: 9, color: muted }]}>
-            {r.display}
-          </Link>
+          </View>
         </View>
       ))}
     </View>
@@ -212,7 +212,7 @@ function Resources({ res }: { res: LetterResource[] }) {
 function Linked({ text }: { text: string }) {
   const parts = text.split(new RegExp(`(${BOOKING_DISPLAY.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`));
   return (
-    <Text style={s.p}>
+    <Text style={s.p} orphans={2} widows={2}>
       {parts.map((part, i) =>
         part === BOOKING_DISPLAY ? (
           <Link key={i} src={SCORECARD_BOOKING_URL} style={s.link}>
@@ -331,11 +331,9 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
         </View>
 
         <View style={s.reLine}>
-          <Text style={{ fontWeight: 700, color: navy, width: 30 }}>Re:</Text>
-          <Text style={{ color: navy }}>Your Parish Social Media Scorecard</Text>
-          <Text style={{ color: muted, marginHorizontal: 8 }}>·</Text>
-          <Text style={{ fontWeight: 700, color: bandColor[doc.report.band.tone] }}>
-            {doc.report.score} out of 100 ({doc.report.band.label})
+          <Text style={{ fontWeight: 700, width: 30 }}>Re:</Text>
+          <Text>
+            Your Parish Social Media Scorecard (score: {doc.report.score} out of 100)
           </Text>
         </View>
 
@@ -345,29 +343,27 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
             {para}
           </Text>
         ))}
-        <View wrap={false}>
-          <Text style={s.p}>{closing.resourcesIntro}</Text>
-          <Resources res={letter.res} />
-        </View>
-        {closing.rest.slice(0, -2).map((para, i) => (
+        {/* Paragraphs flow across pages like a normal letter. Only small
+            pieces are kept together, so a page never ends with a big gap. */}
+        <Text style={s.p} minPresenceAhead={60}>
+          {closing.resourcesIntro}
+        </Text>
+        <Resources res={letter.res} />
+        {closing.rest.map((para, i) => (
           <Linked key={`c${i}`} text={para} />
         ))}
 
-        {/* The last two closing paragraphs, sign-off, and P.S. move together so
-            the signature never sits alone on a page. */}
+        {/* The sign-off stays in one piece; the P.S. can follow on the next page. */}
         <View wrap={false}>
-          {closing.rest.slice(-2).map((para, i) => (
-            <Linked key={`e${i}`} text={para} />
-          ))}
           <Text style={{ marginTop: 4 }}>God bless,</Text>
           <Text style={s.signature}>Joe Jarrell</Text>
           <Text style={{ fontWeight: 600, color: navy }}>Joe Jarrell</Text>
           <Text style={{ color: muted }}>Founder, Parish Media Company</Text>
-          <Text style={s.ps}>
-            <Text style={{ fontWeight: 700 }}>P.S. </Text>
-            {psParish} scored {doc.report.score} out of 100. {letter.ps}
-          </Text>
         </View>
+        <Text style={s.ps} wrap={false}>
+          <Text style={{ fontWeight: 700 }}>P.S. </Text>
+          {psParish} scored {doc.report.score} out of 100. {letter.ps}
+        </Text>
       </Page>
 
       <Page size="LETTER" style={s.page}>

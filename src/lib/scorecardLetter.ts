@@ -9,8 +9,8 @@
 //
 // What stays in code (never written by the AI): which problems the letter
 // covers and their order, the greeting, the fixed closing, the signature,
-// and the score in the P.S. The AI writes the middle of the letter, the
-// reason clause of the P.S., and one line for the cover email.
+// and the score in the Re: line. The AI writes the middle of the letter and
+// one line for the cover email.
 //
 // Every number the AI writes must appear in the facts we gave it; otherwise
 // we ask once more, then fall back to a plain template letter built from
@@ -48,7 +48,6 @@ export type ScorecardLetter = {
   v: 1;
   src: "ai" | "template";
   body: string[]; // paragraphs between the greeting and the fixed closing
-  ps: string; // follows "P.S. {Parish} scored N out of 100."
   cover: string; // the biggest problem in plain words, for the cover email
   res: LetterResource[]; // House of Studies resources recommended in the closing
   ev?: LetterEvidence;
@@ -388,15 +387,14 @@ The reader is usually the pastor: busy, not technical, careful with parish money
 
 WHAT YOU WRITE
 - "body": 5 to 7 short paragraphs, 280 to 420 words in all. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
-- "ps_reason": one sentence for the P.S. It follows "P.S. [Parish] scored [N] out of 100." and says what the score mostly comes down to, in plain words. Example: "Most of that comes down to one missing piece: nothing is inviting new families in." Don't repeat the score.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
 BODY STRUCTURE (in this order). The letter is mostly a diagnosis: where the parish stands and why. Advice waits for the last paragraph.
 1. The introduction (one paragraph, 3 to 4 sentences). Thank them for taking the Parish Social Media Scorecard. Then tell them plainly what this letter is and how we put it together:
    - If weLookedUpTheirPages is true: we read through their answers, and we also went ahead and looked up the parish's own pages (name exactly the ones in pagesWeLookedAt, e.g. "your website, Facebook page, and Instagram") and went through their recent posts. Say this in plain words like "looked up" or "went through"; never "scraped", "analyzed", "audited", or "data".
    - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library; work only from their answers ("you mentioned", "from your answers").
-   - End the intro by saying what follows: an honest picture of where the parish stands right now, what's working, what's holding it back, and what I'd do first.
-   Don't guess at how the reader feels or how hard they're working.
+   - End the intro simply, the way Joe would in an email, e.g. "Here's what I found." or "Here's where I think things stand." Don't describe the letter's structure.
+   Don't guess at how the reader feels or how hard they're working, and don't add a line about how or why you're writing the letter ("I'm writing this as plainly as I can", "from one Catholic to another", "with your pastor in mind").
 2. What's working (one short paragraph): one or two specific good things (from strengths, or their best-received post, with its date and numbers).
 3. The biggest problem (one or two paragraphs): problemsInOrder[0], exactly as the diagnosis states it. Our rules already decided it; don't swap in a different problem, even if another one looks bigger to you. Say it in your own words (don't paste the title). Show what we saw, with their own specifics (their posts, dates, counts, or answers). Then explain why it matters in plain words, tied to the parish's goals (new families, Mass attendance, young people, vocations). Add one approved proof point that fits.
 4. The next problem (one paragraph): problemsInOrder[1] if there is one, otherwise the most important observation from their pages. Same approach: what we saw, then why it matters. You may fold in one more smaller observation in a sentence.
@@ -424,6 +422,18 @@ VOICE (Joe's own emails)
 - If the reader isn't the pastor, refer to the pastor as "your pastor" or "Father", not "you".
 - Explain any platform term in one clause the first time.
 
+SOUND LIKE JOE, NOT AI (this matters a lot)
+- Write like Joe typing a thoughtful email to a priest he respects: casual, warm, a little informal, like talking across a table after Mass. When in doubt, more casual and human, not more polished.
+- Mix sentence lengths. Short ones are good. Fine to start a sentence with "And" or "But", or use plain asides like "Honestly," "To be fair," "My guess is," "I'll be straight with you."
+- Use ordinary words a parish priest would use. Say "people" not "audience", "posts" not "content", "the page" not "the platform".
+- Avoid the usual AI tells: "not just X, but Y", "it's not X, it's Y", "that tells me", "what follows", "honest picture", "real life", "strong base", "the good news is", "here's the thing", "in today's world", "at the end of the day"; groups of three adjectives; a colon in every paragraph; every paragraph starting the same way; summing up what you just said.
+- Never use: navigate, foster, resonate, meaningful, intentional, seamless, impactful, tapestry, truly, deeply, vibrant, thrive.
+
+EMPHASIS (the letter should be easy to skim, like a real letter someone marked up)
+- Bold (**like this**) up to 3 short phrases in the whole letter, each under 12 words: the core of the biggest problem, the core of the next problem, and the single most important step in the advice paragraph. Bold a phrase inside a sentence, never a whole paragraph.
+- Italics (*like this*) up to 2 times, for a post's topic or a short quote of their own words.
+- Nothing else: no headings, underlines, or lists.
+
 HARD RULES
 - Facts: use only what is in the JSON. Every number you write must appear in it exactly. Write numbers above ten as digits, with commas from 1,000 up; "one" through "ten" may be words. Never invent, round, combine, or estimate numbers.
 - Never compare the parish to other parishes ("better than most", "most parishes", "the average parish"). The only outside results allowed are the approvedProof entries.
@@ -431,7 +441,7 @@ HARD RULES
 - Never mention the score, points, categories, the quiz itself, "the report", or AI.
 - Ad Library: mention it only if an observation says we checked it.
 - Refer to posts by date and what they were about; never quote more than 6 words of a caption.
-- No headings, bullet points, lists, bold, emoji, or em dashes. At most one exclamation point in the whole letter.
+- No headings, bullet points, lists, emoji, or em dashes. Bold and italics only as described above, and never in cover_line. At most one exclamation point in the whole letter.
 - Never use these words: leverage, optimize, engagement, funnel, algorithm, content strategy, brand, synergy, game-changer, unlock, elevate, journey, landscape, robust, crucial, delve.`;
 
 const SCHEMA = {
@@ -439,10 +449,9 @@ const SCHEMA = {
   additionalProperties: false,
   properties: {
     body: { type: "array", items: { type: "string" } },
-    ps_reason: { type: "string" },
     cover_line: { type: "string" },
   },
-  required: ["body", "ps_reason", "cover_line"],
+  required: ["body", "cover_line"],
 };
 
 export const LETTER_MODEL = "gpt-5.5";
@@ -467,11 +476,11 @@ const BANNED_WORDS =
 const LOOKUP_CLAIMS = /\b(look(ed)? (up|at|through)|we (checked|saw|found|noticed|pulled)|ad library|your (feed|page|posts|website|instagram|facebook) (shows|has))\b/i;
 
 export function checkLetter(
-  out: { body: string[]; ps_reason: string; cover_line: string },
+  out: { body: string[]; cover_line: string },
   facts: LetterFacts["facts"],
 ): string[] {
   const problems: string[] = [];
-  const text = [...out.body, out.ps_reason, out.cover_line].join("\n");
+  const text = [...out.body, out.cover_line].join("\n");
   const words = out.body.join(" ").split(/\s+/).filter(Boolean).length;
   if (out.body.length < 4 || out.body.length > 8) problems.push(`Use 5 to 7 paragraphs (you wrote ${out.body.length}).`);
   if (words < 240 || words > 480) problems.push(`The body should be 280 to 420 words (you wrote ${words}).`);
@@ -479,7 +488,7 @@ export function checkLetter(
   const advice = early.match(/\b(I['’]d recommend|you should|I['’]d start|start by|my advice)\b/i);
   if (advice) problems.push(`Keep advice to the last paragraph only ("${advice[0]}" appears earlier). The earlier paragraphs diagnose.`);
   if (/\b(scrap(e|ed|ing)|analy[sz]\w*|audit\w*|data)\b/i.test(text)) problems.push('Say "looked up" or "went through", never scraped, analyzed, audited, or data.');
-  if (!out.ps_reason.trim() || !out.cover_line.trim()) problems.push("ps_reason and cover_line are required.");
+  if (!out.cover_line.trim()) problems.push("cover_line is required.");
 
   const allowed = new Set([...ALWAYS_ALLOWED, ...numbersIn(JSON.stringify(facts))]);
   const bad = [...new Set(numbersIn(text))].filter((n) => !allowed.has(n));
@@ -490,7 +499,18 @@ export function checkLetter(
   if (/—|–\s/.test(text)) problems.push("No em dashes.");
   if ((text.match(/!/g) ?? []).length > 1) problems.push("At most one exclamation point.");
   if (/\p{Extended_Pictographic}/u.test(text)) problems.push("No emoji.");
-  if (/^\s*([-*•#]|\d+[.)])\s/m.test(out.body.join("\n")) || /\*\*/.test(text)) problems.push("No bullets, headings, or bold.");
+  const bodyText = out.body.join("\n");
+  if (/^\s*([-*•#]|\d+[.)])\s/m.test(bodyText)) problems.push("No bullets or headings.");
+  if (/\*/.test(out.cover_line)) problems.push("No bold or italics in cover_line.");
+  const bolds = bodyText.match(/\*\*[^*]+\*\*/g) ?? [];
+  const italics = bodyText.replace(/\*\*[^*]+\*\*/g, "").match(/\*[^*]+\*/g) ?? [];
+  if (bolds.length > 3 || bolds.some((b) => b.split(/\s+/).length > 12)) problems.push("Bold at most 3 short phrases (under 12 words each).");
+  if (italics.length > 2) problems.push("Italics at most 2 times.");
+  if ((bodyText.replace(/\*\*[^*]+\*\*/g, "").replace(/\*[^*]+\*/g, "").match(/\*/g) ?? []).length) problems.push("Unmatched * marks.");
+  const tell = text.match(
+    /\b(not just|isn['’]t just|that tells me|what follows|honest picture|real life|strong base|the good news is|here['’]s the thing|in today['’]s world|at the end of the day|navigate|foster|resonate|meaningful|intentional|seamless|impactful|tapestry|truly|deeply|vibrant|thrive)\b/i,
+  );
+  if (tell) problems.push(`"${tell[0]}" sounds like AI. Say it the way Joe would.`);
   if (/\b(better than most|(many|most|other) (parishes|pastors)|the average parish|typical parish)\b/i.test(text))
     problems.push("Don't compare the parish to other parishes.");
   if (/\b(score|scored|out of 100|scorecard results|the report)\b/i.test(out.body.join(" ")))
@@ -520,7 +540,7 @@ async function callOpenAI(messages: { role: string; content: string }[], key: st
   });
   if (!res.ok) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const j = (await res.json()) as { choices: { message: { content: string } }[] };
-  return JSON.parse(j.choices[0].message.content) as { body: string[]; ps_reason: string; cover_line: string };
+  return JSON.parse(j.choices[0].message.content) as { body: string[]; cover_line: string };
 }
 
 const tidyText = (s: string) => s.replace(/\s+/g, " ").replace(/'/g, "’").trim();
@@ -549,7 +569,6 @@ export async function writeScorecardLetter(
             v: 1,
             src: "ai",
             body: out.body.map(tidyText).filter(Boolean),
-            ps: tidyText(out.ps_reason),
             cover: tidyText(out.cover_line).replace(/\.$/, ""),
             res,
             ev: evidence,
@@ -584,8 +603,8 @@ export function templateLetter(
   const [first, second] = doc.problems;
   const body = [
     lookedUp
-      ? "Thank you for taking the Parish Social Media Scorecard. I read through your answers, and we also went ahead and looked up the parish’s own pages and went through your recent posts. What follows is an honest picture of where the parish stands right now: what’s working, what’s holding it back, and what I’d do first."
-      : "Thank you for taking the Parish Social Media Scorecard. I read through your answers carefully. What follows is an honest picture of where the parish stands right now: what’s working, what’s holding it back, and what I’d do first.",
+      ? "Thanks for taking the Parish Social Media Scorecard. I went through your answers, and we also went ahead and looked up the parish’s pages and recent posts. Here’s what I found."
+      : "Thanks for taking the Parish Social Media Scorecard. I went through your answers, and here’s where I think things stand.",
   ];
   if (doc.strengths[0]) body.push(`The good news first: ${lowerFirst(doc.strengths[0])}`);
   if (first) {
@@ -600,7 +619,6 @@ export function templateLetter(
     v: 1,
     src: "template",
     body,
-    ps: first ? `Most of that comes down to one thing: ${lowerFirst(first.title)}.` : "You’re doing what most parishes aren’t.",
     cover: first ? lowerFirst(first.title) : "keeping what’s working and building on it",
     res,
     ev: evidence,

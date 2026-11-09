@@ -437,8 +437,7 @@ export async function submitScorecardOptIn(
     "",
     `Letter (${letter.src === "ai" ? "written by AI" : "template, AI unavailable"}):`,
     letterHi,
-    ...letter.body,
-    `P.S. ${doc.parish} scored ${report.score} out of 100. ${letter.ps}`,
+    ...letter.body.map((p) => p.replace(/\*/g, "")),
   ].join("\n\n");
 
   const payload: Record<string, string> = {

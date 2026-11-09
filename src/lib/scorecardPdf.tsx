@@ -5,7 +5,8 @@
 //
 // Reads like a signed letter on letterhead, per the Scorecard Letter Voice
 // Guide: no headings, bullets, or score badge in the letter itself; the
-// score lives in the P.S. A separate "What we found" page shows the
+// score sits in the Re: line, and the AI may bold or italicize a few
+// phrases (**bold**, *italics*). A separate "What we found" page shows the
 // evidence (their recent posts, pages, and category scores), with no prose.
 //
 // Fonts are bundled as WOFF in src/assets/fonts (Fraunces, Source Sans 3,
@@ -110,7 +111,6 @@ const s = StyleSheet.create({
   p: { marginBottom: 8 },
   link: { color: navy, textDecoration: "underline" },
   signature: { fontFamily: "Signature", fontSize: 34, color: lapis, marginTop: 2, marginBottom: 6, lineHeight: 1.35 },
-  ps: { marginTop: 18 },
   footer: { position: "absolute", bottom: 38, left: 72, right: 72, fontSize: 7.5, color: muted, letterSpacing: 1, textAlign: "center" },
   // Evidence page
   h1: { fontFamily: "Fraunces", fontSize: 19, color: navy, marginTop: 18, marginBottom: 2 },
@@ -205,6 +205,27 @@ function Resources({ res }: { res: LetterResource[] }) {
         </View>
       ))}
     </View>
+  );
+}
+
+// The letter body's light markup: **bold** and *italics*, nothing else.
+function Rich({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/).map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
+          <Text key={i} style={{ fontWeight: 700, color: navy }}>
+            {part.slice(2, -2)}
+          </Text>
+        ) : part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <Text key={i} style={{ fontStyle: "italic" }}>
+            {part.slice(1, -1)}
+          </Text>
+        ) : (
+          part.replace(/\*/g, "")
+        ),
+      )}
+    </>
   );
 }
 
@@ -317,7 +338,6 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
   const parishName = doc.parish === "Your parish" ? "the parish" : doc.parish;
   const recipient = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location].filter(Boolean);
   const closing = fixedClosing(letter, parishName, isPastor);
-  const psParish = doc.parish === "Your parish" ? "Your parish" : doc.parish;
   return (
     <Document title={`A letter for ${parishName}`} author="Joe Jarrell, Parish Media Company" subject="Parish Social Media Scorecard">
       <Page size="LETTER" style={s.page}>
@@ -333,14 +353,15 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
         <View style={s.reLine}>
           <Text style={{ fontWeight: 700, width: 30 }}>Re:</Text>
           <Text>
-            Your Parish Social Media Scorecard (score: {doc.report.score} out of 100)
+            Your Parish Social Media Scorecard:{" "}
+            <Text style={{ fontWeight: 700, textDecoration: "underline" }}>{doc.report.score} out of 100</Text>
           </Text>
         </View>
 
-        <Text style={s.p}>{greeting}</Text>
+        <Text style={[s.p, { fontFamily: "Fraunces", fontSize: 13, color: navy, marginBottom: 10 }]}>{greeting}</Text>
         {letter.body.map((para, i) => (
           <Text key={i} style={s.p} orphans={2} widows={2}>
-            {para}
+            <Rich text={para} />
           </Text>
         ))}
         {/* Paragraphs flow across pages like a normal letter. Only small
@@ -353,17 +374,13 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
           <Linked key={`c${i}`} text={para} />
         ))}
 
-        {/* The sign-off stays in one piece; the P.S. can follow on the next page. */}
+        {/* The sign-off stays in one piece. */}
         <View wrap={false}>
           <Text style={{ marginTop: 4 }}>God bless,</Text>
           <Text style={s.signature}>Joe Jarrell</Text>
           <Text style={{ fontWeight: 600, color: navy }}>Joe Jarrell</Text>
           <Text style={{ color: muted }}>Founder, Parish Media Company</Text>
         </View>
-        <Text style={s.ps} wrap={false}>
-          <Text style={{ fontWeight: 700 }}>P.S. </Text>
-          {psParish} scored {doc.report.score} out of 100. {letter.ps}
-        </Text>
       </Page>
 
       <Page size="LETTER" style={s.page}>

@@ -12,7 +12,7 @@
 // RESEND_API_KEY (already set in Railway), so it works without a new env
 // var. Changing either invalidates old links.
 
-import { createHash, createHmac, timingSafeEqual } from "crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { deflateRawSync, inflateRawSync } from "zlib";
 import type { ScorecardAnswers } from "@/lib/scorecard";
 import type { ScorecardLetter } from "@/lib/scorecardLetter";
@@ -55,4 +55,32 @@ export function readReportQuery(d: string | null, s: string | null): ReportLinkP
   } catch {
     return null;
   }
+}
+
+// Short links for the Zap's attachment. Zapier only downloads a "file" URL
+// when it's reasonably short; the full signed link (~2,500 characters, since
+// it carries the letter) gets attached as a .txt of the address instead.
+// So the Zap gets /api/scorecard/report/<name>-<code>.pdf, and the code maps
+// to the full signed query here. In memory is enough: Zapier downloads the
+// file within seconds of the webhook. Everything people click (the email's
+// "open it here", the summary page's download button) keeps the permanent
+// long link.
+
+const SHORT_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+// On globalThis so the form action and the PDF route share one map even if
+// Next.js bundles this module separately for each.
+const g = globalThis as typeof globalThis & { __pmcShortReports?: Map<string, { query: string; expires: number }> };
+const shortLinks = (g.__pmcShortReports ??= new Map());
+
+export function createShortReportCode(query: string): string {
+  const now = Date.now();
+  for (const [code, v] of shortLinks) if (v.expires < now) shortLinks.delete(code);
+  const code = randomBytes(12).toString("base64url"); // 16 characters
+  shortLinks.set(code, { query, expires: now + SHORT_TTL_MS });
+  return code;
+}
+
+export function readShortReportCode(code: string): string | null {
+  const v = shortLinks.get(code);
+  return v && v.expires > Date.now() ? v.query : null;
 }

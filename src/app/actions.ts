@@ -14,7 +14,7 @@ import {
 } from "@/lib/scorecard";
 import { getLookup } from "@/lib/parishLookupStore";
 import { profileToText } from "@/lib/parishProfile";
-import { createReportQuery } from "@/lib/scorecardLink";
+import { createReportQuery, createShortReportCode } from "@/lib/scorecardLink";
 import { letterGreeting, writeScorecardLetter } from "@/lib/scorecardLetter";
 import { buildScorecardDoc, coverEmailHtml, docToText } from "@/lib/scorecardReport";
 import {
@@ -412,14 +412,18 @@ export async function submitScorecardOptIn(
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "")
       .slice(0, 60) || "parish";
-  const pdfUrl = `${proto}://${host}/api/scorecard/report/Parish-Social-Media-Scorecard-${pdfName}.pdf?${createReportQuery({
+  const reportQuery = createReportQuery({
     a: answers,
     n: name,
     o: organization,
     r: role,
     t: Date.now(),
     l: letter,
-  })}`;
+  });
+  // Permanent link, for anything a person clicks.
+  const pdfUrl = `${proto}://${host}/api/scorecard/report/Parish-Social-Media-Scorecard-${pdfName}.pdf?${reportQuery}`;
+  // Short link for the Zap's attachment (Zapier won't download a URL this long).
+  const attachUrl = `${proto}://${host}/api/scorecard/report/Parish-Social-Media-Scorecard-${pdfName}-${createShortReportCode(reportQuery)}.pdf`;
 
   const countLabel = (c: FollowerCount) =>
     typeof c === "number" ? String(c) : c === "none" ? "No account" : "Not sure";
@@ -468,7 +472,10 @@ export async function submitScorecardOptIn(
       report.categories.map((c) => [`score_${c.id}`, `${c.points}/${c.max}`]),
     ),
     ...answerFields,
-    reportPdfUrl: pdfUrl,
+    // The Zap attaches this one (short, so Zapier downloads it as a file).
+    reportPdfUrl: attachUrl,
+    // Permanent link, same PDF (also in the cover email's "open it here").
+    reportPdfLink: pdfUrl,
     reportPdfFilename: `Parish Social Media Scorecard - ${doc.parish}.pdf`,
     emailSubject: `Your Parish Social Media Scorecard: ${doc.parish}`,
     emailHtml: coverEmailHtml(doc, pdfUrl, letterHi, letter.cover),

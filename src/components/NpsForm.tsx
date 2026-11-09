@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { submitNps, type NpsState } from "@/app/actions";
 import { buttonClass } from "@/components/buttonStyles";
 
@@ -11,6 +11,15 @@ export default function NpsForm({ parish }: { parish: string }) {
   const [state, formAction, pending] = useActionState(submitNps, initialState);
   const [score, setScore] = useState<number | null>(null);
 
+  // After a thank-you pause, send them to the homepage.
+  useEffect(() => {
+    if (state.status !== "success") return;
+    const timer = setTimeout(() => {
+      window.location.href = "/";
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [state.status]);
+
   if (state.status === "success") {
     return (
       <div className="text-center">
@@ -18,7 +27,8 @@ export default function NpsForm({ parish }: { parish: string }) {
           Thank you!
         </h1>
         <p className="mx-auto mt-4 max-w-md text-pretty text-base leading-relaxed text-navy/70 sm:text-lg">
-          Your answer helps us serve your parish&nbsp;better.
+          You can close this page now. Otherwise, we&rsquo;ll take you to our
+          homepage in a few&nbsp;seconds.
         </p>
       </div>
     );

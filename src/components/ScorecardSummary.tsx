@@ -57,7 +57,7 @@ export default function ScorecardSummary() {
       });
       // Only our own report links, never an arbitrary URL from storage.
       const pdfUrl =
-        typeof stored.pdfUrl === "string" && /^https?:\/\/[^/]+\/api\/scorecard\/report\?/.test(stored.pdfUrl)
+        typeof stored.pdfUrl === "string" && /^https?:\/\/[^/]+\/api\/scorecard\/report(\/[\w.-]+\.pdf)?\?/.test(stored.pdfUrl)
           ? stored.pdfUrl
           : null;
       return {

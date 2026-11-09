@@ -405,7 +405,14 @@ export async function submitScorecardOptIn(
   const headersList = await headers();
   const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "parishmediacompany.com";
   const proto = headersList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  const pdfUrl = `${proto}://${host}/api/scorecard/report?${createReportQuery({
+  // A real ".pdf" filename in the path so Zapier treats it as a PDF file.
+  const pdfName =
+    (organization || "parish")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 60) || "parish";
+  const pdfUrl = `${proto}://${host}/api/scorecard/report/Parish-Social-Media-Scorecard-${pdfName}.pdf?${createReportQuery({
     a: answers,
     n: name,
     o: organization,

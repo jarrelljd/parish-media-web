@@ -358,7 +358,7 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
           </Text>
         </View>
 
-        <Text style={[s.p, { fontFamily: "Fraunces", fontSize: 13, color: navy, marginBottom: 10 }]}>{greeting}</Text>
+        <Text style={s.p}>{greeting}</Text>
         {letter.body.map((para, i) => (
           <Text key={i} style={s.p} orphans={2} widows={2}>
             <Rich text={para} />

@@ -164,7 +164,8 @@ export function fixedClosing(letter: Pick<ScorecardLetter, "res">, parish: strin
   return {
     resourcesIntro: `If you’d like to do this yourself, I picked out ${one ? "a free video" : "a few free videos"} from our Parish House of Studies for where ${where} is right now:`,
     rest: [
-    "You can absolutely do all of this in-house. But let’s be honest: most parish teams aren’t going to have someone learn video editing, Meta ads, tracking, and same-day follow-up, and then keep it going every week. Not because your team doesn’t care, but because they’re already busy serving the parish. Projects like this get pushed aside by more urgent responsibilities.",
+    "Fixing these takes a handful of skills: editing video, running targeted Facebook and Instagram ads, tracking who responds to them, and setting up the automatic follow-up that makes sure every family hears back. You can absolutely learn all of this in-house.",
+    "But let’s be honest: most parish teams aren’t going to have someone learn all of that and then keep it going every week. Not because your team doesn’t care, but because they’re already busy serving the parish. Projects like this get pushed aside by more urgent responsibilities.",
     "So you have two choices: keep going as you are, or have someone build and run the system for you.",
     `If it’s the second, that’s exactly what we do. We’d take the homily clips, the ads, and the follow-up system off your team’s plate. The first step is a free 30-minute Parish Growth Assessment, where we’ll go over this letter together and map out a game plan for ${parish}. It’s yours to keep whether we work together or not.${
       isPastor ? "" : " We do ask that your pastor join the call."

@@ -543,3 +543,67 @@ export async function submitScorecardOptIn(
 
   return { status: "success", eventId, pdfUrl };
 }
+
+export type NpsState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+// Quick "how likely are you to recommend us" survey at /nps. Every response
+// emails Joe; if ZAPIER_WEBHOOK_NPS is set, it's also sent to that Zap
+// (e.g. to add a row to a Google Sheet). Not a lead, so no Meta tracking.
+export async function submitNps(
+  _prevState: NpsState,
+  formData: FormData,
+): Promise<NpsState> {
+  const score = Number(formData.get("score"));
+  const reason = String(formData.get("reason") ?? "").trim().slice(0, 2000);
+  const parish = String(formData.get("parish") ?? "").trim().slice(0, 200);
+
+  if (!Number.isInteger(score) || score < 0 || score > 10) {
+    return { status: "error", message: "Please pick a number from 0 to 10." };
+  }
+
+  const category = score >= 9 ? "Promoter" : score >= 7 ? "Passive" : "Detractor";
+  const submittedAt = new Date().toISOString();
+
+  const [mail, zapier] = await Promise.allSettled([
+    (async () => {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const { error } = await resend.emails.send({
+        from: "Parish Media Company <onboarding@resend.dev>",
+        to: NOTIFY_EMAIL,
+        subject: `NPS: ${score}/10 (${category})${parish ? ` from ${parish}` : ""}`,
+        text: [
+          `Score: ${score}/10 (${category})`,
+          `Parish: ${parish || "(not given)"}`,
+          `Why: ${reason || "(no comment)"}`,
+          `Submitted: ${submittedAt}`,
+        ].join("\n"),
+      });
+      if (error) throw new Error(JSON.stringify(error));
+    })(),
+    process.env.ZAPIER_WEBHOOK_NPS
+      ? notifyZapier(
+          { score: String(score), category, reason, parish, submittedAt },
+          "ZAPIER_WEBHOOK_NPS",
+        )
+      : Promise.resolve(),
+  ]);
+
+  if (zapier.status === "rejected") {
+    console.error("Failed to notify Zapier webhook (nps):", zapier.reason);
+  }
+  if (mail.status === "rejected") {
+    console.error("Failed to send NPS email:", mail.reason);
+    if (zapier.status === "rejected" || !process.env.ZAPIER_WEBHOOK_NPS) {
+      return {
+        status: "error",
+        message:
+          "Something went wrong sending your answer. Please try again or email joe@parishmediacompany.com.",
+      };
+    }
+  }
+
+  return { status: "success" };
+}

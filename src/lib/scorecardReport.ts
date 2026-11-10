@@ -2,17 +2,21 @@
 // diagnosis, then the 1–3 major problems in order of how much they hold the
 // parish back, what's working, the scores, and the next step.
 //
-// Problem order (Joe's priorities):
+// Problem order (Joe's priorities, 2026-11-10):
 //   1. Outreach system: ads → Plan a Visit form → fast personal follow-up.
 //      Missing a piece = "no outreach system"; all pieces but slow or
 //      untracked follow-up = "a leak".
-//   2. No homily clips / pastor not on camera (value content).
-//   3. Inconsistent posting or a content mix missing know/like/trust posts.
+//   2. Posts that don't nurture people toward the parish: no weekly homily
+//      clip, or a feed of mostly flyers. The fix is the core four each week
+//      (homily clip, connection, social proof, flyer).
+//   3. Too few organic posts.
+// A low Facebook engagement rate is proof for 2 or 3, not its own problem
+// (see scorecardLetter.ts).
 //
 // Pure: used by the PDF route, the summary page, the quiz teaser, and the
 // lead notification. Proof points and post types live in data/scorecard.ts.
 
-import { postTypes, proof } from "@/data/scorecard";
+import { proof } from "@/data/scorecard";
 import {
   SCORECARD_BOOKING_URL,
   buildReport,
@@ -23,7 +27,7 @@ import {
 } from "@/lib/scorecard";
 
 export type ReportProblem = {
-  id: "outreach" | "leak" | "homily" | "posting";
+  id: "outreach" | "leak" | "nurture" | "frequency";
   title: string;
   saw: string[];
   why: string[];
@@ -35,6 +39,14 @@ export type ReportProblem = {
   proof?: string;
   firstStep: string;
 };
+
+// The core four: what a parish should post every week (Joe, 2026-11-10).
+export const CORE_FOUR = [
+  { label: "A homily clip", text: "gives people something for free, so they like the parish." },
+  { label: "A connection post", text: "a story about the pastor, the staff, or the parish, so people know you." },
+  { label: "A social proof post", text: "photos or video of parish life, so people see others like them already go." },
+  { label: "A flyer", text: "the ask. It works because the other three came first." },
+];
 
 export type ScorecardDoc = {
   report: ScorecardReport;
@@ -132,7 +144,7 @@ export function buildScorecardDoc(
   const mostlyFlyers = a.mainContent === "flyers";
   const infrequent = a.frequency === "rarely" || a.frequency === "weekly";
   const homilyGap = a.homilyClips !== "regularly";
-  const postingGap = infrequent || mostlyFlyers;
+  const nurtureGap = homilyGap || mostlyFlyers;
 
   const problems: ReportProblem[] = [];
 
@@ -183,61 +195,54 @@ export function buildScorecardDoc(
     });
   }
 
-  // 2. Homily clips (no clips also means the pastor isn't on camera)
-  if (homilyGap) {
+  // 2. Nurture: the posts aren't building goodwill (no weekly homily clip,
+  //    or a feed that's mostly flyers). The fix is the core four each week.
+  if (nurtureGap) {
     const noClips = a.homilyClips === "no";
     const saw = [
-      noClips
-        ? "The parish doesn’t post homily clips."
-        : "Homily clips are posted only occasionally.",
+      noClips ? "The parish doesn’t post homily clips." : a.homilyClips === "occasionally" ? "Homily clips are posted only occasionally." : "You post a homily clip every week.",
     ];
-    problems.push({
-      id: "homily",
-      title: noClips
-        ? `${isPastor ? "You’re not" : "Your pastor isn’t"} on camera, and there are no homily clips`
-        : "Homily clips aren’t a weekly habit yet",
-      saw,
-      why: [
-        "Homily clips are what people expect to see from their parish, and they’re the strongest content a parish has. Each clip gives something of value for free. That builds goodwill, and goodwill is what makes people say yes later, when you invite them to Mass or ask them to volunteer or give." +
-          (mostlyFlyers ? " Right now most of your feed is flyers, and flyers only ask. They never give." : ""),
-      ],
-      proof: proof.stJoseph,
-      firstStep:
-        noClips
-            ? "Start filming the homily every Sunday, even on a phone and tripod. If no one on staff can edit video, hire a clipper. Turning homilies into short clips every week is one of the things we handle for parishes."
-            : "Make it weekly: film every Sunday homily and post at least one clip a week. If editing is the bottleneck, hire a clipper. Turning homilies into short clips every week is one of the things we handle for parishes.",
-    });
-  }
-
-  // 3. Posting: a feed of flyers, or too few posts
-  if (postingGap) {
-    const saw = [frequencyLine(a)];
     if (mostlyFlyers) saw.push("Most of what you post is graphics announcing events, Mass times, and parish updates.");
     if (a.growth === "flat") saw.push("Your follower count has been flat for a year.");
     if (a.growth === "shrinking") saw.push("Your follower count is shrinking.");
     problems.push({
-      id: "posting",
-      title: mostlyFlyers ? "Your feed reads like a page of ads" : "Posting isn\u2019t consistent enough",
+      id: "nurture",
+      title: mostlyFlyers
+        ? "Your feed reads like a page of ads"
+        : noClips
+          ? `${isPastor ? "You’re not" : "Your pastor isn’t"} on camera, and there are no homily clips`
+          : "Homily clips aren’t a weekly habit yet",
       saw,
-      why: mostlyFlyers
-        ? [
-            "Every flyer is an ask: come to this, sign up for that, here are the Mass times. A feed made mostly of asks is a page of ads, and people learn to scroll right past it. It builds no goodwill, so when you do need people to respond, they don\u2019t. A healthy parish feed has four kinds of posts, and the asks should be the smallest share:",
-          ]
-        : [
-            "Regular posting has one job: keep the parish on people\u2019s minds and build goodwill, so that when you do ask, people respond. People respond to those they know, like, and trust. A healthy parish feed has four kinds of posts:",
-          ],
-      postTypes: postTypes.map((t) => ({
-        label: t.label,
-        text: `${t.purpose}: ${t.examples}.`,
-        note: t.value === a.mainContent ? "This is most of your feed." : undefined,
-        bad: t.value === a.mainContent && mostlyFlyers,
-      })),
-      // St. Joseph's story belongs with homily clips; only repeat it here
-      // when the homily problem isn't in the report.
-      proof: homilyGap ? undefined : proof.stJoseph,
-      firstStep: mostlyFlyers
-        ? "Flip the ratio. Make most of your posts helpful videos, like homily clips or short advice from the pastor, and keep flyers to one or two a week. Aim for 3\u20134 posts a week in all."
-        : "Aim for 3\u20134 posts a week, with at least one homily clip.",
+      why: [
+        (mostlyFlyers
+          ? "Every flyer is an ask: come to this, sign up for that, here are the Mass times. A feed made mostly of asks is a page of ads, and people learn to scroll right past it. "
+          : "") +
+          "Posts have one job: build enough goodwill that when you ask, people say yes. Homily clips give people something for free, stories about the pastor and staff help them know you, and photos of parish life show them people like them already go. That’s what moves people from the screen into the pews. The core four, every week:",
+      ],
+      postTypes: CORE_FOUR,
+      proof: proof.stJoseph,
+      firstStep:
+        `Post the core four every week: one homily clip, one connection post, one social proof post, and one flyer. ${
+          noClips ? "Start filming the homily every Sunday, even on a phone and tripod." : a.homilyClips === "occasionally" ? "Film every Sunday homily so a clip goes up every week." : ""
+        } If no one on staff can edit video, hire a clipper. Turning homilies into short clips every week is one of the things we handle for parishes.`.replace(/  +/g, " "),
+    });
+  }
+
+  // 3. Too few organic posts
+  if (infrequent) {
+    const saw = [frequencyLine(a)];
+    if (!nurtureGap && a.growth === "flat") saw.push("Your follower count has been flat for a year.");
+    if (!nurtureGap && a.growth === "shrinking") saw.push("Your follower count is shrinking.");
+    problems.push({
+      id: "frequency",
+      title: "Too few posts to stay on people’s minds",
+      saw,
+      why: [
+        "Regular posting keeps the parish on people’s minds and builds goodwill, so that when you do ask, people respond. A post or two a week isn’t enough for that. The standard is the core four, every week:",
+      ],
+      postTypes: CORE_FOUR,
+      proof: nurtureGap ? undefined : proof.stJoseph,
+      firstStep: "Post at least four times a week, one of each of the core four: a homily clip, a connection post, a social proof post, and a flyer.",
     });
   }
 
@@ -266,7 +271,7 @@ export function buildScorecardDoc(
           : "But when someone raises their hand, it can take too long for the parish to reach back, and that’s where new families slip away."
       }`,
     };
-  } else if (homilyGap || postingGap) {
+  } else if (nurtureGap || infrequent) {
     diagnosis = {
       lead: `${parish} has an outreach system in place. The biggest gap now is your content.`,
       body: "Ads can invite people, but your posts are what make them want to come. Right now your feed isn’t building the goodwill that makes people say yes when you ask.",

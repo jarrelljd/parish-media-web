@@ -78,7 +78,10 @@ export function letterGreeting(name: string, role: string): string {
 // only live ones count ("Coming Soon" items are skipped), so new videos are
 // picked up automatically as they go live in src/data/vault.ts.
 export type ResourceNeed =
-  | ReportProblem["id"]
+  | "outreach"
+  | "leak"
+  | "homily" // no weekly homily clip
+  | "coreFour" // posts don't follow the core four, or few people respond
   | "flyers" // feed is mostly flyers
   | "infrequent" // too few posts
   | "flyerCta" // flyers without a clear next step
@@ -92,7 +95,7 @@ const RESOURCES: Record<ResourceNeed, [slug: string, why: string][]> = {
     ["meta-ads-fundamentals", "the basics of running Facebook and Instagram ads for a parish"],
   ],
   leak: [["meta-ads-mass", "how the Plan a Visit ad, the form, and the follow-up call fit together"]],
-  posting: [["core-four-overview", "the four kinds of posts every parish should be making each week"]],
+  coreFour: [["core-four-overview", "the core four: the four posts every parish should be making each week"]],
   homily: [["core-four-homily-clips", "how to film the Sunday homily and turn it into short clips"]],
   flyers: [
     ["core-four-overview", "the four kinds of posts and how to balance them so the feed gives more than it asks"],
@@ -148,9 +151,60 @@ export function resourceLink(r: LetterResource) {
 
 // Needs from the problems the rules picked, in their order.
 function problemNeeds(problems: ReportProblem[], a: ScorecardAnswers): ResourceNeed[] {
-  return problems.flatMap((p): ResourceNeed[] =>
-    p.id === "posting" ? [a.mainContent === "flyers" ? "flyers" : "infrequent"] : [p.id],
-  );
+  return problems.flatMap((p): ResourceNeed[] => {
+    if (p.id === "nurture")
+      return [...(a.mainContent === "flyers" ? ["flyers" as const] : []), ...(a.homilyClips !== "regularly" ? ["homily" as const] : [])];
+    if (p.id === "frequency") return ["infrequent"];
+    return [p.id];
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Facebook engagement rate (Joe, 2026-11-10)
+// ---------------------------------------------------------------------------
+// A typical post's likes + comments as a share of Facebook followers. Facebook
+// only: parish Instagram accounts behave differently. Bigger pages naturally
+// get a smaller share, so the cutoffs relax as the page grows. It's proof for
+// the nurture or posting problem, never a problem of its own (unless nothing
+// else explains it). The letter never calls a page "dead".
+
+export type EngagementBand = "low" | "underperforming" | "fine" | "strong";
+
+export function engagementBand(followers: number, ratePct: number): EngagementBand {
+  const [low, ok] = followers < 1000 ? [1, 2] : followers < 5000 ? [0.75, 1.5] : [0.5, 1];
+  if (ratePct > 5) return "strong";
+  if (ratePct >= ok) return "fine";
+  if (ratePct >= low) return "underperforming";
+  return "low";
+}
+
+export function facebookEngagement(profile: ParishProfile) {
+  const followers = profile.facebook?.followers;
+  const posts = profile.posts.filter((p) => p.platform === "facebook");
+  if (!followers || followers < 50 || posts.length < 4) return null;
+  const sorted = posts.map((p) => p.likes + p.comments).sort((x, y) => x - y);
+  const typical = sorted[Math.floor(sorted.length / 2)]; // median, so one big post doesn't hide a quiet feed
+  const ratePct = (typical / followers) * 100;
+  const band = engagementBand(followers, ratePct);
+  const per100 =
+    ratePct < 1
+      ? "fewer than 1 in 100"
+      : band === "low" || band === "underperforming"
+        ? `fewer than ${Math.floor(ratePct) + 1} in 100`
+        : `at least ${Math.floor(ratePct)} in 100`;
+  return {
+    facebookFollowers: followers,
+    postsCounted: posts.length,
+    typicalLikesAndCommentsPerPost: typical,
+    plainLine: `About ${followers.toLocaleString("en-US")} people follow the Facebook page, and a typical post gets ${typical} likes and comments. That's ${per100} followers responding.`,
+    band,
+    meaning: {
+      low: "Most of the people following the page aren't seeing the posts: when few people respond, Facebook shows a post to fewer people. Say it plainly and kindly; never call the page dead.",
+      underperforming: "The page is underperforming: people follow it, but few respond, so Facebook shows the posts to fewer of them.",
+      fine: "Not a cause for concern. Don't raise it as a problem; you may leave it out.",
+      strong: "Followers respond well. Worth a sentence in what's working.",
+    }[band],
+  };
 }
 
 export const BOOKING_DISPLAY = "parishmediacompany.com/parish";
@@ -187,6 +241,9 @@ const TYPE_LABEL: Record<PostType, string> = {
   flyer: "flyer or announcement",
   filler: "filler (livestream, quote, or generic graphic)",
 };
+
+const CORE_FOUR_STANDARD =
+  "Every week: one homily clip (gives people something for free, so they like the parish), one connection post (a story about the pastor, the staff, or the parish, so people know you), one social proof post (photos or video of parish life, so people see others like them already go, so they trust you), and one flyer (the ask, which works because the other three came first).";
 
 const DAY = 86_400_000;
 const longDate = (iso: string) =>
@@ -246,8 +303,15 @@ export function buildLetterFacts(
     whoRunsSocialMedia: choiceLabel("team", a.team),
   };
 
-  // The problems the rules picked, in the order the letter must use.
-  const problems = doc.problems.map((p) => ({ id: p.id, title: p.title, whatWeSaw: p.saw, firstStep: p.firstStep }));
+  // The problems the rules picked, in the order the letter must use. The
+  // letter covers the first two; anything past that is a one-line mention.
+  const problems: { id: string; title: string; whatWeSaw: string[]; firstStep: string }[] = doc.problems.map((p) => ({
+    id: p.id,
+    title: p.title,
+    whatWeSaw: p.saw,
+    firstStep: p.firstStep,
+  }));
+  const smallerThings: string[] = [];
 
   let pages: Record<string, unknown> | null = null;
   const observations: string[] = [];
@@ -256,6 +320,11 @@ export function buildLetterFacts(
   const needs: ResourceNeed[] = problemNeeds(doc.problems, a);
   const problemCount = needs.length;
   let evidence: LetterEvidence | undefined;
+  let engagement: (NonNullable<ReturnType<typeof facebookEngagement>> & { provesProblem: string | null }) | null = null;
+  let coreFour: Record<string, unknown> = {
+    standard: CORE_FOUR_STANDARD,
+    theirPosts: "from their answers only (see quizAnswers.whatTheyMostlyPost, homilyClips, howOftenTheyPost)",
+  };
 
   if (profile && confirmed) {
     const feed = mainFeed(profile, nowMs);
@@ -280,6 +349,25 @@ export function buildLetterFacts(
         ...(p.type === "flyer" && p.hasClearNextStep !== null ? { flyerHasClearNextStep: p.hasClearNextStep } : {}),
       })),
     };
+
+    // The core four against their last 9 posts.
+    if (last9.length >= 4) {
+      const n = (...t: PostType[]) => last9.filter((p) => p.type && t.includes(p.type)).length;
+      const oldest = last9[last9.length - 1];
+      coreFour = {
+        standard: CORE_FOUR_STANDARD,
+        theirPosts: {
+          lastPostsCounted: last9.length,
+          backTo: longDate(oldest.date),
+          weeksCovered: Math.max(1, Math.round(since(oldest) / 7)),
+          homilyClipsOrTeachingVideos: n("homily_clip", "value_video"),
+          connectionPosts: n("connection"),
+          socialProofPosts: n("activity"),
+          flyers: n("flyer"),
+          other: last9.length - n("homily_clip", "value_video", "connection", "activity", "flyer"),
+        },
+      };
+    }
 
     // Rulebook checks we can see on their pages.
     const flyers9 = last9.filter((p) => p.type === "flyer").length;
@@ -308,10 +396,36 @@ export function buildLetterFacts(
     const top = Object.entries(stats.counts).sort((x, y) => y[1] - x[1])[0];
     if (top && top[0] === "filler" && top[1] > 0)
       observations.push("Filler (livestreams, quotes, generic graphics) is the most common kind of post.");
-    if (stats.flyersWithoutNextStep > 0) needs.splice(problemCount, 0, "flyerCta");
-    if (stats.flyersWithoutNextStep > 0)
-      observations.push(`${stats.flyersWithoutNextStep} recent flyers don't tell people exactly how to respond (no link, sign-up, or number).`);
-    if (profile.facebook && !profile.instagram) observations.push("We couldn't find an Instagram account for the parish.");
+    // Counted over the same last 9 posts as the core four, so the letter
+    // can't say "0 flyers" and "2 flyers without a next step" side by side.
+    const noCta = last9.filter((p) => p.type === "flyer" && p.hasClearNextStep === false).length;
+    if (noCta > 0) needs.splice(problemCount, 0, "flyerCta");
+    if (noCta > 0)
+      smallerThings.push(
+        `${noCta} of the last ${last9.length} posts ${noCta === 1 ? "is a flyer that doesn't" : "are flyers that don't"} tell people exactly how to respond (no link, sign-up, or number).`,
+      );
+    if (profile.facebook && !profile.instagram) smallerThings.push("We couldn't find an Instagram account for the parish.");
+
+    // Facebook engagement rate: proof for the nurture or posting problem.
+    // When neither is in the letter and few people respond, it becomes the
+    // next problem itself (right after outreach).
+    const eng = facebookEngagement(profile);
+    if (eng) {
+      const weak = eng.band === "low" || eng.band === "underperforming";
+      const host = problems.find((p) => p.id === "nurture" || p.id === "frequency");
+      engagement = { ...eng, provesProblem: weak && host ? host.id : null };
+      if (weak && !host) {
+        const at = problems[0]?.id === "outreach" || problems[0]?.id === "leak" ? 1 : 0;
+        problems.splice(at, 0, {
+          id: "quietFeed",
+          title: "Few of the people following the Facebook page respond to what's posted",
+          whatWeSaw: [eng.plainLine],
+          firstStep: "Post the core four every week, and make the homily clip the strongest post of the week.",
+        });
+        engagement.provesProblem = "quietFeed";
+        needs.splice(at, 0, "coreFour");
+      }
+    }
     const best = [...sorted].sort((x, y) => y.likes + y.comments - (x.likes + x.comments))[0];
     if (best && best.likes + best.comments > 0)
       observations.push(
@@ -357,7 +471,10 @@ export function buildLetterFacts(
         tracksInquiries: o.tracked,
       },
       diagnosis: `${doc.diagnosis.lead} ${doc.diagnosis.body}`,
-      problemsInOrder: problems,
+      problemsInOrder: problems.slice(0, 2),
+      smallerThings: [...problems.slice(2).map((p) => p.title), ...smallerThings].slice(0, 2),
+      facebookEngagement: engagement,
+      coreFour,
       strengths: doc.strengths,
       quizAnswers: quiz,
       weLookedUpTheirPages: confirmed,
@@ -387,29 +504,36 @@ const SYSTEM = `You write the middle of a short personal letter from Joe Jarrell
 The reader is usually the pastor: busy, not technical, careful with parish money, and moved by honesty and trust, not marketing. The letter must read like Joe sat down and wrote it to THIS parish, not like a generated report. Every parish should get a noticeably different letter: use their own posts, dates, numbers, city, and answers.
 
 WHAT YOU WRITE
-- "body": 5 to 7 short paragraphs, 280 to 420 words in all. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
+- "body": 5 to 8 short paragraphs, 300 to 450 words in all. Stay under 450: keep each paragraph to 2 to 4 sentences, give the biggest problem the most room, and keep the core four and smaller-things paragraphs to 2 or 3 sentences each. Don't repeat a point you already made. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
 BODY STRUCTURE (in this order). The letter is mostly a diagnosis: where the parish stands and why. Advice waits for the last paragraph.
 1. The introduction (one paragraph, 3 to 4 sentences). Thank them for taking the Parish Social Media Scorecard. Then tell them plainly what this letter is and how we put it together:
    - If weLookedUpTheirPages is true: we read through their answers, and we also went ahead and looked up the parish's own pages (name exactly the ones in pagesWeLookedAt, e.g. "your website, Facebook page, and Instagram") and went through their recent posts. Say this in plain words like "looked up" or "went through"; never "scraped", "analyzed", "audited", or "data".
-   - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library; work only from their answers ("you mentioned", "from your answers").
+   - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library; work only from their answers ("you mentioned", "from your answers"). Never say you went only by their answers or didn't look anywhere else ("only from what you told us", "not from anything outside your answers"); just say you read through their answers.
    - End the intro simply, the way Joe would in an email, e.g. "Here's what I found." or "Here's where I think things stand." Don't describe the letter's structure.
    Don't guess at how the reader feels or how hard they're working, and don't add a line about how or why you're writing the letter ("I'm writing this as plainly as I can", "from one Catholic to another", "with your pastor in mind").
-2. What's working (one short paragraph): one or two specific good things (from strengths, or their best-received post, with its date and numbers).
+2. What's working (one short paragraph): one or two specific good things (from strengths, or their best-received post, with its date and numbers, or facebookEngagement when its band is "strong").
 3. The biggest problem (one or two paragraphs): problemsInOrder[0], exactly as the diagnosis states it. Our rules already decided it; don't swap in a different problem, even if another one looks bigger to you. Say it in your own words (don't paste the title). Show what we saw, with their own specifics (their posts, dates, counts, or answers). Then explain why it matters in plain words, tied to the parish's goals (new families, Mass attendance, young people, vocations). Add one approved proof point that fits.
-4. The next problem (one paragraph): problemsInOrder[1] if there is one, otherwise the most important observation from their pages. Same approach: what we saw, then why it matters. You may fold in one more smaller observation in a sentence.
-5. What I'd do (the LAST paragraph, and the only place for advice): start with "Here's what I'd do" or similar, then give the specific steps in the order you'd take them, as flowing sentences (no list). Concrete and small: who does what, how often. You may tie timing to an upcomingChurchDates entry (e.g. having it running before Christmas), but never claim anything about attendance at those times.
-Paragraphs 1 to 4 diagnose only: no "I'd recommend", "you should", or "start by" before the last paragraph.
-If problemsInOrder is empty, the parish is doing well: diagnose what's working and why, and in the last paragraph suggest one way to go further (talking-head reels from the pastor, or adding YouTube Shorts), never as a problem.
+4. The next problem (one paragraph): problemsInOrder[1] if there is one. Same approach: what we saw, then why it matters.
+5. The core four (one short paragraph), unless a "nurture" problem is in problemsInOrder: then explain the core four inside that problem's paragraph instead and skip this one. Name the weekly standard from coreFour.standard (one homily clip, one connection post, one social proof post, one flyer), why it works (the first three give, so people like, know, and trust the parish; then they say yes to the flyer, and that's what moves them from the screen into the pews), and how their posts compare, using coreFour.theirPosts (counts and the date they go back to) or, if that's text, their answers. Diagnose only; don't tell them what to do yet. If their posts already match the standard, say so in a sentence or two and move on.
+6. A couple of smaller things (optional, one or two sentences in all): the items in smallerThings, mentioned briefly so they know we saw them. It can be its own short paragraph or the end of paragraph 4. Don't explain them at length.
+7. What I'd do (the LAST paragraph, and the only place for advice): start with "Here's what I'd do" or similar, then give the specific steps in the order you'd take them, as flowing sentences (no list). Concrete and small: who does what, how often. Posting advice is always the core four each week. You may tie timing to an upcomingChurchDates entry (e.g. having it running before Christmas), but never claim anything about attendance at those times.
+Paragraphs 1 to 6 diagnose only: no "I'd recommend", "you should", or "start by" before the last paragraph.
+If problemsInOrder is empty, the parish is doing well: diagnose what's working and why, still include the core four paragraph, and in the last paragraph suggest one way to go further (talking-head reels from the pastor, or adding YouTube Shorts), never as a problem.
+
+HOW MANY PEOPLE RESPOND ON FACEBOOK (facebookEngagement, when present)
+- It compares a typical post's likes and comments with how many people follow the Facebook page. Use the numbers in plainLine (you may reword it, keep the numbers exact). Never say "engagement", "engagement rate", or a percentage; say it in people, like "fewer than 1 in 100 people who follow the page like or comment on a typical post."
+- Follow its "meaning". When provesProblem names a problem, use it as the hard proof inside that problem's paragraph: it's the result of the posts not nurturing people, too few posts, or both. Never call the page dead. The one idea to get across (in one or two plain sentences): when few people respond to a post, Facebook shows it to fewer people, so most of the people who follow the page, parishioners included, never even see it. Don't add vague lines like "likes don't tell the whole story".
+- When band is "fine", leave it out or mention it lightly. Only Facebook: never apply it to Instagram.
 
 THE PLAIN "WHY" FOR EACH PROBLEM (Joe's ideas; use the idea, in your own words, never the label)
 - No ads / no Plan a Visit step: posts mostly reach people already in the pews. Ads put a clear invitation in front of families nearby who aren't coming yet. An outreach system is three parts: an ad inviting families nearby, a simple form inside Facebook or Instagram (name and phone number, so saying yes takes seconds), and a personal call the same day.
 - Slow follow-up (a "leak"): people are most ready right after they raise their hand. A call the same day feels like a welcome; a call a week later feels like an afterthought.
-- No homily clips: each clip gives people something for free. That builds goodwill, and goodwill is what makes people say yes when you ask. Fix: film every Sunday homily, even on a phone, and post one 30 to 60 second clip a week.
-- Feed mostly flyers: every flyer is an ask. Ask too often without giving and people tune you out, like a second collection basket. Keep flyers to one or two a week; fill the rest with homily clips, photos from parish life, and stories.
-- Too few posts: aim for 3 to 4 posts a week, including a homily clip.
-- No photos from parish life: when people see others at parish events, they think "people like me go to this."
+- Posts that don't nurture people (the "nurture" problem: no weekly homily clip, a feed of mostly flyers, or random posts): posts have one job, to build enough goodwill that people say yes when the parish asks. Each homily clip gives people something for free; that's the biggest part of it. Ask too often without giving and people tune you out, like a second collection basket. Fix: the core four every week. Film every Sunday homily, even on a phone, and post one 30 to 60 second clip a week.
+- Too few posts (the "frequency" problem): a post or two a week isn't enough to stay on people's minds. Fix: at least four a week, one of each of the core four.
+- Few followers responding (the "quietFeed" problem): when few people respond to a post, Facebook shows it to fewer people, so most followers, parishioners included, never see it. Posts that give people something (homily clips, stories, photos of parish life) are the ones people respond to. Fix: the core four every week.
+- No photos from parish life (social proof): when people see others at parish events, they think "people like me go to this."
 - No story posts: people do things for people they know. Stories about Father and the staff turn the parish from an institution into people.
 - Flyers without a clear next step: if people have to figure out what to do next, most won't do anything. One clear action per flyer.
 - Filler: livestreams and saint quotes rarely get seen. Each post should give something or ask for something.
@@ -483,8 +607,15 @@ export function checkLetter(
   const problems: string[] = [];
   const text = [...out.body, out.cover_line].join("\n");
   const words = out.body.join(" ").split(/\s+/).filter(Boolean).length;
-  if (out.body.length < 4 || out.body.length > 8) problems.push(`Use 5 to 7 paragraphs (you wrote ${out.body.length}).`);
-  if (words < 240 || words > 480) problems.push(`The body should be 280 to 420 words (you wrote ${words}).`);
+  if (out.body.length < 4 || out.body.length > 9) problems.push(`Use 5 to 8 paragraphs (you wrote ${out.body.length}).`);
+  if (words < 260 || words > 560) problems.push(`The body should be 300 to 450 words (you wrote ${words}).`);
+  // Percentages only where an approved proof point uses them (e.g. "3% to 30%").
+  const proofPct = new Set(JSON.stringify(facts.approvedProof).match(/\d+(?:\.\d+)?%/g) ?? []);
+  const pct = (out.body.join(" ").match(/\d+(?:\.\d+)?\s?%/g) ?? []).map((x) => x.replace(/\s/g, ""));
+  if (pct.some((x) => !proofPct.has(x)) || /\bper ?cent\b/i.test(out.body.join(" ")))
+    problems.push("Don't use percentages; say it in people (e.g. fewer than 1 in 100 followers).");
+  if (/whole story|likes (alone|by themselves)/i.test(text)) problems.push("Skip vague lines like 'likes don't tell the whole story'. Say plainly that Facebook shows low-response posts to fewer people, so most followers never see them.");
+  if (/\bdead\b/i.test(text)) problems.push('Never call the page "dead".');
   const early = out.body.slice(0, -1).join(" ");
   const advice = early.match(/\b(I['’]d recommend|you should|I['’]d start|start by|my advice)\b/i);
   if (advice) problems.push(`Keep advice to the last paragraph only ("${advice[0]}" appears earlier). The earlier paragraphs diagnose.`);
@@ -518,6 +649,8 @@ export function checkLetter(
     problems.push("Don't mention the score or the report in the body.");
   if (/\b(hi|hello) (father|fr\.)|god bless|book a (free )?(call|time|assessment)/i.test(out.body.join(" ")))
     problems.push("Don't write a greeting, sign-off, or booking invitation; those are added for you.");
+  if (/\b(only|just) (from|on|by) (what you|your answers)|\b(anything|nothing) outside|\bbased on what you (told|shared)[^.]*, not\b/i.test(text))
+    problems.push("Don't say you went only by their answers or didn't look elsewhere. Just say you read through their answers.");
   if (!facts.weLookedUpTheirPages && LOOKUP_CLAIMS.test(text))
     problems.push("We did not look up their pages. Don't say or imply that we looked at their pages, posts, website, or the Ad Library.");
   return problems;
@@ -553,6 +686,9 @@ export async function writeScorecardLetter(
   lead: { role: string },
   key = process.env.OPENAI_API_KEY,
   now = new Date(),
+  // Renders the letter and returns how many pages it takes (not counting the
+  // "What we found" page). The letter must fit on 2.
+  letterPages?: (l: ScorecardLetter) => Promise<number>,
 ): Promise<ScorecardLetter> {
   const { facts, evidence, needs } = buildLetterFacts(doc, a, profile, lead, now);
   const res = pickResources(needs);
@@ -561,12 +697,12 @@ export async function writeScorecardLetter(
       { role: "system", content: SYSTEM },
       { role: "user", content: `Facts for this parish (JSON):\n${JSON.stringify(facts, null, 1)}` },
     ];
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (let attempt = 0; attempt < 4; attempt++) {
       try {
         const out = await callOpenAI(messages, key);
-        const issues = checkLetter(out, facts);
+        let issues = checkLetter(out, facts);
         if (!issues.length) {
-          return {
+          const letter: ScorecardLetter = {
             v: 1,
             src: "ai",
             body: out.body.map(tidyText).filter(Boolean),
@@ -574,6 +710,12 @@ export async function writeScorecardLetter(
             res,
             ev: evidence,
           };
+          const pages = letterPages ? await letterPages(letter).catch(() => 2) : 2;
+          if (pages <= 2) return letter;
+          const words = letter.body.join(" ").split(/\s+/).length;
+          issues = [
+            `The letter runs onto a third page. Cut at least 100 words, to about ${Math.max(300, words - 110)} (you wrote ${words}): shorten the smaller paragraphs and drop anything repeated, but keep every section.`,
+          ];
         }
         console.warn("Scorecard letter failed checks:", issues);
         messages.push(
@@ -586,7 +728,9 @@ export async function writeScorecardLetter(
       }
     }
   }
-  return templateLetter(doc, facts.weLookedUpTheirPages, res, evidence);
+  const eng = facts.facebookEngagement;
+  const weak = eng && (eng.band === "low" || eng.band === "underperforming");
+  return templateLetter(doc, facts.weLookedUpTheirPages, res, evidence, weak ? eng.plainLine : undefined);
 }
 
 // ---------------------------------------------------------------------------
@@ -598,10 +742,13 @@ const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 export function templateLetter(
   doc: ScorecardDoc,
   lookedUp = false,
-  res = pickResources(doc.problems.map((p) => (p.id === "posting" ? "infrequent" : p.id))),
+  res = pickResources(doc.problems.map((p) => (p.id === "nurture" ? "homily" : p.id === "frequency" ? "infrequent" : p.id))),
   evidence?: LetterEvidence,
+  engagementLine?: string, // Facebook followers vs. responses, when few respond
 ): ScorecardLetter {
   const [first, second] = doc.problems;
+  // The rules' "why" text ends by introducing a list ("The core four, every week:"); the template states it in a sentence instead.
+  const why = (p: ReportProblem) => (p.why[0] ?? "").replace(/\s*[^.]*:\s*$/, "");
   const body = [
     lookedUp
       ? "Thanks for taking the Parish Social Media Scorecard. I went through your answers, and we also went ahead and looked up the parish’s pages and recent posts. Here’s what I found."
@@ -609,12 +756,17 @@ export function templateLetter(
   ];
   if (doc.strengths[0]) body.push(`The good news first: ${lowerFirst(doc.strengths[0])}`);
   if (first) {
-    body.push(`${doc.diagnosis.lead} ${first.saw.join(" ")} ${first.why[0] ?? ""}`.trim());
+    body.push(`${doc.diagnosis.lead} ${first.saw.join(" ")} ${why(first)}`.trim());
     if (first.proof) body.push(first.proof);
-    body.push(`I’d recommend starting here. ${first.firstStep}`);
-    if (second) body.push(`After that, I’d look at one more thing: ${lowerFirst(second.title)}. ${second.firstStep}`);
   } else {
     body.push(doc.diagnosis.body);
+  }
+  body.push(
+    `${engagementLine ? `${engagementLine} When few people respond to a post, Facebook shows it to fewer people, so most of the people following the page, parishioners included, never see it. ` : ""}The standard I give every parish is the core four, every week: one homily clip, one connection post (a story about the pastor, the staff, or the parish), one social proof post (photos of parish life), and one flyer. The first three give people a reason to like, know, and trust the parish, so when the flyer asks, they say yes. That’s what moves people from the screen into the pews.`,
+  );
+  if (first) {
+    body.push(`I’d recommend starting here. ${first.firstStep}`);
+    if (second) body.push(`After that, I’d look at one more thing: ${lowerFirst(second.title)}. ${second.firstStep}`);
   }
   return {
     v: 1,

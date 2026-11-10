@@ -403,3 +403,10 @@ export async function renderScorecardPdf(input: LetterPdfInput): Promise<Buffer>
   registerFonts();
   return renderToBuffer(<LetterPdf {...input} />);
 }
+
+// How many pages the letter itself takes (everything but the last page,
+// which is always "What we found" / "Your scores"). Joe wants 2 at most.
+export async function letterPageCount(input: LetterPdfInput): Promise<number> {
+  const pdf = await renderScorecardPdf(input);
+  return (pdf.toString("latin1").match(/\/Type\s*\/Page(?![A-Za-z])/g) ?? []).length - 1;
+}

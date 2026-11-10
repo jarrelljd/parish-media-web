@@ -17,6 +17,7 @@ import { profileToText } from "@/lib/parishProfile";
 import { createReportQuery, createShortReportCode } from "@/lib/scorecardLink";
 import { letterGreeting, writeScorecardLetter } from "@/lib/scorecardLetter";
 import { buildScorecardDoc, coverEmailHtml, docToText } from "@/lib/scorecardReport";
+import { letterPageCount } from "@/lib/scorecardPdf";
 import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
@@ -399,8 +400,12 @@ export async function submitScorecardOptIn(
 
   // The personal letter (about 5 seconds). Falls back to the template
   // letter on its own if OpenAI is down, so it never blocks the lead.
-  const letter = await writeScorecardLetter(doc, answers, profile, { role });
+  // The letter must fit on two pages (plus "What we found"), so each draft is
+  // rendered once and trimmed if it runs over.
   const letterHi = letterGreeting(name, role);
+  const letter = await writeScorecardLetter(doc, answers, profile, { role }, undefined, undefined, (l) =>
+    letterPageCount({ doc, letter: l, greeting: letterHi, isPastor: role === "Pastor" }),
+  );
 
   const headersList = await headers();
   const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "parishmediacompany.com";

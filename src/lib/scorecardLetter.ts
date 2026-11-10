@@ -504,15 +504,15 @@ const SYSTEM = `You write the middle of a short personal letter from Joe Jarrell
 The reader is usually the pastor: busy, not technical, careful with parish money, and moved by honesty and trust, not marketing. The letter must read like Joe sat down and wrote it to THIS parish, not like a generated report. Every parish should get a noticeably different letter: use their own posts, dates, numbers, city, and answers.
 
 WHAT YOU WRITE
-- "body": 5 to 8 short paragraphs, 300 to 450 words in all. Stay under 450: keep each paragraph to 2 to 4 sentences, give the biggest problem the most room, and keep the core four and smaller-things paragraphs to 2 or 3 sentences each. Don't repeat a point you already made. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
+- "body": 5 to 8 short paragraphs, 300 to 420 words in all (it must fit on two printed pages). Stay under 420: keep each paragraph to 2 to 4 sentences, give the biggest problem the most room, and keep the core four and smaller-things paragraphs to 2 or 3 sentences each. Don't repeat a point you already made. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
 BODY STRUCTURE (in this order). The letter is mostly a diagnosis: where the parish stands and why. Advice waits for the last paragraph.
-1. The introduction (one paragraph, 3 to 4 sentences). Thank them for taking the Parish Social Media Scorecard. Then tell them plainly what this letter is and how we put it together:
+1. The introduction (one paragraph, exactly 3 sentences, nothing else). Thank them for taking the Parish Social Media Scorecard. Then tell them plainly what this letter is and how we put it together:
    - If weLookedUpTheirPages is true: we read through their answers, and we also went ahead and looked up the parish's own pages (name exactly the ones in pagesWeLookedAt, e.g. "your website, Facebook page, and Instagram") and went through their recent posts. Say this in plain words like "looked up" or "went through"; never "scraped", "analyzed", "audited", or "data".
    - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library; work only from their answers ("you mentioned", "from your answers"). Never say you went only by their answers or didn't look anywhere else ("only from what you told us", "not from anything outside your answers"); just say you read through their answers.
    - End the intro simply, the way Joe would in an email, e.g. "Here's what I found." or "Here's where I think things stand." Don't describe the letter's structure.
-   Don't guess at how the reader feels or how hard they're working, and don't add a line about how or why you're writing the letter ("I'm writing this as plainly as I can", "from one Catholic to another", "with your pastor in mind").
+   That's the whole intro: the thank-you, what we did, and the short closing line. No third sentence about how you approached it ("I looked at this with Seattle in mind", "I'm looking at this as simply as I can", "I'm going to be plain", "I'm glad we did, because..."). Don't guess at how the reader feels or how hard they're working.
 2. What's working (one short paragraph): one or two specific good things (from strengths, or their best-received post, with its date and numbers, or facebookEngagement when its band is "strong").
 3. The biggest problem (one or two paragraphs): problemsInOrder[0], exactly as the diagnosis states it. Our rules already decided it; don't swap in a different problem, even if another one looks bigger to you. Say it in your own words (don't paste the title). Show what we saw, with their own specifics (their posts, dates, counts, or answers). Then explain why it matters in plain words, tied to the parish's goals (new families, Mass attendance, young people, vocations). Add one approved proof point that fits.
 4. The next problem (one paragraph): problemsInOrder[1] if there is one. Same approach: what we saw, then why it matters.
@@ -560,6 +560,7 @@ EMPHASIS (the letter should be easy to skim, like a real letter someone marked u
 - Nothing else: no headings, underlines, or lists.
 
 HARD RULES
+- Never state or guess the parish's goals, hopes, plans, or worries ("your goal of reaching families", "you're hoping to grow"). They didn't tell us. Talk about goals in general terms instead ("reaching families nearby", "filling the pews").
 - Facts: use only what is in the JSON. Every number you write must appear in it exactly. Write numbers above ten as digits, with commas from 1,000 up; "one" through "ten" may be words. Never invent, round, combine, or estimate numbers.
 - Never compare the parish to other parishes ("better than most", "most parishes", "the average parish"). The only outside results allowed are the approvedProof entries.
 - Proof: only from approvedProof, at most two in the whole letter, quoted accurately.
@@ -608,7 +609,7 @@ export function checkLetter(
   const text = [...out.body, out.cover_line].join("\n");
   const words = out.body.join(" ").split(/\s+/).filter(Boolean).length;
   if (out.body.length < 4 || out.body.length > 9) problems.push(`Use 5 to 8 paragraphs (you wrote ${out.body.length}).`);
-  if (words < 260 || words > 560) problems.push(`The body should be 300 to 450 words (you wrote ${words}).`);
+  if (words < 260 || words > 560) problems.push(`The body should be 300 to 420 words (you wrote ${words}).`);
   // Percentages only where an approved proof point uses them (e.g. "3% to 30%").
   const proofPct = new Set(JSON.stringify(facts.approvedProof).match(/\d+(?:\.\d+)?%/g) ?? []);
   const pct = (out.body.join(" ").match(/\d+(?:\.\d+)?\s?%/g) ?? []).map((x) => x.replace(/\s/g, ""));
@@ -616,6 +617,15 @@ export function checkLetter(
     problems.push("Don't use percentages; say it in people (e.g. fewer than 1 in 100 followers).");
   if (/whole story|likes (alone|by themselves)/i.test(text)) problems.push("Skip vague lines like 'likes don't tell the whole story'. Say plainly that Facebook shows low-response posts to fewer people, so most followers never see them.");
   if (/\bdead\b/i.test(text)) problems.push('Never call the page "dead".');
+  // The intro is exactly: thank-you, what we did, "Here's what I found."
+  // Split on sentence ends, but not after "St." / "Fr." and the like.
+  const introSentences = (out.body[0] ?? "")
+    .split(/(?<=[.!?])(?<!\b(?:St|Sts|Ss|Fr|Mt|Msgr|Dr|Mr|Mrs|Ms|Rev|Sr|Br|Jr)\.)\s+(?=[A-Z“"])/)
+    .filter((x) => x.trim()).length;
+  if (introSentences > 3)
+    problems.push(`The intro must be exactly 3 sentences (you wrote ${introSentences}): the thank-you, what we did, and "Here's what I found." Cut the extra sentence about how you looked at it.`);
+  const goal = text.match(/\byour (goals?|hopes?|aims?|priorit(?:y|ies)|dreams?)\b|\b(?:you['’]re|you are) (?:hoping|trying|wanting|looking) to\b/i);
+  if (goal) problems.push(`"${goal[0]}": don't state the parish's goals or hopes; they didn't tell us. Speak about goals in general terms.`);
   const early = out.body.slice(0, -1).join(" ");
   const advice = early.match(/\b(I['’]d recommend|you should|I['’]d start|start by|my advice)\b/i);
   if (advice) problems.push(`Keep advice to the last paragraph only ("${advice[0]}" appears earlier). The earlier paragraphs diagnose.`);

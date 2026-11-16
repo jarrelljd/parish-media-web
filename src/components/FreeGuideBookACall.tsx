@@ -6,13 +6,13 @@ import CalendlyEmbed from "@/components/CalendlyEmbed";
 import LetterGreeting from "@/components/LetterGreeting";
 import LetterDate from "@/components/LetterDate";
 import WaxSeal from "@/components/WaxSeal";import ScrollToBookingButton from "@/components/ScrollToBookingButton";
+import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
 
 // Handwritten signature on the letter
 const signature = Mrs_Saint_Delafield({ weight: "400", subsets: ["latin"] });
 
-const CALENDLY_URL =
-  "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1d1a16&primary_color=1f3263";
+const CALENDLY_URL = GROWTH_REVIEW_CALENDLY_URL;
 
 const VSL = {
   videoId: "1233188537",

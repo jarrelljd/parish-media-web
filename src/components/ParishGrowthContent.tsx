@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
+import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import { comparison, proofFacts } from "@/data/method";
 import WhatWeDo from "./WhatWeDo";
 import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
@@ -9,8 +10,7 @@ import fbAdScreen from "../../public/images/proof/fb-ad-screen.jpg";
 import PhoneMockup from "./PhoneMockup";
 import { FacebookIcon, InstagramIcon } from "./SocialIcons";
 
-const CALENDLY_URL =
-  "https://calendly.com/parishmedia/consult?hide_gdpr_banner=1&text_color=1d1a16&primary_color=1f3263";
+const CALENDLY_URL = GROWTH_REVIEW_CALENDLY_URL;
 
 const FAQS = [
   {

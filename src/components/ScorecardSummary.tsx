@@ -1,23 +1,13 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
-import Link from "next/link";
-import { ArrowRight, FileText, Mail } from "lucide-react";
-import { useBookACallModal } from "@/components/BookACallModalProvider";
-import { buttonArrow, buttonClass } from "@/components/buttonStyles";
-import {
-  SCORECARD_RESULT_KEY,
-  ScoreHero,
-  type StoredScorecardResult,
-} from "@/components/ScorecardParts";
-import { greetingFor } from "@/lib/greeting";
-import { parseAnswers, type ScorecardReport } from "@/lib/scorecard";
-import { buildScorecardDoc, type ScorecardDoc } from "@/lib/scorecardReport";
+import { FileText } from "lucide-react";
+import CalendlyEmbed from "@/components/CalendlyEmbed";
+import { SCORECARD_RESULT_KEY, type StoredScorecardResult } from "@/components/ScorecardParts";
+import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 
 type Loaded = {
-  report: ScorecardReport;
-  doc: ScorecardDoc;
-  greeting: string;
+  name: string;
   email: string;
   pdfUrl: string | null;
 };
@@ -33,8 +23,12 @@ function readStoredResult(): string {
   }
 }
 
-// Quick summary shown after the scorecard opt-in. The full report went to
-// their email (via the Zap); this page recaps it and pushes toward a call.
+const h2 = "font-serif text-4xl font-medium leading-[1.08] text-balance sm:text-5xl";
+
+// Shown after the scorecard opt-in. The full scorecard (the letter PDF) goes
+// to their email via the Zap; this page confirms it's coming and lets them
+// book a Free Parish Growth Review right here (Calendly embedded, no extra
+// landing page). Clean and open like /parish, no boxes (Joe, 2026-11-16).
 export default function ScorecardSummary() {
   // null on the server render (storage not readable yet), "" when nothing
   // is stored or storage is blocked.
@@ -45,160 +39,90 @@ export default function ScorecardSummary() {
     if (!raw) return null;
     try {
       const stored = JSON.parse(raw) as StoredScorecardResult;
-      const answers = parseAnswers(stored.answers);
-      if (!answers) return null;
-      const population = typeof stored.population === "number" ? stored.population : null;
-      const greeting = greetingFor(String(stored.name ?? "").slice(0, 80));
-      const doc = buildScorecardDoc(answers, population, {
-        name: String(stored.name ?? "").slice(0, 120),
-        organization: String(stored.organization ?? "").slice(0, 120),
-        role: String(stored.role ?? ""),
-        greeting,
-      });
       // Only our own report links, never an arbitrary URL from storage.
       const pdfUrl =
         typeof stored.pdfUrl === "string" && /^https?:\/\/[^/]+\/api\/scorecard\/report(\/[\w.-]+\.pdf)?\?/.test(stored.pdfUrl)
           ? stored.pdfUrl
           : null;
+      const name = String(stored.name ?? "").trim().slice(0, 120);
       return {
-        report: doc.report,
-        doc,
-        greeting,
-        email: String(stored.email ?? "").slice(0, 120),
+        name,
+        email: String(stored.email ?? "").trim().slice(0, 120),
         pdfUrl,
       };
     } catch {
       return null;
     }
   }, [raw]);
-  const openBookACall = useBookACallModal();
 
-  const bookButton = (variant: "primary" | "light") => (
-    <button type="button" onClick={openBookACall} className={buttonClass(variant)}>
-      Book a Free Review
-      <ArrowRight className={buttonArrow} aria-hidden="true" />
-    </button>
-  );
+  // Prefill Calendly with what they just typed, so booking is one less form.
+  const calendlyUrl = useMemo(() => {
+    const params = new URLSearchParams();
+    if (data?.name) params.set("name", data.name);
+    if (data?.email) params.set("email", data.email);
+    const extra = params.toString();
+    return extra ? `${GROWTH_REVIEW_CALENDLY_URL}&${extra}` : GROWTH_REVIEW_CALENDLY_URL;
+  }, [data]);
 
   if (data === undefined) {
     return <div className="min-h-[60vh]" aria-hidden="true" />;
   }
 
-  const report = data?.report;
-
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-deep">
-          <Mail className="h-5 w-5" aria-hidden="true" />
-        </span>
-        {data && (
-          <p className="mt-5 font-serif text-lg italic text-navy/70">
-            Thank you, {data.greeting}.
+    <>
+      {/* 1. Confirmation */}
+      <section className="px-6 py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="text-balance font-serif text-4xl font-medium leading-[1.08] sm:text-6xl">
+            Your Full Scorecard Is on Its Way
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-ink/75">
+            We sent your personalized scorecard to your inbox. If you don&rsquo;t
+            see it within a few minutes, check your spam or promotions&nbsp;folder.
           </p>
-        )}
-        <h1 className="mt-2 text-balance font-serif text-4xl font-medium leading-[1.08] tracking-tight text-navy sm:text-5xl">
-          Your Full Report Is on Its Way
-        </h1>
-        <p className="mx-auto mt-4 max-w-lg text-balance leading-relaxed text-navy/70 sm:text-lg">
-          {data?.email ? (
-            <>
-              We sent your complete scorecard to{" "}
-              <strong className="font-semibold text-navy [overflow-wrap:anywhere]">{data.email}</strong>.
-              If you don&rsquo;t see it, check your spam folder.
-            </>
-          ) : (
-            <>
-              We sent your complete scorecard to your inbox. If you don&rsquo;t
-              see it, check your spam&nbsp;folder.
-            </>
+          {data?.pdfUrl && (
+            <a
+              href={data.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 font-semibold text-lapis underline decoration-gilt/60 decoration-2 underline-offset-[6px] transition-colors hover:decoration-gilt"
+            >
+              <FileText className="h-4 w-4" aria-hidden="true" />
+              Or download it now (PDF)
+            </a>
           )}
-          {report && " Here’s a quick summary in the meantime."}
-        </p>
-        {data?.pdfUrl && (
-          <a
-            href={data.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonClass("ghost", "mt-6")}
-          >
-            <FileText className="h-4 w-4" aria-hidden="true" />
-            Download Your Report (PDF)
-          </a>
-        )}
-      </div>
+        </div>
+      </section>
 
-      {report ? (
-        <>
-          <ScoreHero report={report}>
-            <div className="mt-8 border-t border-offwhite/15 pt-8">
-              <p className="mx-auto max-w-md text-pretty text-sm leading-relaxed text-offwhite/75">
-                Want help closing these gaps? We&rsquo;ll go over your
-                scorecard with you on a free Parish Growth&nbsp;Review.
-              </p>
-              <div className="mt-5">{bookButton("light")}</div>
-            </div>
-          </ScoreHero>
+      {/* 2. The offer */}
+      <section className="bg-vellum-deep px-6 py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className={h2}>Want Help Deciding What to Fix&nbsp;First?</h2>
+          <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/75">
+            Book your Free Parish Growth Review. We&rsquo;ll review your
+            scorecard, identify the highest-priority opportunity, and map the
+            next 90 days for your&nbsp;parish.
+          </p>
+        </div>
+      </section>
 
-          <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-deep">
-              Our Diagnosis
-            </p>
-            <h2 className="mt-2 text-balance font-serif text-2xl font-medium leading-snug tracking-tight text-navy sm:text-3xl">
-              {data.doc.diagnosis.lead}
-            </h2>
-            <p className="mt-3 text-pretty leading-relaxed text-navy/75">{data.doc.diagnosis.body}</p>
-            {data.doc.problems.length > 0 && (
-              <>
-                <h3 className="mt-8 font-serif text-xl font-medium tracking-tight text-navy">
-                  {data.doc.problems.length === 1
-                    ? "The Biggest Problem We Found"
-                    : "The Biggest Problems We Found"}
-                </h3>
-                <ol className="mt-4 space-y-3">
-                  {data.doc.problems.map((p, i) => (
-                    <li key={p.id} className="flex gap-4 rounded-2xl bg-parchment p-5">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy font-serif text-offwhite">
-                        {i + 1}
-                      </span>
-                      <div>
-                        <p className="text-pretty font-semibold text-navy">{p.title}</p>
-                        <p className="mt-1 text-pretty text-sm leading-relaxed text-navy/70">
-                          {p.saw.join(" ")}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-                <p className="mt-4 text-pretty text-sm text-navy/60">
-                  Your report explains why each one matters and the first step
-                  to fix it.
-                </p>
-              </>
-            )}
-          </div>
-        </>
-      ) : null}
-
-      <div className="rounded-3xl bg-navy px-6 py-10 text-center text-offwhite sm:px-12 sm:py-12">
-        <h2 className="text-balance font-serif text-3xl font-medium tracking-tight sm:text-4xl">
-          Let&rsquo;s Fix These Together
-        </h2>
-        <p className="mx-auto mt-4 max-w-md text-pretty leading-relaxed text-offwhite/75">
-          Book a free Parish Growth Review. We&rsquo;ll walk through your
-          scorecard with you and map out a plan for your top&nbsp;priorities.
-        </p>
-        <div className="mt-7">{bookButton("light")}</div>
-      </div>
-
-      {!report && (
-        <p className="text-center text-sm text-navy/60">
-          Haven&rsquo;t taken it yet?{" "}
-          <Link href="/scorecard" className="underline decoration-gold decoration-2 underline-offset-4 hover:text-navy">
-            Take the Parish Social Media Scorecard
-          </Link>
-        </p>
-      )}
-    </div>
+      {/* 3. Before you book + calendar */}
+      <section className="px-6 py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className={h2}>Before you book&hellip;</h2>
+          <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/75">
+            To make this conversation as useful as possible for your parish,{" "}
+            <strong className="font-semibold text-ink">we ask that the pastor join the call.</strong>{" "}
+            Assistant priests, deacons, and office staff are welcome to book,
+            provided they can bring the pastor into the&nbsp;meeting.
+          </p>
+        </div>
+        <div className="mx-auto mt-10 max-w-3xl">
+          {/* No trackScheduleEvent here: Calendly redirects to
+              /call-confirmed after booking, which fires Schedule. */}
+          <CalendlyEmbed url={calendlyUrl} />
+        </div>
+      </section>
+    </>
   );
 }

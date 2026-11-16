@@ -1,8 +1,8 @@
-import { BookOpen, Check, Mail } from "lucide-react";
+import { BookOpen, Check, Mail, type LucideIcon } from "lucide-react";
 
 // Book → inbox: a gold dot travels the dotted line, then a check pops on the
-// envelope. Loops.
-export default function DeliveryAnimation() {
+// envelope. Loops. `icon` swaps the starting item (default: the book).
+export default function DeliveryAnimation({ icon: Icon = BookOpen }: { icon?: LucideIcon } = {}) {
   const dot = "pmc-send-dot";
   const check = "pmc-send-check";
 
@@ -30,7 +30,7 @@ export default function DeliveryAnimation() {
       `}</style>
 
       <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white text-navy shadow-md shadow-navy/5 ring-1 ring-navy/10">
-        <BookOpen className="h-6 w-6" strokeWidth={1.5} />
+        <Icon className="h-6 w-6" strokeWidth={1.5} />
       </span>
 
       <span className="relative h-px flex-1 border-t-2 border-dotted border-gold/50">

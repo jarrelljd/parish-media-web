@@ -5,7 +5,7 @@ import ScrollToBookingButton from "./ScrollToBookingButton";
 // left (not a link, so visitors stay on the page) and a button on the right
 // that scrolls down to the booking calendar. Dark to match the page's hero.
 export default function BookingAnnouncementBar({
-  label = "Book a free assessment",
+  label = "Book a free Parish Growth Review",
 }: {
   label?: string;
 }) {

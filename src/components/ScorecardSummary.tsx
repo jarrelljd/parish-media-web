@@ -75,7 +75,7 @@ export default function ScorecardSummary() {
 
   const bookButton = (variant: "primary" | "light") => (
     <button type="button" onClick={openBookACall} className={buttonClass(variant)}>
-      Book a Free Assessment
+      Book a Free Review
       <ArrowRight className={buttonArrow} aria-hidden="true" />
     </button>
   );
@@ -134,7 +134,7 @@ export default function ScorecardSummary() {
             <div className="mt-8 border-t border-offwhite/15 pt-8">
               <p className="mx-auto max-w-md text-pretty text-sm leading-relaxed text-offwhite/75">
                 Want help closing these gaps? We&rsquo;ll go over your
-                scorecard with you on a free Parish Growth&nbsp;Assessment.
+                scorecard with you on a free Parish Growth&nbsp;Review.
               </p>
               <div className="mt-5">{bookButton("light")}</div>
             </div>
@@ -185,7 +185,7 @@ export default function ScorecardSummary() {
           Let&rsquo;s Fix These Together
         </h2>
         <p className="mx-auto mt-4 max-w-md text-pretty leading-relaxed text-offwhite/75">
-          Book a free Parish Growth Assessment. We&rsquo;ll walk through your
+          Book a free Parish Growth Review. We&rsquo;ll walk through your
           scorecard with you and map out a plan for your top&nbsp;priorities.
         </p>
         <div className="mt-7">{bookButton("light")}</div>

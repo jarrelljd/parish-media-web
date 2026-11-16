@@ -15,7 +15,7 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { deflateRawSync, inflateRawSync } from "zlib";
 import type { ScorecardAnswers } from "@/lib/scorecard";
-import type { ScorecardLetter } from "@/lib/scorecardLetter";
+import type { AnyLetter } from "@/lib/scorecardLetter";
 
 export type ReportLinkPayload = {
   a: ScorecardAnswers;
@@ -23,7 +23,7 @@ export type ReportLinkPayload = {
   o: string; // parish name
   r: string; // role
   t: number; // created at (ms)
-  l?: ScorecardLetter; // the letter written at opt-in
+  l?: AnyLetter; // the letter written at opt-in (v1 before 2026-11-16)
 };
 
 function secret(): string {

@@ -453,7 +453,13 @@ export async function submitScorecardOptIn(
     "",
     `Letter (${letter.src === "ai" ? "written by AI" : "template, AI unavailable"}):`,
     letterHi,
-    ...letter.body.map((p) => p.replace(/\*/g, "")),
+    ...[
+      letter.intro,
+      ...letter.findings.map((f, i) => `${i + 1}. ${f.t}. ${f.s}`),
+      letter.working,
+      `The first thing I'd fix: ${letter.next}`,
+      `One thing you can do this week: ${letter.now}`,
+    ].map((p) => p.replace(/\*/g, "")),
   ].join("\n\n");
 
   const payload: Record<string, string> = {

@@ -3,11 +3,13 @@
 // (src/lib/scorecardLetter.ts) plus the scores (buildScorecardDoc); this
 // file is layout only.
 //
-// Reads like a signed letter on letterhead, per the Scorecard Letter Voice
-// Guide: no headings, bullets, or score badge in the letter itself; the
-// score sits in the Re: line, and the AI may bold or italicize a few
-// phrases (**bold**, *italics*). A separate "What we found" page shows the
-// evidence (their recent posts, pages, and category scores), with no prose.
+// Reads like a signed letter on letterhead. Order (Joe, 2026-11-16): intro,
+// numbered key findings (evidence + why), the booking CTA, what's working,
+// the first thing to fix, one thing to do this week, then the fixed closing.
+// The findings aren't repeated later in the letter. The score sits in the Re: line,
+// and the AI may bold or italicize a few phrases (**bold**, *italics*). A
+// separate "What we found" page shows the evidence (their recent posts,
+// pages, and category scores), with no prose.
 //
 // Fonts are bundled as WOFF in src/assets/fonts (Fraunces, Source Sans 3,
 // and Mrs Saint Delafield for the signature, the same hand as the free-guide
@@ -20,10 +22,10 @@ import type { PostType } from "@/lib/parishProfile";
 import { SCORECARD_BOOKING_URL } from "@/lib/scorecard";
 import {
   BOOKING_DISPLAY,
+  FINDINGS_CTA,
   fixedClosing,
-  resourceLink,
+  type AnyLetter,
   type LetterEvidence,
-  type LetterResource,
   type ScorecardLetter,
 } from "@/lib/scorecardLetter";
 import { capNote, type ScorecardDoc } from "@/lib/scorecardReport";
@@ -184,27 +186,49 @@ function PageChrome() {
   );
 }
 
-// The recommended House of Studies resources, typed the way a person would
-// in a letter: a simple numbered list in body text, the title in italics,
-// why it fits, and the address on its own line so it still works on paper.
-function Resources({ res }: { res: LetterResource[] }) {
-  const links = res.map(resourceLink).filter((r): r is NonNullable<ReturnType<typeof resourceLink>> => r !== null);
+// The key findings: a typed numbered list, bold title + one sentence.
+function KeyFindings({ letter }: { letter: ScorecardLetter }) {
   return (
-    <View style={{ marginBottom: 10 }}>
-      {links.map((r, i) => (
-        <View key={r.url} style={{ flexDirection: "row", marginBottom: 6 }} wrap={false}>
-          <Text style={{ width: 22, paddingLeft: 6 }}>{i + 1}.</Text>
-          <View style={{ flex: 1 }}>
-            <Text>
-              <Text style={{ fontStyle: "italic" }}>{r.title}</Text>, {r.why}.
-            </Text>
-            <Link src={r.url} style={s.link}>
-              {r.display}
-            </Link>
-          </View>
+    <View style={{ marginBottom: 4 }}>
+      {letter.findings.map((f, i) => (
+        <View key={i} style={{ flexDirection: "row", marginBottom: 6 }} wrap={false}>
+          <Text style={{ width: 22, paddingLeft: 6, fontWeight: 700, color: navy }}>{i + 1}.</Text>
+          <Text style={{ flex: 1 }}>
+            <Text style={{ fontWeight: 700, color: navy }}>{f.t}.</Text> <Rich text={f.s} />
+          </Text>
         </View>
       ))}
     </View>
+  );
+}
+
+// The booking CTA right after the key findings, before the detail.
+function FindingsCta() {
+  return (
+    <View
+      style={{ backgroundColor: paper, borderLeftWidth: 3, borderLeftColor: gold, paddingVertical: 9, paddingHorizontal: 12, marginTop: 4, marginBottom: 14 }}
+      wrap={false}
+    >
+      <Text>
+        <Text style={{ fontWeight: 700, color: navy }}>{FINDINGS_CTA.lead}</Text>{" "}
+        <Link src={SCORECARD_BOOKING_URL} style={s.link}>
+          {FINDINGS_CTA.link}
+        </Link>{" "}
+        {FINDINGS_CTA.rest}
+      </Text>
+      <Link src={SCORECARD_BOOKING_URL} style={[s.link, { marginTop: 3, fontWeight: 600 }]}>
+        {BOOKING_DISPLAY}
+      </Link>
+    </View>
+  );
+}
+
+// A small typed label above a section of the letter.
+function Label({ children }: { children: string }) {
+  return (
+    <Text style={{ fontWeight: 700, color: navy, marginTop: 4, marginBottom: 3 }} minPresenceAhead={40}>
+      {children}
+    </Text>
   );
 }
 
@@ -329,7 +353,7 @@ function Scores({ doc, title = true }: { doc: ScorecardDoc; title?: boolean }) {
 
 export type LetterPdfInput = {
   doc: ScorecardDoc;
-  letter: ScorecardLetter;
+  letter: AnyLetter;
   greeting: string; // "Hi Father,"
   isPastor: boolean;
 };
@@ -337,7 +361,7 @@ export type LetterPdfInput = {
 function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
   const parishName = doc.parish === "Your parish" ? "the parish" : doc.parish;
   const recipient = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location].filter(Boolean);
-  const closing = fixedClosing(letter, parishName, isPastor);
+  const closing = fixedClosing(parishName, isPastor);
   return (
     <Document title={`A letter for ${parishName}`} author="Joe Jarrell, Parish Media Company" subject="Parish Social Media Scorecard">
       <Page size="LETTER" style={s.page}>
@@ -359,18 +383,32 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
         </View>
 
         <Text style={s.p}>{greeting}</Text>
-        {letter.body.map((para, i) => (
-          <Text key={i} style={s.p} orphans={2} widows={2}>
-            <Rich text={para} />
-          </Text>
-        ))}
         {/* Paragraphs flow across pages like a normal letter. Only small
             pieces are kept together, so a page never ends with a big gap. */}
-        <Text style={s.p} minPresenceAhead={60}>
-          {closing.resourcesIntro}
-        </Text>
-        <Resources res={letter.res} />
-        {closing.rest.map((para, i) => (
+        {letter.v === 2 ? (
+          <>
+            <Text style={s.p}>{letter.intro}</Text>
+            <KeyFindings letter={letter} />
+            <FindingsCta />
+            <Label>What’s working</Label>
+            <Text style={s.p} orphans={2} widows={2}>
+              <Rich text={letter.working} />
+            </Text>
+            <Label>{letter.findings.length ? "The first thing I’d fix" : "Where I’d go from here"}</Label>
+            <Text style={s.p} orphans={2} widows={2}>
+              <Rich text={letter.next} />
+            </Text>
+            <Label>Your first step this week</Label>
+            <Text style={[s.p, { marginBottom: 12 }]}>{letter.now}</Text>
+          </>
+        ) : (
+          letter.body.map((para, i) => (
+            <Text key={i} style={s.p} orphans={2} widows={2}>
+              <Rich text={para} />
+            </Text>
+          ))
+        )}
+        {closing.map((para, i) => (
           <Linked key={`c${i}`} text={para} />
         ))}
 

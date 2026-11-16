@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     role: payload.r,
     date: new Date(payload.t),
   });
-  const letter = payload.l?.v === 1 ? payload.l : templateLetter(doc);
+  const letter = payload.l?.v === 2 || payload.l?.v === 1 ? payload.l : templateLetter(doc, answers);
   const pdf = await renderScorecardPdf({
     doc,
     letter,

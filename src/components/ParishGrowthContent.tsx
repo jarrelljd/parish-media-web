@@ -62,7 +62,13 @@ const PRIEST_TESTIMONIALS = [
 
 const BUTTON =
   "inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
-const BUTTON_LABEL = "Book your free 30-minute assessment";
+// Shorter label on phones so the button stays on one line
+const BUTTON_LABEL = (
+  <>
+    <span className="sm:hidden">Book Your Free Review</span>
+    <span className="hidden sm:inline">Book Your Free 30-Min Parish Growth Review</span>
+  </>
+);
 const rubric = "font-serif text-lg italic text-rubric";
 const h2 = "font-serif text-4xl font-medium leading-[1.08] text-balance sm:text-5xl";
 
@@ -216,7 +222,7 @@ export default function ParishGrowthContent() {
       {/* Before you book + Calendly */}
       <section id="book" className="scroll-mt-20 px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className={rubric}>Book your assessment</p>
+          <p className={rubric}>Book your review</p>
           <h2 className={`mt-2 ${h2}`}>Before you book&hellip;</h2>
           <p className="mt-5 text-pretty text-lg text-ink/75">
             To make this conversation as useful as possible for your parish,{" "}

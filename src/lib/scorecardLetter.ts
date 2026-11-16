@@ -7,22 +7,28 @@
 //   - Scorecard Diagnosis Rulebook: what counts as a problem, the plain
 //     "why it matters" lines, approved proof, the Ad Library rule.
 //
+// Layout (Joe, 2026-11-16): intro, the top 1–3 problems as numbered key
+// findings (each: the evidence, then why it matters), the booking CTA,
+// what's working, the single highest-priority next step, and ONE simple
+// thing they can do this week. The findings aren't repeated in a second
+// detailed pass (Joe found that repetitive). No video or resource links.
+//
 // What stays in code (never written by the AI): which problems the letter
-// covers and their order, the greeting, the fixed closing, the signature,
-// and the score in the Re: line. The AI writes the middle of the letter and
-// one line for the cover email.
+// covers and their order, the finding titles, the one action for this week,
+// the greeting, the CTA, the fixed closing, the signature, and the score in
+// the Re: line. The AI writes the intro, the findings, what's working, the
+// next step, and one line for the cover email.
 //
 // Every number the AI writes must appear in the facts we gave it; otherwise
-// we ask once more, then fall back to a plain template letter built from
-// the same facts. The letter is written once, at opt-in, and travels inside
-// the signed PDF link (scorecardLink.ts), so the PDF never changes.
+// we ask again, then fall back to a plain template letter built from the
+// same facts. The letter is written once, at opt-in, and travels inside the
+// signed PDF link (scorecardLink.ts), so the PDF never changes.
 
 import { proof } from "@/data/scorecard";
-import { getVaultItem, vaultItemHref } from "@/data/vault";
 import { upcomingChurchDates } from "@/lib/churchCalendar";
 import { mainFeed, profileStats, type ParishProfile, type PostType, type ProfilePost } from "@/lib/parishProfile";
 import { choiceLabel, outreachStatus, type ScorecardAnswers } from "@/lib/scorecard";
-import type { ReportProblem, ScorecardDoc } from "@/lib/scorecardReport";
+import type { ScorecardDoc } from "@/lib/scorecardReport";
 
 // ---------------------------------------------------------------------------
 // Types (kept short: the letter rides inside the signed link)
@@ -44,17 +50,38 @@ export type LetterEvidence = {
   ads: "none" | null; // only "none" when the quiz agrees (Ad Library rule)
 };
 
+export type LetterFinding = {
+  t: string; // title, from the rules
+  s: string; // two sentences: the key evidence, then why it matters
+};
+
 export type ScorecardLetter = {
-  v: 1;
+  v: 2;
   src: "ai" | "template";
-  body: string[]; // paragraphs between the greeting and the fixed closing
+  intro: string;
+  findings: LetterFinding[]; // 0–3, in the rules' order
+  working: string; // what's working, 1–2 sentences
+  next: string; // the single highest-priority next step
+  now: string; // one simple action they can take this week
   cover: string; // the biggest problem in plain words, for the cover email
-  res: LetterResource[]; // House of Studies resources recommended in the closing
   ev?: LetterEvidence;
 };
 
+// Letters written before 2026-11-16 (flowing paragraphs + video links).
+// Old report links still render them, minus the video list.
+export type LegacyLetter = {
+  v: 1;
+  src: "ai" | "template";
+  body: string[];
+  cover: string;
+  res?: unknown;
+  ev?: LetterEvidence;
+};
+
+export type AnyLetter = ScorecardLetter | LegacyLetter;
+
 // ---------------------------------------------------------------------------
-// Greeting, closing, resources
+// Greeting, CTA, closing, this week's action
 // ---------------------------------------------------------------------------
 
 const PRIEST_TITLES = /^(fr|father|rev|reverend|msgr|monsignor)\.?$/i;
@@ -73,90 +100,46 @@ export function letterGreeting(name: string, role: string): string {
   return words[0] ? `Hi ${tidy(words[0])},` : "Hello,";
 }
 
-// The free House of Studies resources the letter recommends, picked for what
-// the letter diagnoses. Each need lists resources in order of preference;
-// only live ones count ("Coming Soon" items are skipped), so new videos are
-// picked up automatically as they go live in src/data/vault.ts.
-export type ResourceNeed =
-  | "outreach"
-  | "leak"
-  | "homily" // no weekly homily clip
-  | "coreFour" // posts don't follow the core four, or few people respond
-  | "flyers" // feed is mostly flyers
-  | "infrequent" // too few posts
-  | "flyerCta" // flyers without a clear next step
-  | "noActivity"
-  | "noConnection"
-  | "default";
+export const BOOKING_DISPLAY = "parishmediacompany.com/parish";
 
-const RESOURCES: Record<ResourceNeed, [slug: string, why: string][]> = {
-  outreach: [
-    ["meta-ads-mass", "how to set up the ad and simple form that invite families nearby to Mass"],
-    ["meta-ads-fundamentals", "the basics of running Facebook and Instagram ads for a parish"],
-  ],
-  leak: [["meta-ads-mass", "how the Plan a Visit ad, the form, and the follow-up call fit together"]],
-  coreFour: [["core-four-overview", "the core four: the four posts every parish should be making each week"]],
-  homily: [["core-four-homily-clips", "how to film the Sunday homily and turn it into short clips"]],
-  flyers: [
-    ["core-four-overview", "the four kinds of posts and how to balance them so the feed gives more than it asks"],
-    ["core-four-activity-posts", "how to show parish life, so the feed isn’t only announcements"],
-  ],
-  infrequent: [
-    ["core-four-overview", "the four kinds of posts every parish should be making each week"],
-    ["social-media-system", "how to keep a steady weekly posting rhythm without it taking over your week"],
-  ],
-  flyerCta: [
-    ["core-four-flyers", "how to make flyers people stop and read, with one clear next step"],
-    ["flyer-sop", "a step-by-step checklist to run every flyer through"],
-  ],
-  noActivity: [["core-four-activity-posts", "how to show what’s happening at the parish"]],
-  noConnection: [["core-four-connection-posts", "how to tell short stories about Father, the staff, and the parish"]],
-  default: [["social-media-system", "the full overview of running parish social media as a simple weekly system"]],
+// The CTA right after the key findings (Joe's copy, 2026-11-16).
+export const FINDINGS_CTA = {
+  lead: "Want help deciding what to fix first?",
+  link: "Book a free Parish Growth Review",
+  rest: "and we’ll walk through your scorecard, identify the highest-priority opportunity, and map the next 90 days for your parish.",
 };
 
-export type LetterResource = { s: string; w: string }; // vault slug, why it fits
-
-const isLive = (slug: string) => {
-  const item = getVaultItem(slug);
-  return !!item && !!(item.video || item.href);
-};
-
-// Up to 3 resources, in the order the letter raises the needs. Falls back to
-// the Fundamentals overview so there are always at least two (or one, if
-// that's all that's live).
-export function pickResources(needs: ResourceNeed[]): LetterResource[] {
-  const out: LetterResource[] = [];
-  for (const need of [...needs, "default" as const]) {
-    if (out.length >= 3) break;
-    const hit = RESOURCES[need].find(([slug]) => isLive(slug) && !out.some((r) => r.s === slug));
-    if (hit) out.push({ s: hit[0], w: hit[1] });
+// The one simple thing they can do this week, from the top problem. Free,
+// no new skills, done by someone already at the parish. Written in code so
+// the letter never gives more than one.
+export function quickAction(id: string | undefined, homilyClipsWeekly: boolean): string {
+  switch (id) {
+    case "outreach":
+      return "Pick one person on staff who will call back every new inquiry the same day, and make sure the office knows it’s them.";
+    case "leak":
+      return "Starting this week, call back every new inquiry the same day, and write each one on a simple list so you can count them.";
+    case "nurture":
+    case "quietFeed":
+      return homilyClipsWeekly
+        ? "Before the next flyer goes up, post one photo from parish life with a short caption naming who’s in it."
+        : "This Sunday, set a phone on a tripod or a steady stand and film the homily. Just get the recording; the clips can come later.";
+    case "frequency":
+      return "Pick one day this week to post a photo from parish life with a two-line caption.";
+    default:
+      return "This Sunday, film the homily on a phone and post your favorite 30 to 60 seconds of it.";
   }
-  return out;
 }
 
-// What the closing needs to show for one resource.
-export function resourceLink(r: LetterResource) {
-  const item = getVaultItem(r.s);
-  if (!item) return null;
-  const path = vaultItemHref(item);
-  const url = path.startsWith("http") ? path : `https://parishmediacompany.com${path}`;
-  return {
-    title: item.title.replace(/ /g, " "),
-    why: r.w,
-    url,
-    display: url.replace(/^https?:\/\/(www\.)?/, ""),
-    kind: item.kind === "video" ? "video" : "resource",
-  };
-}
-
-// Needs from the problems the rules picked, in their order.
-function problemNeeds(problems: ReportProblem[], a: ScorecardAnswers): ResourceNeed[] {
-  return problems.flatMap((p): ResourceNeed[] => {
-    if (p.id === "nurture")
-      return [...(a.mainContent === "flyers" ? ["flyers" as const] : []), ...(a.homilyClips !== "regularly" ? ["homily" as const] : [])];
-    if (p.id === "frequency") return ["infrequent"];
-    return [p.id];
-  });
+// The fixed closing from the voice guide, after the advice. Only the parish
+// changes.
+export function fixedClosing(parish: string, isPastor: boolean): string[] {
+  // Short, since the booking CTA already sits right after the key findings.
+  return [
+    "You can absolutely fix all of this in-house. But let’s be honest: it takes a handful of skills (editing video, running targeted ads, tracking who responds, and fast follow-up), and most parish teams are already busy serving the parish. So you have two choices: keep going as you are, or have someone build and run it for you.",
+    `If it’s the second, that’s exactly what we do. A free Parish Growth Review is the first step: we’ll go over this letter together, pick the highest-priority opportunity, and map out the next 90 days for ${parish}. It’s yours to keep whether we work together or not.${
+      isPastor ? "" : " We do ask that your pastor join the call."
+    } You can pick a time at ${BOOKING_DISPLAY}.`,
+  ];
 }
 
 // ---------------------------------------------------------------------------
@@ -207,28 +190,6 @@ export function facebookEngagement(profile: ParishProfile) {
   };
 }
 
-export const BOOKING_DISPLAY = "parishmediacompany.com/parish";
-
-// The fixed closing from the voice guide. Only the resources and parish
-// change. `resourcesIntro` leads into the list of recommended resources
-// (drawn by the PDF), and `rest` follows it.
-export function fixedClosing(letter: Pick<ScorecardLetter, "res">, parish: string, isPastor: boolean) {
-  const one = letter.res.length === 1;
-  const where = parish === "the parish" ? "your parish" : parish;
-  return {
-    resourcesIntro: `If you’d like to do this yourself, I picked out ${one ? "a free video" : "a few free videos"} from our Parish House of Studies for where ${where} is right now:`,
-    rest: [
-    "Fixing these takes a handful of skills: editing video, running targeted Facebook and Instagram ads, tracking who responds to them, and setting up the automatic follow-up that makes sure every family hears back. You can absolutely learn all of this in-house.",
-    "But let’s be honest: most parish teams aren’t going to have someone learn all of that and then keep it going every week. Not because your team doesn’t care, but because they’re already busy serving the parish. Projects like this get pushed aside by more urgent responsibilities.",
-    "So you have two choices: keep going as you are, or have someone build and run the system for you.",
-    `If it’s the second, that’s exactly what we do. We’d take the homily clips, the ads, and the follow-up system off your team’s plate. The first step is a free 30-minute Parish Growth Assessment, where we’ll go over this letter together and map out a game plan for ${parish}. It’s yours to keep whether we work together or not.${
-      isPastor ? "" : " We do ask that your pastor join the call."
-    }`,
-    `You can pick a time that works for you at ${BOOKING_DISPLAY}.`,
-    ],
-  };
-}
-
 // ---------------------------------------------------------------------------
 // Facts: everything the letter may say, in one object
 // ---------------------------------------------------------------------------
@@ -273,6 +234,7 @@ const PROOF_FOR: Record<string, { fits: string; text: string }> = {
   },
 };
 
+export type LetterProblem = { id: string; title: string; whatWeSaw: string[]; firstStep: string };
 export type LetterFacts = ReturnType<typeof buildLetterFacts>;
 
 export function buildLetterFacts(
@@ -303,22 +265,16 @@ export function buildLetterFacts(
     whoRunsSocialMedia: choiceLabel("team", a.team),
   };
 
-  // The problems the rules picked, in the order the letter must use. The
-  // letter covers the first two; anything past that is a one-line mention.
-  const problems: { id: string; title: string; whatWeSaw: string[]; firstStep: string }[] = doc.problems.map((p) => ({
+  // The problems the rules picked, in the order the letter must use (up to 3).
+  const problems: LetterProblem[] = doc.problems.map((p) => ({
     id: p.id,
     title: p.title,
     whatWeSaw: p.saw,
     firstStep: p.firstStep,
   }));
-  const smallerThings: string[] = [];
 
   let pages: Record<string, unknown> | null = null;
   const observations: string[] = [];
-  // Which House of Studies resources to recommend: the rules' problems first,
-  // then what we saw on their pages (a flyer fix ranks right after them).
-  const needs: ResourceNeed[] = problemNeeds(doc.problems, a);
-  const problemCount = needs.length;
   let evidence: LetterEvidence | undefined;
   let engagement: (NonNullable<ReturnType<typeof facebookEngagement>> & { provesProblem: string | null }) | null = null;
   let coreFour: Record<string, unknown> = {
@@ -369,7 +325,7 @@ export function buildLetterFacts(
       };
     }
 
-    // Rulebook checks we can see on their pages.
+    // Rulebook checks we can see on their pages (evidence for the problems).
     const flyers9 = last9.filter((p) => p.type === "flyer").length;
     if (last9.length >= 4) observations.push(`Of the last ${last9.length} posts, ${flyers9} were flyers or announcements.`);
     const giving = stats.lastGivingVideo;
@@ -384,14 +340,8 @@ export function buildLetterFacts(
       observations.push(`They posted a homily clip or teaching video on ${longDate(giving)}. That's good.`);
     }
     if (sorted.length >= 6 && since(sorted[sorted.length - 1]) >= 30) {
-      if (in30("activity") === 0) {
-        observations.push("No photos from parish life in the last 30 days.");
-        needs.push("noActivity");
-      }
-      if (in30("connection") === 0) {
-        observations.push("No story posts about the pastor, staff, or parish in the last 30 days.");
-        needs.push("noConnection");
-      }
+      if (in30("activity") === 0) observations.push("No photos from parish life in the last 30 days.");
+      if (in30("connection") === 0) observations.push("No story posts about the pastor, staff, or parish in the last 30 days.");
     }
     const top = Object.entries(stats.counts).sort((x, y) => y[1] - x[1])[0];
     if (top && top[0] === "filler" && top[1] > 0)
@@ -399,16 +349,14 @@ export function buildLetterFacts(
     // Counted over the same last 9 posts as the core four, so the letter
     // can't say "0 flyers" and "2 flyers without a next step" side by side.
     const noCta = last9.filter((p) => p.type === "flyer" && p.hasClearNextStep === false).length;
-    if (noCta > 0) needs.splice(problemCount, 0, "flyerCta");
     if (noCta > 0)
-      smallerThings.push(
+      observations.push(
         `${noCta} of the last ${last9.length} posts ${noCta === 1 ? "is a flyer that doesn't" : "are flyers that don't"} tell people exactly how to respond (no link, sign-up, or number).`,
       );
-    if (profile.facebook && !profile.instagram) smallerThings.push("We couldn't find an Instagram account for the parish.");
 
     // Facebook engagement rate: proof for the nurture or posting problem.
-    // When neither is in the letter and few people respond, it becomes the
-    // next problem itself (right after outreach).
+    // When neither is in the letter and few people respond, it becomes a
+    // problem itself (right after outreach).
     const eng = facebookEngagement(profile);
     if (eng) {
       const weak = eng.band === "low" || eng.band === "underperforming";
@@ -418,12 +366,11 @@ export function buildLetterFacts(
         const at = problems[0]?.id === "outreach" || problems[0]?.id === "leak" ? 1 : 0;
         problems.splice(at, 0, {
           id: "quietFeed",
-          title: "Few of the people following the Facebook page respond to what's posted",
+          title: "Few of the people following the Facebook page respond to what’s posted",
           whatWeSaw: [eng.plainLine],
           firstStep: "Post the core four every week, and make the homily clip the strongest post of the week.",
         });
         engagement.provesProblem = "quietFeed";
-        needs.splice(at, 0, "coreFour");
       }
     }
     const best = [...sorted].sort((x, y) => y.likes + y.comments - (x.likes + x.comments))[0];
@@ -452,6 +399,7 @@ export function buildLetterFacts(
     };
   }
 
+  const top3 = problems.slice(0, 3);
   const churchDates = upcomingChurchDates(now);
 
   return {
@@ -471,8 +419,7 @@ export function buildLetterFacts(
         tracksInquiries: o.tracked,
       },
       diagnosis: `${doc.diagnosis.lead} ${doc.diagnosis.body}`,
-      problemsInOrder: problems.slice(0, 2),
-      smallerThings: [...problems.slice(2).map((p) => p.title), ...smallerThings].slice(0, 2),
+      problemsInOrder: top3,
       facebookEngagement: engagement,
       coreFour,
       strengths: doc.strengths,
@@ -490,8 +437,8 @@ export function buildLetterFacts(
       upcomingChurchDates: churchDates.map((c) => `${c.name}: ${c.date} (${c.daysAway} days away)`),
       approvedProof: PROOF_FOR,
     },
+    problems: top3,
     evidence,
-    needs,
   };
 }
 
@@ -499,63 +446,71 @@ export function buildLetterFacts(
 // Prompt
 // ---------------------------------------------------------------------------
 
-const SYSTEM = `You write the middle of a short personal letter from Joe Jarrell, founder of Parish Media Company, to a Catholic parish that just took the Parish Social Media Scorecard. Joe helps parishes reach new families with homily clips, good posts, and Facebook/Instagram ads that invite people to Mass.
+const SYSTEM = `You write parts of a short personal letter from Joe Jarrell, founder of Parish Media Company, to a Catholic parish that just took the Parish Social Media Scorecard. Joe helps parishes reach new families with homily clips, good posts, and Facebook/Instagram ads that invite people to Mass.
 
 The reader is usually the pastor: busy, not technical, careful with parish money, and moved by honesty and trust, not marketing. The letter must read like Joe sat down and wrote it to THIS parish, not like a generated report. Every parish should get a noticeably different letter: use their own posts, dates, numbers, city, and answers.
 
+HOW THE LETTER IS LAID OUT (code assembles it; you write only the pieces marked YOU)
+1. Greeting ("Hi Father,"). Code.
+2. YOU "intro": exactly 3 sentences.
+3. Key findings, a numbered list. Code prints each problem's title in bold; YOU write "findings[i].summary" right after it. This is the only place the problems are covered, so it must carry both the evidence and why it matters.
+4. A booking invitation. Code.
+5. "What's working": YOU write "working".
+6. "The first thing I'd fix": YOU write "next_step".
+7. "One thing you can do this week": code (one simple action, already written; don't repeat it or add another).
+8. A fixed closing and sign-off. Code. It talks about doing it yourself vs. having help and invites them to a free call.
+Don't write a greeting, a sign-off, a closing, a call to book, or a P.S.
+
 WHAT YOU WRITE
-- "body": 5 to 8 short paragraphs, 300 to 420 words in all (it must fit on two printed pages). Stay under 420: keep each paragraph to 2 to 4 sentences, give the biggest problem the most room, and keep the core four and smaller-things paragraphs to 2 or 3 sentences each. Don't repeat a point you already made. They go after the greeting ("Hi Father,") and before a fixed closing that Joe already wrote (it offers free tutorials, says most teams can't keep this going, offers two choices, and invites them to book a free call). Do not write a greeting, a sign-off, a closing, a call to book, or a P.S.
+- "intro" (exactly 3 sentences, nothing else). Thank them for taking the Parish Social Media Scorecard. Then say plainly what we did:
+   - If weLookedUpTheirPages is true: we read through their answers, and we also went ahead and looked up the parish's own pages (name exactly the ones in pagesWeLookedAt, e.g. "your website, Facebook page, and Instagram") and went through their recent posts. Say this in plain words like "looked up" or "went through"; never "scraped", "analyzed", "audited", or "data".
+   - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library. Never say you went only by their answers or didn't look anywhere else.
+   - End with a short line that leads into the numbered findings, e.g. "Here's what I found, starting with what matters most." or "Here are the ${"{n}"} things I'd focus on." (use the real count in words). If problemsInOrder is empty: "Here's what I found."
+   Don't guess at how the reader feels or how hard they're working.
+- "findings": exactly one entry per item in problemsInOrder, same order. Our rules already decided the problems and their order; don't swap, merge, add, or drop any.
+   - "summary": exactly 2 sentences, 25 to 50 words in all. Sentence 1, the evidence: what we saw, with their own specifics (a count, date, or answer from their posts, observationsFromTheirPages, facebookEngagement when it proves this problem, or quizAnswers). Sentence 2, why it matters, in plain words using the ideas below, tied to reaching families nearby, Mass attendance, young people, or vocations. Don't restate the title word for word. No advice.
+   - For a "nurture" finding, the evidence should compare their posts to the core four where you can (e.g. "Of your last 9 posts, 6 were flyers and only 1 was a homily clip").
+- "working": 1 or 2 sentences about one or two specific good things (from strengths, their best-received post with its date and numbers, or facebookEngagement when its band is "strong"). If problemsInOrder is empty, 2 or 3 sentences.
+- "next_step": the single highest-priority next step, which fixes problemsInOrder[0] (use its firstStep as the basis). 2 to 4 sentences, under 75 words: what it is, who does it, and what it looks like when it's working. One step, not a plan or a list of steps. If the step is posting the core four, name the four in one sentence (one homily clip, one connection post, one social proof post, one flyer). You may add one approved proof point that shows it working. No selling and no mention of Parish Media Company doing it (the closing handles that). You may tie timing to an upcomingChurchDates entry, but never claim anything about attendance at those times. If problemsInOrder is empty, suggest one way to go further (talking-head reels from the pastor, or adding YouTube Shorts), never as a problem.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
-BODY STRUCTURE (in this order). The letter is mostly a diagnosis: where the parish stands and why. Advice waits for the last paragraph.
-1. The introduction (one paragraph, exactly 3 sentences, nothing else). Thank them for taking the Parish Social Media Scorecard. Then tell them plainly what this letter is and how we put it together:
-   - If weLookedUpTheirPages is true: we read through their answers, and we also went ahead and looked up the parish's own pages (name exactly the ones in pagesWeLookedAt, e.g. "your website, Facebook page, and Instagram") and went through their recent posts. Say this in plain words like "looked up" or "went through"; never "scraped", "analyzed", "audited", or "data".
-   - If it is false: we read through their answers. Don't mention looking up their pages at all (not even that we didn't), and never imply we saw their pages, website, posts, or the Ad Library; work only from their answers ("you mentioned", "from your answers"). Never say you went only by their answers or didn't look anywhere else ("only from what you told us", "not from anything outside your answers"); just say you read through their answers.
-   - End the intro simply, the way Joe would in an email, e.g. "Here's what I found." or "Here's where I think things stand." Don't describe the letter's structure.
-   That's the whole intro: the thank-you, what we did, and the short closing line. No third sentence about how you approached it ("I looked at this with Seattle in mind", "I'm looking at this as simply as I can", "I'm going to be plain", "I'm glad we did, because..."). Don't guess at how the reader feels or how hard they're working.
-2. What's working (one short paragraph): one or two specific good things (from strengths, or their best-received post, with its date and numbers, or facebookEngagement when its band is "strong").
-3. The biggest problem (one or two paragraphs): problemsInOrder[0], exactly as the diagnosis states it. Our rules already decided it; don't swap in a different problem, even if another one looks bigger to you. Say it in your own words (don't paste the title). Show what we saw, with their own specifics (their posts, dates, counts, or answers). Then explain why it matters in plain words, tied to the parish's goals (new families, Mass attendance, young people, vocations). Add one approved proof point that fits.
-4. The next problem (one paragraph): problemsInOrder[1] if there is one. Same approach: what we saw, then why it matters.
-5. The core four (one short paragraph), unless a "nurture" problem is in problemsInOrder: then explain the core four inside that problem's paragraph instead and skip this one. Name the weekly standard from coreFour.standard (one homily clip, one connection post, one social proof post, one flyer), why it works (the first three give, so people like, know, and trust the parish; then they say yes to the flyer, and that's what moves them from the screen into the pews), and how their posts compare, using coreFour.theirPosts (counts and the date they go back to) or, if that's text, their answers. Diagnose only; don't tell them what to do yet. If their posts already match the standard, say so in a sentence or two and move on.
-6. A couple of smaller things (optional, one or two sentences in all): the items in smallerThings, mentioned briefly so they know we saw them. It can be its own short paragraph or the end of paragraph 4. Don't explain them at length.
-7. What I'd do (the LAST paragraph, and the only place for advice): start with "Here's what I'd do" or similar, then give the specific steps in the order you'd take them, as flowing sentences (no list). Concrete and small: who does what, how often. Posting advice is always the core four each week. You may tie timing to an upcomingChurchDates entry (e.g. having it running before Christmas), but never claim anything about attendance at those times.
-Paragraphs 1 to 6 diagnose only: no "I'd recommend", "you should", or "start by" before the last paragraph.
-If problemsInOrder is empty, the parish is doing well: diagnose what's working and why, still include the core four paragraph, and in the last paragraph suggest one way to go further (talking-head reels from the pastor, or adding YouTube Shorts), never as a problem.
+Advice ("I'd recommend", "you should", "start by") belongs only in next_step. The intro, findings, and working diagnose.
+Total for everything you write: 150 to 300 words. Be brief; don't repeat a point you already made.
 
 HOW MANY PEOPLE RESPOND ON FACEBOOK (facebookEngagement, when present)
 - It compares a typical post's likes and comments with how many people follow the Facebook page. Use the numbers in plainLine (you may reword it, keep the numbers exact). Never say "engagement", "engagement rate", or a percentage; say it in people, like "fewer than 1 in 100 people who follow the page like or comment on a typical post."
-- Follow its "meaning". When provesProblem names a problem, use it as the hard proof inside that problem's paragraph: it's the result of the posts not nurturing people, too few posts, or both. Never call the page dead. The one idea to get across (in one or two plain sentences): when few people respond to a post, Facebook shows it to fewer people, so most of the people who follow the page, parishioners included, never even see it. Don't add vague lines like "likes don't tell the whole story".
+- Follow its "meaning". When provesProblem names a problem, use it as the evidence in that finding. Never call the page dead. The one idea to get across (as that finding's "why"): when few people respond to a post, Facebook shows it to fewer people, so most of the people who follow the page, parishioners included, never even see it. Don't add vague lines like "likes don't tell the whole story".
 - When band is "fine", leave it out or mention it lightly. Only Facebook: never apply it to Instagram.
 
 THE PLAIN "WHY" FOR EACH PROBLEM (Joe's ideas; use the idea, in your own words, never the label)
-- No ads / no Plan a Visit step: posts mostly reach people already in the pews. Ads put a clear invitation in front of families nearby who aren't coming yet. An outreach system is three parts: an ad inviting families nearby, a simple form inside Facebook or Instagram (name and phone number, so saying yes takes seconds), and a personal call the same day.
-- Slow follow-up (a "leak"): people are most ready right after they raise their hand. A call the same day feels like a welcome; a call a week later feels like an afterthought.
-- Posts that don't nurture people (the "nurture" problem: no weekly homily clip, a feed of mostly flyers, or random posts): posts have one job, to build enough goodwill that people say yes when the parish asks. Each homily clip gives people something for free; that's the biggest part of it. Ask too often without giving and people tune you out, like a second collection basket. Fix: the core four every week. Film every Sunday homily, even on a phone, and post one 30 to 60 second clip a week.
-- Too few posts (the "frequency" problem): a post or two a week isn't enough to stay on people's minds. Fix: at least four a week, one of each of the core four.
-- Few followers responding (the "quietFeed" problem): when few people respond to a post, Facebook shows it to fewer people, so most followers, parishioners included, never see it. Posts that give people something (homily clips, stories, photos of parish life) are the ones people respond to. Fix: the core four every week.
+- No ads / no Plan a Visit step ("outreach"): posts mostly reach people already in the pews. Ads put a clear invitation in front of families nearby who aren't coming yet. An outreach system is three parts: an ad inviting families nearby, a simple form inside Facebook or Instagram (name and phone number, so saying yes takes seconds), and a personal call the same day.
+- Slow follow-up ("leak"): people are most ready right after they raise their hand. A call the same day feels like a welcome; a call a week later feels like an afterthought.
+- Posts that don't nurture people ("nurture": no weekly homily clip, a feed of mostly flyers, or random posts): posts have one job, to build enough goodwill that people say yes when the parish asks. Each homily clip gives people something for free; that's the biggest part of it. Ask too often without giving and people tune you out, like a second collection basket.
+- Too few posts ("frequency"): a post or two a week isn't enough to stay on people's minds.
+- Few followers responding ("quietFeed"): when few people respond to a post, Facebook shows it to fewer people, so most followers, parishioners included, never see it. Posts that give people something (homily clips, stories, photos of parish life) are the ones people respond to.
 - No photos from parish life (social proof): when people see others at parish events, they think "people like me go to this."
 - No story posts: people do things for people they know. Stories about Father and the staff turn the parish from an institution into people.
-- Flyers without a clear next step: if people have to figure out what to do next, most won't do anything. One clear action per flyer.
+- Flyers without a clear next step: if people have to figure out what to do next, most won't do anything.
 - Filler: livestreams and saint quotes rarely get seen. Each post should give something or ask for something.
 
 VOICE (Joe's own emails)
 - Short, warm, plain, practical. Sentences of 10 to 20 words, written the way he'd talk on a call. Contractions everywhere.
 - Speak as "I" for recommendations ("I'd recommend", "My guess is", "I think") and "we" for what Parish Media Company saw or does.
-- Honest and direct about the problem, but kind. Praise first, then the fix. Never criticize their staff, volunteers, or current vendor.
-- Low pressure. No urgency or scarcity. No selling; the fixed closing handles the offer.
+- Honest and direct about the problem, but kind. Never criticize their staff, volunteers, or current vendor.
+- Low pressure. No urgency or scarcity. No selling.
 - Faith language light and natural; no preaching.
 - If the reader isn't the pastor, refer to the pastor as "your pastor" or "Father", not "you".
 - Explain any platform term in one clause the first time.
 
 SOUND LIKE JOE, NOT AI (this matters a lot)
-- Write like Joe typing a thoughtful email to a priest he respects: casual, warm, a little informal, like talking across a table after Mass. When in doubt, more casual and human, not more polished.
-- Mix sentence lengths. Short ones are good. Fine to start a sentence with "And" or "But", or use plain asides like "Honestly," "To be fair," "My guess is," "I'll be straight with you."
+- Write like Joe typing a thoughtful email to a priest he respects: casual, warm, a little informal. When in doubt, more casual and human, not more polished.
+- Mix sentence lengths. Short ones are good. Fine to start a sentence with "And" or "But", or use plain asides like "Honestly," "To be fair," "My guess is."
 - Use ordinary words a parish priest would use. Say "people" not "audience", "posts" not "content", "the page" not "the platform".
-- Avoid the usual AI tells: "not just X, but Y", "it's not X, it's Y", "that tells me", "what follows", "honest picture", "real life", "strong base", "the good news is", "here's the thing", "in today's world", "at the end of the day"; groups of three adjectives; a colon in every paragraph; every paragraph starting the same way; summing up what you just said.
+- Avoid the usual AI tells: "not just X, but Y", "it's not X, it's Y", "that tells me", "what follows", "honest picture", "real life", "strong base", "the good news is", "here's the thing", "in today's world", "at the end of the day"; groups of three adjectives; summing up what you just said.
 - Never use: navigate, foster, resonate, meaningful, intentional, seamless, impactful, tapestry, truly, deeply, vibrant, thrive.
 
-EMPHASIS (the letter should be easy to skim, like a real letter someone marked up)
-- Bold (**like this**) up to 3 short phrases in the whole letter, each under 12 words: the core of the biggest problem, the core of the next problem, and the single most important step in the advice paragraph. Bold a phrase inside a sentence, never a whole paragraph.
+EMPHASIS
+- Bold (**like this**) at most once, in next_step only: the core of the step, under 12 words. The finding titles are already bold, so no bold anywhere else.
 - Italics (*like this*) up to 2 times, for a post's topic or a short quote of their own words.
 - Nothing else: no headings, underlines, or lists.
 
@@ -567,17 +522,37 @@ HARD RULES
 - Never mention the score, points, categories, the quiz itself, "the report", or AI.
 - Ad Library: mention it only if an observation says we checked it.
 - Refer to posts by date and what they were about; never quote more than 6 words of a caption.
-- No headings, bullet points, lists, emoji, or em dashes. Bold and italics only as described above, and never in cover_line. At most one exclamation point in the whole letter.
+- Never mention videos, tutorials, or resources for them to watch.
+- No headings, bullet points, lists, emoji, or em dashes. At most one exclamation point in the whole letter.
 - Never use these words: leverage, optimize, engagement, funnel, algorithm, content strategy, brand, synergy, game-changer, unlock, elevate, journey, landscape, robust, crucial, delve.`;
 
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
   properties: {
-    body: { type: "array", items: { type: "string" } },
+    intro: { type: "string" },
+    findings: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: { summary: { type: "string" } },
+        required: ["summary"],
+      },
+    },
+    working: { type: "string" },
+    next_step: { type: "string" },
     cover_line: { type: "string" },
   },
-  required: ["body", "cover_line"],
+  required: ["intro", "findings", "working", "next_step", "cover_line"],
+};
+
+type AiOut = {
+  intro: string;
+  findings: { summary: string }[];
+  working: string;
+  next_step: string;
+  cover_line: string;
 };
 
 export const LETTER_MODEL = "gpt-5.5";
@@ -594,41 +569,54 @@ const numbersIn = (s: string) => [
   ...(s.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((n) => n.replace(/,/g, "").replace(/\.0+$/, "")),
   ...(s.toLowerCase().match(/\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b/g) ?? []).map((w) => NUMBER_WORDS[w]),
 ];
-// Small numbers the fixed advice itself uses ("two choices", "3 to 4 posts a week", "30 to 60 seconds").
-const ALWAYS_ALLOWED = ["1", "2", "3", "4", "30", "60"];
+// Small numbers the fixed advice itself uses ("two choices", "3 to 4 posts a week", "30 to 60 seconds", "90 days").
+const ALWAYS_ALLOWED = ["1", "2", "3", "4", "30", "60", "90"];
 
 const BANNED_WORDS =
   /\b(leverage|optimi[sz]e|engagement|funnel|algorithm|content strategy|brand|synergy|game.?changer|unlock|elevate|journey|landscape|robust|crucial|delve|dear)\b/i;
 const LOOKUP_CLAIMS = /\b(look(ed)? (up|at|through)|we (checked|saw|found|noticed|pulled)|ad library|your (feed|page|posts|website|instagram|facebook) (shows|has))\b/i;
+const ADVICE = /\b(I['’]d recommend|you should|I['’]d start|start by|my advice)\b/i;
 
-export function checkLetter(
-  out: { body: string[]; cover_line: string },
-  facts: LetterFacts["facts"],
-): string[] {
+// Sentences, not splitting after "St." / "Fr." and the like.
+const sentences = (s: string) =>
+  s
+    .split(/(?<=[.!?])(?<!\b(?:St|Sts|Ss|Fr|Mt|Msgr|Dr|Mr|Mrs|Ms|Rev|Sr|Br|Jr)\.)\s+(?=[A-Z“"])/)
+    .filter((x) => x.trim()).length;
+const wordCount = (s: string) => s.split(/\s+/).filter(Boolean).length;
+
+export function checkLetter(out: AiOut, facts: LetterFacts["facts"]): string[] {
   const problems: string[] = [];
-  const text = [...out.body, out.cover_line].join("\n");
-  const words = out.body.join(" ").split(/\s+/).filter(Boolean).length;
-  if (out.body.length < 4 || out.body.length > 9) problems.push(`Use 5 to 8 paragraphs (you wrote ${out.body.length}).`);
-  if (words < 260 || words > 560) problems.push(`The body should be 300 to 420 words (you wrote ${words}).`);
+  const prose = [out.intro, ...out.findings.map((f) => f.summary), out.working, out.next_step];
+  const text = [...prose, out.cover_line].join("\n");
+  const words = wordCount(prose.join(" "));
+  const want = facts.problemsInOrder.length;
+
+  if (out.findings.length !== want)
+    problems.push(`Write exactly ${want} findings, one per item in problemsInOrder, in the same order (you wrote ${out.findings.length}).`);
+  out.findings.forEach((f, i) => {
+    if (sentences(f.summary) !== 2 || wordCount(f.summary) > 55)
+      problems.push(`findings[${i}].summary must be exactly 2 sentences (the evidence, then why it matters), 25 to 50 words.`);
+  });
+  if (words < 110 || words > 340) problems.push(`Everything you write together should be 150 to 300 words (you wrote ${words}).`);
+  if (sentences(out.intro) > 3)
+    problems.push(`The intro must be exactly 3 sentences (you wrote ${sentences(out.intro)}): the thank-you, what we did, and a short line leading into the findings.`);
+  if (sentences(out.next_step) > 4 || wordCount(out.next_step) > 85)
+    problems.push("next_step must be one step in 2 to 4 sentences, under 75 words.");
+  if (/\b(video|tutorial|house of studies)s?\b.*\b(watch|link|free)\b|\b(watch|free) (video|tutorial)s?\b/i.test(text))
+    problems.push("Don't point them to videos, tutorials, or resources.");
+
   // Percentages only where an approved proof point uses them (e.g. "3% to 30%").
   const proofPct = new Set(JSON.stringify(facts.approvedProof).match(/\d+(?:\.\d+)?%/g) ?? []);
-  const pct = (out.body.join(" ").match(/\d+(?:\.\d+)?\s?%/g) ?? []).map((x) => x.replace(/\s/g, ""));
-  if (pct.some((x) => !proofPct.has(x)) || /\bper ?cent\b/i.test(out.body.join(" ")))
+  const pct = (prose.join(" ").match(/\d+(?:\.\d+)?\s?%/g) ?? []).map((x) => x.replace(/\s/g, ""));
+  if (pct.some((x) => !proofPct.has(x)) || /\bper ?cent\b/i.test(prose.join(" ")))
     problems.push("Don't use percentages; say it in people (e.g. fewer than 1 in 100 followers).");
   if (/whole story|likes (alone|by themselves)/i.test(text)) problems.push("Skip vague lines like 'likes don't tell the whole story'. Say plainly that Facebook shows low-response posts to fewer people, so most followers never see them.");
   if (/\bdead\b/i.test(text)) problems.push('Never call the page "dead".');
-  // The intro is exactly: thank-you, what we did, "Here's what I found."
-  // Split on sentence ends, but not after "St." / "Fr." and the like.
-  const introSentences = (out.body[0] ?? "")
-    .split(/(?<=[.!?])(?<!\b(?:St|Sts|Ss|Fr|Mt|Msgr|Dr|Mr|Mrs|Ms|Rev|Sr|Br|Jr)\.)\s+(?=[A-Z“"])/)
-    .filter((x) => x.trim()).length;
-  if (introSentences > 3)
-    problems.push(`The intro must be exactly 3 sentences (you wrote ${introSentences}): the thank-you, what we did, and "Here's what I found." Cut the extra sentence about how you looked at it.`);
   const goal = text.match(/\byour (goals?|hopes?|aims?|priorit(?:y|ies)|dreams?)\b|\b(?:you['’]re|you are) (?:hoping|trying|wanting|looking) to\b/i);
   if (goal) problems.push(`"${goal[0]}": don't state the parish's goals or hopes; they didn't tell us. Speak about goals in general terms.`);
-  const early = out.body.slice(0, -1).join(" ");
-  const advice = early.match(/\b(I['’]d recommend|you should|I['’]d start|start by|my advice)\b/i);
-  if (advice) problems.push(`Keep advice to the last paragraph only ("${advice[0]}" appears earlier). The earlier paragraphs diagnose.`);
+  const early = [out.intro, ...out.findings.map((f) => f.summary), out.working].join(" ");
+  const advice = early.match(ADVICE);
+  if (advice) problems.push(`Keep advice to next_step only ("${advice[0]}" appears earlier). Everything else diagnoses.`);
   if (/\b(scrap(e|ed|ing)|analy[sz]\w*|audit\w*|data)\b/i.test(text)) problems.push('Say "looked up" or "went through", never scraped, analyzed, audited, or data.');
   if (!out.cover_line.trim()) problems.push("cover_line is required.");
 
@@ -641,23 +629,25 @@ export function checkLetter(
   if (/—|–\s/.test(text)) problems.push("No em dashes.");
   if ((text.match(/!/g) ?? []).length > 1) problems.push("At most one exclamation point.");
   if (/\p{Extended_Pictographic}/u.test(text)) problems.push("No emoji.");
-  const bodyText = out.body.join("\n");
-  if (/^\s*([-*•#]|\d+[.)])\s/m.test(bodyText)) problems.push("No bullets or headings.");
+  if (/^\s*([-*•#]|\d+[.)])\s/m.test(prose.join("\n"))) problems.push("No bullets or headings.");
+  if (/\*\*/.test([out.intro, out.working, out.cover_line, ...out.findings.map((f) => f.summary)].join(" ")))
+    problems.push("Bold only in next_step.");
   if (/\*/.test(out.cover_line)) problems.push("No bold or italics in cover_line.");
-  const bolds = bodyText.match(/\*\*[^*]+\*\*/g) ?? [];
-  const italics = bodyText.replace(/\*\*[^*]+\*\*/g, "").match(/\*[^*]+\*/g) ?? [];
-  if (bolds.length > 3 || bolds.some((b) => b.split(/\s+/).length > 12)) problems.push("Bold at most 3 short phrases (under 12 words each).");
+  const marked = prose.join("\n");
+  const bolds = marked.match(/\*\*[^*]+\*\*/g) ?? [];
+  const italics = marked.replace(/\*\*[^*]+\*\*/g, "").match(/\*[^*]+\*/g) ?? [];
+  if (bolds.length > 1 || bolds.some((b) => b.split(/\s+/).length > 12)) problems.push("Bold at most one short phrase (under 12 words), in next_step.");
   if (italics.length > 2) problems.push("Italics at most 2 times.");
-  if ((bodyText.replace(/\*\*[^*]+\*\*/g, "").replace(/\*[^*]+\*/g, "").match(/\*/g) ?? []).length) problems.push("Unmatched * marks.");
+  if ((marked.replace(/\*\*[^*]+\*\*/g, "").replace(/\*[^*]+\*/g, "").match(/\*/g) ?? []).length) problems.push("Unmatched * marks.");
   const tell = text.match(
     /\b(not just|isn['’]t just|that tells me|what follows|honest picture|real life|strong base|the good news is|here['’]s the thing|in today['’]s world|at the end of the day|navigate|foster|resonate|meaningful|intentional|seamless|impactful|tapestry|truly|deeply|vibrant|thrive)\b/i,
   );
   if (tell) problems.push(`"${tell[0]}" sounds like AI. Say it the way Joe would.`);
   if (/\b(better than most|(many|most|other) (parishes|pastors)|the average parish|typical parish)\b/i.test(text))
     problems.push("Don't compare the parish to other parishes.");
-  if (/\b(score|scored|out of 100|scorecard results|the report)\b/i.test(out.body.join(" ")))
-    problems.push("Don't mention the score or the report in the body.");
-  if (/\b(hi|hello) (father|fr\.)|god bless|book a (free )?(call|time|assessment)/i.test(out.body.join(" ")))
+  if (/\b(score|scored|out of 100|scorecard results|the report)\b/i.test(prose.join(" ")))
+    problems.push("Don't mention the score or the report.");
+  if (/\b(hi|hello) (father|fr\.)|god bless|book a (free )?(call|time|assessment|review)/i.test(prose.join(" ")))
     problems.push("Don't write a greeting, sign-off, or booking invitation; those are added for you.");
   if (/\b(only|just) (from|on|by) (what you|your answers)|\b(anything|nothing) outside|\bbased on what you (told|shared)[^.]*, not\b/i.test(text))
     problems.push("Don't say you went only by their answers or didn't look elsewhere. Just say you read through their answers.");
@@ -684,7 +674,7 @@ async function callOpenAI(messages: { role: string; content: string }[], key: st
   });
   if (!res.ok) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const j = (await res.json()) as { choices: { message: { content: string } }[] };
-  return JSON.parse(j.choices[0].message.content) as { body: string[]; cover_line: string };
+  return JSON.parse(j.choices[0].message.content) as AiOut;
 }
 
 const tidyText = (s: string) => s.replace(/\s+/g, " ").replace(/'/g, "’").trim();
@@ -700,12 +690,15 @@ export async function writeScorecardLetter(
   // "What we found" page). The letter must fit on 2.
   letterPages?: (l: ScorecardLetter) => Promise<number>,
 ): Promise<ScorecardLetter> {
-  const { facts, evidence, needs } = buildLetterFacts(doc, a, profile, lead, now);
-  const res = pickResources(needs);
+  const { facts, problems, evidence } = buildLetterFacts(doc, a, profile, lead, now);
+  const action = quickAction(problems[0]?.id, a.homilyClips === "regularly");
   if (key) {
     const messages = [
       { role: "system", content: SYSTEM },
-      { role: "user", content: `Facts for this parish (JSON):\n${JSON.stringify(facts, null, 1)}` },
+      {
+        role: "user",
+        content: `Facts for this parish (JSON):\n${JSON.stringify(facts, null, 1)}\n\nThe "one thing you can do this week" line (already written, for context only): ${action}`,
+      },
     ];
     for (let attempt = 0; attempt < 4; attempt++) {
       try {
@@ -713,18 +706,21 @@ export async function writeScorecardLetter(
         let issues = checkLetter(out, facts);
         if (!issues.length) {
           const letter: ScorecardLetter = {
-            v: 1,
+            v: 2,
             src: "ai",
-            body: out.body.map(tidyText).filter(Boolean),
+            intro: tidyText(out.intro),
+            findings: out.findings.map((f, i) => ({ t: problems[i].title, s: tidyText(f.summary) })),
+            working: tidyText(out.working),
+            next: tidyText(out.next_step),
+            now: action,
             cover: tidyText(out.cover_line).replace(/\.$/, ""),
-            res,
             ev: evidence,
           };
           const pages = letterPages ? await letterPages(letter).catch(() => 2) : 2;
           if (pages <= 2) return letter;
-          const words = letter.body.join(" ").split(/\s+/).length;
+          const words = wordCount([letter.intro, letter.working, letter.next, ...letter.findings.map((f) => f.s)].join(" "));
           issues = [
-            `The letter runs onto a third page. Cut at least 100 words, to about ${Math.max(300, words - 110)} (you wrote ${words}): shorten the smaller paragraphs and drop anything repeated, but keep every section.`,
+            `The letter runs onto a third page. Cut about 60 words, to about ${Math.max(150, words - 60)} (you wrote ${words}): shorten and drop anything repeated, but keep every finding.`,
           ];
         }
         console.warn("Scorecard letter failed checks:", issues);
@@ -740,7 +736,12 @@ export async function writeScorecardLetter(
   }
   const eng = facts.facebookEngagement;
   const weak = eng && (eng.band === "low" || eng.band === "underperforming");
-  return templateLetter(doc, facts.weLookedUpTheirPages, res, evidence, weak ? eng.plainLine : undefined);
+  return templateLetter(doc, a, {
+    lookedUp: facts.weLookedUpTheirPages,
+    problems,
+    evidence,
+    engagementLine: weak ? eng.plainLine : undefined,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -748,42 +749,56 @@ export async function writeScorecardLetter(
 // ---------------------------------------------------------------------------
 
 const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+const COUNT_WORD = ["", "one", "two", "three"];
+const QUIET_FEED_WHY =
+  "When few people respond to a post, Facebook shows it to fewer people, so most of the people following the page, parishioners included, never see it.";
+const TEMPLATE_WHY: Record<string, string> = {
+  outreach: "Posts mostly reach people already in the pews, so families nearby who aren’t coming yet never get a clear invitation.",
+  leak: "People are most ready right after they raise their hand, and a call a week later feels like an afterthought.",
+  nurture: "Posts have one job, to build enough goodwill that people say yes when the parish asks, and a feed of mostly asks gets scrolled past.",
+  frequency: "A post or two a week isn’t enough to keep the parish on people’s minds.",
+  quietFeed: QUIET_FEED_WHY,
+};
 
 export function templateLetter(
   doc: ScorecardDoc,
-  lookedUp = false,
-  res = pickResources(doc.problems.map((p) => (p.id === "nurture" ? "homily" : p.id === "frequency" ? "infrequent" : p.id))),
-  evidence?: LetterEvidence,
-  engagementLine?: string, // Facebook followers vs. responses, when few respond
+  a: Pick<ScorecardAnswers, "homilyClips">,
+  opts: {
+    lookedUp?: boolean;
+    problems?: LetterProblem[];
+    evidence?: LetterEvidence;
+    engagementLine?: string; // Facebook followers vs. responses, when few respond
+  } = {},
 ): ScorecardLetter {
-  const [first, second] = doc.problems;
-  // The rules' "why" text ends by introducing a list ("The core four, every week:"); the template states it in a sentence instead.
-  const why = (p: ReportProblem) => (p.why[0] ?? "").replace(/\s*[^.]*:\s*$/, "");
-  const body = [
-    lookedUp
-      ? "Thanks for taking the Parish Social Media Scorecard. I went through your answers, and we also went ahead and looked up the parish’s pages and recent posts. Here’s what I found."
-      : "Thanks for taking the Parish Social Media Scorecard. I went through your answers, and here’s where I think things stand.",
-  ];
-  if (doc.strengths[0]) body.push(`The good news first: ${lowerFirst(doc.strengths[0])}`);
-  if (first) {
-    body.push(`${doc.diagnosis.lead} ${first.saw.join(" ")} ${why(first)}`.trim());
-    if (first.proof) body.push(first.proof);
-  } else {
-    body.push(doc.diagnosis.body);
-  }
-  body.push(
-    `${engagementLine ? `${engagementLine} When few people respond to a post, Facebook shows it to fewer people, so most of the people following the page, parishioners included, never see it. ` : ""}The standard I give every parish is the core four, every week: one homily clip, one connection post (a story about the pastor, the staff, or the parish), one social proof post (photos of parish life), and one flyer. The first three give people a reason to like, know, and trust the parish, so when the flyer asks, they say yes. That’s what moves people from the screen into the pews.`,
-  );
-  if (first) {
-    body.push(`I’d recommend starting here. ${first.firstStep}`);
-    if (second) body.push(`After that, I’d look at one more thing: ${lowerFirst(second.title)}. ${second.firstStep}`);
-  }
+  const problems: LetterProblem[] =
+    opts.problems ?? doc.problems.map((p) => ({ id: p.id, title: p.title, whatWeSaw: p.saw, firstStep: p.firstStep }));
+  // Each finding: the evidence, then why it matters. When few Facebook
+  // followers respond, that's the evidence for the first posting problem.
+  let engagementUsed = false;
+  const findings: LetterFinding[] = problems.map((p) => {
+    const posting = p.id === "nurture" || p.id === "frequency";
+    let evidence = p.whatWeSaw.filter(Boolean)[0] ?? "";
+    let why = TEMPLATE_WHY[p.id] ?? "";
+    if (posting && opts.engagementLine && !engagementUsed) {
+      evidence = opts.engagementLine;
+      why = QUIET_FEED_WHY;
+      engagementUsed = true;
+    }
+    return { t: p.title, s: `${evidence} ${why}`.trim() };
+  });
+  const n = findings.length;
+  const lead = n === 0 ? "Here’s what I found." : n === 1 ? "Here’s the one thing I’d focus on." : `Here are the ${COUNT_WORD[n]} things I’d focus on, starting with what matters most.`;
   return {
-    v: 1,
+    v: 2,
     src: "template",
-    body,
-    cover: first ? lowerFirst(first.title) : "keeping what’s working and building on it",
-    res,
-    ev: evidence,
+    intro: opts.lookedUp
+      ? `Thanks for taking the Parish Social Media Scorecard. I went through your answers, and we also went ahead and looked up the parish’s pages and recent posts. ${lead}`
+      : `Thanks for taking the Parish Social Media Scorecard. I went through your answers. ${lead}`,
+    findings,
+    working: doc.strengths[0] ?? doc.diagnosis.body,
+    next: problems[0]?.firstStep.replace(/\s*(Building and running|Turning homilies)[^.]*\.\s*$/, "").trim() ?? "Keep doing what’s working, and look at adding short talking-head reels from the pastor.",
+    now: quickAction(problems[0]?.id, a.homilyClips === "regularly"),
+    cover: problems[0] ? lowerFirst(problems[0].title) : "keeping what’s working and building on it",
+    ev: opts.evidence,
   };
 }

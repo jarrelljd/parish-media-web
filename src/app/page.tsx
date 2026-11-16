@@ -411,7 +411,7 @@ export default function Home() {
             <div className="max-w-2xl">
               <h2 className={h2}>Ready to welcome more young adults to your&nbsp;parish?</h2>
               <p className="mt-5 text-pretty text-lg text-vellum/75">
-                Book a free 30-minute Parish Growth Assessment, or start with
+                Book a free 30-minute Parish Growth Review, or start with
                 the free&nbsp;book.
               </p>
             </div>

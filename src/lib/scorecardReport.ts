@@ -328,7 +328,7 @@ export function buildScorecardDoc(
     problemsIntro,
     problems: problems.slice(0, 3),
     strengths: strengths.slice(0, 3),
-    nextStep: `Book a free Parish Growth Assessment. We’ll go over this scorecard with you and ${
+    nextStep: `Book a free Parish Growth Review. We’ll go over this scorecard with you and ${
       outreachMissing
         ? `show you what an outreach system would look like for ${parishMid}, including what it would cost`
         : problems.length

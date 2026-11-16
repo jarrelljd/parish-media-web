@@ -25,8 +25,8 @@ const BUTTON =
 // Shorter label on phones so the button stays on one line
 const BUTTON_LABEL = (
   <>
-    <span className="sm:hidden">Book your free assessment</span>
-    <span className="hidden sm:inline">Book your free 30-minute assessment</span>
+    <span className="sm:hidden">Book Your Free Review</span>
+    <span className="hidden sm:inline">Book Your Free 30-Min Parish Growth Review</span>
   </>
 );
 const rubric = "font-serif text-lg italic text-rubric";
@@ -134,7 +134,7 @@ export default function FreeGuideBookACall() {
                 technology and more time focused on&nbsp;ministry.
               </p>
               <p>
-                Book a free 30&#8209;minute Parish Growth Assessment below.
+                Book a free 30&#8209;minute Parish Growth Review below.
                 We&rsquo;ll create a social media game plan for your parish, and
                 you can keep it whether we work together or&nbsp;not.
               </p>
@@ -168,7 +168,7 @@ export default function FreeGuideBookACall() {
       <section className="bg-vellum-deep px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-3xl text-center">
           <p className={rubric}>What to expect</p>
-          <h2 className={`mt-2 ${h2}`}>Your Parish Growth&nbsp;Assessment</h2>
+          <h2 className={`mt-2 ${h2}`}>Your Parish Growth&nbsp;Review</h2>
           <div className="relative mt-10 aspect-video w-full overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-ink/10">
             <iframe
               src={`https://player.vimeo.com/video/${VSL.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
@@ -188,7 +188,7 @@ export default function FreeGuideBookACall() {
       {/* Before you book + Calendly */}
       <section id="book" className="scroll-mt-20 px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className={rubric}>Book your assessment</p>
+          <p className={rubric}>Book your review</p>
           <h2 className={`mt-2 ${h2}`}>Before you book&hellip;</h2>
           <p className="mt-5 text-pretty text-lg text-ink/75">
             To make this conversation as useful as possible for your parish,{" "}

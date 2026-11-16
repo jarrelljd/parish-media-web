@@ -345,7 +345,7 @@ export async function submitScorecardOptIn(
   if (role === NO_QUALIFYING_ROLE) {
     return {
       status: "error",
-      message: "The full report is only for the roles listed.",
+      message: "The full scorecard is only for the roles listed.",
     };
   }
   if (!name) {

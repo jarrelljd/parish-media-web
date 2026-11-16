@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   getScorecardPopulation,
   submitScorecardOptIn,
@@ -11,7 +11,6 @@ import {
 import { buttonArrow, buttonClass } from "@/components/buttonStyles";
 import SendingOverlay from "@/components/SendingOverlay";
 import {
-  CategoryBars,
   SCORECARD_RESULT_KEY,
   ScoreHero,
   type StoredScorecardResult,
@@ -24,7 +23,6 @@ import {
   type ScorecardAnswers,
   type ScorecardReport,
 } from "@/lib/scorecard";
-import { buildScorecardDoc } from "@/lib/scorecardReport";
 import { PAGE_QUESTION_IDS, US_STATES, questions, type Question } from "@/data/scorecard";
 import { checkParishLookup, startParishLookup } from "@/app/scorecardLookup";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
@@ -179,18 +177,6 @@ export default function Scorecard() {
     setStep((s) => Math.max(0, s - 1));
   }
 
-  function restart() {
-    lookup.current = { id: null, settled: false, started: "" };
-    setAnswered(new Set());
-    setLookupNote(null);
-    setDraft({});
-    setStep(0);
-    setReport(null);
-    setAnswers(null);
-    setPhase("quiz");
-    keepCardInView();
-  }
-
   return (
     <div ref={cardRef} className="scroll-mt-24">
       {phase === "quiz" && (
@@ -241,11 +227,7 @@ export default function Scorecard() {
       )}
 
       {phase === "results" && report && answers && (
-        <Results
-          report={report}
-          answers={answers}
-          onRestart={restart}
-        />
+        <Results report={report} answers={answers} />
       )}
     </div>
   );
@@ -482,26 +464,9 @@ function QuizCard({
 // page (/scorecard/summary). The full report itself goes out by email.
 // ---------------------------------------------------------------------------
 
-function Results({
-  report,
-  answers,
-  onRestart,
-}: {
-  report: ScorecardReport;
-  answers: ScorecardAnswers;
-  onRestart: () => void;
-}) {
-  // The written report's problems (no name/parish yet, so it's generic).
-  const doc = useMemo(() => buildScorecardDoc(answers, report.population), [answers, report.population]);
-  const topProblem = doc.problems[0];
-  // Lowest-scoring category, for a parish with no major problems.
-  const weakest = [...report.categories].sort((x, y) => x.points / x.max - y.points / y.max)[0];
-  const problemCount = ["", "one major problem", "two major problems", "three major problems"][
-    doc.problems.length
-  ];
-
-  // Bring the results to the top of the screen so the score, the biggest
-  // problem, and the start of the opt-in form are all in view.
+function Results({ report, answers }: { report: ScorecardReport; answers: ScorecardAnswers }) {
+  // Bring the results to the top of the screen so the score and the start
+  // of the opt-in form are in view.
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -509,59 +474,12 @@ function Results({
 
   return (
     <div ref={rootRef} className="scroll-mt-24 space-y-5">
+      {/* Just the score and why, then the opt-in (Joe, 2026-11-16). The
+          problems and details live in the letter. */}
       <ScoreHero report={report} compact />
 
-      {/* Biggest problem, then straight into the opt-in */}
       <div className="rounded-3xl bg-white p-5 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-8">
-        <div className="rounded-2xl bg-parchment p-5 sm:p-6">
-          {topProblem ? (
-            <>
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
-                The Biggest Problem We Found
-              </p>
-              <p className="mt-2 text-pretty font-serif text-lg leading-snug text-navy sm:text-xl">
-                {topProblem.title}.
-              </p>
-              <p className="mt-2 text-pretty text-sm leading-relaxed text-navy/70">
-                Your full report covers {problemCount}: what we saw, why each
-                one matters, and the first step to fix&nbsp;it.
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold-deep">
-                Your Lowest Category: {weakest.label}
-              </p>
-              <p className="mt-2 text-pretty font-serif text-lg leading-snug text-navy sm:text-xl">
-                {weakest.status}
-              </p>
-            </>
-          )}
-        </div>
-
-        <div className="pt-7 sm:pt-8">
-          <OptInForm answers={answers} population={report.population} />
-        </div>
-      </div>
-
-      <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-        <h3 className="font-serif text-2xl font-medium tracking-tight text-navy">
-          Your Score by Category
-        </h3>
-        <div className="mt-6">
-          <CategoryBars report={report} />
-        </div>
-      </div>
-
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={onRestart}
-          className="inline-flex items-center gap-1.5 text-sm text-navy/60 underline-offset-4 hover:text-navy hover:underline"
-        >
-          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-          Retake the scorecard
-        </button>
+        <OptInForm answers={answers} population={report.population} />
       </div>
     </div>
   );
@@ -635,11 +553,11 @@ function OptInForm({
       <form action={formAction} className="mx-auto max-w-md space-y-4">
         <div className="text-center">
           <h3 className="text-balance font-serif text-2xl font-medium tracking-tight text-navy sm:text-3xl">
-            Where Should We Send Your Full Report?
+            Where Should We Send Your Full Scorecard?
           </h3>
           <p className="mt-2 text-pretty text-sm leading-relaxed text-navy/65">
-            Your report shows what to fix first, plus specific next steps for
-            every category, written for your&nbsp;parish.
+            Confirm a few details about yourself so we can tailor the report to
+            you and your&nbsp;parish.
           </p>
         </div>
 
@@ -724,7 +642,7 @@ function OptInForm({
           </select>
           {ineligible && (
             <p className="mt-3 rounded-lg bg-gold/10 px-4 py-3 text-sm text-navy/80">
-              The full report is only for the roles listed&nbsp;above.
+              The full scorecard is only for the roles listed&nbsp;above.
             </p>
           )}
         </Field>
@@ -746,11 +664,15 @@ function OptInForm({
             </span>
           ) : (
             <>
-              Send Me My Full Report
+              Send Me My Full Scorecard
               <ArrowRight className={buttonArrow} aria-hidden="true" />
             </>
           )}
         </button>
+        <p className="text-pretty text-center text-xs leading-relaxed text-navy/55">
+          We&rsquo;ll use your information only to send your scorecard and
+          follow up about your parish&rsquo;s&nbsp;results.
+        </p>
       </form>
     </>
   );

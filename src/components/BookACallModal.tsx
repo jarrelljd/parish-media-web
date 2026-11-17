@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const CALENDLY_URL_PARISH = "https://calendly.com/parishmedia/consult";
-const CALENDLY_URL_VOCATIONS =
-  "https://calendly.com/parishmedia/free-consultation-joe-jarrell-clone";
+const CALENDLY_URL = "https://calendly.com/parishmedia/consult";
 
 export default function BookACallModal({
   open,
@@ -15,7 +13,6 @@ export default function BookACallModal({
   onClose: () => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [purpose, setPurpose] = useState("");
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
@@ -32,10 +29,7 @@ export default function BookACallModal({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setRedirecting(true);
-    window.location.href =
-      purpose === "Vocations Outreach"
-        ? CALENDLY_URL_VOCATIONS
-        : CALENDLY_URL_PARISH;
+    window.location.href = CALENDLY_URL;
   }
 
   return (
@@ -105,50 +99,18 @@ export default function BookACallModal({
             </label>
           </div>
 
-          <p className="text-xs text-navy/50">
-            Pastor can&rsquo;t join?{" "}
+          <p className="text-balance text-xs text-navy/50">
+            Pastor can&rsquo;t join, or reaching out about something other
+            than parish growth?{" "}
             <Link
               href="/contact"
               onClick={onClose}
-              className="underline decoration-gold decoration-2 underline-offset-4 hover:text-navy"
+              className="whitespace-nowrap underline decoration-gold decoration-2 underline-offset-4 hover:text-navy"
             >
               Contact us instead
             </Link>
             .
           </p>
-
-          <div
-            className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
-              confirmed
-                ? "grid-rows-[1fr] opacity-100"
-                : "grid-rows-[0fr] opacity-0"
-            }`}
-          >
-            <div className="min-h-0">
-              <label
-                htmlFor="modal-purpose"
-                className="block text-sm font-medium text-navy"
-              >
-                What&rsquo;s This Consult For?
-              </label>
-              <select
-                id="modal-purpose"
-                name="purpose"
-                required={confirmed}
-                value={purpose}
-                onChange={(e) => setPurpose(e.target.value)}
-                className="mt-2 w-full rounded-lg border border-navy/20 bg-offwhite px-4 py-2.5 text-navy outline-none focus:border-navy"
-              >
-                <option value="" disabled>
-                  Select one...
-                </option>
-                <option value="Parish Growth">
-                  Parish Growth
-                </option>
-                <option value="Vocations Outreach">Vocations Outreach</option>
-              </select>
-            </div>
-          </div>
 
           <button
             type="submit"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { ChevronDown, ClipboardCheck } from "lucide-react";
 import DeliveryAnimation from "@/components/DeliveryAnimation";
 import Reveal from "@/components/Reveal";
@@ -17,12 +17,16 @@ type Loaded = {
 // The stored result never changes while this page is open.
 const subscribeNever = () => () => {};
 
+// The opt-in stores the result in this tab. Visitors arriving from the
+// report PDF (often another device) only bring ?name= in the link.
 function readStoredResult(): string {
+  let stored = "";
   try {
-    return sessionStorage.getItem(SCORECARD_RESULT_KEY) ?? "";
-  } catch {
-    return "";
-  }
+    stored = sessionStorage.getItem(SCORECARD_RESULT_KEY) ?? "";
+  } catch {}
+  if (stored) return stored;
+  const name = new URLSearchParams(window.location.search).get("name")?.trim();
+  return name ? JSON.stringify({ name }) : "";
 }
 
 // Glide down to the calendar (instant when the visitor prefers reduced motion).
@@ -69,6 +73,15 @@ export default function ScorecardSummary() {
     const extra = params.toString();
     return extra ? `${GROWTH_REVIEW_CALENDLY_URL}&${extra}` : GROWTH_REVIEW_CALENDLY_URL;
   }, [data]);
+
+  // Links from the report PDF end in #book, but the sections only exist
+  // after this first client render, so the browser can't jump there itself.
+  const ready = data !== undefined;
+  useEffect(() => {
+    if (ready && window.location.hash === "#book") {
+      document.getElementById("book")?.scrollIntoView({ block: "start" });
+    }
+  }, [ready]);
 
   if (data === undefined) {
     return <div className="min-h-[60vh]" aria-hidden="true" />;

@@ -100,7 +100,8 @@ export function letterGreeting(name: string, role: string): string {
   return words[0] ? `Hi ${tidy(words[0])},` : "Hello,";
 }
 
-export const BOOKING_DISPLAY = "parishmediacompany.com/parish";
+// Linked words in the closing (no printed web address; Joe, 2026-11-16).
+export const BOOKING_LINK_TEXT = "pick a time here";
 
 // The CTA right after the key findings (Joe's copy, 2026-11-16).
 export const FINDINGS_CTA = {
@@ -138,7 +139,7 @@ export function fixedClosing(parish: string, isPastor: boolean): string[] {
     "You can absolutely fix all of this in-house. But let’s be honest: it takes a handful of skills (editing video, running targeted ads, tracking who responds, and fast follow-up), and most parish teams are already busy serving the parish. So you have two choices: keep going as you are, or have someone build and run it for you.",
     `If it’s the second, that’s exactly what we do. A free Parish Growth Review is the first step: we’ll go over this letter together, pick the highest-priority opportunity, and map out the next 90 days for ${parish}. It’s yours to keep whether we work together or not.${
       isPastor ? "" : " We do ask that your pastor join the call."
-    } You can pick a time at ${BOOKING_DISPLAY}.`,
+    } You can ${BOOKING_LINK_TEXT}.`,
   ];
 }
 

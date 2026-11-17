@@ -21,7 +21,7 @@ import type { BandTone } from "@/data/scorecard";
 import type { PostType } from "@/lib/parishProfile";
 import { SCORECARD_BOOKING_URL } from "@/lib/scorecard";
 import {
-  BOOKING_DISPLAY,
+  BOOKING_LINK_TEXT,
   FINDINGS_CTA,
   fixedClosing,
   type AnyLetter,
@@ -203,7 +203,7 @@ function KeyFindings({ letter }: { letter: ScorecardLetter }) {
 }
 
 // The booking CTA right after the key findings, before the detail.
-function FindingsCta() {
+function FindingsCta({ url }: { url: string }) {
   return (
     <View
       style={{ backgroundColor: paper, borderLeftWidth: 3, borderLeftColor: gold, paddingVertical: 9, paddingHorizontal: 12, marginTop: 4, marginBottom: 14 }}
@@ -211,14 +211,11 @@ function FindingsCta() {
     >
       <Text>
         <Text style={{ fontWeight: 700, color: navy }}>{FINDINGS_CTA.lead}</Text>{" "}
-        <Link src={SCORECARD_BOOKING_URL} style={s.link}>
+        <Link src={url} style={s.link}>
           {FINDINGS_CTA.link}
         </Link>{" "}
         {FINDINGS_CTA.rest}
       </Text>
-      <Link src={SCORECARD_BOOKING_URL} style={[s.link, { marginTop: 3, fontWeight: 600 }]}>
-        {BOOKING_DISPLAY}
-      </Link>
     </View>
   );
 }
@@ -253,14 +250,14 @@ function Rich({ text }: { text: string }) {
   );
 }
 
-// Prints the booking address as a real link.
-function Linked({ text }: { text: string }) {
-  const parts = text.split(new RegExp(`(${BOOKING_DISPLAY.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`));
+// Turns the closing's booking words ("pick a time here") into a real link.
+function Linked({ text, url }: { text: string; url: string }) {
+  const parts = text.split(BOOKING_LINK_TEXT).flatMap((part, i) => (i ? [BOOKING_LINK_TEXT, part] : [part]));
   return (
     <Text style={s.p} orphans={2} widows={2}>
       {parts.map((part, i) =>
-        part === BOOKING_DISPLAY ? (
-          <Link key={i} src={SCORECARD_BOOKING_URL} style={s.link}>
+        part === BOOKING_LINK_TEXT ? (
+          <Link key={i} src={url} style={s.link}>
             {part}
           </Link>
         ) : (
@@ -356,9 +353,12 @@ export type LetterPdfInput = {
   letter: AnyLetter;
   greeting: string; // "Hi Father,"
   isPastor: boolean;
+  // Where the booking links go: the scorecard summary calendar, with the
+  // lead's name filled in when we have it.
+  bookingUrl?: string;
 };
 
-function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
+function LetterPdf({ doc, letter, greeting, isPastor, bookingUrl = SCORECARD_BOOKING_URL }: LetterPdfInput) {
   const parishName = doc.parish === "Your parish" ? "the parish" : doc.parish;
   const recipient = [doc.preparedFor, doc.parish === "Your parish" ? "" : doc.parish, doc.location].filter(Boolean);
   const closing = fixedClosing(parishName, isPastor);
@@ -389,7 +389,7 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
           <>
             <Text style={s.p}>{letter.intro}</Text>
             <KeyFindings letter={letter} />
-            <FindingsCta />
+            <FindingsCta url={bookingUrl} />
             <Label>What’s working</Label>
             <Text style={s.p} orphans={2} widows={2}>
               <Rich text={letter.working} />
@@ -409,7 +409,7 @@ function LetterPdf({ doc, letter, greeting, isPastor }: LetterPdfInput) {
           ))
         )}
         {closing.map((para, i) => (
-          <Linked key={`c${i}`} text={para} />
+          <Linked key={`c${i}`} text={para} url={bookingUrl} />
         ))}
 
         {/* The sign-off stays in one piece. */}

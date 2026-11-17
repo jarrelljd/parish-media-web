@@ -368,7 +368,18 @@ export function reportToText(r: ScorecardReport): string {
 
 // Where the report email's booking button points: the Parish Growth page's
 // "Before You Book" section, which explains the pastor must join the call.
-export const SCORECARD_BOOKING_URL = "https://parishmediacompany.com/parish#book";
+// Scorecard booking links (report PDF + cover email) go to the scorecard
+// summary page's embedded calendar, so site tracking still runs.
+export const SCORECARD_BOOKING_URL = "https://parishmediacompany.com/scorecard/summary#book";
+
+// Same link with the lead's name, so the calendar fills it in (name only:
+// no email address in a link that can be forwarded or logged).
+export function scorecardBookingUrl(name?: string | null): string {
+  const n = (name ?? "").trim().slice(0, 120);
+  return n
+    ? `https://parishmediacompany.com/scorecard/summary?name=${encodeURIComponent(n)}#book`
+    : SCORECARD_BOOKING_URL;
+}
 
 // "saint paul" → "Saint Paul", so the report reads cleanly.
 export function titleCase(s: string): string {

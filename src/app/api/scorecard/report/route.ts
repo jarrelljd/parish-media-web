@@ -6,7 +6,7 @@
 
 import type { NextRequest } from "next/server";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
-import { parseAnswers } from "@/lib/scorecard";
+import { parseAnswers, scorecardBookingUrl } from "@/lib/scorecard";
 import { readReportQuery } from "@/lib/scorecardLink";
 import { letterGreeting, templateLetter } from "@/lib/scorecardLetter";
 import { renderScorecardPdf } from "@/lib/scorecardPdf";
@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
     letter,
     greeting: letterGreeting(payload.n ?? "", payload.r ?? ""),
     isPastor: payload.r === "Pastor",
+    bookingUrl: scorecardBookingUrl(payload.n),
   });
 
   const slug =

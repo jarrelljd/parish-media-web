@@ -11,6 +11,19 @@ export function trackLead(contentName: string, eventId?: string) {
   fbq?.("track", "Lead", { content_name: contentName }, eventId ? { eventID: eventId } : undefined);
 }
 
+// Custom event for every completed scorecard (any role). Pastors also fire a
+// Lead via trackLead; this one only counts completions. eventId matches the
+// server's ScorecardComplete so Meta dedupes the pair.
+export function trackScorecardComplete(role: string, eventId?: string) {
+  const fbq = (window as unknown as { fbq?: Fbq }).fbq;
+  fbq?.(
+    "trackCustom",
+    "ScorecardComplete",
+    { content_name: "Social Media Scorecard", role },
+    eventId ? { eventID: eventId } : undefined,
+  );
+}
+
 // Standard Meta "Schedule" event — for an actual booked appointment (e.g. a
 // completed Calendly booking), distinct from "Lead" above. Pass eventId when
 // the server also sends this booking (see ScheduleTracker) so Meta dedupes.

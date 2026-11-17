@@ -22,6 +22,7 @@ import {
   sendLeadConversionEvent,
   sendGenericLeadEvent,
   sendGenericScheduleEvent,
+  sendScorecardCompleteEvent,
 } from "@/lib/metaConversionsApi";
 
 // TODO: swap to joe@parishmediacompany.com once Google Workspace is live.
@@ -318,7 +319,10 @@ export type ScorecardOptInState = {
   status: "idle" | "success" | "error";
   message?: string;
   // Shared with the browser pixel's Lead so Meta dedupes the two.
+  // Only set for pastors (the only role that counts as a Lead).
   eventId?: string;
+  // Shared with the browser's ScorecardComplete (every role) for dedupe.
+  completeEventId?: string;
   // Link to the lead's PDF report, for the summary page's download button.
   pdfUrl?: string;
 };
@@ -537,6 +541,34 @@ export async function submitScorecardOptIn(
     };
   }
 
+  const metaUser = {
+    email,
+    phone,
+    userAgent: headersList.get("user-agent"),
+    ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+  };
+
+  // Every completion (any role) is counted as a custom ScorecardComplete.
+  const completeEventId = randomUUID();
+  try {
+    await sendScorecardCompleteEvent({
+      eventId: completeEventId,
+      contentName: "Social Media Scorecard",
+      sourcePath: "/scorecard",
+      extra: { role },
+      ...metaUser,
+    });
+  } catch (err) {
+    console.error("Failed to send Meta ScorecardComplete event:", err);
+  }
+
+  // Only pastors count as a Meta Lead: they're the decision-makers who can
+  // buy. Other roles still get the full scorecard, just no Lead event. No
+  // eventId back to the client means the browser pixel skips it too.
+  if (role !== "Pastor") {
+    return { status: "success", completeEventId, pdfUrl };
+  }
+
   const eventId = randomUUID();
   try {
     await sendGenericLeadEvent({
@@ -552,7 +584,7 @@ export async function submitScorecardOptIn(
     console.error("Failed to send Meta Conversions API event (scorecard):", err);
   }
 
-  return { status: "success", eventId, pdfUrl };
+  return { status: "success", eventId, completeEventId, pdfUrl };
 }
 
 export type NpsState = {

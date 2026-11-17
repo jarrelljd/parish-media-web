@@ -15,7 +15,7 @@ import {
   ScoreHero,
   type StoredScorecardResult,
 } from "@/components/ScorecardParts";
-import { trackLead } from "@/lib/pixel";
+import { trackLead, trackScorecardComplete } from "@/lib/pixel";
 import {
   buildReport,
   titleCase,
@@ -508,11 +508,20 @@ function OptInForm({
   useEffect(() => {
     if (state.status !== "success") return;
     // Browser half of the Lead; the server sent the same eventId to the
-    // Conversions API. A tracking failure must never block the redirect.
+    // Conversions API. The server only returns an eventId for pastors, so
+    // other roles never fire a Lead. A tracking failure must never block the
+    // redirect.
     try {
-      trackLead("Social Media Scorecard", state.eventId);
+      trackScorecardComplete(role, state.completeEventId);
     } catch (err) {
-      console.error("Failed to fire Meta Pixel Lead (scorecard):", err);
+      console.error("Failed to fire Meta Pixel ScorecardComplete:", err);
+    }
+    if (state.eventId) {
+      try {
+        trackLead("Social Media Scorecard", state.eventId);
+      } catch (err) {
+        console.error("Failed to fire Meta Pixel Lead (scorecard):", err);
+      }
     }
     // Lets the summary page show their results. Kept out of the URL so
     // name/email never reach analytics or the pixel.
@@ -541,7 +550,7 @@ function OptInForm({
       clearTimeout(go);
       document.body.style.overflow = prevOverflow;
     };
-  }, [state.status, state.eventId, state.pdfUrl, answers, population, name, email, organization, role]);
+  }, [state.status, state.eventId, state.completeEventId, state.pdfUrl, answers, population, name, email, organization, role]);
 
   return (
     <>

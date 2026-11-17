@@ -116,7 +116,15 @@ type MarketingEventInput = {
   lastName?: string;
   userAgent?: string | null;
   ipAddress?: string | null;
+  // Extra non-PII custom_data fields (e.g. the scorecard role).
+  extra?: Record<string, string>;
 };
+
+// Custom event for every completed scorecard, any role. Pastors also get a
+// Lead; this one is just for counting completions, not ad optimization.
+export async function sendScorecardCompleteEvent(input: MarketingEventInput): Promise<void> {
+  await sendMarketingEvent("ScorecardComplete", input);
+}
 
 export async function sendGenericLeadEvent(input: MarketingEventInput): Promise<void> {
   await sendMarketingEvent("Lead", input);
@@ -128,7 +136,7 @@ export async function sendGenericScheduleEvent(input: MarketingEventInput): Prom
 }
 
 async function sendMarketingEvent(
-  eventName: "Lead" | "Schedule",
+  eventName: "Lead" | "Schedule" | "ScorecardComplete",
   {
     eventId,
     contentName,
@@ -139,6 +147,7 @@ async function sendMarketingEvent(
     lastName,
     userAgent,
     ipAddress,
+    extra,
   }: MarketingEventInput,
 ): Promise<void> {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID_MARKETING;
@@ -167,7 +176,7 @@ async function sendMarketingEvent(
         action_source: "website",
         event_source_url: `${SITE_URL}${sourcePath}`,
         user_data: userData,
-        custom_data: { content_name: contentName },
+        custom_data: { content_name: contentName, ...extra },
       },
     ],
     ...(TEST_EVENT_CODE ? { test_event_code: TEST_EVENT_CODE } : {}),

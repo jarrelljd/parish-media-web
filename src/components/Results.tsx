@@ -275,7 +275,7 @@ export default function Results() {
 
           <div className="mt-14 flex">
             <BookACallButton className={buttonClass("primary")}>
-              Book a call
+              Book a Free Parish Growth&nbsp;Review
               <ArrowRight className={buttonArrow} aria-hidden="true" />
             </BookACallButton>
           </div>

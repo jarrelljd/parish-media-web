@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
-import { ChevronDown, ClipboardCheck, FileText } from "lucide-react";
+import { ChevronDown, ClipboardCheck } from "lucide-react";
 import DeliveryAnimation from "@/components/DeliveryAnimation";
 import Reveal from "@/components/Reveal";
 import RoseWindow from "@/components/RoseWindow";
@@ -12,7 +12,6 @@ import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 type Loaded = {
   name: string;
   email: string;
-  pdfUrl: string | null;
 };
 
 // The stored result never changes while this page is open.
@@ -52,16 +51,10 @@ export default function ScorecardSummary() {
     if (!raw) return null;
     try {
       const stored = JSON.parse(raw) as StoredScorecardResult;
-      // Only our own report links, never an arbitrary URL from storage.
-      const pdfUrl =
-        typeof stored.pdfUrl === "string" && /^https?:\/\/[^/]+\/api\/scorecard\/report(\/[\w.-]+\.pdf)?\?/.test(stored.pdfUrl)
-          ? stored.pdfUrl
-          : null;
       const name = String(stored.name ?? "").trim().slice(0, 120);
       return {
         name,
         email: String(stored.email ?? "").trim().slice(0, 120),
-        pdfUrl,
       };
     } catch {
       return null;
@@ -113,17 +106,6 @@ export default function ScorecardSummary() {
                 Book My Free Review
                 <ChevronDown className="h-5 w-5" aria-hidden="true" />
               </a>
-              {data?.pdfUrl && (
-                <a
-                  href={data.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-semibold text-lapis underline decoration-gilt/60 decoration-2 underline-offset-[6px] transition-colors hover:decoration-gilt"
-                >
-                  <FileText className="h-4 w-4" aria-hidden="true" />
-                  Or download it now (PDF)
-                </a>
-              )}
             </div>
           </Reveal>
         </div>

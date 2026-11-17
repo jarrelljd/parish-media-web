@@ -78,7 +78,7 @@ export default function BookACallModal({
               id="book-a-call-title"
               className="font-serif text-xl font-semibold text-navy"
             >
-              Book a Call
+              Book a Free Parish Growth&nbsp;Review
             </p>
             <p className="mt-1 text-sm text-navy/60">
               Pastor attendance is required so we can tailor the

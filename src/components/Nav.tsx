@@ -173,7 +173,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
               solid ? "bg-lapis text-vellum hover:bg-lapis-deep" : "bg-vellum text-ink hover:bg-white"
             }`}
           >
-            Book a call
+            Book a Free Call
           </button>
         </nav>
 
@@ -236,7 +236,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
             }}
             className="mt-5 w-full rounded-[3px] bg-lapis py-3.5 text-base font-semibold text-vellum"
           >
-            Book a call
+            Book a Free Call
           </button>
         </nav>
       )}

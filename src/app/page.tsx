@@ -131,7 +131,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col items-start gap-6 motion-safe:animate-fade-up sm:flex-row sm:items-center sm:gap-8" style={{ animationDelay: "1200ms" }}>
               <BookACallButton className="group inline-flex w-full items-center justify-center gap-2.5 rounded-[3px] bg-vellum px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-white sm:w-auto">
-                Book a call
+                Book a Free Parish Growth&nbsp;Review
                 <ArrowRight className={arrow} aria-hidden="true" />
               </BookACallButton>
               <Link href="/free-guide" className="group inline-flex items-center gap-2 font-semibold text-vellum underline decoration-vellum/40 underline-offset-[6px] hover:decoration-vellum">
@@ -417,7 +417,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
               <BookACallButton className="group inline-flex w-full items-center justify-center gap-2.5 rounded-[3px] bg-vellum px-7 py-4 text-base font-semibold text-lapis transition-colors hover:bg-white sm:w-auto">
-                Book a call
+                Book a Free Parish Growth&nbsp;Review
                 <ArrowRight className={arrow} aria-hidden="true" />
               </BookACallButton>
               <Link href="/free-guide" className="font-semibold text-vellum underline decoration-vellum/40 underline-offset-[6px] hover:decoration-vellum">

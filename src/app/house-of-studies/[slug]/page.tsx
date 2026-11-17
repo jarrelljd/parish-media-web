@@ -87,7 +87,7 @@ export default async function VaultVideoPage({
             </p>
             <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <BookACallButton className="rounded-full bg-gold px-8 py-3 font-semibold text-navy shadow-sm transition-colors hover:bg-gold/90">
-                Book a Free Call
+                Book a Free Parish Growth&nbsp;Review
               </BookACallButton>
               <Link
                 href="/house-of-studies"

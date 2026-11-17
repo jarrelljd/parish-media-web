@@ -236,7 +236,7 @@ export default function ParishPricing() {
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <BookACallButton className="inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90">
-            Book a Call
+            Book a Free Parish Growth&nbsp;Review
           </BookACallButton>
           <Link
             href="/contact"

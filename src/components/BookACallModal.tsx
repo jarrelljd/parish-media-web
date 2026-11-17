@@ -74,10 +74,9 @@ export default function BookACallModal({
             >
               Book a Free Parish Growth&nbsp;Review
             </p>
-            <p className="mt-1 text-sm text-navy/60">
-              Pastor attendance is required so we can tailor the
-              conversation to your parish. Others may book on the
-              pastor&rsquo;s&nbsp;behalf.
+            <p className="mt-1 text-balance text-sm text-navy/60">
+              Anyone can book. The pastor just needs to join
+              the&nbsp;call.
             </p>
           </div>
 
@@ -94,14 +93,12 @@ export default function BookACallModal({
               htmlFor="modal-confirmEligible"
               className="text-sm text-navy/80"
             >
-              I confirm I&rsquo;m the pastor, or the pastor will join
-              the&nbsp;call.
+              I confirm the pastor will be on the&nbsp;call.
             </label>
           </div>
 
           <p className="text-balance text-xs text-navy/50">
-            Pastor can&rsquo;t join, or reaching out about something other
-            than parish growth?{" "}
+            Pastor can&rsquo;t join, or have another question?{" "}
             <Link
               href="/contact"
               onClick={onClose}

@@ -8,6 +8,8 @@ import StMaryLanding from "@/components/st-mary/StMaryLanding";
 import { stMary } from "@/data/stMaryLanding";
 import HnjElcLanding from "@/components/hnj-elc/HnjElcLanding";
 import { hnjElc } from "@/data/hnjElcLanding";
+import StTeresaLanding from "@/components/st-teresa/StTeresaLanding";
+import { stTeresa } from "@/data/stTeresaLanding";
 
 function hexToRgba(hex: string, alpha: number): string {
   const clean = hex.replace("#", "");
@@ -42,6 +44,18 @@ const customPages: Record<string, { Page: () => React.ReactNode; metadata: Metad
         title: hnjElc.meta.title,
         description: hnjElc.meta.description,
         images: [{ url: hnjElc.hero.photo.src }],
+      },
+    },
+  },
+  [`${stTeresa.parishSlug}/${stTeresa.eventSlug}`]: {
+    Page: StTeresaLanding,
+    metadata: {
+      title: stTeresa.meta.title,
+      description: stTeresa.meta.description,
+      openGraph: {
+        title: stTeresa.meta.title,
+        description: stTeresa.meta.description,
+        images: [{ url: stTeresa.hero.photo.src }],
       },
     },
   },

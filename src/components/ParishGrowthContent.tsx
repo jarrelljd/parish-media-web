@@ -1,14 +1,11 @@
-import Image from "next/image";
+import type { ReactNode } from "react";
+import { Heart, MessageCircle, ThumbsUp } from "lucide-react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import { comparison, proofFacts } from "@/data/method";
 import WhatWeDo from "./WhatWeDo";
-import navePhoto from "../../public/images/events/st-mary-mountains/landing/nave.jpg";
-import igScreen from "../../public/images/proof/ig-phone-screen.jpg";
-import fbAdScreen from "../../public/images/proof/fb-ad-screen.jpg";
-import PhoneMockup from "./PhoneMockup";
-import { FacebookIcon, InstagramIcon } from "./SocialIcons";
+import { FacebookLogo, InstagramLogo } from "./SocialIcons";
 
 const CALENDLY_URL = GROWTH_REVIEW_CALENDLY_URL;
 
@@ -61,7 +58,7 @@ const PRIEST_TESTIMONIALS = [
 ];
 
 const BUTTON =
-  "inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
+  "inline-flex items-center justify-center rounded-lg bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
 // Shorter label on phones so the button stays on one line
 const BUTTON_LABEL = (
   <>
@@ -69,50 +66,83 @@ const BUTTON_LABEL = (
     <span className="hidden sm:inline">Book Your Free 30-Min Parish Growth Review</span>
   </>
 );
-const rubric = "font-serif text-lg italic text-rubric";
 const h2 = "font-serif text-4xl font-medium leading-[1.08] text-balance sm:text-5xl";
+
+// A platform logo that floats and pulses while reactions pop up off it.
+function PlatformEmblem({
+  color,
+  shape,
+  delay,
+  reactions,
+  children,
+}: {
+  color: string;
+  shape: string;
+  delay: string;
+  reactions: [ReactNode, ReactNode];
+  children: ReactNode;
+}) {
+  const chip =
+    "absolute flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg shadow-black/40 motion-safe:animate-emblem-react";
+  return (
+    <div className="relative motion-safe:animate-emblem-float" style={{ animationDelay: delay }}>
+      <span className={`absolute inset-0 opacity-50 blur-2xl ${shape}`} style={{ backgroundColor: color }} />
+      <span
+        className={`absolute inset-0 border-2 opacity-0 motion-safe:animate-emblem-halo ${shape}`}
+        style={{ borderColor: color, animationDelay: delay }}
+      />
+      <div className="relative">{children}</div>
+      <span className={`${chip} -right-3 -top-2`}>{reactions[0]}</span>
+      <span className={`${chip} -left-3 top-1`} style={{ animationDelay: "2.5s" }}>{reactions[1]}</span>
+    </div>
+  );
+}
 
 export default function ParishGrowthContent() {
   return (
     <>
-      {/* Hero: church photo behind the headline; the video sits on the seam
-          between the dark band and the light page. */}
+      {/* Hero: the video sits on the seam between the dark band and the
+          light page. */}
       <section className="pb-14 sm:pb-16">
-        <div className="relative overflow-hidden bg-ink px-6 pt-14 sm:pt-20">
-          <Image
-            src={navePhoto}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[50%_45%] opacity-45 motion-safe:animate-kenburns"
-          />
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/70 to-ink" />
-          <div className="relative mx-auto max-w-4xl text-center">
-            <p className="font-serif text-xl italic text-[#e3a196] motion-safe:animate-fade-up">Social Media</p>
-            <h1 className="mt-3 text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-6xl" style={{ animationDelay: "120ms" }}>
-              Help your Catholic parish reach more young&nbsp;adults
+        <div className="bg-ink px-6 pt-14 sm:pt-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-6xl">
+              Help Your Catholic Parish Reach More Young&nbsp;Families
             </h1>
             <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-vellum/80 motion-safe:animate-fade-up" style={{ animationDelay: "240ms" }}>
               Show them what&rsquo;s happening at your parish and make it
               easy to get involved, all through Facebook and&nbsp;Instagram.
             </p>
-            <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-vellum/60 motion-safe:animate-fade-up" style={{ animationDelay: "360ms" }}>
-              <li className="flex items-center gap-1.5"><FacebookIcon className="h-4 w-4" />Facebook</li>
-              <li aria-hidden="true" className="text-vellum/30">&middot;</li>
-              <li className="flex items-center gap-1.5"><InstagramIcon className="h-4 w-4" />Instagram</li>
-              <li aria-hidden="true" className="text-vellum/30">&middot;</li>
-              <li>Meta Ads</li>
-            </ul>
           </div>
         </div>
         <div className="relative bg-linear-to-b from-ink from-65% to-transparent to-65% px-6 pt-10">
-          {/* A real parish Instagram feed and a real Facebook ad, framed as
-              phones on either side of the video (wide screens only). */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 hidden lg:block">
-            <div className="relative mx-auto max-w-7xl">
-              <PhoneMockup src={igScreen} alt="" screen="#0c1014" className="absolute left-10 top-24 w-44 -rotate-3 opacity-90 xl:left-24 xl:w-48" />
-              <PhoneMockup src={fbAdScreen} alt="" screen="#fff" className="absolute right-10 top-28 w-44 rotate-3 opacity-90 xl:right-24 xl:w-48" />
+          {/* Platform logos centered in the dark space on either side of the
+              video (wide screens only). */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 bottom-[35%] hidden lg:block">
+            <div className="mx-auto grid h-full max-w-7xl grid-cols-[1fr_48rem_1fr] items-center justify-items-center">
+              <PlatformEmblem
+                color="#0866ff"
+                shape="rounded-full"
+                delay="0s"
+                reactions={[
+                  <ThumbsUp key="like" className="h-5 w-5 fill-[#0866ff] text-[#0866ff]" />,
+                  <Heart key="love" className="h-5 w-5 fill-[#f33e58] text-[#f33e58]" />,
+                ]}
+              >
+                <FacebookLogo className="h-20 w-20 xl:h-28 xl:w-28" />
+              </PlatformEmblem>
+              <span />
+              <PlatformEmblem
+                color="#d6249f"
+                shape="rounded-[25%]"
+                delay="-2.5s"
+                reactions={[
+                  <Heart key="love" className="h-5 w-5 fill-[#ff3040] text-[#ff3040]" />,
+                  <MessageCircle key="comment" className="h-5 w-5 fill-[#d6249f] text-[#d6249f]" />,
+                ]}
+              >
+                <InstagramLogo className="h-20 w-20 xl:h-28 xl:w-28" />
+              </PlatformEmblem>
             </div>
           </div>
           <div className="relative mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-vellum/10">
@@ -127,23 +157,34 @@ export default function ParishGrowthContent() {
         </div>
 
         {/* Real results, right under the video */}
-        <div className="mx-auto mt-12 max-w-5xl px-6 lg:mt-20">
-          <dl className="grid divide-y divide-ink/10 border-y border-ink/15 md:grid-cols-3 md:divide-x md:divide-y-0">
-            {proofFacts.map((f) => (
-              <div key={f.who} className="py-6 text-center md:px-6">
-                <dt className="sr-only">{f.who}</dt>
-                <dd>
-                  <span className="block font-serif text-5xl font-medium text-lapis">{f.stat}</span>
-                  <span className="mx-auto mt-2 block max-w-[16rem] text-pretty text-ink/75">{f.label}</span>
-                  <span className="mt-2 block font-serif text-base italic text-ink/50">{f.who}</span>
-                </dd>
-              </div>
-            ))}
+        <div className="mx-auto mt-12 max-w-5xl px-6 md:mt-16">
+          {/* Three result cards, with the middle one raised and filled */}
+          <dl className="grid gap-5 md:grid-cols-3 md:gap-6">
+            {proofFacts.map((f, i) => {
+              const featured = i === 1;
+              return (
+                <div
+                  key={f.who}
+                  className={`flex flex-col justify-center rounded-2xl p-7 text-center shadow-xl transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none ${
+                    featured
+                      ? "bg-lapis text-vellum shadow-lapis/30 md:-my-5"
+                      : "bg-white text-ink shadow-ink/10 ring-1 ring-ink/5"
+                  }`}
+                >
+                  <dt className="sr-only">{f.who}</dt>
+                  <dd>
+                    <span className={`block font-serif font-medium ${featured ? "text-6xl md:text-7xl" : "text-5xl text-lapis md:text-6xl"}`}>{f.stat}</span>
+                    <span className={`mx-auto mt-3 block max-w-[16rem] text-pretty ${featured ? "text-vellum/85" : "text-ink/75"}`}>{f.label}</span>
+                    <span className={`mt-3 block text-pretty font-serif text-base italic ${featured ? "text-vellum/70" : "text-ink/55"}`}>{f.who}</span>
+                  </dd>
+                </div>
+              );
+            })}
           </dl>
         </div>
 
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="mx-auto mt-10 max-w-2xl text-pretty text-lg text-ink/75">
+          <p className="mx-auto mt-10 max-w-2xl text-pretty text-lg text-ink/75 md:mt-16">
             We use your parish&rsquo;s existing events, ministries, and Mass
             schedule to reach local young adults and families and give them
             a clear next&nbsp;step.
@@ -157,8 +198,7 @@ export default function ParishGrowthContent() {
       {/* What other priests are saying */}
       <section className="bg-vellum-deep px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-5xl text-center">
-          <p className={rubric}>In their words</p>
-          <h2 className={`mt-2 ${h2}`}>What other priests are&nbsp;saying</h2>
+          <h2 className={h2}>What other priests are&nbsp;saying</h2>
           <div className="mt-12 grid gap-12 md:grid-cols-3 md:gap-8">
             {PRIEST_TESTIMONIALS.map((t) => (
               <div key={t.name}>
@@ -188,8 +228,7 @@ export default function ParishGrowthContent() {
       {/* The difference */}
       <section className="bg-vellum-deep px-6 py-20 sm:py-28 lg:px-10">
         <div className="mx-auto max-w-5xl">
-          <p className={rubric}>The difference</p>
-          <h2 className={`mt-3 ${h2}`}>&ldquo;We already have someone for social&nbsp;media.&rdquo;</h2>
+          <h2 className={h2}>&ldquo;We already have someone for social&nbsp;media.&rdquo;</h2>
           <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/70">
             Most parishes do, and they&rsquo;re a blessing. But their job is
             to post. Ours is to get people to show up: targeted, trackable
@@ -222,8 +261,7 @@ export default function ParishGrowthContent() {
       {/* Before you book + Calendly */}
       <section id="book" className="scroll-mt-20 px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className={rubric}>Book your review</p>
-          <h2 className={`mt-2 ${h2}`}>Before you book&hellip;</h2>
+          <h2 className={h2}>Before you book&hellip;</h2>
           <p className="mt-5 text-pretty text-lg text-ink/75">
             To make this conversation as useful as possible for your parish,{" "}
             <strong className="font-semibold text-ink">we ask that the pastor join the call.</strong>{" "}
@@ -241,8 +279,7 @@ export default function ParishGrowthContent() {
       {/* FAQ */}
       <section className="bg-vellum-deep px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <p className="text-center font-serif text-lg italic text-rubric">Questions</p>
-          <h2 className={`mt-2 text-center ${h2}`}>Frequently asked&nbsp;questions</h2>
+          <h2 className={`text-center ${h2}`}>Frequently asked&nbsp;questions</h2>
           <div className="mt-10 border-t-2 border-ink">
             {FAQS.map((faq) => (
               <details key={faq.question} className="group border-b border-ink/15">

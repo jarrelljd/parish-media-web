@@ -80,8 +80,8 @@ function Icon({ name, className = "h-6 w-6" }: { name: IconName; className?: str
 function Connector({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col items-center py-6 text-center sm:py-8">
-      <span className="h-8 w-px bg-gradient-to-b from-transparent to-gilt/70" />
-      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-gilt/50 text-gilt">
+      <span className="h-8 w-px bg-gradient-to-b from-transparent to-vellum/40" />
+      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-vellum/30 text-vellum/70">
         <Icon name="arrow" className="h-5 w-5" />
       </span>
       <p className="mt-3 max-w-md text-balance font-serif text-xl italic text-vellum/70">{children}</p>
@@ -89,14 +89,14 @@ function Connector({ children }: { children: ReactNode }) {
   );
 }
 
-// Step number plus a big colored pill saying what kind of work it is.
-function StepLabel({ n, children, pill }: { n: number; children: ReactNode; pill: string }) {
+// Step number plus a pill saying what kind of work it is.
+function StepLabel({ n, children }: { n: number; children: ReactNode }) {
   return (
     <p className="flex flex-wrap items-center gap-3">
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-rubric font-serif text-2xl text-vellum">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-lapis font-serif text-2xl text-vellum">
         {n}
       </span>
-      <span className={`rounded-full px-5 py-2 text-base font-bold uppercase tracking-[0.12em] sm:text-lg ${pill}`}>
+      <span className="rounded-full bg-lapis/10 px-5 py-2 text-base font-bold uppercase tracking-[0.12em] text-lapis sm:text-lg">
         {children}
       </span>
     </p>
@@ -105,15 +105,11 @@ function StepLabel({ n, children, pill }: { n: number; children: ReactNode; pill
 
 export default function WhatWeDo() {
   return (
-    <section className="relative overflow-hidden bg-ink px-6 py-20 text-vellum sm:py-28 lg:px-10">
-      {/* Soft glow behind the cards */}
-      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-40 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-lapis/40 blur-3xl" />
-
-      <div className="relative mx-auto max-w-6xl">
+    <section className="bg-ink px-6 py-20 text-vellum sm:py-28 lg:px-10">
+      <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="font-serif text-xl italic text-[#e3a196]">What we do</p>
-          <h2 className="mt-3 text-balance font-serif text-4xl font-medium leading-[1.08] sm:text-6xl">
-            The Core Four and the Big&nbsp;Three.
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] sm:text-6xl">
+            How we bring new families through your&nbsp;doors
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-vellum/80 sm:text-2xl">
             Free posts build trust. Paid ads fill your biggest needs. We track
@@ -124,7 +120,7 @@ export default function WhatWeDo() {
         {/* 1. The Core Four */}
         <article className="mt-14 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:p-12">
           <div className="max-w-3xl">
-            <StepLabel n={1} pill="bg-[#2f6b3f] text-white">Organic &middot; Free</StepLabel>
+            <StepLabel n={1}>Organic &middot; Free</StepLabel>
             <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">The Core Four</h3>
             <p className="mt-3 flex items-center gap-1.5 text-base text-ink/55">
               <FacebookIcon className="h-4 w-4" />
@@ -144,7 +140,7 @@ export default function WhatWeDo() {
                   <Image src={c.image} alt={c.alt} fill sizes="(min-width: 1024px) 260px, 45vw" className="object-cover" />
                 </div>
                 <p className="mt-4 flex items-baseline gap-1.5 font-serif text-xl font-semibold leading-tight sm:gap-2 sm:text-2xl">
-                  <span className="text-rubric">{i + 1}.</span>
+                  <span className="text-lapis">{i + 1}.</span>
                   {c.name}
                 </p>
                 <p className="mt-1 text-pretty text-base leading-snug text-ink/65">{c.note}</p>
@@ -156,22 +152,22 @@ export default function WhatWeDo() {
         <Connector>Free posts warm people up, so they&rsquo;re ready when you&nbsp;ask.</Connector>
 
         {/* 2. The Big Three */}
-        <article className="grid items-center gap-10 rounded-2xl bg-lapis p-6 shadow-2xl shadow-black/40 ring-1 ring-vellum/10 sm:p-10 lg:grid-cols-[1fr_1.25fr] lg:gap-14 lg:p-12">
+        <article className="grid items-center gap-10 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:grid-cols-[1fr_1.25fr] lg:gap-14 lg:p-12">
           <figure className="order-2 mx-auto w-full max-w-xs lg:order-1">
             <Image src={adOnPhone} alt="Facebook ad inviting St. Patrick's parishioners and friends to the annual parish picnic" sizes="(min-width: 1024px) 320px, 80vw" className="h-auto w-full drop-shadow-2xl transition-transform duration-500 lg:-rotate-2 lg:hover:rotate-0" />
-            <figcaption className="mt-2 text-center font-serif text-base italic text-vellum/60">
+            <figcaption className="mt-2 text-center font-serif text-base italic text-ink/60">
               St. Patrick&rsquo;s, South Hadley, MA
             </figcaption>
           </figure>
           <div className="order-1 lg:order-2">
-            <StepLabel n={2} pill="bg-gilt text-ink">Paid ads</StepLabel>
+            <StepLabel n={2}>Paid ads</StepLabel>
             <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">The Big Three</h3>
-            <p className="mt-3 flex items-center gap-1.5 text-base text-vellum/60">
+            <p className="mt-3 flex items-center gap-1.5 text-base text-ink/55">
               <FacebookIcon className="h-4 w-4" />
               <InstagramIcon className="h-4 w-4" />
               Facebook &amp; Instagram ad campaigns
             </p>
-            <p className="mt-5 max-w-lg text-balance text-xl leading-relaxed text-vellum/85">
+            <p className="mt-5 max-w-lg text-balance text-xl leading-relaxed text-ink/80">
               For your parish&rsquo;s biggest needs, we run paid ads that get
               people to sign up and show&nbsp;up.
             </p>
@@ -179,14 +175,14 @@ export default function WhatWeDo() {
               {BIG_THREE.map((b) => (
                 <li
                   key={b.name}
-                  className="group flex items-center gap-4 rounded-xl border border-vellum/15 bg-vellum/[0.06] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-gilt/60 hover:bg-vellum/[0.12]"
+                  className="group flex items-center gap-4 rounded-xl border border-ink/10 bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-lapis/40"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gilt/20 text-[#e2c477] transition-colors group-hover:bg-gilt group-hover:text-ink">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-lapis/10 text-lapis transition-colors group-hover:bg-lapis group-hover:text-vellum">
                     <Icon name={b.icon} />
                   </span>
                   <span className="flex-1">
                     <span className="block text-balance font-serif text-2xl font-semibold leading-tight">{b.name} campaigns</span>
-                    <span className="mt-1 block text-base text-vellum/70">{b.goal}</span>
+                    <span className="mt-1 block text-base text-ink/65">{b.goal}</span>
                   </span>
                 </li>
               ))}
@@ -197,9 +193,9 @@ export default function WhatWeDo() {
         <Connector>Every response is tracked, so every dollar is spent where it&nbsp;works.</Connector>
 
         {/* 3. Tracking & Reporting */}
-        <article className="grid items-center gap-10 rounded-2xl border border-gilt/40 bg-vellum-deep p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:p-12">
+        <article className="grid items-center gap-10 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:p-12">
           <div>
-            <StepLabel n={3} pill="bg-lapis text-vellum">Every month</StepLabel>
+            <StepLabel n={3}>Every month</StepLabel>
             <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">Tracking &amp; Reporting</h3>
             <p className="mt-5 max-w-xl text-balance text-xl leading-relaxed text-ink/80">
               We track every post and every ad, so your ad dollars go where they
@@ -219,13 +215,13 @@ export default function WhatWeDo() {
           {/* Both sides of the report: free posts and paid ads */}
           <figure className="mx-auto w-full max-w-md space-y-5">
             <div>
-              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-[#2f6b3f]">Free posts</p>
+              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-lapis">Free posts</p>
               <div className="overflow-hidden rounded-xl shadow-xl shadow-ink/15 ring-1 ring-ink/10">
                 <Image src={organicReport} alt="Monthly report for St. Rose Catholic Church: organic views, new followers, and posts published" sizes="(min-width: 1024px) 448px, 90vw" className="h-auto w-full" />
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-gold-deep">Paid ads</p>
+              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-lapis">Paid ads</p>
               <div className="relative aspect-[1080/780] overflow-hidden rounded-xl bg-white shadow-xl shadow-ink/15 ring-1 ring-ink/10">
                 <Image src={reportOnLaptop} alt="Ad results dashboard on a laptop: 126 leads at $1.40 per lead" fill sizes="(min-width: 1024px) 448px, 90vw" className="object-cover object-center" />
               </div>

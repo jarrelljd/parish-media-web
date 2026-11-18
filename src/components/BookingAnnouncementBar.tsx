@@ -6,8 +6,10 @@ import ScrollToBookingButton from "./ScrollToBookingButton";
 // that scrolls down to the booking calendar. Dark to match the page's hero.
 export default function BookingAnnouncementBar({
   label = "Book a free Parish Growth Review",
+  buttonRadius = "rounded-[3px]",
 }: {
   label?: string;
+  buttonRadius?: string;
 }) {
   return (
     <header className="sticky top-0 z-50 border-b border-vellum/10 bg-ink/95 backdrop-blur">
@@ -18,7 +20,7 @@ export default function BookingAnnouncementBar({
             Parish Media Company
           </span>
         </span>
-        <ScrollToBookingButton className="group inline-flex shrink-0 items-center gap-2 rounded-[3px] bg-vellum px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-white sm:px-5 sm:text-[15px]">
+        <ScrollToBookingButton className={`group inline-flex shrink-0 items-center gap-2 ${buttonRadius} bg-vellum px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-white sm:px-5 sm:text-[15px]`}>
           <span className="hidden sm:inline">{label}</span>
           <span className="sm:hidden">Book a call</span>
           <svg

@@ -12,7 +12,7 @@ export default function ParishGrowthPage() {
   return (
     <>
       {/* Landing page: no nav links, just a booking CTA bar so visitors stay focused. */}
-      <BookingAnnouncementBar />
+      <BookingAnnouncementBar buttonRadius="rounded-lg" />
       <main className="flex flex-1 flex-col">
         <ParishGrowthContent />
       </main>

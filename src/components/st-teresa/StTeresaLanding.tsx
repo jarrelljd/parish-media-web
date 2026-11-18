@@ -29,21 +29,6 @@ const Eyebrow = ({ children, light = false }: { children: React.ReactNode; light
   <p className={`text-xs font-bold tracking-[0.25em] uppercase ${light ? "text-[#e0bd4f]" : "text-[#856a12]"}`}>{children}</p>
 );
 
-// The school's name and logo on every screen size, before anything else.
-function BrandBar() {
-  return (
-    <header className="bg-[#fbf8f1]">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
-        <Image src={stTeresa.logo.src} alt={stTeresa.logo.alt} width={250} height={150} priority className="size-12 shrink-0 object-contain" />
-        <p className="leading-tight">
-          <span className="block font-classic text-base font-semibold text-[#17352c] sm:text-xl">{stTeresa.schoolName}</span>
-          <span className="block text-sm font-semibold text-[#56635d]">{stTeresa.location}</span>
-        </p>
-      </div>
-    </header>
-  );
-}
-
 function Hero() {
   const { hero } = stTeresa;
   return (
@@ -127,18 +112,20 @@ function Story() {
             <Image src={story.photo.src} alt={story.photo.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover object-[55%_60%]" />
           </Reveal>
           <Reveal delayMs={100}>
-            <ol className="border-t-2 border-[#17352c]">
+            <ol className="space-y-9">
               {story.struggles.map((s, i) => (
-                <li key={s.title} className="grid grid-cols-[2.5rem_1fr] border-b border-[#17352c]/15 py-6">
-                  <span className="font-classic text-3xl leading-none font-medium text-[#856a12]">{i + 1}</span>
+                <li key={s.title} className="grid grid-cols-[2.75rem_1fr] sm:grid-cols-[4rem_1fr]">
+                  <span className="font-classic text-5xl leading-none font-medium text-[#b08d1e] italic sm:text-6xl" aria-hidden="true">
+                    {i + 1}
+                  </span>
                   <div>
-                    <h3 className="font-classic text-2xl font-medium tracking-tight text-balance">{s.title}</h3>
+                    <h3 className="font-classic text-2xl font-medium tracking-tight text-balance sm:text-3xl">{s.title}</h3>
                     <p className="mt-2 text-lg leading-relaxed text-pretty text-[#56635d]">{s.body}</p>
                   </div>
                 </li>
               ))}
             </ol>
-            <p className="mt-7 font-classic text-2xl leading-snug font-medium text-pretty text-[#17352c]">{story.close}</p>
+            <p className="mt-10 font-classic text-2xl leading-snug font-medium text-pretty text-[#17352c]">{story.close}</p>
           </Reveal>
         </div>
       </div>
@@ -149,24 +136,12 @@ function Story() {
 function Region() {
   const { region } = stTeresa;
   return (
-    <section className="bg-[#fbf8f1] py-16 sm:py-24">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
-        <Reveal>
-          <Eyebrow>{region.eyebrow}</Eyebrow>
-          <h2 className="mt-4 font-classic text-4xl font-medium tracking-tight text-balance sm:text-5xl">{region.title}</h2>
-          <p className="mt-5 text-lg leading-relaxed text-pretty text-[#56635d]">{region.body}</p>
-        </Reveal>
-        <Reveal delayMs={100}>
-          <ul className="grid grid-cols-2 gap-x-6 border-t-2 border-[#17352c]">
-            {region.towns.map((town) => (
-              <li key={town} className="flex items-center gap-2 border-b border-[#17352c]/15 py-3.5 font-classic text-base text-[#1f2a26] sm:text-xl">
-                <MapPin className="size-4 shrink-0 text-[#856a12]" aria-hidden="true" />
-                {town}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </div>
+    <section className="bg-[#fbf8f1] py-12 sm:py-16">
+      <Reveal className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <MapPin className="mx-auto size-6 text-[#856a12]" aria-hidden="true" />
+        <h2 className="mt-3 font-classic text-3xl font-medium tracking-tight text-balance sm:text-4xl">{region.title}</h2>
+        <p className="mt-3 text-lg leading-relaxed text-balance text-[#56635d]">{region.body}</p>
+      </Reveal>
     </section>
   );
 }
@@ -256,7 +231,7 @@ function DonationEmbed() {
 function Give() {
   const { give } = stTeresa;
   return (
-    <section id="give" className="scroll-mt-4 bg-[#10261f] py-16 text-[#fbf8f1] sm:py-24">
+    <section className="bg-[#10261f] py-16 text-[#fbf8f1] sm:py-24">
       <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <Reveal>
           <Eyebrow light>{give.eyebrow}</Eyebrow>
@@ -283,7 +258,7 @@ function Give() {
           </p>
         </Reveal>
         <Reveal delayMs={100}>
-          <div className="rounded-2xl bg-white p-3 text-[#1f2a26] shadow-2xl shadow-black/30 sm:p-4">
+          <div id="give" className="scroll-mt-6 rounded-2xl bg-white p-3 text-[#1f2a26] shadow-2xl shadow-black/30 sm:p-4">
             <DonationEmbed />
           </div>
         </Reveal>
@@ -310,7 +285,8 @@ function Footer() {
 export default function StTeresaLanding() {
   return (
     <div className="bg-[#fbf8f1] font-sans text-[#1f2a26] antialiased">
-      <BrandBar />
+      {/* Every give button slides down to the form; people who prefer less motion jump there. */}
+      <style>{`@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }`}</style>
       <main>
         <Hero />
         <Progress />

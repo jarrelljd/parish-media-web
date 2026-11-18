@@ -23,10 +23,6 @@ export const stTeresa = {
 
   cta: { label: "Help Build St. Teresa’s", href: "#give" },
 
-  schoolName: "St. Teresa of Avila Catholic School",
-  location: "Carson City, Nevada",
-  logo: { src: img("school-logo.png"), alt: "St. Teresa of Avila Catholic School logo" },
-
   phone: "(775) 882-2079",
   email: "campaign@stts.org",
   churchAddress: "3000 N. Lompa Lane, Carson City, NV",
@@ -82,7 +78,7 @@ export const stTeresa = {
         body: "221 students and about 60 young children need more room. The new campus doubles their space.",
       },
     ],
-    close: "This school has been more than 20 years in the making. With your help, St. Teresa’s children can walk through its doors in fall 2028.",
+    close: "This school has been more than 20 years in the making. With your help, St. Teresa’s children can walk through its doors in fall 2028.",
     photo: {
       src: img("students-in-pew.jpg"),
       alt: "Young St. Teresa students in green uniforms leaning on a pew during Mass",
@@ -90,10 +86,8 @@ export const stTeresa = {
   },
 
   region: {
-    eyebrow: "Our local Catholic school",
     title: "The only Catholic school south of Reno",
-    body: "St. Teresa’s serves families across Northern Nevada and the Lake Tahoe area. The new campus on Lompa Lane sits in the heart of Carson City, with easy access from Highway 50 and I-580.",
-    towns: ["Carson City", "Dayton", "Minden", "Gardnerville", "Washoe Valley", "South Reno", "South Lake Tahoe"],
+    body: "Serving families from Carson City, Dayton, Minden, Gardnerville, Washoe Valley, South Reno and South Lake Tahoe.",
   },
 
   vision: {

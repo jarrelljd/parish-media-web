@@ -9,12 +9,13 @@
 //
 // Layout (Joe, 2026-11-16): intro, the top 1–3 problems as numbered key
 // findings (each: the evidence, then why it matters), the booking CTA,
-// what's working, the single highest-priority next step, and ONE simple
-// thing they can do this week. The findings aren't repeated in a second
+// what's working, then "Where I'd start": one first step on social media and
+// why (Joe, 2026-11-19; it replaced separate "first thing I'd fix" and "this
+// week" sections). The findings aren't repeated in a second
 // detailed pass (Joe found that repetitive). No video or resource links.
 //
 // What stays in code (never written by the AI): which problems the letter
-// covers and their order, the finding titles, the one action for this week,
+// covers and their order, the finding titles, which first step to recommend,
 // the greeting, the CTA, the fixed closing, the signature, and the score in
 // the Re: line. The AI writes the intro, the findings, what's working, the
 // next step, and one line for the cover email.
@@ -61,8 +62,8 @@ export type ScorecardLetter = {
   intro: string;
   findings: LetterFinding[]; // 0–3, in the rules' order
   working: string; // what's working, 1–2 sentences
-  next: string; // the single highest-priority next step
-  now: string; // one simple action they can take this week
+  next: string; // "Where I'd start": the one first step and why
+  now?: string; // letters before 2026-11-19 only: a separate "this week" action
   cover: string; // the biggest problem in plain words, for the cover email
   ev?: LetterEvidence;
 };
@@ -81,7 +82,7 @@ export type LegacyLetter = {
 export type AnyLetter = ScorecardLetter | LegacyLetter;
 
 // ---------------------------------------------------------------------------
-// Greeting, CTA, closing, this week's action
+// Greeting, CTA, closing, where to start
 // ---------------------------------------------------------------------------
 
 const PRIEST_TITLES = /^(fr|father|rev|reverend|msgr|monsignor)\.?$/i;
@@ -110,25 +111,83 @@ export const FINDINGS_CTA = {
   rest: "and we’ll walk through your scorecard, identify the highest-priority opportunity, and map the next 90 days for your parish.",
 };
 
-// The one simple thing they can do this week, from the top problem. Free,
-// no new skills, done by someone already at the parish. Written in code so
-// the letter never gives more than one.
-export function quickAction(id: string | undefined, homilyClipsWeekly: boolean): string {
-  switch (id) {
-    case "outreach":
-      return "Pick one person on staff who will call back every new inquiry the same day, and make sure the office knows it’s them.";
-    case "leak":
-      return "Starting this week, call back every new inquiry the same day, and write each one on a simple list so you can count them.";
-    case "nurture":
-    case "quietFeed":
-      return homilyClipsWeekly
-        ? "Before the next flyer goes up, post one photo from parish life with a short caption naming who’s in it."
-        : "This Sunday, set a phone on a tripod or a steady stand and film the homily. Just get the recording; the clips can come later.";
-    case "frequency":
-      return "Pick one day this week to post a photo from parish life with a two-line caption.";
-    default:
-      return "This Sunday, film the homily on a phone and post your favorite 30 to 60 seconds of it.";
+// "Where I'd start" (Joe, 2026-11-19): the one first step, always something
+// on social media. Decided here in code; the AI only writes it up.
+//   1. No ads, a boosted post or two, or ongoing ads under $250/month:
+//      launch a Meta Plan Your Visit campaign (even if the top finding is
+//      something else).
+//   2. Ads, but nowhere to send people: add a Plan Your Visit campaign.
+//   3. A leak (slow or untracked follow-up): keep the campaign running and
+//      send every form lead straight to one person's phone.
+//   4. Outreach is fine: the biggest posting gap (weekly homily clips, or
+//      the core four).
+//   5. Nothing major wrong: the core four, plus giving campaigns on social
+//      media sent to a landing page.
+// `text` is the step as the template letter prints it; the AI rewrites it.
+export type StartStep = { step: string; why: string; text: string };
+
+const LOW_AD_VALUES = ["none", "boosted", "under250"];
+
+export function whereToStart(
+  a: Pick<ScorecardAnswers, "ads" | "nextStep" | "followUp" | "inquirers" | "homilyClips">,
+  problems: { id: string }[],
+): StartStep {
+  const o = outreachStatus(a);
+  const call = o.fastFollow
+    ? "Keep calling or texting every new name the same day, like you do now."
+    : "Pick one person on staff to call or text every new name the same day.";
+  if (LOW_AD_VALUES.includes(a.ads)) {
+    const small = a.ads === "under250";
+    return {
+      step: small
+        ? "Grow the small ads they run now into a steady Meta Plan Your Visit campaign (Facebook and Instagram ad aimed at families near the parish + a name-and-phone form inside the app + a same-day personal call or text)."
+        : "Launch a Meta Plan Your Visit campaign: a Facebook and Instagram ad aimed at families near the parish, inviting them to plan a first visit, with a simple form inside the app for name and phone number, and one person who calls or texts every new name the same day.",
+      why: "Posts mostly reach people already in the pews. A Plan Your Visit campaign is how families nearby who aren't coming yet get a direct, personal invitation, and it's the fastest way to see new names come in.",
+      text: `${
+        small
+          ? "You’re already running some ads, so I’d start by turning them into a steady Plan Your Visit campaign on Facebook and Instagram."
+          : "I’d start by launching a Plan Your Visit campaign on Facebook and Instagram."
+      } It’s an ad aimed at families near the parish, inviting them to plan a first visit, with a simple form right inside the app for their name and phone number. ${call} Your posts mostly reach people already in the pews; this is how families nearby who aren’t coming yet get a personal invitation.`,
+    };
   }
+  if (o.missing) {
+    return {
+      step: "Add a Meta Plan Your Visit campaign next to the ads they already run: an ad inviting families near the parish to plan a first visit, a simple name-and-phone form inside Facebook or Instagram, and a same-day personal call or text.",
+      why: "Their ads already reach people, but there's no simple way for a new family to say yes, so the money isn't turning into visits.",
+      text: `Your ads are already reaching people, so I’d start by adding a Plan Your Visit campaign on Facebook and Instagram: an ad inviting families nearby to plan a first visit, with a simple form inside the app for their name and phone number. ${call} That gives every new family an easy way to say yes.`,
+    };
+  }
+  if (o.leak) {
+    return {
+      step: `Keep the Plan Your Visit campaign running, and have every new form lead from Facebook and Instagram go straight to one person's phone so they call or text the same day.${
+        o.tracked ? "" : " Count every lead each month to see which ads work."
+      }`,
+      why: "People are most ready right after they raise their hand. A call the same day feels like a welcome; a call a week later feels like an afterthought.",
+      text: `I’d keep your Plan Your Visit campaign running, and have every new form lead from Facebook and Instagram go straight to one person’s phone, so they can call or text that same day.${
+        o.tracked ? "" : " Count every lead each month so you can see which ads are working."
+      } People are most ready right after they raise their hand, and a quick call feels like a welcome.`,
+    };
+  }
+  const top = problems[0]?.id;
+  if (top && a.homilyClips !== "regularly") {
+    return {
+      step: "Film the homily every Sunday and post a short clip of it every week on Facebook and Instagram (a phone on a tripod is enough to start).",
+      why: "A homily clip gives people something for free every week. That goodwill is what makes people say yes when the parish asks.",
+      text: "I’d start by filming the homily every Sunday and posting a short clip of it every week on Facebook and Instagram. A phone on a tripod is enough to start. Each clip gives people something for free, and that goodwill is what makes them say yes when the parish asks.",
+    };
+  }
+  if (top) {
+    return {
+      step: "Post the core four every week on Facebook and Instagram: one homily clip, one connection post, one social proof post, and one flyer.",
+      why: "The homily clip, the story, and the photos of parish life build the goodwill that makes the flyer (the ask) work.",
+      text: "I’d start by posting the core four every week on Facebook and Instagram: one homily clip, one connection post, one social proof post, and one flyer. The first three build the goodwill that makes the flyer work.",
+    };
+  }
+  return {
+    step: "Keep posting the core four every week (one homily clip, one connection post, one social proof post, one flyer), and add giving campaigns on social media: a short video about one clear parish need, sent to a simple landing page where people can give.",
+    why: "The parish already has the goodwill and the reach. A giving campaign is the natural next ask, and the core four is what keeps people saying yes.",
+    text: "I’d keep posting the core four every week (one homily clip, one connection post, one social proof post, one flyer), and add giving campaigns on Facebook and Instagram. A short video about one clear parish need, sent to a simple landing page where people can give, is the natural next ask once people know and trust the parish.",
+  };
 }
 
 // The fixed closing from the voice guide, after the advice. Only the parish
@@ -401,6 +460,7 @@ export function buildLetterFacts(
   }
 
   const top3 = problems.slice(0, 3);
+  const start = whereToStart(a, top3);
   const churchDates = upcomingChurchDates(now);
 
   return {
@@ -421,6 +481,7 @@ export function buildLetterFacts(
       },
       diagnosis: `${doc.diagnosis.lead} ${doc.diagnosis.body}`,
       problemsInOrder: top3,
+      whereToStart: { step: start.step, why: start.why },
       facebookEngagement: engagement,
       coreFour,
       strengths: doc.strengths,
@@ -439,6 +500,7 @@ export function buildLetterFacts(
       approvedProof: PROOF_FOR,
     },
     problems: top3,
+    start,
     evidence,
   };
 }
@@ -457,9 +519,8 @@ HOW THE LETTER IS LAID OUT (code assembles it; you write only the pieces marked 
 3. Key findings, a numbered list. Code prints each problem's title in bold; YOU write "findings[i].summary" right after it. This is the only place the problems are covered, so it must carry both the evidence and why it matters.
 4. A booking invitation. Code.
 5. "What's working": YOU write "working".
-6. "The first thing I'd fix": YOU write "next_step".
-7. "One thing you can do this week": code (one simple action, already written; don't repeat it or add another).
-8. A fixed closing and sign-off. Code. It talks about doing it yourself vs. having help and invites them to a free call.
+6. "Where I'd start": YOU write "next_step".
+7. A fixed closing and sign-off. Code. It talks about doing it yourself vs. having help and invites them to a free call.
 Don't write a greeting, a sign-off, a closing, a call to book, or a P.S.
 
 WHAT YOU WRITE
@@ -472,11 +533,11 @@ WHAT YOU WRITE
    - "summary": exactly 2 sentences, 25 to 50 words in all. Sentence 1, the evidence: what we saw, with their own specifics (a count, date, or answer from their posts, observationsFromTheirPages, facebookEngagement when it proves this problem, or quizAnswers). Sentence 2, why it matters, in plain words using the ideas below, tied to reaching families nearby, Mass attendance, young people, or vocations. Don't restate the title word for word. No advice.
    - For a "nurture" finding, the evidence should compare their posts to the core four where you can (e.g. "Of your last 9 posts, 6 were flyers and only 1 was a homily clip").
 - "working": 1 or 2 sentences about one or two specific good things (from strengths, their best-received post with its date and numbers, or facebookEngagement when its band is "strong"). If problemsInOrder is empty, 2 or 3 sentences.
-- "next_step": the single highest-priority next step, which fixes problemsInOrder[0] (use its firstStep as the basis). 2 to 4 sentences, under 75 words: what it is, who does it, and what it looks like when it's working. One step, not a plan or a list of steps. If the step is posting the core four, name the four in one sentence (one homily clip, one connection post, one social proof post, one flyer). You may add one approved proof point that shows it working. No selling and no mention of Parish Media Company doing it (the closing handles that). You may tie timing to an upcomingChurchDates entry, but never claim anything about attendance at those times. If problemsInOrder is empty, suggest one way to go further (talking-head reels from the pastor, or adding YouTube Shorts), never as a problem.
+- "next_step": the "Where I'd start" section: the ONE first step and why it comes first. The step is already decided: it is whereToStart.step. Write that step, never a different one, and don't swap in a step from problemsInOrder (the first step is always something on Facebook and Instagram, even when the top finding is about something else). 3 to 5 sentences, under 100 words: what the step is (in plain words, explaining any platform term in one clause), why it comes first for THIS parish (use whereToStart.why, tied to their own answers or findings), and what it looks like when it's working. One step, not a plan or a list of steps. If the step mentions the core four, name the four in one sentence. For a Plan Your Visit campaign you may add the adsCost proof point; otherwise you may add one approved proof point that fits. Never invent costs, budgets, or results. No selling and no mention of Parish Media Company doing it (the closing handles that). You may tie timing to an upcomingChurchDates entry, but never claim anything about attendance at those times.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
 Advice ("I'd recommend", "you should", "start by") belongs only in next_step. The intro, findings, and working diagnose.
-Total for everything you write: 150 to 300 words. Be brief; don't repeat a point you already made.
+Total for everything you write: 160 to 320 words. Be brief; don't repeat a point you already made.
 
 HOW MANY PEOPLE RESPOND ON FACEBOOK (facebookEngagement, when present)
 - It compares a typical post's likes and comments with how many people follow the Facebook page. Use the numbers in plainLine (you may reword it, keep the numbers exact). Never say "engagement", "engagement rate", or a percentage; say it in people, like "fewer than 1 in 100 people who follow the page like or comment on a typical post."
@@ -598,11 +659,13 @@ export function checkLetter(out: AiOut, facts: LetterFacts["facts"]): string[] {
     if (sentences(f.summary) !== 2 || wordCount(f.summary) > 55)
       problems.push(`findings[${i}].summary must be exactly 2 sentences (the evidence, then why it matters), 25 to 50 words.`);
   });
-  if (words < 110 || words > 340) problems.push(`Everything you write together should be 150 to 300 words (you wrote ${words}).`);
+  if (words < 110 || words > 360) problems.push(`Everything you write together should be 160 to 320 words (you wrote ${words}).`);
   if (sentences(out.intro) > 3)
     problems.push(`The intro must be exactly 3 sentences (you wrote ${sentences(out.intro)}): the thank-you, what we did, and a short line leading into the findings.`);
-  if (sentences(out.next_step) > 4 || wordCount(out.next_step) > 85)
-    problems.push("next_step must be one step in 2 to 4 sentences, under 75 words.");
+  if (sentences(out.next_step) > 5 || wordCount(out.next_step) > 110)
+    problems.push("next_step must be one step in 3 to 5 sentences, under 100 words.");
+  if (!/\b(facebook|instagram|social media)\b/i.test(out.next_step))
+    problems.push("next_step must say the step happens on Facebook and Instagram (it's always a social media step: whereToStart.step).");
   if (/\b(video|tutorial|house of studies)s?\b.*\b(watch|link|free)\b|\b(watch|free) (video|tutorial)s?\b/i.test(text))
     problems.push("Don't point them to videos, tutorials, or resources.");
 
@@ -691,14 +754,13 @@ export async function writeScorecardLetter(
   // "What we found" page). The letter must fit on 2.
   letterPages?: (l: ScorecardLetter) => Promise<number>,
 ): Promise<ScorecardLetter> {
-  const { facts, problems, evidence } = buildLetterFacts(doc, a, profile, lead, now);
-  const action = quickAction(problems[0]?.id, a.homilyClips === "regularly");
+  const { facts, problems, start, evidence } = buildLetterFacts(doc, a, profile, lead, now);
   if (key) {
     const messages = [
       { role: "system", content: SYSTEM },
       {
         role: "user",
-        content: `Facts for this parish (JSON):\n${JSON.stringify(facts, null, 1)}\n\nThe "one thing you can do this week" line (already written, for context only): ${action}`,
+        content: `Facts for this parish (JSON):\n${JSON.stringify(facts, null, 1)}`,
       },
     ];
     for (let attempt = 0; attempt < 4; attempt++) {
@@ -713,7 +775,6 @@ export async function writeScorecardLetter(
             findings: out.findings.map((f, i) => ({ t: problems[i].title, s: tidyText(f.summary) })),
             working: tidyText(out.working),
             next: tidyText(out.next_step),
-            now: action,
             cover: tidyText(out.cover_line).replace(/\.$/, ""),
             ev: evidence,
           };
@@ -740,6 +801,7 @@ export async function writeScorecardLetter(
   return templateLetter(doc, a, {
     lookedUp: facts.weLookedUpTheirPages,
     problems,
+    start,
     evidence,
     engagementLine: weak ? eng.plainLine : undefined,
   });
@@ -763,10 +825,11 @@ const TEMPLATE_WHY: Record<string, string> = {
 
 export function templateLetter(
   doc: ScorecardDoc,
-  a: Pick<ScorecardAnswers, "homilyClips">,
+  a: Pick<ScorecardAnswers, "ads" | "nextStep" | "followUp" | "inquirers" | "homilyClips">,
   opts: {
     lookedUp?: boolean;
     problems?: LetterProblem[];
+    start?: StartStep;
     evidence?: LetterEvidence;
     engagementLine?: string; // Facebook followers vs. responses, when few respond
   } = {},
@@ -797,8 +860,7 @@ export function templateLetter(
       : `Thanks for taking the Parish Social Media Scorecard. I went through your answers. ${lead}`,
     findings,
     working: doc.strengths[0] ?? doc.diagnosis.body,
-    next: problems[0]?.firstStep.replace(/\s*(Building and running|Turning homilies)[^.]*\.\s*$/, "").trim() ?? "Keep doing what’s working, and look at adding short talking-head reels from the pastor.",
-    now: quickAction(problems[0]?.id, a.homilyClips === "regularly"),
+    next: (opts.start ?? whereToStart(a, problems)).text,
     cover: problems[0] ? lowerFirst(problems[0].title) : "keeping what’s working and building on it",
     ev: opts.evidence,
   };

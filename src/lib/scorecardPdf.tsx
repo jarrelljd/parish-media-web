@@ -5,7 +5,7 @@
 //
 // Reads like a signed letter on letterhead. Order (Joe, 2026-11-16): intro,
 // numbered key findings (evidence + why), the booking CTA, what's working,
-// the first thing to fix, one thing to do this week, then the fixed closing.
+// "Where I’d start" (one first step and why), then the fixed closing.
 // The findings aren't repeated later in the letter. The score sits in the Re: line,
 // and the AI may bold or italicize a few phrases (**bold**, *italics*). A
 // separate "What we found" page shows the evidence (their recent posts,
@@ -394,12 +394,24 @@ function LetterPdf({ doc, letter, greeting, isPastor, bookingUrl = SCORECARD_BOO
             <Text style={s.p} orphans={2} widows={2}>
               <Rich text={letter.working} />
             </Text>
-            <Label>{letter.findings.length ? "The first thing I’d fix" : "Where I’d go from here"}</Label>
-            <Text style={s.p} orphans={2} widows={2}>
-              <Rich text={letter.next} />
-            </Text>
-            <Label>Your first step this week</Label>
-            <Text style={[s.p, { marginBottom: 12 }]}>{letter.now}</Text>
+            {letter.now ? (
+              // Letters written before 2026-11-19 had two advice sections.
+              <>
+                <Label>{letter.findings.length ? "The first thing I’d fix" : "Where I’d go from here"}</Label>
+                <Text style={s.p} orphans={2} widows={2}>
+                  <Rich text={letter.next} />
+                </Text>
+                <Label>Your first step this week</Label>
+                <Text style={[s.p, { marginBottom: 12 }]}>{letter.now}</Text>
+              </>
+            ) : (
+              <>
+                <Label>Where I’d start</Label>
+                <Text style={[s.p, { marginBottom: 12 }]} orphans={2} widows={2}>
+                  <Rich text={letter.next} />
+                </Text>
+              </>
+            )}
           </>
         ) : (
           letter.body.map((para, i) => (

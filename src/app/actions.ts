@@ -461,8 +461,7 @@ export async function submitScorecardOptIn(
       letter.intro,
       ...letter.findings.map((f, i) => `${i + 1}. ${f.t}. ${f.s}`),
       letter.working,
-      `The first thing I'd fix: ${letter.next}`,
-      `One thing you can do this week: ${letter.now}`,
+      `Where I'd start: ${letter.next}`,
     ].map((p) => p.replace(/\*/g, "")),
   ].join("\n\n");
 

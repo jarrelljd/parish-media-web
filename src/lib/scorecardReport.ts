@@ -175,8 +175,8 @@ export function buildScorecardDoc(
       },
       proof: `${proof.adsCost} The same system works for event registrations and volunteer drives. ${proof.stPatrick}`,
       firstStep: fastFollow
-        ? "You already follow up quickly, so the missing pieces are the ads and the form. Building and running them is the part we set up for parishes."
-        : "Decide who on staff will personally call every new inquiry the same day. The ads and form get built around that person. Building and running the ads is the part we set up for parishes.",
+        ? "Launch a Plan Your Visit campaign on Facebook and Instagram: an ad inviting families nearby, plus a simple name-and-phone form. You already follow up quickly, so the ads and the form are the missing pieces. Building and running them is the part we set up for parishes."
+        : "Launch a Plan Your Visit campaign on Facebook and Instagram: an ad inviting families nearby, a simple name-and-phone form, and one person on staff who calls every new name the same day. Building and running the ads is the part we set up for parishes.",
     });
   } else if (outreachLeak) {
     problems.push({
@@ -191,7 +191,7 @@ export function buildScorecardDoc(
       ],
       proof: proof.adsCost,
       firstStep:
-        "Name one person responsible for newcomers and commit to a personal call or text the same day. Count every inquiry each month so you can see what’s working.",
+        "Keep the Plan Your Visit campaign running, and have every new form lead from Facebook and Instagram go straight to one person’s phone for a call or text the same day. Count every inquiry each month so you can see what’s working.",
     });
   }
 

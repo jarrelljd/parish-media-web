@@ -24,7 +24,7 @@ type Step = {
 const STEPS: Step[] = [
   {
     title: "Nurture",
-    body: "Share value, proof, and connection posts every week, so people near you get to know and trust your parish.",
+    body: "Post value, proof, and connection content every week, so locals feel nurtured: they get to know, like, and trust your parish. (That’s right, no more sky photos with random quotes.)",
     pics: [
       { src: activityPost, alt: "Confirmation class group photo posted by St. Joseph Parish, Los Banos" },
       { src: homilyClip, alt: "Homily clip Reel from St. Joseph Parish, Los Banos" },
@@ -33,12 +33,12 @@ const STEPS: Step[] = [
   },
   {
     title: "Ask",
-    body: "Invite them with targeted Facebook and Instagram ads. They say yes because they already know you.",
+    body: "Once people are nurtured, they’re more likely to say yes when the parish asks. So we ask with targeted Facebook and Instagram ads, shown to the people most likely to say yes.",
     pics: [{ src: adOnPhone, alt: "Facebook ad inviting St. Patrick's parishioners and friends to the annual parish picnic" }],
   },
   {
     title: "Optimize",
-    body: "Track every result and move your budget to what works, so no ad dollar is wasted.",
+    body: "Track every result and move your budget to what works, so no ad dollar is wasted and every month brings new followers.",
     pics: [{ src: reportOnLaptop, alt: "Ad results dashboard on a laptop: 126 leads at $1.40 per lead" }],
   },
 ];
@@ -212,7 +212,7 @@ export default function WhatWeDo() {
                 >
                   <p className="text-sm font-bold uppercase tracking-[0.16em] text-gilt">Step {i + 1}</p>
                   <h3 className="mt-1 font-serif text-4xl font-semibold text-ink sm:text-5xl">{s.title}</h3>
-                  <p className="mt-3 max-w-md text-pretty text-xl leading-relaxed text-ink/75">{s.body}</p>
+                  <p className="mt-3 max-w-md text-balance text-xl leading-relaxed text-ink/75">{s.body}</p>
                 </div>
               </li>
             );

@@ -111,8 +111,8 @@ export default function ParishGrowthContent() {
             <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-6xl">
               Help Your Catholic Parish Reach More Young&nbsp;Families
             </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-vellum/80 motion-safe:animate-fade-up" style={{ animationDelay: "240ms" }}>
-              Show them what&rsquo;s happening at your parish and make it
+            <p className="mx-auto mt-5 max-w-3xl text-balance text-lg text-vellum/80 motion-safe:animate-fade-up" style={{ animationDelay: "240ms" }}>
+              We show them what&rsquo;s happening at your parish and make it
               easy to get involved, all through Facebook and&nbsp;Instagram.
             </p>
           </div>

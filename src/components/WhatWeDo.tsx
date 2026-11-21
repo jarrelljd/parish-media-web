@@ -158,7 +158,7 @@ export default function WhatWeDo() {
             Our proven social media framework for&nbsp;parishes
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-ink/70 sm:text-2xl">
-            The 3-step process we use again and again across parishes in 12+&nbsp;dioceses.
+            The 3-step process we use again and again across Catholic churches in 12+&nbsp;dioceses.
           </p>
         </div>
 

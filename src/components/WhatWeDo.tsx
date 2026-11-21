@@ -1,236 +1,223 @@
-import Image from "next/image";
-import type { ReactNode } from "react";
-import { FacebookIcon, InstagramIcon } from "./SocialIcons";
-import adOnPhone from "../../public/images/proof/ad-on-phone.png";
-import reportOnLaptop from "../../public/images/proof/report-on-laptop.png";
-import organicReport from "../../public/images/proof/st-rose-impact-report-organic.jpg";
+"use client";
+
+import Image, { type StaticImageData } from "next/image";
+import { useEffect, useRef, useState } from "react";
 import homilyClip from "../../public/images/proof/core-four/homily-clip.jpg";
 import activityPost from "../../public/images/proof/core-four/activity-post.jpg";
 import connectionPost from "../../public/images/proof/core-four/connection-post.jpg";
-import flyerPost from "../../public/images/proof/core-four/flyer.jpg";
+import adOnPhone from "../../public/images/proof/ad-on-phone.png";
+import reportOnLaptop from "../../public/images/proof/report-on-laptop.png";
 
-// "What we do" on the Social Media page: weekly posts (the Core Four) build
-// trust, paid ads (the Big Three) fill the parish's biggest needs, and
-// monthly tracking keeps both improving.
+// "How Parish Social Media Should Work" on /parish: three simple steps
+// (nurture, ask, optimize), each beside real client work. A curved gold line
+// draws itself between the step numbers as the visitor scrolls, and each
+// number fills in when the line reaches it.
 
-// Each example is a real post we made for a client parish.
-const CORE_FOUR = [
-  { name: "Homily clips", note: "Short videos from your Sunday homilies", image: homilyClip, alt: "Homily clip Reel from St. Joseph Parish, Los Banos" },
-  { name: "Activity posts", note: "Photos and video of parish life", image: activityPost, alt: "Confirmation class group photo posted by St. Joseph Parish, Los Banos" },
-  { name: "Connection posts", note: "Faces and stories people relate to", image: connectionPost, alt: "Thank-you post for St. Joseph Parish's longtime office manager" },
-  { name: "Engaging flyers", note: "A little advertising for smaller events", image: flyerPost, alt: "Parish Fall Bake Sale flyer for Ss. Peter & Paul Parish, Omaha" },
+type Pic = { src: StaticImageData; alt: string };
+
+type Step = {
+  title: string;
+  body: string;
+  pics: Pic[];
+};
+
+const STEPS: Step[] = [
+  {
+    title: "Nurture",
+    body: "Share value, proof, and connection posts every week, so people near you get to know and trust your parish.",
+    pics: [
+      { src: activityPost, alt: "Confirmation class group photo posted by St. Joseph Parish, Los Banos" },
+      { src: homilyClip, alt: "Homily clip Reel from St. Joseph Parish, Los Banos" },
+      { src: connectionPost, alt: "Thank-you post for St. Joseph Parish's longtime office manager" },
+    ],
+  },
+  {
+    title: "Ask",
+    body: "Invite them with targeted Facebook and Instagram ads. They say yes because they already know you.",
+    pics: [{ src: adOnPhone, alt: "Facebook ad inviting St. Patrick's parishioners and friends to the annual parish picnic" }],
+  },
+  {
+    title: "Optimize",
+    body: "Track every result and move your budget to what works, so no ad dollar is wasted.",
+    pics: [{ src: reportOnLaptop, alt: "Ad results dashboard on a laptop: 126 leads at $1.40 per lead" }],
+  },
 ];
 
-const BIG_THREE = [
-  { name: "Event registration", goal: "Fill your biggest events", icon: "calendar" },
-  { name: "Volunteer", goal: "Find the helpers you need", icon: "hands" },
-  { name: "Plan Your Visit", goal: "Bring newcomers to Mass", icon: "door" },
-] as const;
-
-const TRACKED = [
-  "What each sign-up cost",
-  "Which posts grow your following",
-  "Where next month’s ad budget should go",
+// Three posts fanned out like cards in a hand; the middle one sits on top.
+const FAN = [
+  "left-[30%] -rotate-6",
+  "left-1/2 z-10 -translate-y-[54%]",
+  "left-[70%] rotate-6",
 ];
 
-type IconName = (typeof BIG_THREE)[number]["icon"] | "check" | "arrow";
-
-// Simple line icons, drawn in currentColor.
-function Icon({ name, className = "h-6 w-6" }: { name: IconName; className?: string }) {
-  const paths: Record<IconName, ReactNode> = {
-    calendar: (
-      <>
-        <rect x="3" y="5" width="18" height="16" rx="2" />
-        <path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4" />
-      </>
-    ),
-    hands: (
-      <>
-        <circle cx="8" cy="7" r="2.5" />
-        <circle cx="16" cy="7" r="2.5" />
-        <path d="M3 20v-3a4 4 0 0 1 4-4h2a4 4 0 0 1 3 1.4A4 4 0 0 1 15 13h2a4 4 0 0 1 4 4v3" />
-      </>
-    ),
-    door: (
-      <>
-        <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M3 21h18" />
-        <circle cx="14.5" cy="12.5" r="0.9" fill="currentColor" />
-      </>
-    ),
-    check: <path d="M5 12.5l4.5 4.5L19 7" />,
-    arrow: <path d="M12 4v15M6 13l6 6 6-6" />,
-  };
+function StepVisual({ pics }: { pics: Pic[] }) {
+  if (pics.length === 1) {
+    return (
+      <Image
+        src={pics[0].src}
+        alt={pics[0].alt}
+        sizes="(min-width: 640px) 420px, 80vw"
+        className="mx-auto h-56 w-auto max-w-full object-contain drop-shadow-xl sm:h-72"
+      />
+    );
+  }
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {paths[name]}
-    </svg>
-  );
-}
-
-// The arrow between cards, with the reason one step leads to the next.
-function Connector({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex flex-col items-center py-6 text-center sm:py-8">
-      <span className="h-8 w-px bg-gradient-to-b from-transparent to-vellum/40" />
-      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-vellum/30 text-vellum/70">
-        <Icon name="arrow" className="h-5 w-5" />
-      </span>
-      <p className="mt-3 max-w-md text-balance font-serif text-xl italic text-vellum/70">{children}</p>
+    <div className="relative mx-auto h-56 w-full max-w-sm sm:h-72">
+      {pics.map((p, i) => (
+        <div
+          key={p.alt}
+          className={`absolute top-1/2 aspect-[4/5] h-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-ink shadow-xl shadow-ink/25 ring-1 ring-ink/10 ${FAN[i]}`}
+        >
+          <Image src={p.src} alt={p.alt} fill sizes="200px" className="object-cover" />
+        </div>
+      ))}
     </div>
   );
 }
 
-// Step number plus a pill saying what kind of work it is.
-function StepLabel({ n, children }: { n: number; children: ReactNode }) {
-  return (
-    <p className="flex flex-wrap items-center gap-3">
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-lapis font-serif text-2xl text-vellum">
-        {n}
-      </span>
-      <span className="rounded-full bg-lapis/10 px-5 py-2 text-base font-bold uppercase tracking-[0.12em] text-lapis sm:text-lg">
-        {children}
-      </span>
-    </p>
-  );
-}
+type Geo = { d: string; w: number; h: number; dotYs: number[] };
 
 export default function WhatWeDo() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const dotRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const pathRef = useRef<SVGPathElement>(null);
+  const [geo, setGeo] = useState<Geo | null>(null);
+  const [reached, setReached] = useState(0);
+
+  // Measure where the numbers sit and build a gently curving path through them.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const measure = () => {
+      const box = list.getBoundingClientRect();
+      const pts = dotRefs.current.map((el) => {
+        const r = el!.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+      });
+      const bend = box.width >= 600 ? 60 : 12;
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        const o = i % 2 ? bend : -bend;
+        const dy = b.y - a.y;
+        d += ` C ${a.x + o} ${a.y + dy * 0.3}, ${b.x + o} ${b.y - dy * 0.3}, ${b.x} ${b.y}`;
+      }
+      setGeo({ d, w: box.width, h: box.height, dotYs: pts.map((p) => p.y) });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, []);
+
+  // Draw the line down to wherever 60% of the way down the screen is.
+  useEffect(() => {
+    const list = listRef.current;
+    const path = pathRef.current;
+    if (!geo || !list || !path) return;
+    const total = path.getTotalLength();
+    path.style.strokeDasharray = `${total}`;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = reduce ? Infinity : window.innerHeight * 0.6 - list.getBoundingClientRect().top;
+      // Find how far along the path that height is (the path only moves downward).
+      let lo = 0;
+      let hi = total;
+      if (y >= geo.dotYs[geo.dotYs.length - 1]) lo = total;
+      else if (y <= geo.dotYs[0]) hi = 0;
+      else
+        for (let i = 0; i < 18; i++) {
+          const mid = (lo + hi) / 2;
+          if (path.getPointAtLength(mid).y < y) lo = mid;
+          else hi = mid;
+        }
+      path.style.strokeDashoffset = `${total - lo}`;
+      setReached(geo.dotYs.filter((dy) => dy <= y + 1).length);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [geo]);
+
   return (
-    <section className="bg-ink px-6 py-20 text-vellum sm:py-28 lg:px-10">
-      <div className="mx-auto max-w-6xl">
+    <section className="bg-vellum px-6 py-20 sm:py-28 lg:px-10">
+      <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] sm:text-6xl">
-            How we bring new families through your&nbsp;doors
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] text-ink sm:text-6xl">
+            Our proven parish growth&nbsp;strategy
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-vellum/80 sm:text-2xl">
-            Free posts build trust. Paid ads fill your biggest needs. We track
-            all of it, so you know what&rsquo;s&nbsp;working.
+          <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-ink/70 sm:text-2xl">
+            The 3-step process we use again and again across parishes in 12+&nbsp;dioceses.
           </p>
         </div>
 
-        {/* 1. The Core Four */}
-        <article className="mt-14 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:p-12">
-          <div className="max-w-3xl">
-            <StepLabel n={1}>Organic &middot; Free</StepLabel>
-            <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">The Core Four</h3>
-            <p className="mt-3 flex items-center gap-1.5 text-base text-ink/55">
-              <FacebookIcon className="h-4 w-4" />
-              <InstagramIcon className="h-4 w-4" />
-              Facebook &amp; Instagram, every&nbsp;week
-            </p>
-            <p className="mt-5 max-w-xl text-balance text-xl leading-relaxed text-ink/80">
-              Four kinds of free posts that help people know, like, and trust
-              your&nbsp;parish.
-            </p>
-          </div>
-          {/* Real posts from client parishes, one of each kind */}
-          <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
-            {CORE_FOUR.map((c, i) => (
-              <li key={c.name} className="group">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-ink shadow-lg shadow-ink/20 ring-1 ring-ink/10 transition duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <Image src={c.image} alt={c.alt} fill sizes="(min-width: 1024px) 260px, 45vw" className="object-cover" />
+        <ol ref={listRef} className="relative mt-14 sm:mt-20">
+          {/* The path: a faint dashed track, with the gold line drawn over it */}
+          {geo && (
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 overflow-visible"
+              width={geo.w}
+              height={geo.h}
+            >
+              <path d={geo.d} fill="none" stroke="currentColor" strokeWidth={2} strokeDasharray="5 7" className="text-ink/20" />
+              <path ref={pathRef} d={geo.d} fill="none" strokeWidth={3} strokeLinecap="round" className="stroke-gilt" />
+            </svg>
+          )}
+
+          {STEPS.map((s, i) => {
+            const on = i < reached;
+            return (
+              <li
+                key={s.title}
+                className="grid grid-cols-[auto_1fr] gap-x-5 sm:grid-cols-[minmax(0,5fr)_auto_minmax(0,6fr)] sm:gap-x-12"
+              >
+                {/* Proof: left column on desktop, under the text on mobile */}
+                <div className="col-start-2 row-start-2 pb-12 pt-6 sm:col-start-1 sm:row-start-1 sm:py-10">
+                  <StepVisual pics={s.pics} />
                 </div>
-                <p className="mt-4 flex items-baseline gap-1.5 font-serif text-xl font-semibold leading-tight sm:gap-2 sm:text-2xl">
-                  <span className="text-lapis">{i + 1}.</span>
-                  {c.name}
-                </p>
-                <p className="mt-1 text-pretty text-base leading-snug text-ink/65">{c.note}</p>
-              </li>
-            ))}
-          </ul>
-        </article>
 
-        <Connector>Free posts warm people up, so they&rsquo;re ready when you&nbsp;ask.</Connector>
+                {/* Step number, sitting on the path */}
+                <div className="relative col-start-1 row-span-2 row-start-1 flex flex-col items-center pt-5 sm:col-start-2 sm:row-span-1 sm:justify-center sm:pt-0">
+                  <span
+                    ref={(el) => {
+                      dotRefs.current[i] = el;
+                    }}
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 font-serif text-2xl font-semibold transition-all duration-500 ${
+                      on
+                        ? "scale-110 border-gilt bg-gilt text-vellum shadow-lg shadow-gilt/40"
+                        : "border-gilt/40 bg-vellum text-gilt"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                </div>
 
-        {/* 2. The Big Three */}
-        <article className="grid items-center gap-10 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:grid-cols-[1fr_1.25fr] lg:gap-14 lg:p-12">
-          <figure className="order-2 mx-auto w-full max-w-xs lg:order-1">
-            <Image src={adOnPhone} alt="Facebook ad inviting St. Patrick's parishioners and friends to the annual parish picnic" sizes="(min-width: 1024px) 320px, 80vw" className="h-auto w-full drop-shadow-2xl transition-transform duration-500 lg:-rotate-2 lg:hover:rotate-0" />
-            <figcaption className="mt-2 text-center font-serif text-base italic text-ink/60">
-              St. Patrick&rsquo;s, South Hadley, MA
-            </figcaption>
-          </figure>
-          <div className="order-1 lg:order-2">
-            <StepLabel n={2}>Paid ads</StepLabel>
-            <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">The Big Three</h3>
-            <p className="mt-3 flex items-center gap-1.5 text-base text-ink/55">
-              <FacebookIcon className="h-4 w-4" />
-              <InstagramIcon className="h-4 w-4" />
-              Facebook &amp; Instagram ad campaigns
-            </p>
-            <p className="mt-5 max-w-lg text-balance text-xl leading-relaxed text-ink/80">
-              For your parish&rsquo;s biggest needs, we run paid ads that get
-              people to sign up and show&nbsp;up.
-            </p>
-            <ul className="mt-7 space-y-3">
-              {BIG_THREE.map((b) => (
-                <li
-                  key={b.name}
-                  className="group flex items-center gap-4 rounded-xl border border-ink/10 bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-lapis/40"
+                {/* Step text */}
+                <div
+                  className={`col-start-2 row-start-1 self-start pt-4 transition-opacity duration-500 sm:col-start-3 sm:self-center sm:pt-0 ${
+                    on ? "opacity-100" : "opacity-60"
+                  }`}
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-lapis/10 text-lapis transition-colors group-hover:bg-lapis group-hover:text-vellum">
-                    <Icon name={b.icon} />
-                  </span>
-                  <span className="flex-1">
-                    <span className="block text-balance font-serif text-2xl font-semibold leading-tight">{b.name} campaigns</span>
-                    <span className="mt-1 block text-base text-ink/65">{b.goal}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </article>
-
-        <Connector>Every response is tracked, so every dollar is spent where it&nbsp;works.</Connector>
-
-        {/* 3. Tracking & Reporting */}
-        <article className="grid items-center gap-10 rounded-2xl bg-vellum p-6 text-ink shadow-2xl shadow-black/40 sm:p-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:p-12">
-          <div>
-            <StepLabel n={3}>Every month</StepLabel>
-            <h3 className="mt-4 font-serif text-4xl font-medium sm:text-5xl">Tracking &amp; Reporting</h3>
-            <p className="mt-5 max-w-xl text-balance text-xl leading-relaxed text-ink/80">
-              We track every post and every ad, so your ad dollars go where they
-              work best. Each month you get a simple report&nbsp;showing:
-            </p>
-            <ul className="mt-6 space-y-3">
-              {TRACKED.map((t) => (
-                <li key={t} className="flex items-center gap-3 text-xl">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lapis text-vellum">
-                    <Icon name="check" className="h-4 w-4" />
-                  </span>
-                  <span className="text-balance">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Both sides of the report: free posts and paid ads */}
-          <figure className="mx-auto w-full max-w-md space-y-5">
-            <div>
-              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-lapis">Free posts</p>
-              <div className="overflow-hidden rounded-xl shadow-xl shadow-ink/15 ring-1 ring-ink/10">
-                <Image src={organicReport} alt="Monthly report for St. Rose Catholic Church: organic views, new followers, and posts published" sizes="(min-width: 1024px) 448px, 90vw" className="h-auto w-full" />
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 text-sm font-bold uppercase tracking-[0.12em] text-lapis">Paid ads</p>
-              <div className="relative aspect-[1080/780] overflow-hidden rounded-xl bg-white shadow-xl shadow-ink/15 ring-1 ring-ink/10">
-                <Image src={reportOnLaptop} alt="Ad results dashboard on a laptop: 126 leads at $1.40 per lead" fill sizes="(min-width: 1024px) 448px, 90vw" className="object-cover object-center" />
-              </div>
-            </div>
-            <figcaption className="text-center font-serif text-base italic text-ink/60">
-              Real reports from client parishes.
-            </figcaption>
-          </figure>
-        </article>
+                  <p className="text-sm font-bold uppercase tracking-[0.16em] text-gilt">Step {i + 1}</p>
+                  <h3 className="mt-1 font-serif text-4xl font-semibold text-ink sm:text-5xl">{s.title}</h3>
+                  <p className="mt-3 max-w-md text-pretty text-xl leading-relaxed text-ink/75">{s.body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

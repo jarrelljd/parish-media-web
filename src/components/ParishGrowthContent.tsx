@@ -1,22 +1,15 @@
 import type { ReactNode } from "react";
-import { Heart, MessageCircle, ThumbsUp } from "lucide-react";
+import { Check, Heart, MessageCircle, ThumbsUp, X } from "lucide-react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
-import { comparison, proofFacts } from "@/data/method";
+import { proofFacts } from "@/data/method";
 import WhatWeDo from "./WhatWeDo";
 import { FacebookLogo, InstagramLogo } from "./SocialIcons";
 
 const CALENDLY_URL = GROWTH_REVIEW_CALENDLY_URL;
 
 const FAQS = [
-  {
-    question:
-      "We already have someone handling our social media. Do we still need this?",
-    answer: [
-      "Possibly. We’re not here to replace someone who knows your parish. We provide the strategy, campaigns, and execution needed to consistently reach nearby young adults and families, promote specific parish activities, and generate inquiries. We’ll bring the inquiries to the parish so your staff member can focus less on posting and more on what they do best: ministry work for the new inquirers.",
-    ],
-  },
   {
     question: "How much does it cost?",
     answer: [
@@ -37,6 +30,15 @@ const FAQS = [
       "You shouldn’t have to manage it. We handle the campaign strategy, content coordination, advertising, and reporting. Your staff’s main responsibility is helping us understand parish events and responding when interested people raise their hands.",
     ],
   },
+];
+
+// Us vs. a staff member. Our side is [before, bold, after] so the key words
+// stand out, like the comparison cards it's modeled on.
+const VERSUS: [[string, string, string], string][] = [
+  [["Every post is made to ", "nurture your parishioners", ""], "Things get posted because someone asked, with no strategy"],
+  [["", "Helpful videos from your pastor", ", like homily clips"], "No time or editing help, so videos rarely get made"],
+  [["A ", "proven strategy", " from a Catholic creator, tested in 12+ dioceses"], "No real plan, and no social media training"],
+  [["", "No potential wasted:", " ads reach every local family, backed by steady posts"], "Huge potential missed, while everyone nearby is on their phones"],
 ];
 
 const PRIEST_TESTIMONIALS = [
@@ -225,34 +227,62 @@ export default function ParishGrowthContent() {
 
       <WhatWeDo />
 
-      {/* The difference */}
+      {/* The difference: us vs. a staff member, then what staff do instead */}
       <section className="bg-vellum-deep px-6 py-20 sm:py-28 lg:px-10">
         <div className="mx-auto max-w-5xl">
-          <h2 className={h2}>&ldquo;We already have someone for social&nbsp;media.&rdquo;</h2>
-          <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/70">
-            Most parishes do, and they&rsquo;re a blessing. But their job is
-            to post. Ours is to get people to show up: targeted, trackable
-            campaigns for your parish events, and Plan Your Visit campaigns
-            that bring newcomers to Mass. Most parish staff were never
-            trained to track that, and they shouldn&rsquo;t have to&nbsp;be.
-          </p>
-          <table className="mt-12 w-full border-collapse text-left">
-            <thead>
-              <tr className="border-b-2 border-ink">
-                <th scope="col" className="w-1/2 pb-3 pr-6 font-serif text-xl font-medium text-ink/60">A volunteer or staff member</th>
-                <th scope="col" className="w-1/2 pb-3 font-serif text-xl font-semibold text-lapis">Parish Media Company</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparison.map(([a, b]) => (
-                <tr key={a} className="border-b border-ink/15 align-top">
-                  <td className="py-5 pr-6 text-pretty text-ink/55">{a}</td>
-                  <td className="py-5 text-pretty font-medium text-ink">{b}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="mt-12">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className={h2}>&ldquo;But we already have someone posting on our social&nbsp;media.&rdquo;</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-ink/70">
+              We don&rsquo;t doubt it. But they&rsquo;re posting as an extra
+              admin task, not as a real strategy to bring new young families&nbsp;in.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-14 grid max-w-4xl items-center md:grid-cols-2">
+            {/* Us: raised white card */}
+            <div className="relative z-10 rounded-3xl bg-white px-7 py-9 shadow-2xl shadow-ink/15 ring-1 ring-ink/5 sm:px-10">
+              <p className="text-balance text-center font-serif text-3xl font-semibold text-lapis md:min-h-[4.5rem]">We run your social media</p>
+              <ul className="mt-6 border-t border-ink/15">
+                {VERSUS.map(([us]) => (
+                  <li key={us.join("")} className="flex items-center gap-3 border-b border-ink/10 py-4 text-lg leading-snug last:border-b-0 md:min-h-24">
+                    <Check className="h-5 w-5 shrink-0 text-emerald-600" strokeWidth={3} aria-hidden="true" />
+                    <span>
+                      {us[0]}
+                      <strong className="font-semibold text-ink">{us[1]}</strong>
+                      {us[2]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Staff member: flatter card tucked behind */}
+            <div className="-mt-4 rounded-b-3xl bg-vellum/70 px-7 pb-9 pt-12 ring-1 ring-ink/5 md:-ml-4 md:mt-0 md:rounded-3xl md:py-9 md:pl-12 md:pr-8">
+              <p className="text-balance text-center font-serif text-3xl font-medium text-ink/65 md:min-h-[4.5rem]">A staff member runs it on the side</p>
+              <ul className="mt-6 border-t border-ink/10">
+                {VERSUS.map(([, them]) => (
+                  <li key={them} className="flex items-center gap-3 border-b border-ink/10 py-4 text-lg leading-snug text-ink/60 last:border-b-0 md:min-h-24">
+                    <X className="h-5 w-5 shrink-0 text-rubric" strokeWidth={3} aria-hidden="true" />
+                    <span>{them}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* The question every pastor asks next: open, no box */}
+          <div className="mx-auto mt-20 max-w-2xl text-center">
+            <p className="text-balance text-xl font-medium text-ink/60 sm:text-2xl">
+              So what does our staff member do&nbsp;instead?
+            </p>
+            <p className="mt-3 font-serif text-6xl font-medium text-lapis sm:text-7xl">Ministry.</p>
+            <p className="mx-auto mt-5 max-w-lg text-balance text-lg leading-relaxed text-ink/75">
+              We bring in people ready to plan a visit, get involved, or come
+              to an event. Your staff member welcomes them and gets them over
+              the finish line. It&rsquo;s a perfect role for a communications&nbsp;person.
+            </p>
+          </div>
+
+          <div className="mt-12 text-center">
             <ScrollToBookingButton className={BUTTON}>{BUTTON_LABEL}</ScrollToBookingButton>
           </div>
         </div>

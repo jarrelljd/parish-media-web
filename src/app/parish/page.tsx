@@ -11,6 +11,9 @@ export const metadata: Metadata = {
 export default function ParishGrowthPage() {
   return (
     <>
+      {/* Scale this page to 90% (everything is sized in rem), so it feels
+          less zoomed in. Only applies while /parish is mounted. */}
+      <style>{`html{font-size:90%}`}</style>
       {/* Landing page: no nav links, just a booking CTA bar so visitors stay focused. */}
       <BookingAnnouncementBar buttonRadius="rounded-lg" />
       <main className="flex flex-1 flex-col">

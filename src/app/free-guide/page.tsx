@@ -141,7 +141,7 @@ export default function FreeGuidePage() {
                         className="w-0.5 shrink-0 rounded-full bg-gold"
                         aria-hidden="true"
                       />
-                      <p className="text-pretty font-serif text-lg italic leading-relaxed text-navy sm:text-xl">
+                      <p className="text-pretty font-serif text-lg leading-relaxed text-navy sm:text-xl">
                         &ldquo;{t.quote}&rdquo;
                       </p>
                     </div>

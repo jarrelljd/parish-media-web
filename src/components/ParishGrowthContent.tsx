@@ -59,8 +59,12 @@ const PRIEST_TESTIMONIALS = [
   },
 ];
 
-const BUTTON =
-  "inline-flex items-center justify-center rounded-lg bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
+// Pill buttons: navy on light sections, gold on dark ones. Same shape
+// everywhere so visitors learn what a button looks like.
+const BUTTON_BASE =
+  "inline-flex items-center justify-center rounded-full px-10 py-4 text-base font-semibold shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl motion-reduce:transition-none motion-reduce:hover:translate-y-0";
+const BUTTON = `${BUTTON_BASE} bg-lapis text-vellum shadow-lapis/30 hover:bg-lapis-deep`;
+const BUTTON_GOLD = `${BUTTON_BASE} bg-gilt-light text-ink shadow-black/40 hover:bg-[#e0bf75]`;
 // Shorter label on phones so the button stays on one line
 const BUTTON_LABEL = (
   <>
@@ -147,7 +151,7 @@ export default function ParishGrowthContent() {
               </PlatformEmblem>
             </div>
           </div>
-          <div className="relative mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-vellum/10">
+          <div className="relative mx-auto aspect-video w-full max-w-3xl overflow-hidden rounded-2xl bg-ink shadow-2xl shadow-ink/30 ring-1 ring-vellum/10">
             <iframe
               src="https://player.vimeo.com/video/1233188537?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
@@ -161,31 +165,31 @@ export default function ParishGrowthContent() {
         {/* Real results, right under the video: one featured result, then
             a slim row of supporting results */}
         <div className="mx-auto mt-12 max-w-5xl px-6 md:mt-16">
-          <div className="grid items-center gap-6 rounded-3xl bg-lapis px-8 py-10 text-vellum shadow-2xl shadow-lapis/30 sm:px-12 md:grid-cols-[auto_1fr] md:gap-12 md:py-12">
-            <p className="text-center font-serif text-8xl font-medium leading-none sm:text-9xl md:text-left">
+          <div className="grid items-center gap-6 rounded-3xl bg-linear-to-br from-lapis to-lapis-deep px-8 py-10 text-vellum shadow-2xl shadow-lapis/30 ring-1 ring-white/5 sm:px-12 md:grid-cols-[auto_1fr] md:gap-12 md:py-12">
+            <p className="text-center font-serif text-8xl font-medium leading-none text-gilt-light sm:text-9xl md:text-left">
               {planYourVisitProof.stat}
             </p>
             <div className="text-center md:text-left">
               <p className="text-balance font-serif text-3xl font-medium leading-tight sm:text-4xl">
                 {planYourVisitProof.label}
               </p>
-              <p className="mt-4 inline-block rounded-full bg-gilt px-4 py-1.5 text-base font-semibold text-ink">
+              <p className="mt-4 inline-block rounded-full bg-gilt-light px-4 py-1.5 text-base font-semibold text-ink">
                 {`On only ${planYourVisitProof.spend} in ad spend`}
               </p>
-              <p className="mt-5 text-pretty text-sm font-semibold uppercase tracking-[0.12em] text-vellum/60">
+              <p className="mt-5 text-pretty text-base text-vellum/65">
                 {planYourVisitProof.who}
               </p>
             </div>
           </div>
 
-          <dl className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-ink/15">
+          <dl className="mt-6 grid gap-4 sm:grid-cols-3 sm:gap-5">
             {proofFacts.map((f) => (
-              <div key={f.who} className="text-center sm:px-6">
+              <div key={f.who} className="rounded-2xl bg-white px-6 py-8 text-center shadow-lg shadow-ink/5 ring-1 ring-ink/5">
                 <dt className="sr-only">{f.who}</dt>
                 <dd>
                   <span className="block font-serif text-5xl font-medium text-lapis">{f.stat}</span>
-                  <span className="mx-auto mt-2 block max-w-[15rem] text-balance text-ink/75">{f.label}</span>
-                  <span className="mx-auto mt-2 block max-w-[15rem] text-balance text-xs font-semibold uppercase tracking-[0.12em] text-ink/45">{f.who}</span>
+                  <span className="mx-auto mt-3 block max-w-[15rem] text-balance text-ink/80">{f.label}</span>
+                  <span className="mx-auto mt-3 block max-w-[15rem] text-balance text-sm text-ink/50">{f.who}</span>
                 </dd>
               </div>
             ))}
@@ -198,13 +202,13 @@ export default function ParishGrowthContent() {
       </section>
 
       {/* What other priests are saying */}
-      <section className="bg-vellum-deep px-6 py-16 sm:py-24">
+      <section className="bg-ink px-6 py-16 text-vellum sm:py-24">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className={h2}>What other priests are&nbsp;saying</h2>
           <div className="mt-12 grid gap-12 md:grid-cols-3 md:gap-8">
             {PRIEST_TESTIMONIALS.map((t) => (
               <div key={t.name}>
-                <div className="relative mx-auto aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-[1.6rem] border-[6px] border-ink bg-ink shadow-xl shadow-ink/20">
+                <div className="relative mx-auto aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-[1.6rem] border-[6px] border-black/60 bg-black shadow-2xl shadow-black/50 ring-1 ring-vellum/15">
                   <iframe
                     src={`https://player.vimeo.com/video/${t.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
                     className="absolute inset-0 h-full w-full"
@@ -215,12 +219,12 @@ export default function ParishGrowthContent() {
                   />
                 </div>
                 <p className="mt-5 font-serif text-xl font-semibold">{t.name}</p>
-                <p className="mx-auto mt-1 max-w-[280px] text-pretty text-sm text-ink/60">{t.role}</p>
+                <p className="mx-auto mt-1 max-w-[280px] text-pretty text-sm text-vellum/60">{t.role}</p>
               </div>
             ))}
           </div>
           <div className="mt-12">
-            <ScrollToBookingButton className={BUTTON}>{BUTTON_LABEL}</ScrollToBookingButton>
+            <ScrollToBookingButton className={BUTTON_GOLD}>{BUTTON_LABEL}</ScrollToBookingButton>
           </div>
         </div>
       </section>
@@ -316,7 +320,7 @@ export default function ParishGrowthContent() {
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left font-serif text-xl font-medium [&::-webkit-details-marker]:hidden">
                   <span className="text-pretty">{faq.question}</span>
                   <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center text-rubric transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center text-gilt transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
                     aria-hidden="true"
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.25} className="h-4 w-4">

@@ -15,7 +15,7 @@ export default function ParishGrowthPage() {
           less zoomed in. Only applies while /parish is mounted. */}
       <style>{`html{font-size:90%}`}</style>
       {/* Landing page: no nav links, just a booking CTA bar so visitors stay focused. */}
-      <BookingAnnouncementBar buttonRadius="rounded-lg" />
+      <BookingAnnouncementBar />
       <main className="flex flex-1 flex-col">
         <ParishGrowthContent />
       </main>

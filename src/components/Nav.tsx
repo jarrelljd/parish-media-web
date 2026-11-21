@@ -100,7 +100,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
       solid
         ? active ? "text-ink" : "text-ink/70 hover:text-ink"
         : active ? "text-vellum" : "text-vellum/80 hover:text-vellum"
-    } ${active ? "underline decoration-rubric decoration-1 underline-offset-[10px]" : ""}`;
+    } ${active ? "underline decoration-gilt decoration-2 underline-offset-[10px]" : ""}`;
 
   return (
     <header
@@ -151,7 +151,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
                         ) : (
                           <span key={item.label} aria-disabled="true" className="flex items-center gap-2 px-4 py-3 text-ink/35">
                             <span className="font-serif text-lg font-semibold">{item.label}</span>
-                            <span className="font-serif text-sm italic text-rubric/70">coming soon</span>
+                            <span className="text-sm text-ink/45">coming soon</span>
                           </span>
                         ),
                       )}
@@ -169,8 +169,8 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
           <button
             type="button"
             onClick={openBookACall}
-            className={`rounded-[3px] px-5 py-2.5 text-[15px] font-semibold ${fade} ${
-              solid ? "bg-lapis text-vellum hover:bg-lapis-deep" : "bg-vellum text-ink hover:bg-white"
+            className={`rounded-full px-6 py-2.5 text-[15px] font-semibold shadow-md transition-all duration-300 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 ${
+              solid ? "bg-lapis text-vellum shadow-lapis/25 hover:bg-lapis-deep" : "bg-gilt-light text-ink shadow-black/30 hover:bg-[#e0bf75]"
             }`}
           >
             Book a Free Call
@@ -198,7 +198,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
         <nav className="max-h-[calc(100svh-4.5rem)] overflow-y-auto border-t border-ink/10 px-6 pb-6 pt-2 lg:hidden">
           {menus.map((menu) => (
             <div key={menu.id} className="border-b border-ink/10 py-3">
-              <p className="font-serif text-base italic text-rubric">{menu.label}</p>
+              <p className="text-sm font-semibold text-gold-deep">{menu.label}</p>
               {menu.items.map((item) =>
                 item.href ? (
                   <Link
@@ -212,7 +212,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
                 ) : (
                   <span key={item.label} className="mt-2 flex items-center gap-2 font-serif text-xl font-semibold text-ink/35">
                     {item.label}
-                    <span className="text-sm font-normal italic text-rubric/70">coming soon</span>
+                    <span className="font-sans text-sm font-normal text-ink/45">coming soon</span>
                   </span>
                 ),
               )}
@@ -234,7 +234,7 @@ export default function Nav({ overlay = false }: { overlay?: boolean }) {
               setOpen(false);
               openBookACall();
             }}
-            className="mt-5 w-full rounded-[3px] bg-lapis py-3.5 text-base font-semibold text-vellum"
+            className="mt-5 w-full rounded-full bg-lapis py-3.5 text-base font-semibold text-vellum shadow-lg shadow-lapis/25"
           >
             Book a Free Call
           </button>

@@ -21,7 +21,7 @@ const VSL = {
 
 // Same look as the Social Media page (ParishGrowthContent)
 const BUTTON =
-  "inline-flex items-center justify-center rounded-[3px] bg-lapis px-9 py-4 text-base font-semibold text-vellum transition-colors hover:bg-lapis-deep";
+  "inline-flex items-center justify-center rounded-full bg-lapis px-10 py-4 text-base font-semibold text-vellum shadow-lg shadow-lapis/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-lapis-deep hover:shadow-xl motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 // Shorter label on phones so the button stays on one line
 const BUTTON_LABEL = (
   <>
@@ -29,7 +29,7 @@ const BUTTON_LABEL = (
     <span className="hidden sm:inline">Book Your Free 30-Min Parish Growth Review</span>
   </>
 );
-const rubric = "font-serif text-lg italic text-rubric";
+const rubric = "text-base font-semibold text-gold-deep";
 const h2 = "font-serif text-4xl font-medium leading-[1.08] text-balance sm:text-5xl";
 
 export default function FreeGuideBookACall() {
@@ -92,7 +92,7 @@ export default function FreeGuideBookACall() {
                 <div aria-hidden="true" className="mt-5 w-full border-t border-b border-rubric/30 pt-[3px]" />
               </div>
 
-              <LetterDate className="mt-7 text-right font-serif text-[1.075rem] italic text-ink/60" />
+              <LetterDate className="mt-7 text-right font-serif text-[1.075rem] text-ink/60" />
 
               <div className="mt-5 space-y-5 text-pretty font-serif text-[1.075rem] leading-[1.8] text-ink/85">
               <LetterGreeting />
@@ -143,7 +143,7 @@ export default function FreeGuideBookACall() {
             {/* Sign-off, sealed in wax */}
             <div className="relative mt-8">
               <WaxSeal className="absolute bottom-0 right-0 h-20 w-20 -rotate-12 sm:-right-2 sm:h-24 sm:w-24" />
-              <p className="font-serif text-[1.075rem] italic text-ink/70">In Christ,</p>
+              <p className="font-serif text-[1.075rem] text-ink/70">In Christ,</p>
               <p
                 className={`${signature.className} mt-1 -rotate-3 py-2 text-5xl leading-none text-lapis sm:text-6xl`}
                 aria-hidden="true"
@@ -169,7 +169,7 @@ export default function FreeGuideBookACall() {
         <div className="mx-auto max-w-3xl text-center">
           <p className={rubric}>What to expect</p>
           <h2 className={`mt-2 ${h2}`}>Your Parish Growth&nbsp;Review</h2>
-          <div className="relative mt-10 aspect-video w-full overflow-hidden rounded-[4px] bg-ink shadow-2xl shadow-ink/30 ring-1 ring-ink/10">
+          <div className="relative mt-10 aspect-video w-full overflow-hidden rounded-2xl bg-ink shadow-2xl shadow-ink/30 ring-1 ring-ink/10">
             <iframe
               src={`https://player.vimeo.com/video/${VSL.videoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"

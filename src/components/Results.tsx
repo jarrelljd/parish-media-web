@@ -129,7 +129,7 @@ const writtenTestimonials = [
   },
 ];
 
-const eyebrow = "font-serif text-lg italic text-rubric";
+const eyebrow = "text-base font-semibold text-gold-deep";
 const statLabel = "mt-3 max-w-xs text-pretty text-[15px] leading-snug text-ink/60";
 
 function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
@@ -154,7 +154,7 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
             />
           </div>
         </div>
-        <figcaption className="mt-4 text-center font-serif text-base italic text-ink/60">
+        <figcaption className="mt-4 text-center text-sm text-ink/55">
           {snap.priestCaption}
         </figcaption>
       </figure>
@@ -175,7 +175,7 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
             <p className={statLabel}>{snap.statLabel}</p>
           </div>
           {snap.secondaryStat && (
-            <div className="border-l border-ink/15 pl-10 text-left">
+            <div className="pl-6 text-left">
               <p className="font-serif text-6xl font-medium leading-none text-lapis/80">
                 {snap.secondaryStat.stat}
               </p>
@@ -197,7 +197,7 @@ function ClientSnapshotRow({ snap }: { snap: ClientSnapshot }) {
                 className="h-auto w-full"
               />
             </div>
-            <figcaption className="mt-2 font-serif text-base italic text-ink/55">
+            <figcaption className="mt-2 text-sm text-ink/55">
               {snap.thumbnail.caption}
             </figcaption>
           </figure>
@@ -365,7 +365,7 @@ export default function Results() {
       {/* Client roster */}
       <section className="bg-parchment px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-5xl text-center">
-          <p className="font-serif text-lg italic text-ink/55">Also trusted by</p>
+          <p className="font-serif text-xl text-ink/60">Also trusted by</p>
           <ul className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {clients
               .filter(

@@ -98,7 +98,7 @@ export default function HeroSlideshow({ slides }: { slides: Slide[] }) {
               </button>
             ))}
           </div>
-          <p key={active} className="font-display text-base italic text-vellum/70 motion-safe:animate-fade-up">
+          <p key={active} className="text-sm text-vellum/70 motion-safe:animate-fade-up">
             {slides[active].caption}
           </p>
         </div>

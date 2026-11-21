@@ -163,7 +163,7 @@ export default function WhatWeDo() {
         </div>
 
         <ol ref={listRef} className="relative mt-14 sm:mt-20">
-          {/* The path: a faint dashed track, with the gold line drawn over it */}
+          {/* The path: a gold line that draws itself as you scroll */}
           {geo && (
             <svg
               aria-hidden="true"
@@ -171,7 +171,6 @@ export default function WhatWeDo() {
               width={geo.w}
               height={geo.h}
             >
-              <path d={geo.d} fill="none" stroke="currentColor" strokeWidth={2} strokeDasharray="5 7" className="text-ink/20" />
               <path ref={pathRef} d={geo.d} fill="none" strokeWidth={3} strokeLinecap="round" className="stroke-gilt" />
             </svg>
           )}
@@ -206,12 +205,9 @@ export default function WhatWeDo() {
 
                 {/* Step text */}
                 <div
-                  className={`col-start-2 row-start-1 self-start pt-4 transition-opacity duration-500 sm:col-start-3 sm:self-center sm:pt-0 ${
-                    on ? "opacity-100" : "opacity-60"
-                  }`}
+                  className="col-start-2 row-start-1 self-start pt-4 sm:col-start-3 sm:self-center sm:pt-0"
                 >
-                  <p className="text-sm font-bold uppercase tracking-[0.16em] text-gilt">Step {i + 1}</p>
-                  <h3 className="mt-1 font-serif text-4xl font-semibold text-ink sm:text-5xl">{s.title}</h3>
+                  <h3 className="font-serif text-4xl font-semibold text-ink sm:text-5xl">{s.title}</h3>
                   <p className="mt-3 max-w-md text-balance text-xl leading-relaxed text-ink/75">{s.body}</p>
                 </div>
               </li>

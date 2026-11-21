@@ -10,6 +10,9 @@
   --color-lapis-deep: #152246;
   --color-rubric: #a1281e;
   --color-gilt: #a8832f;
+  /* Brighter gold for dark backgrounds: key numbers and buttons on ink/lapis.
+     (Plain gilt looks muddy on dark.) */
+  --color-gilt-light: #d4af5f;
 
   /* Older names, now mapped onto the palette above so every page follows it. */
   --color-navy: #1f3263;
@@ -22,9 +25,10 @@
   --color-linen: #e0d5c0;
 
   --font-sans: var(--font-source-sans);
-  --font-serif: var(--font-garamond);
-  --font-display: var(--font-garamond);
-  /* The event pages and St. Mary landing keep their original serif. */
+  /* Fraunces: an upright, sturdy serif. Traditional without the slanted,
+     italic-looking letters of EB Garamond. */
+  --font-serif: var(--font-fraunces);
+  --font-display: var(--font-fraunces);
   --font-classic: var(--font-fraunces);
 }
 

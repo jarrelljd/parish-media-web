@@ -36,13 +36,13 @@ export default function SiteFooter() {
             <BrandMark className="h-9 w-7 text-gilt" />
             <span className="font-serif text-xl font-semibold">Parish Media Company</span>
           </Link>
-          <p className="mt-4 max-w-xs font-serif text-lg italic leading-snug text-vellum/55">
+          <p className="mt-4 max-w-xs font-serif text-lg leading-snug text-vellum/55">
             New methods for an ancient&nbsp;mission.
           </p>
         </div>
         {columns.map((col) => (
           <div key={col.title}>
-            <p className="font-serif text-base italic text-[#d9867c]">{col.title}</p>
+            <p className="text-sm font-semibold text-gilt-light">{col.title}</p>
             <ul className="mt-4 space-y-2.5 text-[15px]">
               {col.links.map((l) => (
                 <li key={l.href}>

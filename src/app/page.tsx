@@ -4,6 +4,7 @@ import { comparison, methodSteps, proofFacts } from "@/data/method";
 import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import BookACallButton from "@/components/BookACallButton";
+import { buttonClass } from "@/components/buttonStyles";
 import TrustedByMarquee from "@/components/TrustedByMarquee";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
@@ -26,8 +27,8 @@ const textLink =
   "group inline-flex items-center gap-2 font-semibold text-lapis underline decoration-lapis/30 decoration-1 underline-offset-[6px] transition-colors hover:decoration-lapis";
 const arrow = "h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none";
 
-// Small red label, like the rubrics printed in a missal.
-const rubric = "font-display text-lg italic text-rubric";
+// Small section label: plain, upright, gold. (No italics, no all-caps.)
+const eyebrow = "text-base font-semibold text-gold-deep";
 const h2 = "font-display text-4xl font-medium leading-[1.08] text-balance sm:text-5xl";
 
 // ---- Hero ----------------------------------------------------------------
@@ -112,14 +113,14 @@ export default function Home() {
           <HeroSlideshow slides={heroSlides} />
 
           <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-32 pt-36 lg:px-10">
-            <p className="font-display text-xl italic text-[#e3a196] motion-safe:animate-fade-up" style={{ animationDelay: "300ms" }}>
+            <p className="text-lg font-semibold text-gilt-light motion-safe:animate-fade-up" style={{ animationDelay: "300ms" }}>
               For Catholic parishes
             </p>
             <h1 className="mt-5 max-w-4xl font-display text-[3.2rem] font-normal leading-[1.08] tracking-[-0.015em] sm:text-7xl lg:text-[6rem]">
               {heroLines.map((line, i) => (
                 <span key={line} className="-mx-[0.08em] -mb-[0.14em] block overflow-hidden px-[0.08em] pb-[0.14em]">
                   <span className="block motion-safe:animate-rise" style={{ animationDelay: `${450 + i * 140}ms` }}>
-                    {i === 1 ? <em>{line}</em> : line}
+                    {i === 1 ? <span className="text-gilt-light">{line}</span> : line}
                   </span>
                 </span>
               ))}
@@ -130,7 +131,7 @@ export default function Home() {
               content, personal invitations, and careful follow&#8209;up.
             </p>
             <div className="mt-10 flex flex-col items-start gap-6 motion-safe:animate-fade-up sm:flex-row sm:items-center sm:gap-8" style={{ animationDelay: "1200ms" }}>
-              <BookACallButton className="group inline-flex w-full items-center justify-center gap-2.5 rounded-[3px] bg-vellum px-8 py-4 text-base font-semibold text-ink transition-colors hover:bg-white sm:w-auto">
+              <BookACallButton className={buttonClass("gold", "w-full sm:w-auto")}>
                 Book a Free Parish Growth&nbsp;Review
                 <ArrowRight className={arrow} aria-hidden="true" />
               </BookACallButton>
@@ -145,14 +146,14 @@ export default function Home() {
         <section className="px-6 py-6 lg:px-10 lg:py-10">
           {/* Real results, from the Results page */}
           <div className="mx-auto max-w-7xl">
-            <dl className="grid divide-y divide-ink/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+            <dl className="grid gap-4 md:grid-cols-3 md:gap-5">
               {facts.map((f) => (
-                <div key={f.who} className="py-7 md:px-8 md:first:pl-0 md:last:pr-0">
+                <div key={f.who} className="rounded-2xl bg-white px-7 py-8 shadow-lg shadow-ink/5 ring-1 ring-ink/5">
                   <dt className="sr-only">{f.who}</dt>
                   <dd>
                     <span className="block font-display text-5xl font-medium text-lapis">{f.stat}</span>
                     <span className="mt-2 block text-pretty text-ink/75">{f.label}</span>
-                    <span className="mt-2 block font-display text-base italic text-ink/50">{f.who}</span>
+                    <span className="mt-3 block text-sm text-ink/50">{f.who}</span>
                   </dd>
                 </div>
               ))}
@@ -163,7 +164,7 @@ export default function Home() {
         {/* Trusted by */}
         <section className="border-y border-ink/10 bg-[#fbf8f2] px-6 py-12 lg:px-10 [&_.font-serif]:font-display">
           <div className="mx-auto max-w-6xl">
-            <p className="text-center font-display text-lg italic text-ink/55">
+            <p className="text-center font-display text-xl text-ink/60">
               Trusted by pastors, bishops, and religious&nbsp;communities
             </p>
             <div className="mt-8">
@@ -183,21 +184,21 @@ export default function Home() {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover object-[60%_65%]"
               />
-              <figcaption className="absolute bottom-3 left-4 font-display text-sm italic text-vellum/70">
-                Caravaggio, <span className="not-italic">The Calling of St. Matthew</span>, 1599&ndash;1600
+              <figcaption className="absolute bottom-3 left-4 text-sm text-vellum/70">
+                Caravaggio, The Calling of St. Matthew, 1599&ndash;1600
               </figcaption>
             </figure>
             <div className="flex items-center px-6 py-20 sm:px-12 lg:px-16 lg:py-28">
               <Reveal className="max-w-xl">
-                <p className="font-display text-lg italic text-[#d9867c]">Why we do this</p>
+                <p className="text-base font-semibold text-gilt-light">Why we do this</p>
                 <h2 className={`mt-4 ${h2}`}>New methods for an ancient&nbsp;mission.</h2>
                 <p className="mt-7 text-pretty text-lg leading-relaxed text-vellum/75">
                   Christ still calls people by name. Today, many of them are
                   scrolling past your parish on their phones. We help pastors
                   meet them there and invite them&nbsp;home.
                 </p>
-                <figure className="mt-10 border-l-2 border-rubric pl-6">
-                  <blockquote className="font-display text-2xl italic leading-snug">
+                <figure className="mt-10">
+                  <blockquote className="font-display text-2xl leading-snug">
                     &ldquo;A new evangelization: new in its ardor, methods, and&nbsp;expression.&rdquo;
                   </blockquote>
                   <figcaption className="mt-3 text-sm text-vellum/60">St. John Paul II, 1983</figcaption>
@@ -212,7 +213,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
               <div>
-                <p className={rubric}>How it works</p>
+                <p className={eyebrow}>How it works</p>
                 <h2 className={`mt-3 ${h2}`}>Encounter, invitation, accompaniment.</h2>
               </div>
               <p className="max-w-xl text-pretty text-lg leading-relaxed text-ink/70 lg:justify-self-end">
@@ -227,13 +228,13 @@ export default function Home() {
                 <Reveal key={s.title}>
                   <article className="grid items-center gap-10 border-t border-ink/15 pt-10 lg:grid-cols-2 lg:gap-20">
                     <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                      <p className="font-display text-6xl font-medium leading-none text-rubric">{s.n}</p>
+                      <p className="font-display text-6xl font-medium leading-none text-gilt">{s.n}</p>
                       <h3 className="mt-5 font-display text-4xl font-medium">{s.title}</h3>
-                      <p className="mt-1 font-display text-xl italic text-ink/60">{s.lead}</p>
+                      <p className="mt-1 text-xl text-ink/60">{s.lead}</p>
                       <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-ink/75">{s.body}</p>
                     </div>
                     <figure className={i % 2 === 1 ? "lg:order-1" : ""}>
-                      <div className="flex h-[24rem] items-center justify-center overflow-hidden bg-black sm:h-[28rem]">
+                      <div className="flex h-[24rem] items-center justify-center overflow-hidden rounded-2xl bg-black shadow-xl shadow-ink/15 sm:h-[28rem]">
                         <Image
                           src={s.image}
                           alt={s.alt}
@@ -241,7 +242,7 @@ export default function Home() {
                           className="h-full w-auto object-contain"
                         />
                       </div>
-                      <figcaption className="mt-3 font-display text-base italic text-ink/60">{s.caption}</figcaption>
+                      <figcaption className="mt-3 text-sm text-ink/55">{s.caption}</figcaption>
                     </figure>
                   </article>
                 </Reveal>
@@ -260,7 +261,7 @@ export default function Home() {
         {/* The difference */}
         <section className="bg-vellum-deep px-6 py-24 sm:py-28 lg:px-10">
           <div className="mx-auto max-w-5xl">
-            <p className={rubric}>The difference</p>
+            <p className={eyebrow}>The difference</p>
             <h2 className={`mt-3 ${h2}`}>&ldquo;We already have someone for social&nbsp;media.&rdquo;</h2>
             <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/70">
               Most parishes do, and they&rsquo;re a blessing. But their job is
@@ -289,7 +290,7 @@ export default function Home() {
 
             <figure className="mt-14 max-w-3xl">
               <p className="text-ink/60">It&rsquo;s a system that lets you say something like:</p>
-              <blockquote className="mt-3 font-display text-3xl italic leading-snug text-ink">
+              <blockquote className="mt-3 font-display text-3xl leading-snug text-ink">
                 &ldquo;We had 20 brand new young adults express interest in
                 coming to Mass in the last 90 days, and here is where they
                 came&nbsp;from.&rdquo;
@@ -301,7 +302,7 @@ export default function Home() {
         {/* Testimonials */}
         <section className="px-6 py-24 sm:py-28 lg:px-10">
           <div className="mx-auto max-w-7xl">
-            <p className={rubric}>In their words</p>
+            <p className={eyebrow}>In their words</p>
             <div className="mt-8 grid gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
               <Reveal>
                 <figure>
@@ -320,7 +321,7 @@ export default function Home() {
                   </figcaption>
                 </figure>
               </Reveal>
-              <div className="space-y-10 lg:border-l lg:border-ink/15 lg:pl-16">
+              <div className="space-y-10 lg:pl-4">
                 {testimonials.map((t) => (
                   <Reveal key={t.name}>
                     <figure>
@@ -352,7 +353,7 @@ export default function Home() {
         <section className="border-t border-ink/10 bg-[#fbf8f2] px-6 py-24 sm:py-28 lg:px-10">
           <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
             <div>
-              <p className={rubric}>Free resources</p>
+              <p className={eyebrow}>Free resources</p>
               <h2 className={`mt-3 ${h2}`}>Start here, even if we never work&nbsp;together.</h2>
               <Link href="/free-guide" className="mt-8 block w-56 transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none sm:w-64 lg:mt-10 lg:w-72">
                 <Image
@@ -369,7 +370,7 @@ export default function Home() {
                   <Link href={r.href} className="group grid gap-2 py-8 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-10">
                     <span>
                       <span className="block font-display text-3xl font-medium group-hover:text-lapis">{r.title}</span>
-                      <span className="mt-1 block font-display text-lg italic text-ink/55">{r.sub}</span>
+                      <span className="mt-1 block text-lg text-ink/55">{r.sub}</span>
                       <span className="mt-3 block max-w-xl text-pretty text-ink/70">{r.body}</span>
                     </span>
                     <ArrowRight className="hidden h-6 w-6 text-lapis transition-transform duration-300 group-hover:translate-x-1 sm:block" aria-hidden="true" />
@@ -383,11 +384,11 @@ export default function Home() {
         {/* Founder */}
         <section className="border-t border-ink/10 px-6 py-20 sm:py-24 lg:px-10">
           <div className="mx-auto grid max-w-5xl items-center gap-10 sm:grid-cols-[auto_1fr] sm:gap-14">
-            <div className="relative h-56 w-44 overflow-hidden bg-vellum-deep">
+            <div className="relative h-56 w-44 overflow-hidden rounded-2xl bg-vellum-deep shadow-lg shadow-ink/10">
               <Image src={founderPhoto} alt="Joe Jarrell, founder of Parish Media Company" fill sizes="176px" className="object-cover object-top grayscale" />
             </div>
             <div>
-              <p className={rubric}>Who we are</p>
+              <p className={eyebrow}>Who we are</p>
               <h2 className="mt-2 font-display text-4xl font-medium">Joe Jarrell, founder</h2>
               <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-ink/70">
                 Joe spent three years building an online following and running
@@ -416,7 +417,7 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
-              <BookACallButton className="group inline-flex w-full items-center justify-center gap-2.5 rounded-[3px] bg-vellum px-7 py-4 text-base font-semibold text-lapis transition-colors hover:bg-white sm:w-auto">
+              <BookACallButton className={buttonClass("gold", "w-full sm:w-auto")}>
                 Book a Free Parish Growth&nbsp;Review
                 <ArrowRight className={arrow} aria-hidden="true" />
               </BookACallButton>

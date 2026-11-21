@@ -155,7 +155,7 @@ export default function WhatWeDo() {
       <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] text-ink sm:text-6xl">
-            Our proven parish growth&nbsp;strategy
+            Our proven social media framework for&nbsp;parishes
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-ink/70 sm:text-2xl">
             The 3-step process we use again and again across parishes in 12+&nbsp;dioceses.

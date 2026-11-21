@@ -12,6 +12,14 @@ export const proofFacts = [
   { stat: "0→320", label: "Instagram followers in the first 30 days", who: "Ss. John & James, West Warwick, RI" },
 ];
 
+// The lead result on /parish (homepage keeps the three above).
+export const planYourVisitProof = {
+  stat: "78",
+  label: "people asked to plan their visit in just 30 days",
+  spend: "$200",
+  who: "Our Lady of the Saints Family of Parishes, South Omaha, NE",
+};
+
 // The three steps. `plain` is the everyday word for each step.
 export const methodSteps: {
   n: string;

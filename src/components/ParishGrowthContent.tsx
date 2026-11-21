@@ -3,7 +3,7 @@ import { Check, Heart, MessageCircle, ThumbsUp, X } from "lucide-react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
-import { proofFacts } from "@/data/method";
+import { planYourVisitProof, proofFacts } from "@/data/method";
 import WhatWeDo from "./WhatWeDo";
 import { FacebookLogo, InstagramLogo } from "./SocialIcons";
 
@@ -158,42 +158,42 @@ export default function ParishGrowthContent() {
           </div>
         </div>
 
-        {/* Real results, right under the video */}
+        {/* Real results, right under the video: one featured result, then
+            a slim row of supporting results */}
         <div className="mx-auto mt-12 max-w-5xl px-6 md:mt-16">
-          {/* Three result cards, with the middle one raised and filled */}
-          <dl className="grid gap-5 md:grid-cols-3 md:gap-6">
-            {proofFacts.map((f, i) => {
-              const featured = i === 1;
-              return (
-                <div
-                  key={f.who}
-                  className={`flex flex-col justify-center rounded-2xl p-7 text-center shadow-xl transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none ${
-                    featured
-                      ? "bg-lapis text-vellum shadow-lapis/30 md:-my-5"
-                      : "bg-white text-ink shadow-ink/10 ring-1 ring-ink/5"
-                  }`}
-                >
-                  <dt className="sr-only">{f.who}</dt>
-                  <dd>
-                    <span className={`block font-serif font-medium ${featured ? "text-6xl md:text-7xl" : "text-5xl text-lapis md:text-6xl"}`}>{f.stat}</span>
-                    <span className={`mx-auto mt-3 block max-w-[16rem] text-pretty ${featured ? "text-vellum/85" : "text-ink/75"}`}>{f.label}</span>
-                    <span className={`mt-3 block text-pretty font-serif text-base italic ${featured ? "text-vellum/70" : "text-ink/55"}`}>{f.who}</span>
-                  </dd>
-                </div>
-              );
-            })}
+          <div className="grid items-center gap-6 rounded-3xl bg-lapis px-8 py-10 text-vellum shadow-2xl shadow-lapis/30 sm:px-12 md:grid-cols-[auto_1fr] md:gap-12 md:py-12">
+            <p className="text-center font-serif text-8xl font-medium leading-none sm:text-9xl md:text-left">
+              {planYourVisitProof.stat}
+            </p>
+            <div className="text-center md:text-left">
+              <p className="text-balance font-serif text-3xl font-medium leading-tight sm:text-4xl">
+                {planYourVisitProof.label}
+              </p>
+              <p className="mt-4 inline-block rounded-full bg-gilt px-4 py-1.5 text-base font-semibold text-ink">
+                {`On only ${planYourVisitProof.spend} in ad spend`}
+              </p>
+              <p className="mt-5 text-pretty text-sm font-semibold uppercase tracking-[0.12em] text-vellum/60">
+                {planYourVisitProof.who}
+              </p>
+            </div>
+          </div>
+
+          <dl className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-ink/15">
+            {proofFacts.map((f) => (
+              <div key={f.who} className="text-center sm:px-6">
+                <dt className="sr-only">{f.who}</dt>
+                <dd>
+                  <span className="block font-serif text-5xl font-medium text-lapis">{f.stat}</span>
+                  <span className="mx-auto mt-2 block max-w-[15rem] text-balance text-ink/75">{f.label}</span>
+                  <span className="mx-auto mt-2 block max-w-[15rem] text-balance text-xs font-semibold uppercase tracking-[0.12em] text-ink/45">{f.who}</span>
+                </dd>
+              </div>
+            ))}
           </dl>
         </div>
 
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="mx-auto mt-10 max-w-2xl text-pretty text-lg text-ink/75 md:mt-16">
-            We use your parish&rsquo;s existing events, ministries, and Mass
-            schedule to reach local young adults and families and give them
-            a clear next&nbsp;step.
-          </p>
-          <div className="mt-8">
-            <ScrollToBookingButton className={BUTTON}>{BUTTON_LABEL}</ScrollToBookingButton>
-          </div>
+        <div className="mx-auto mt-12 max-w-3xl px-6 text-center md:mt-14">
+          <ScrollToBookingButton className={BUTTON}>{BUTTON_LABEL}</ScrollToBookingButton>
         </div>
       </section>
 

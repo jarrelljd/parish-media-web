@@ -192,7 +192,7 @@ export default function Scorecard() {
       )}
 
       {phase === "lookup" && (
-        <div className="flex flex-col items-center rounded-3xl bg-white px-8 py-20 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5">
+        <div className="flex flex-col items-center rounded-3xl bg-white px-8 py-20 text-center shadow-2xl shadow-ink/15 ring-1 ring-ink/5">
           {lookupNote ? (
             <p className="max-w-md text-pretty font-serif text-xl leading-snug text-navy" role="status">
               {lookupNote}
@@ -215,7 +215,7 @@ export default function Scorecard() {
       )}
 
       {phase === "calculating" && (
-        <div className="flex flex-col items-center rounded-3xl bg-white px-8 py-20 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5">
+        <div className="flex flex-col items-center rounded-3xl bg-white px-8 py-20 text-center shadow-2xl shadow-ink/15 ring-1 ring-ink/5">
           <span
             className="h-10 w-10 animate-spin rounded-full border-[3px] border-navy/15 border-t-gold motion-reduce:animate-none"
             aria-hidden="true"
@@ -294,8 +294,8 @@ function QuizCard({
         : num !== "";
 
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10">
-      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.15em] text-navy/50">
+    <div className="rounded-3xl bg-white p-6 shadow-2xl shadow-ink/15 ring-1 ring-ink/5 sm:p-10">
+      <div className="flex items-center justify-between text-sm font-semibold text-navy/55">
         <span>
           Question {index + 1} of {total}
         </span>
@@ -303,7 +303,7 @@ function QuizCard({
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-1 normal-case tracking-normal text-navy/60 hover:text-navy"
+            className="inline-flex items-center gap-1 font-medium text-navy/60 hover:text-navy"
           >
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
             Back
@@ -478,7 +478,7 @@ function Results({ report, answers }: { report: ScorecardReport; answers: Scorec
           problems and details live in the letter. */}
       <ScoreHero report={report} compact />
 
-      <div className="rounded-3xl bg-white p-5 shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-8">
+      <div className="rounded-3xl bg-white p-5 shadow-2xl shadow-ink/15 ring-1 ring-ink/5 sm:p-8">
         <OptInForm answers={answers} population={report.population} />
       </div>
     </div>
@@ -659,14 +659,15 @@ function OptInForm({
         <button
           type="submit"
           disabled={pending || done || ineligible}
-          className={`group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-lg shadow-gold/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/40 disabled:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${
-            ineligible ? "disabled:opacity-60" : "disabled:cursor-wait"
-          }`}
+          className={buttonClass(
+            "primary",
+            `w-full disabled:translate-y-0 ${ineligible ? "disabled:opacity-60" : "disabled:cursor-wait"}`,
+          )}
         >
           {pending || done ? (
             <span className="inline-flex items-center justify-center gap-2.5">
               <span
-                className="h-4 w-4 animate-spin rounded-full border-2 border-navy/25 border-t-navy motion-reduce:animate-none"
+                className="h-4 w-4 animate-spin rounded-full border-2 border-vellum/25 border-t-vellum motion-reduce:animate-none"
                 aria-hidden="true"
               />
               Sending&hellip;

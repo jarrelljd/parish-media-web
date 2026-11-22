@@ -67,7 +67,7 @@ export function ScoreRing({
   return (
     <div className={`relative shrink-0 ${small ? "h-24 w-24 sm:h-32 sm:w-32" : "h-40 w-40 sm:h-44 sm:w-44"}`}>
       <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90" aria-hidden="true">
-        <circle cx="60" cy="60" r={r} fill="none" stroke="currentColor" strokeWidth="9" className="text-offwhite/15" />
+        <circle cx="60" cy="60" r={r} fill="none" stroke="currentColor" strokeWidth="9" className="text-vellum/15" />
         <circle
           cx="60"
           cy="60"
@@ -84,12 +84,12 @@ export function ScoreRing({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span
-          className={`font-serif font-medium text-offwhite ${small ? "text-3xl sm:text-4xl" : "text-5xl sm:text-6xl"}`}
+          className={`font-serif font-medium text-vellum ${small ? "text-3xl sm:text-4xl" : "text-5xl sm:text-6xl"}`}
         >
           {score}
         </span>
         <span
-          className={`font-semibold uppercase text-offwhite/60 ${small ? "text-[9px] tracking-[0.15em] sm:text-[10px]" : "text-xs tracking-[0.2em]"}`}
+          className={`font-medium text-vellum/60 ${small ? "text-[11px] sm:text-xs" : "text-sm"}`}
         >
           out of 100
         </span>
@@ -112,9 +112,9 @@ export function ScoreHero({
   const tone = bandToneOnNavy[report.band.tone];
   if (compact) {
     return (
-      <div className="overflow-hidden rounded-3xl bg-navy px-5 py-6 text-offwhite shadow-2xl shadow-navy/20 sm:px-8 sm:py-8">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold sm:text-xs">
-          Your Parish Social Media Score
+      <div className="overflow-hidden rounded-3xl bg-linear-to-br from-lapis to-lapis-deep px-5 py-6 text-vellum shadow-2xl shadow-lapis/30 ring-1 ring-white/5 sm:px-8 sm:py-8">
+        <p className="text-sm font-semibold text-gilt-light sm:text-base">
+          Your parish social media score
         </p>
         <div className="mt-4 flex items-center gap-5 sm:gap-7">
           <ScoreRing score={report.score} color={tone} small />
@@ -125,7 +125,7 @@ export function ScoreHero({
             >
               {report.band.label}
             </h2>
-            <p className="mt-1.5 text-pretty text-sm leading-relaxed text-offwhite/75 sm:text-base">
+            <p className="mt-1.5 text-pretty text-sm leading-relaxed text-vellum/75 sm:text-base">
               {report.band.summary}
             </p>
           </div>
@@ -135,9 +135,9 @@ export function ScoreHero({
     );
   }
   return (
-    <div className="overflow-hidden rounded-3xl bg-navy px-6 py-10 text-center text-offwhite shadow-2xl shadow-navy/20 sm:px-12 sm:py-12">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-        Your Parish Social Media Score
+    <div className="overflow-hidden rounded-3xl bg-linear-to-br from-lapis to-lapis-deep px-6 py-10 text-center text-vellum shadow-2xl shadow-lapis/30 ring-1 ring-white/5 sm:px-12 sm:py-12">
+      <p className="text-base font-semibold text-gilt-light">
+        Your parish social media score
       </p>
       <div className="mt-6 flex justify-center">
         <ScoreRing score={report.score} color={tone} />
@@ -148,7 +148,7 @@ export function ScoreHero({
       >
         {report.band.label}
       </h2>
-      <p className="mx-auto mt-3 max-w-lg text-pretty leading-relaxed text-offwhite/75">
+      <p className="mx-auto mt-3 max-w-lg text-pretty leading-relaxed text-vellum/75">
         {report.band.summary}
       </p>
       {children}
@@ -171,7 +171,7 @@ export function CategoryBars({ report }: { report: ScorecardReport }) {
           <div className="flex items-baseline justify-between gap-3">
             <span className="font-medium text-navy">{c.label}</span>
             <span className="shrink-0 text-sm tabular-nums text-navy/60">
-              <span className={`mr-2 text-xs font-semibold uppercase tracking-wider ${tierText[c.tier]}`}>
+              <span className={`mr-2 text-sm font-semibold ${tierText[c.tier]}`}>
                 {tierLabel[c.tier]}
               </span>
               {c.points}/{c.max}

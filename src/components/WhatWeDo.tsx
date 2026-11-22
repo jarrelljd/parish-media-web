@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import homilyClip from "../../public/images/proof/core-four/homily-clip.jpg";
 import activityPost from "../../public/images/proof/core-four/activity-post.jpg";
 import connectionPost from "../../public/images/proof/core-four/connection-post.jpg";
@@ -15,10 +15,12 @@ import reportOnLaptop from "../../public/images/proof/report-on-laptop.png";
 
 type Pic = { src: StaticImageData; alt: string };
 
-type Step = {
+export type Step = {
   title: string;
   body: string;
-  pics: Pic[];
+  pics?: Pic[];
+  // A custom visual instead of photos (used by other landing pages).
+  visual?: ReactNode;
 };
 
 const STEPS: Step[] = [
@@ -77,7 +79,15 @@ function StepVisual({ pics }: { pics: Pic[] }) {
 
 type Geo = { d: string; w: number; h: number; dotYs: number[] };
 
-export default function WhatWeDo() {
+export default function WhatWeDo({
+  heading = <>Our proven social media framework for&nbsp;parishes</>,
+  subheading = <>The 3-step process we use again and again across Catholic churches in 12+&nbsp;dioceses.</>,
+  steps = STEPS,
+}: {
+  heading?: ReactNode;
+  subheading?: ReactNode;
+  steps?: Step[];
+} = {}) {
   const listRef = useRef<HTMLOListElement>(null);
   const dotRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const pathRef = useRef<SVGPathElement>(null);
@@ -155,10 +165,10 @@ export default function WhatWeDo() {
       <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] text-ink sm:text-6xl">
-            Our proven social media framework for&nbsp;parishes
+            {heading}
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-balance text-xl leading-relaxed text-ink/70 sm:text-2xl">
-            The 3-step process we use again and again across Catholic churches in 12+&nbsp;dioceses.
+            {subheading}
           </p>
         </div>
 
@@ -175,7 +185,7 @@ export default function WhatWeDo() {
             </svg>
           )}
 
-          {STEPS.map((s, i) => {
+          {steps.map((s, i) => {
             const on = i < reached;
             return (
               <li
@@ -184,7 +194,7 @@ export default function WhatWeDo() {
               >
                 {/* Proof: left column on desktop, under the text on mobile */}
                 <div className="col-start-2 row-start-2 pb-12 pt-6 sm:col-start-1 sm:row-start-1 sm:py-10">
-                  <StepVisual pics={s.pics} />
+                  {s.visual ?? <StepVisual pics={s.pics ?? []} />}
                 </div>
 
                 {/* Step number, sitting on the path */}

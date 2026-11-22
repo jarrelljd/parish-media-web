@@ -4,6 +4,7 @@ import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import { planYourVisitProof, proofFacts } from "@/data/method";
+import { PRIEST_TESTIMONIALS } from "@/data/priestTestimonials";
 import WhatWeDo from "./WhatWeDo";
 import { FacebookLogo, InstagramLogo } from "./SocialIcons";
 
@@ -39,24 +40,6 @@ const VERSUS: [[string, string, string], string][] = [
   [["", "Helpful videos from your pastor", ", like homily clips"], "No time or editing help, so videos rarely get made"],
   [["A ", "proven strategy", " from a Catholic creator, tested in 12+ dioceses"], "No real plan, and no social media training"],
   [["", "No potential wasted:", " ads reach every local family, backed by steady posts"], "Huge potential missed, while everyone nearby is on their phones"],
-];
-
-const PRIEST_TESTIMONIALS = [
-  {
-    name: "Fr. Dave Aufiero",
-    role: "Pastor, St. Patrick’s Catholic Church, South Hadley, MA",
-    videoId: "1224059968",
-  },
-  {
-    name: "Fr. Nicholas Fleming",
-    role: "Pastor, Ss. John and James Catholic Parish, West Warwick, RI",
-    videoId: "1224307339",
-  },
-  {
-    name: "Fr. Nathan Linton",
-    role: "Vocations Director, Capuchin Franciscans, Midwest Province of St. Joseph",
-    videoId: "1225765800",
-  },
 ];
 
 // Pill buttons: navy on light sections, gold on dark ones. Same shape

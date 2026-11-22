@@ -7,12 +7,15 @@ import ScrollToBookingButton from "./ScrollToBookingButton";
 export default function BookingAnnouncementBar({
   label = "Book a free Parish Growth Review",
   buttonRadius = "rounded-full",
+  tone = "ink",
 }: {
   label?: string;
   buttonRadius?: string;
+  // Match the page's hero band: ink (default) or deep lapis.
+  tone?: "ink" | "lapis";
 }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-vellum/10 bg-ink/95 backdrop-blur">
+    <header className={`sticky top-0 z-50 border-b border-vellum/10 ${tone === "lapis" ? "bg-lapis-deep/95" : "bg-ink/95"} backdrop-blur`}>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-6">
         <span className="flex min-w-0 items-center gap-2.5 text-vellum">
           <BrandMark className="h-8 w-6 shrink-0 text-vellum" />

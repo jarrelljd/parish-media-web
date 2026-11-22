@@ -17,11 +17,17 @@ const steps: StoryStep[] = [
     label: "Step 0",
     title: "Where they started",
     body: (
-      <p>
-        In the same four months of 2025, the province&rsquo;s Facebook and
-        Instagram pages drew about 140,000 views and 600 new followers. That
-        was with boosted&nbsp;posts.
-      </p>
+      <>
+        <p>
+          Very few men were reaching out to the vocation office about
+          religious life, and social media wasn&rsquo;t bringing in new&nbsp;ones.
+        </p>
+        <p>
+          In the same four months of 2025, the province&rsquo;s Facebook and
+          Instagram pages drew about 140,000 views and 600 new followers. That
+          was with boosted&nbsp;posts.
+        </p>
+      </>
     ),
   },
   {

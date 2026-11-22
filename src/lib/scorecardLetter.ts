@@ -63,6 +63,7 @@ export type ScorecardLetter = {
   findings: LetterFinding[]; // 0–3, in the rules' order
   working: string; // what's working, 1–2 sentences
   next: string; // "Where I'd start": the one first step and why
+  feed?: string; // fixed: what the feed should look like each week (the core four), printed after `next`
   now?: string; // letters before 2026-11-19 only: a separate "this week" action
   cover: string; // the biggest problem in plain words, for the cover email
   ev?: LetterEvidence;
@@ -124,7 +125,17 @@ export const FINDINGS_CTA = {
 //   5. Nothing major wrong: the core four, plus giving campaigns on social
 //      media sent to a landing page.
 // `text` is the step as the template letter prints it; the AI rewrites it.
-export type StartStep = { step: string; why: string; text: string };
+// `feed` (Joe, 2026-11-21): a fixed line or two on what the feed should look
+// like each week (the core four) and why, printed right after the step in
+// every letter. Left out when the step itself is the core four.
+export type StartStep = { step: string; why: string; text: string; feed?: string };
+
+const FEED_FOUR =
+  "one homily clip, one connection post (a story about Father, the staff, or the parish), one social proof post (photos of parish life), and one flyer";
+// After an ads step: the feed is also what a family checks before they come.
+const FEED_WITH_ADS = `Alongside that, here’s what your feed should look like each week: ${FEED_FOUR}. The first three build goodwill, so when the flyer asks people to come, they say yes. It helps the ads too. A family who sees your invitation will often check your page first, and homilies and photos of parish life tell them they’ll be welcome.`;
+// After the homily clip step: the clip is the first of the four.
+const FEED_AFTER_CLIP = `That clip is the first of four posts your feed should have each week: ${FEED_FOUR}. The first three build goodwill, so when the flyer asks people to come, they say yes. Once the clip is a habit, add the other three.`;
 
 const LOW_AD_VALUES = ["none", "boosted", "under250"];
 
@@ -148,6 +159,7 @@ export function whereToStart(
           ? "You’re already running some ads, so I’d start by turning them into a steady Plan Your Visit campaign on Facebook and Instagram."
           : "I’d start by launching a Plan Your Visit campaign on Facebook and Instagram."
       } It’s an ad aimed at families near the parish, inviting them to plan a first visit, with a simple form right inside the app for their name and phone number. ${call} Your posts mostly reach people already in the pews; this is how families nearby who aren’t coming yet get a personal invitation.`,
+      feed: FEED_WITH_ADS,
     };
   }
   if (o.missing) {
@@ -155,6 +167,7 @@ export function whereToStart(
       step: "Add a Meta Plan Your Visit campaign next to the ads they already run: an ad inviting families near the parish to plan a first visit, a simple name-and-phone form inside Facebook or Instagram, and a same-day personal call or text.",
       why: "Their ads already reach people, but there's no simple way for a new family to say yes, so the money isn't turning into visits.",
       text: `Your ads are already reaching people, so I’d start by adding a Plan Your Visit campaign on Facebook and Instagram: an ad inviting families nearby to plan a first visit, with a simple form inside the app for their name and phone number. ${call} That gives every new family an easy way to say yes.`,
+      feed: FEED_WITH_ADS,
     };
   }
   if (o.leak) {
@@ -166,6 +179,7 @@ export function whereToStart(
       text: `I’d keep your Plan Your Visit campaign running, and have every new form lead from Facebook and Instagram go straight to one person’s phone, so they can call or text that same day.${
         o.tracked ? "" : " Count every lead each month so you can see which ads are working."
       } People are most ready right after they raise their hand, and a quick call feels like a welcome.`,
+      feed: FEED_WITH_ADS,
     };
   }
   const top = problems[0]?.id;
@@ -174,6 +188,7 @@ export function whereToStart(
       step: "Film the homily every Sunday and post a short clip of it every week on Facebook and Instagram (a phone on a tripod is enough to start).",
       why: "A homily clip gives people something for free every week. That goodwill is what makes people say yes when the parish asks.",
       text: "I’d start by filming the homily every Sunday and posting a short clip of it every week on Facebook and Instagram. A phone on a tripod is enough to start. Each clip gives people something for free, and that goodwill is what makes them say yes when the parish asks.",
+      feed: FEED_AFTER_CLIP,
     };
   }
   if (top) {
@@ -481,7 +496,7 @@ export function buildLetterFacts(
       },
       diagnosis: `${doc.diagnosis.lead} ${doc.diagnosis.body}`,
       problemsInOrder: top3,
-      whereToStart: { step: start.step, why: start.why },
+      whereToStart: { step: start.step, why: start.why, printedRightAfter: start.feed ?? null },
       facebookEngagement: engagement,
       coreFour,
       strengths: doc.strengths,
@@ -519,7 +534,7 @@ HOW THE LETTER IS LAID OUT (code assembles it; you write only the pieces marked 
 3. Key findings, a numbered list. Code prints each problem's title in bold; YOU write "findings[i].summary" right after it. This is the only place the problems are covered, so it must carry both the evidence and why it matters.
 4. A booking invitation. Code.
 5. "What's working": YOU write "working".
-6. "Where I'd start": YOU write "next_step".
+6. "Where I'd start": YOU write "next_step". When whereToStart.printedRightAfter isn't null, code prints that paragraph (what the feed should look like each week) right after next_step.
 7. A fixed closing and sign-off. Code. It talks about doing it yourself vs. having help and invites them to a free call.
 Don't write a greeting, a sign-off, a closing, a call to book, or a P.S.
 
@@ -533,7 +548,7 @@ WHAT YOU WRITE
    - "summary": exactly 2 sentences, 25 to 50 words in all. Sentence 1, the evidence: what we saw, with their own specifics (a count, date, or answer from their posts, observationsFromTheirPages, facebookEngagement when it proves this problem, or quizAnswers). Sentence 2, why it matters, in plain words using the ideas below, tied to reaching families nearby, Mass attendance, young people, or vocations. Don't restate the title word for word. No advice.
    - For a "nurture" finding, the evidence should compare their posts to the core four where you can (e.g. "Of your last 9 posts, 6 were flyers and only 1 was a homily clip").
 - "working": 1 or 2 sentences about one or two specific good things (from strengths, their best-received post with its date and numbers, or facebookEngagement when its band is "strong"). If problemsInOrder is empty, 2 or 3 sentences.
-- "next_step": the "Where I'd start" section: the ONE first step and why it comes first. The step is already decided: it is whereToStart.step. Write that step, never a different one, and don't swap in a step from problemsInOrder (the first step is always something on Facebook and Instagram, even when the top finding is about something else). 3 to 5 sentences, under 100 words: what the step is (in plain words, explaining any platform term in one clause), why it comes first for THIS parish (use whereToStart.why, tied to their own answers or findings), and what it looks like when it's working. One step, not a plan or a list of steps. If the step mentions the core four, name the four in one sentence. For a Plan Your Visit campaign you may add the adsCost proof point; otherwise you may add one approved proof point that fits. Never invent costs, budgets, or results. No selling and no mention of Parish Media Company doing it (the closing handles that). You may tie timing to an upcomingChurchDates entry, but never claim anything about attendance at those times.
+- "next_step": the "Where I'd start" section: the ONE first step and why it comes first. The step is already decided: it is whereToStart.step. Write that step, never a different one, and don't swap in a step from problemsInOrder (the first step is always something on Facebook and Instagram, even when the top finding is about something else). 3 to 5 sentences, under 100 words: what the step is (in plain words, explaining any platform term in one clause), why it comes first for THIS parish (use whereToStart.why, tied to their own answers or findings), and what it looks like when it's working. One step, not a plan or a list of steps. If the step mentions the core four, name the four in one sentence. When whereToStart.printedRightAfter isn't null, don't describe the four posts or what the feed should look like; that paragraph follows yours, so end next_step on the step itself. For a Plan Your Visit campaign you may add the adsCost proof point; otherwise you may add one approved proof point that fits. Never invent costs, budgets, or results. No selling and no mention of Parish Media Company doing it (the closing handles that). You may tie timing to an upcomingChurchDates entry, but never claim anything about attendance at those times.
 - "cover_line": the single biggest thing holding the parish back, in under 15 plain words, lowercase start, no period. Example: "nothing is regularly inviting new families to Mass"
 
 Advice ("I'd recommend", "you should", "start by") belongs only in next_step. The intro, findings, and working diagnose.
@@ -775,6 +790,7 @@ export async function writeScorecardLetter(
             findings: out.findings.map((f, i) => ({ t: problems[i].title, s: tidyText(f.summary) })),
             working: tidyText(out.working),
             next: tidyText(out.next_step),
+            ...(start.feed ? { feed: start.feed } : {}),
             cover: tidyText(out.cover_line).replace(/\.$/, ""),
             ev: evidence,
           };
@@ -852,6 +868,7 @@ export function templateLetter(
   });
   const n = findings.length;
   const lead = n === 0 ? "Here’s what I found." : n === 1 ? "Here’s the one thing I’d focus on." : `Here are the ${COUNT_WORD[n]} things I’d focus on, starting with what matters most.`;
+  const start = opts.start ?? whereToStart(a, problems);
   return {
     v: 2,
     src: "template",
@@ -860,7 +877,8 @@ export function templateLetter(
       : `Thanks for taking the Parish Social Media Scorecard. I went through your answers. ${lead}`,
     findings,
     working: doc.strengths[0] ?? doc.diagnosis.body,
-    next: (opts.start ?? whereToStart(a, problems)).text,
+    next: start.text,
+    ...(start.feed ? { feed: start.feed } : {}),
     cover: problems[0] ? lowerFirst(problems[0].title) : "keeping what’s working and building on it",
     ev: opts.evidence,
   };

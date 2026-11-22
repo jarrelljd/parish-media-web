@@ -407,9 +407,14 @@ function LetterPdf({ doc, letter, greeting, isPastor, bookingUrl = SCORECARD_BOO
             ) : (
               <>
                 <Label>Where I’d start</Label>
-                <Text style={[s.p, { marginBottom: 12 }]} orphans={2} widows={2}>
+                <Text style={[s.p, letter.feed ? {} : { marginBottom: 12 }]} orphans={2} widows={2}>
                   <Rich text={letter.next} />
                 </Text>
+                {letter.feed ? (
+                  <Text style={[s.p, { marginBottom: 12 }]} orphans={2} widows={2}>
+                    {letter.feed}
+                  </Text>
+                ) : null}
               </>
             )}
           </>

@@ -1,7 +1,8 @@
 import Image, { type StaticImageData } from "next/image";
 import { ArrowRight } from "lucide-react";
 import BookACallButton from "@/components/BookACallButton";
-import { buttonArrow, buttonClass } from "@/components/buttonStyles";
+import CapuchinCaseStudy from "@/components/results/CapuchinCaseStudy";
+import { ScorecardButton } from "@/components/results/ScorecardCta";
 import zachWernerPhoto from "../../public/images/clients/zach-werner-headshot.png";
 import frJaredPhoto from "../../public/images/clients/fr-jared-de-leo.jpg";
 import stJosephBefore from "../../public/images/proof/st-joseph-ig-before.png";
@@ -38,27 +39,6 @@ type ClientSnapshot = {
 };
 
 const clientSnapshots: ClientSnapshot[] = [
-  {
-    parish: "Capuchin Franciscans",
-    location: "Midwest Province of St. Joseph",
-    priestCaption: "Fr. Nathan Linton, Vocations Director",
-    video: {
-      src: "https://player.vimeo.com/video/1225765800?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
-      title: "Fr. Nathan Linton testimonial for Parish Media Company",
-      allow:
-        "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share",
-      referrerPolicy: "strict-origin-when-cross-origin" as const,
-      orientation: "portrait" as const,
-    },
-    stat: "200",
-    statLabel: "men reached out to discuss their vocation in 90\u00a0days",
-    secondaryStat: {
-      stat: "12+",
-      label: "were serious, qualified discerners who moved on to the next\u00a0step",
-    },
-    description:
-      "Using targeted Meta ads across the province, we reached Catholic men who were actively open to learning more about religious life. Over 90 days, a $500 ad investment generated 200 inquiries, including 12+ serious discerners who were ready for personal follow-up with the Vocation Office. The campaign gave interested men an easy, low-friction way to take the first step, while helping the province identify which inquiries represented genuine vocational interest rather than casual curiosity.",
-  },
   {
     parish: "St. Patrick’s Catholic Church",
     location: "South Hadley, MA",
@@ -218,18 +198,40 @@ function Shot({ src, alt }: { src: StaticImageData; alt: string }) {
 export default function Results() {
   return (
     <>
-      {/* Client Snapshots */}
-      <section className="px-6 pt-14 pb-20 sm:pt-20 sm:pb-28 lg:px-10">
+      {/* Hero */}
+      <section className="bg-ink px-6 pt-14 pb-20 sm:pt-20 sm:pb-28">
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-7xl">
+            Real ministries, real&nbsp;numbers.
+          </h1>
+          <p
+            className="mx-auto mt-5 max-w-2xl text-balance text-lg text-vellum/80 motion-safe:animate-fade-up sm:text-xl"
+            style={{ animationDelay: "240ms" }}
+          >
+            How Catholic parishes and religious communities are reaching new
+            people online, step by step, with the numbers to&nbsp;prove&nbsp;it.
+          </p>
+          <div
+            className="mt-9 flex justify-center motion-safe:animate-fade-up"
+            style={{ animationDelay: "420ms" }}
+          >
+            <a href="#capuchins" className="text-base font-semibold text-gilt-light underline decoration-gilt-light/40 underline-offset-4 hover:decoration-gilt-light">
+              Start with the Capuchins&rsquo; story
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <CapuchinCaseStudy />
+
+      {/* More stories (to be rebuilt as full case studies) */}
+      <section className="bg-parchment/40 px-6 pt-20 pb-20 sm:pt-28 sm:pb-28 lg:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
-            <p className={eyebrow}>Results</p>
-            <h1 className="mt-3 font-serif text-5xl font-medium leading-[1.04] text-balance sm:text-7xl">
-              Real parishes, real&nbsp;numbers.
-            </h1>
-            <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/70 sm:text-xl">
-              See results from parishes, dioceses, and religious orders
-              like&nbsp;yours.
-            </p>
+            <p className={eyebrow}>More stories</p>
+            <h2 className="mt-3 font-serif text-4xl font-medium leading-[1.08] text-balance sm:text-5xl">
+              Parishes like&nbsp;yours
+            </h2>
           </div>
 
           <div className="mt-16 divide-y divide-ink/15 border-t border-ink/15 pt-14">
@@ -274,10 +276,7 @@ export default function Results() {
           </ul>
 
           <div className="mt-14 flex">
-            <BookACallButton className={buttonClass("primary")}>
-              Book a Free Parish Growth&nbsp;Review
-              <ArrowRight className={buttonArrow} aria-hidden="true" />
-            </BookACallButton>
+            <ScorecardButton />
           </div>
         </div>
       </section>
@@ -401,6 +400,29 @@ export default function Results() {
                 </li>
               ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <section className="bg-ink px-6 py-20 text-center sm:py-28">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-balance font-serif text-4xl font-medium leading-[1.08] text-vellum sm:text-5xl">
+            How is your parish doing&nbsp;online?
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-vellum/80">
+            Take the free Parish Social Media Scorecard. In about 3 minutes,
+            you&rsquo;ll get your parish&rsquo;s score out of 100 and where
+            to&nbsp;start.
+          </p>
+          <div className="mt-9 flex justify-center">
+            <ScorecardButton variant="gold">Take the free scorecard</ScorecardButton>
+          </div>
+          <p className="mt-8 text-base text-vellum/60">
+            Ready to talk now?{" "}
+            <BookACallButton className="font-semibold text-vellum underline decoration-gilt-light/60 underline-offset-4 hover:decoration-gilt-light">
+              Book a free Parish Growth&nbsp;Review
+            </BookACallButton>
+          </p>
         </div>
       </section>
     </>

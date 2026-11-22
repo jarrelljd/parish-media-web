@@ -8,7 +8,7 @@ import monthlyReport from "../../public/images/proof/st-joseph-monthly-report-cr
 // Real results (same numbers as the Results page).
 export const proofFacts = [
   { stat: "65", label: "young adults asked about young adult events in 60 days", who: "St. Patrick’s, South Hadley, MA" },
-  { stat: "200", label: "men reached out about religious life in 90 days", who: "Capuchin Franciscans, Midwest Province" },
+  { stat: "436", label: "men asked about religious life in 120 days", who: "Capuchin Franciscans, Midwest Province" },
   { stat: "0→320", label: "Instagram followers in the first 30 days", who: "Ss. John & James, West Warwick, RI" },
 ];
 

@@ -157,14 +157,14 @@ export default function CapuchinCaseStudy() {
       <div className="mx-auto max-w-6xl">
         <div className="max-w-3xl">
           <p className="text-base font-semibold text-gold-deep">
-            Capuchin Franciscans &middot; Midwest Province of St.&nbsp;Joseph
+            Capuchin Franciscans &middot;{" "}
+            <span className="whitespace-nowrap">Midwest Province of St.&nbsp;Joseph</span>
           </p>
           <h2 className="mt-3 text-balance font-serif text-4xl font-medium leading-[1.06] text-ink sm:text-6xl">
-            436 men asked to talk with a friar about their&nbsp;vocation
+            436 men asked to talk with the vocations director in only 120&nbsp;days
           </h2>
           <p className="mt-5 text-pretty text-xl leading-relaxed text-ink/70">
-            Four months of nurturing content, one simple ask, and a text from
-            Fr.&nbsp;Nathan within minutes. Here&rsquo;s exactly how it&nbsp;worked.
+            Here&rsquo;s exactly how it&nbsp;worked.
           </p>
         </div>
 

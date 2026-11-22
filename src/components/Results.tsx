@@ -202,14 +202,15 @@ export default function Results() {
       <section className="bg-ink px-6 pt-14 pb-20 sm:pt-20 sm:pb-28">
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-7xl">
-            Real ministries, real&nbsp;numbers.
+            Real parishes &amp; religious&nbsp;orders.
           </h1>
           <p
             className="mx-auto mt-5 max-w-2xl text-balance text-lg text-vellum/80 motion-safe:animate-fade-up sm:text-xl"
             style={{ animationDelay: "240ms" }}
           >
-            How Catholic parishes and religious communities are reaching new
-            people online, step by step, with the numbers to&nbsp;prove&nbsp;it.
+            How they grew with social media{" "}
+            <span className="whitespace-nowrap">step-by-step</span>, and the numbers
+            to&nbsp;prove&nbsp;it.
           </p>
           <div
             className="mt-9 flex justify-center motion-safe:animate-fade-up"

@@ -46,7 +46,7 @@ const STEPS: Step[] = [
   },
   {
     title: "Ask",
-    body: "Targeted Facebook and Instagram ads, plus emails to your parish list, invite local families to give monthly.",
+    body: "Targeted Facebook and Instagram ads invite local families to give monthly.",
     visual: <GivingAdVisual />,
   },
   {
@@ -202,9 +202,6 @@ export default function MonthlyGivingContent() {
             <p className="mx-auto mt-6 max-w-xl text-pretty text-base text-ink/70">
               Provided your parish gives us account access, timely approvals,
               your donor list, pastor participation, and the agreed ad&nbsp;budget.
-            </p>
-            <p className="mx-auto mt-8 inline-block rounded-full bg-ink/10 px-6 py-2.5 text-lg">
-              <strong className="font-semibold">$10,000</strong>&nbsp;plus ad spend and&nbsp;travel
             </p>
           </div>
         </div>

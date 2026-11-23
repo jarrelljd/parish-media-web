@@ -1,9 +1,14 @@
+import Image from "next/image";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
-import WhatWeDo, { type Step } from "./WhatWeDo";
-import { FilmAndBuildVisual, GivingAdVisual } from "./GivingMockups";
+import TitheRoadmap, { type RoadStep } from "./TitheRoadmap";
+import {
+  FilmAndBuildVisual,
+  GivingAdVisual,
+  GoalThermometerVisual,
+  ThankYouVideoVisual,
+} from "./GivingMockups";
 import RecurringGivingChart from "./RecurringGivingChart";
-import MechanismWheel from "./MechanismWheel";
 import WaxSeal from "./WaxSeal";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import { PRIEST_TESTIMONIALS } from "@/data/priestTestimonials";
@@ -37,21 +42,44 @@ const RECURRING_BENEFITS: [string, string][] = [
   ["Steady in every season", "Recurring gifts arrive in July just like at Christmas."],
 ];
 
-const STEPS: Step[] = [
+// The TITHE Framework, one milestone per letter on the roadmap.
+const STEPS: RoadStep[] = [
   {
-    title: "Film & build",
-    body: "We fly in and film your pastor and parish, then build the video, ads, and a giving page where monthly giving takes a few taps.",
+    letter: "T",
+    title: "Tell the story",
+    body: "We fly in and film your pastor and parish, then build a polished video, clean ads, and a giving page where monthly giving takes a few taps.",
     visual: <FilmAndBuildVisual />,
   },
   {
-    title: "Ask",
+    letter: "I",
+    title: "Invite",
     body: "Targeted Facebook and Instagram ads invite local families to give monthly.",
     visual: <GivingAdVisual />,
   },
   {
-    title: "Optimize",
-    body: "We track every visit and gift, and move your budget to what works.",
-    pics: [{ src: reportOnLaptop, alt: "Ad results dashboard on a laptop showing every response tracked" }],
+    letter: "T",
+    title: "Track",
+    body: "Pixel tracking on every visit and gift shows exactly which ads bring in donors.",
+    visual: (
+      <Image
+        src={reportOnLaptop}
+        alt="Ad results dashboard on a laptop showing every response tracked"
+        sizes="(min-width: 640px) 420px, 80vw"
+        className="mx-auto h-56 w-auto max-w-full object-contain drop-shadow-xl sm:h-72"
+      />
+    ),
+  },
+  {
+    letter: "H",
+    title: "Hit the goal",
+    body: "We refresh ads before they go stale, and a goal thermometer shows parishioners how close you are to $10,000 a month.",
+    visual: <GoalThermometerVisual />,
+  },
+  {
+    letter: "E",
+    title: "Express thanks",
+    body: "Every new monthly donor receives a personal video thank-you from their pastor.",
+    visual: <ThankYouVideoVisual />,
   },
 ];
 
@@ -143,22 +171,10 @@ export default function MonthlyGivingContent() {
         </div>
       </section>
 
-      {/* Why it works: the key mechanism */}
-      <section className="bg-lapis-deep px-6 py-20 text-vellum sm:py-28 lg:px-10">
-        <div className="mx-auto max-w-5xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="font-semibold text-gilt-light">Why it works</p>
-            <h2 className={`mt-3 ${h2}`}>Top-tier digital marketing, the kind parishes rarely&nbsp;have</h2>
-          </div>
-          <div className="mt-14 sm:mt-16">
-            <MechanismWheel />
-          </div>
-        </div>
-      </section>
-
-      <WhatWeDo
-        heading={<>How the campaign&nbsp;works</>}
-        subheading={<>Built around your pastor, your people, and your parish&rsquo;s&nbsp;story.</>}
+      {/* The TITHE Framework: five milestones on a winding roadmap */}
+      <TitheRoadmap
+        heading={<>Our 5-step TITHE&nbsp;Framework</>}
+        subheading={<>Top-tier digital marketing, the kind parishes rarely have, built around your&nbsp;pastor.</>}
         steps={STEPS}
       />
 

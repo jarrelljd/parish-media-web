@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Lock, Play } from "lucide-react";
+import { Clapperboard, Lock, Play } from "lucide-react";
 import BrandMark from "./BrandMark";
 import pastorFilming from "../../public/images/events/st-patrick/fr-dave.jpg";
 import parishFamilies from "../../public/images/events/st-rose/group-photo.jpg";
@@ -53,24 +53,92 @@ export function GivingFormMockup({ className = "" }: { className?: string }) {
   );
 }
 
-// Step 1: the pastor on film, with the giving form in front of it.
-export function FilmAndBuildVisual() {
+// T (Tell the story): behind-the-scenes b-roll, with the giving form in
+// front of it. Pass `videoSrc` (a short muted clip in /public) once the
+// footage is ready; until then a placeholder frame shows.
+export function FilmAndBuildVisual({ videoSrc }: { videoSrc?: string }) {
   return (
     <div className="relative mx-auto h-[26rem] w-full max-w-md">
       <div className="absolute right-0 top-0 aspect-video w-[85%] overflow-hidden rounded-xl bg-ink shadow-xl shadow-ink/25 ring-1 ring-ink/10">
-        <Image
-          src={pastorFilming}
-          alt=""
-          fill
-          sizes="(min-width: 640px) 360px, 80vw"
-          className="object-cover object-[60%_30%]"
-        />
-        <span className="absolute inset-0 bg-ink/25" />
+        {videoSrc ? (
+          <video
+            src={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
+          // TODO: swap for Joe's b-roll of filming with the Diocese of Reno.
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed pl-[30%] border-gilt-light/50 bg-lapis-deep text-center text-vellum/70">
+            <Clapperboard className="h-8 w-8 text-gilt-light" aria-hidden="true" />
+            <span className="px-4 text-sm font-semibold">B-roll placeholder</span>
+            <span className="px-6 text-xs text-vellum/50">Filming with the Diocese of&nbsp;Reno</span>
+          </div>
+        )}
+      </div>
+      <GivingFormMockup className="absolute bottom-0 left-0 origin-bottom-left scale-[0.8]" />
+    </div>
+  );
+}
+
+// H (Hit the goal): the goal thermometer parishioners see on the giving
+// page. Sample figures only.
+export function GoalThermometerVisual() {
+  const pct = 74;
+  const ticks = ["$10K", "$7.5K", "$5K", "$2.5K", "$0"];
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none mx-auto flex w-72 select-none items-stretch gap-5 rounded-3xl bg-white px-6 py-7 text-left shadow-2xl shadow-ink/20 ring-1 ring-ink/5"
+    >
+      {/* A tube filling with gold, a bulb at the bottom */}
+      <div className="flex flex-col items-center">
+        <div className="relative h-48 w-6 overflow-hidden rounded-t-full bg-vellum ring-1 ring-ink/10">
+          <div className="absolute inset-x-0 bottom-0 bg-gilt-light" style={{ height: `${pct}%` }} />
+        </div>
+        <div className="-mt-1 h-11 w-11 rounded-full bg-gilt-light ring-4 ring-white" />
+      </div>
+      <div className="flex flex-1 flex-col">
+        <div className="flex h-48 flex-col justify-between text-xs text-ink/45">
+          {ticks.map((t) => (
+            <span key={t}>{t}</span>
+          ))}
+        </div>
+        <div className="mt-3">
+          <span className="block font-serif text-3xl font-semibold leading-none text-ink">$7,400</span>
+          <span className="mt-1 block text-xs leading-snug text-ink/60">a month toward our $10,000&nbsp;goal</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// E (Express thanks): the pastor's video thank-you each new donor receives.
+export function ThankYouVideoVisual() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none mx-auto w-64 select-none overflow-hidden rounded-[1.6rem] border-[6px] border-ink bg-white text-left shadow-2xl shadow-ink/30 sm:w-72"
+    >
+      <div className="px-4 pb-3 pt-4">
+        <span className="block text-[11px] font-semibold text-gilt">A message from your pastor</span>
+        <span className="mt-1 block font-serif text-lg font-semibold leading-tight text-ink">
+          Thank you for joining our monthly giving&nbsp;family
+        </span>
+      </div>
+      <div className="relative aspect-[4/3] w-full bg-ink">
+        <Image src={pastorFilming} alt="" fill sizes="288px" className="object-cover object-[60%_30%]" />
+        <span className="absolute inset-0 bg-ink/20" />
         <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg">
           <Play className="ml-0.5 h-5 w-5 fill-ink text-ink" />
         </span>
       </div>
-      <GivingFormMockup className="absolute bottom-0 left-0 origin-bottom-left scale-[0.8]" />
+      <p className="px-4 py-3 text-xs leading-snug text-ink/70">
+        Your gift keeps our parish strong, month after month. God bless&nbsp;you.
+      </p>
     </div>
   );
 }

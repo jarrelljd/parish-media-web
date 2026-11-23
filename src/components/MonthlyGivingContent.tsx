@@ -72,7 +72,7 @@ const STEPS: RoadStep[] = [
   {
     letter: "H",
     title: "Hit the goal",
-    body: "We refresh ads before they go stale, and a goal thermometer shows parishioners how close you are to $10,000 a month.",
+    body: "We refresh ads before they go stale, and a goal thermometer shows parishioners how many families have joined, inspiring others to join too.",
     visual: <GoalThermometerVisual />,
   },
   {
@@ -173,7 +173,7 @@ export default function MonthlyGivingContent() {
 
       {/* The TITHE Framework: five milestones on a winding roadmap */}
       <TitheRoadmap
-        heading={<>Our 5-step TITHE&nbsp;Framework</>}
+        heading={<>Our 5-step T.I.T.H.E.&nbsp;Framework</>}
         subheading={<>Top-tier digital marketing, the kind parishes rarely have, built around your&nbsp;pastor.</>}
         steps={STEPS}
       />

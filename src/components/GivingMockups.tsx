@@ -85,10 +85,15 @@ export function FilmAndBuildVisual({ videoSrc }: { videoSrc?: string }) {
 }
 
 // H (Hit the goal): the goal thermometer parishioners see on the giving
-// page. Sample figures only.
+// page. It counts families, not dollars (warmer for parishioners); behind
+// the scenes the family goal is set to reach $10K a month. Sample: 200
+// families at a ~$50 average gift. Sample figures only.
+const FAMILY_GOAL = 200;
+const FAMILIES_JOINED = 148;
+
 export function GoalThermometerVisual() {
-  const pct = 74;
-  const ticks = ["$10K", "$7.5K", "$5K", "$2.5K", "$0"];
+  const pct = (FAMILIES_JOINED / FAMILY_GOAL) * 100;
+  const ticks = [200, 150, 100, 50, 0];
   return (
     <div
       aria-hidden="true"
@@ -108,8 +113,10 @@ export function GoalThermometerVisual() {
           ))}
         </div>
         <div className="mt-3">
-          <span className="block font-serif text-3xl font-semibold leading-none text-ink">$7,400</span>
-          <span className="mt-1 block text-xs leading-snug text-ink/60">a month toward our $10,000&nbsp;goal</span>
+          <span className="block font-serif text-4xl font-semibold leading-none text-ink">{FAMILIES_JOINED}</span>
+          <span className="mt-1 block text-xs leading-snug text-ink/60">
+            families giving monthly. Help us reach&nbsp;{FAMILY_GOAL}!
+          </span>
         </div>
       </div>
     </div>

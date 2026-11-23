@@ -6,7 +6,7 @@ import ParishPricing from "@/components/ParishPricing";
 export const metadata: Metadata = {
   title: "Pricing | Parish Media Company",
   description:
-    "Parish growth plans from Parish Media Company: organic social media content, targeted Meta ads, and monthly reporting for Catholic parishes and dioceses.",
+    "Two ways to work with Parish Media Company: Parish Growth (social media and Meta ads) or the Parish Media Partnership (on-site filming, social media, ads, and a recurring giving campaign).",
 };
 
 export default function ParishPricingPage() {

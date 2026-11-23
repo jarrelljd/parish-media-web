@@ -1,251 +1,156 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
-import BookACallButton from "@/components/BookACallButton";
+import { Check, ChevronDown } from "lucide-react";
 
 /*
-  Tier names, prices, and the core differentiators (ads + organic only at
-  Essentials; a team-shot photo/video day added at Expansion; Joe personally
-  flying out to shoot plus several days on-site setup & staff training at
-  Premium) are confirmed by Joe. The supporting bullets (report cadence,
-  support level, account lead, etc.) are still drafted-by-proxy — worth a
-  once-over before this page goes out to a prospect.
+  Prices confirmed by Joe (2026-11-23): Parish Growth $30,000/yr, Parish
+  Media Partnership $60,000/yr (Joe flies out with the team). Both get 10%
+  off for deciding within 21 days and 10% off for paying in full, and the
+  two stack. Whether stacking is a flat 20% or 10% then 10% isn't confirmed,
+  so the page never shows a combined price.
+  This page is sent to prospects after a call, so it has no booking CTAs.
+  Intentionally not linked from Nav or other pages.
 */
 
-type Tier = {
+type Plan = {
   name: string;
   price: string;
-  tagline: string;
-  featured?: boolean;
+  summary: string;
   features: string[];
-  planTotal: string;
-  down: string;
-  installment: string;
-  guarantee?: {
-    label: string;
-    description: string;
-  };
+  details: { label: string; body: string }[];
+  dark: boolean;
+  highlight?: { title: string; body: string };
 };
 
-// Payment plan = paid-in-full price + 10%, split 50% down / 25% at month 4 /
-// 25% at month 8 of that increased total.
-const tiers: Tier[] = [
+const plans: Plan[] = [
   {
-    name: "Essentials",
-    price: "$20,000",
-    tagline: "Ads management and organic posting for a single parish.",
-    features: [
-      "Weekly organic content for Facebook & Instagram",
-      "Managed Meta ads campaign (ad spend billed separately)",
-      "Monthly growth report",
-      "Email support",
-    ],
-    planTotal: "$22,000",
-    down: "$11,000",
-    installment: "$5,500",
-  },
-  {
-    name: "Expansion",
+    name: "Parish Growth",
     price: "$30,000",
-    tagline: "Everything in Essentials, plus a professional photo & video shoot to fuel your content.",
-    featured: true,
+    summary: "Social media and Meta ads, managed for you.",
     features: [
-      "Everything in Essentials",
-      "On-site photo & video (b-roll) shoot by our team",
-      "Increased posting cadence with real photo & video content",
-      "Quarterly strategy call",
-      "Priority support",
+      "2 videos a week (homily clips)",
+      "12 Meta ad campaigns a year",
+      "Facebook & Instagram managed",
+      "Event and ministry promotion",
+      "Performance reports",
     ],
-    planTotal: "$33,000",
-    down: "$16,500",
-    installment: "$8,250",
-    guarantee: {
-      label: "Implementation Guarantee",
-      description:
-        "If we don’t hit your agreed-upon 90-day goal, we keep working at no additional cost until we do.",
-    },
+    details: [
+      { label: "Videos", body: "2 videos a week, clipped from your homily, edited, and published." },
+      { label: "Ads", body: "12 Meta ad campaigns a year that reach local Catholics and families, bring in new parishioners, and fill your events and programs." },
+      { label: "Social media", body: "We manage your Facebook and Instagram accounts and posting schedule, and promote your events, ministries, and activities." },
+      { label: "Reporting", body: "Performance reports and strategic guidance." },
+    ],
+    dark: false,
   },
   {
-    name: "Premium",
-    price: "$40,000",
-    tagline: "Joe personally flies out to shoot your parish and train your staff on-site.",
+    name: "Parish Media Partnership",
+    price: "$60,000",
+    summary: "Everything in Parish Growth, plus:",
     features: [
-      "Everything in Expansion",
-      "Photo & video shoot personally shot by Joe",
-      "Several days on-site setting up your systems & training your staff",
-      "Dedicated account lead",
-      "Direct line for same-week turnaround requests",
+      "3 videos a week (adds a Sunday reflection)",
+      "15 Meta ad campaigns a year instead of 12",
+      "Annual on-site filming visit with Joe",
+      "Homily recording system installed",
     ],
-    planTotal: "$44,000",
-    down: "$22,000",
-    installment: "$11,000",
-    guarantee: {
-      label: "Money-Back Guarantee",
-      description:
-        "If we don’t hit your agreed-upon 90-day goal, we’ll refund your investment.",
+    details: [
+      { label: "Filming visit", body: "Joe and our production team fly to your parish for several days. We film your pastor's 52 Sunday reflections with multiple cameras and professional lighting and audio, plus your church, liturgy, ministries, parishioner interviews, and ads for events, evangelization, and fundraising." },
+      { label: "Homily recording", body: "We install and set up a professional recording system in your church." },
+      { label: "Videos", body: "3 videos a week: 2 homily clips plus a Sunday reflection, with short videos cut from your footage all year." },
+      { label: "Ads", body: "15 Meta ad campaigns a year instead of 12." },
+      { label: "Giving campaign", body: "A custom giving page, a video of your pastor making the appeal, targeted ads, donation tracking, and regular reporting." },
+    ],
+    dark: true,
+    highlight: {
+      title: "Built to pay for itself",
+      body: "As soon as we're back from filming, we launch a monthly giving campaign with one goal: $5,000 a month in new recurring gifts, enough to cover the partnership.",
     },
   },
 ];
 
-export default function ParishPricing() {
-  const [openTier, setOpenTier] = useState<string | null>(null);
-
+function CheckList({ items, dark }: { items: string[]; dark: boolean }) {
   return (
-    <>
-      <section className="relative overflow-hidden px-6 pb-16 pt-14 sm:pb-20 sm:pt-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-          <h1 className="mt-8 text-balance font-serif text-4xl font-semibold leading-tight text-navy sm:text-5xl">
-            Parish Growth Plans
-          </h1>
-          <p className="mt-6 text-pretty text-lg text-navy/70 sm:text-xl">
-            Three ways to bring your parish&rsquo;s social media, ads, and
-            reporting under one system, each built around the same goal:
-            more real people involved in parish life.
-          </p>
-        </div>
-      </section>
+    <ul className="space-y-3">
+      {items.map((item) => (
+        <li key={item} className={`flex items-start gap-3 ${dark ? "text-vellum/85" : "text-ink/80"}`}>
+          <Check
+            aria-hidden="true"
+            strokeWidth={2.5}
+            className={`mt-1 h-4 w-4 shrink-0 ${dark ? "text-gilt-light" : "text-gold-deep"}`}
+          />
+          <span className="text-pretty">{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-      <section className="px-6 pb-24 sm:pb-32">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3 lg:items-start">
-          {tiers.map((tier) => (
-            <div
-              key={tier.name}
-              className={`relative flex h-full flex-col rounded-2xl border p-8 shadow-sm ${
-                tier.featured
-                  ? "border-gold/40 bg-gold/5 lg:-translate-y-4"
-                  : "border-navy/10 bg-white"
-              }`}
-            >
-              {tier.featured && (
-                <span className="absolute -top-3 left-1/2 w-[88%] max-w-56 -translate-x-1/2 rounded-xl bg-gold px-3 py-1.5 text-center text-xs font-semibold text-navy">
-                  Recommended for Growing&nbsp;Parishes
-                </span>
-              )}
+export default function ParishPricing() {
+  return (
+    <section className="bg-vellum px-6 py-16 sm:py-24">
+      <h1 className="text-center font-serif text-4xl font-medium text-ink sm:text-5xl">
+        Pricing
+      </h1>
 
-              <h2 className="font-serif text-2xl font-semibold text-navy">
-                {tier.name}
-              </h2>
-              <p className="mt-2 text-pretty text-sm text-navy/70">
-                {tier.tagline}
-              </p>
-
-              <div className="mt-6 border-t border-navy/10 pt-6">
-                <p className="font-serif text-4xl font-semibold text-navy">
-                  {tier.price}
-                </p>
-                <p className="mt-1 text-sm font-medium uppercase tracking-wide text-navy/60">
-                  Per Year
-                </p>
-              </div>
-
-              <ul className="mt-6 flex-1 space-y-3">
-                {tier.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2.5 text-navy/80"
-                  >
-                    <span
-                      className="mt-0.5 font-bold text-emerald-600"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {tier.guarantee && (
-                <div className="mt-6 rounded-xl border border-gold/40 bg-gold/5 p-4 text-center">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gold">
-                    {tier.guarantee.label}
-                  </p>
-                  <p className="mt-1 text-sm text-navy/80">
-                    {tier.guarantee.description}
-                  </p>
-                </div>
-              )}
-
-              <div className="mt-8 border-t border-navy/10 pt-6">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenTier((current) =>
-                      current === tier.name ? null : tier.name
-                    )
-                  }
-                  aria-expanded={openTier === tier.name}
-                  className="flex w-full items-center justify-between text-sm font-semibold text-navy"
-                >
-                  See Pricing Options
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    className={`h-3.5 w-3.5 shrink-0 transition-transform ${
-                      openTier === tier.name ? "rotate-180" : ""
-                    }`}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 9l6 6 6-6"
-                    />
-                  </svg>
-                </button>
-
-                {openTier === tier.name && (
-                  <div className="mt-4 space-y-3">
-                    <div className="rounded-xl border border-navy/10 bg-navy/5 p-4">
-                      <p className="text-sm font-semibold text-navy">
-                        Paid in Full
-                      </p>
-                      <p className="mt-1 text-sm text-navy/70">
-                        {tier.price} due at signing
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-navy/10 bg-navy/5 p-4">
-                      <p className="text-sm font-semibold text-navy">
-                        Payment Plan &mdash; {tier.planTotal} total
-                      </p>
-                      <p className="mt-1 text-sm text-navy/70">
-                        {tier.down} down, {tier.installment} in month 4,{" "}
-                        {tier.installment} in month 8
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="bg-navy px-6 py-20 text-center sm:py-24">
-        <span className="mx-auto block h-1 w-16 rounded-full bg-gold" />
-        <h2 className="mx-auto mt-8 max-w-2xl text-balance font-serif text-3xl font-semibold text-offwhite sm:text-4xl">
-          Not Sure Which Plan Fits Your Parish?
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-offwhite/70">
-          Book a free call and we&rsquo;ll walk through your parish&rsquo;s
-          situation and recommend where to start.
-        </p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <BookACallButton className="inline-block rounded-full bg-offwhite px-8 py-3.5 text-base font-medium text-navy transition-colors hover:bg-offwhite/90">
-            Book a Free Parish Growth&nbsp;Review
-          </BookACallButton>
-          <Link
-            href="/contact"
-            className="inline-block rounded-full border border-offwhite/40 px-8 py-3.5 text-base font-medium text-offwhite transition-colors hover:bg-offwhite/10"
+      <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2 md:items-start">
+        {plans.map((plan) => (
+          <div
+            key={plan.name}
+            className={`flex flex-col rounded-3xl p-8 sm:p-10 ${
+              plan.dark
+                ? "bg-ink text-vellum shadow-2xl shadow-ink/30"
+                : "bg-white text-ink shadow-xl shadow-ink/5 ring-1 ring-ink/5"
+            }`}
           >
-            Contact Us
-          </Link>
-        </div>
-      </section>
-    </>
+            <h2 className="font-serif text-2xl font-medium">{plan.name}</h2>
+            <p className="mt-6 font-serif text-5xl font-medium">{plan.price}</p>
+            <p className={`mt-1 ${plan.dark ? "text-vellum/60" : "text-ink/60"}`}>per year</p>
+
+            {plan.highlight && (
+              <div className="mt-6 rounded-2xl bg-gilt-light/10 p-5 ring-1 ring-gilt-light/40">
+                <p className="font-semibold text-gilt-light">{plan.highlight.title}</p>
+                <p className="mt-1.5 text-pretty text-vellum/85">{plan.highlight.body}</p>
+              </div>
+            )}
+
+            <p className={`mt-8 font-semibold ${plan.dark ? "text-gilt-light" : "text-gold-deep"}`}>
+              {plan.summary}
+            </p>
+            <div className="mt-4">
+              <CheckList items={plan.features} dark={plan.dark} />
+            </div>
+
+            <details className="group mt-8">
+              <summary
+                className={`flex cursor-pointer list-none items-center gap-2 font-semibold [&::-webkit-details-marker]:hidden ${
+                  plan.dark ? "text-gilt-light" : "text-lapis"
+                }`}
+              >
+                See everything included
+                <ChevronDown
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+                />
+              </summary>
+              <dl
+                className={`mt-5 space-y-5 rounded-2xl p-6 ${
+                  plan.dark ? "bg-vellum/5" : "bg-parchment/60"
+                }`}
+              >
+                {plan.details.map((d) => (
+                  <div key={d.label}>
+                    <dt className={`font-semibold ${plan.dark ? "text-vellum" : "text-ink"}`}>{d.label}</dt>
+                    <dd className={`mt-1 text-pretty ${plan.dark ? "text-vellum/75" : "text-ink/70"}`}>{d.body}</dd>
+                  </div>
+                ))}
+              </dl>
+            </details>
+          </div>
+        ))}
+      </div>
+
+      <p className="mx-auto mt-10 max-w-xl text-balance text-center text-ink/70">
+        Save 10% when you decide within 21 days of your call, and another 10%
+        when you pay for the year in&nbsp;full. Ad spend is billed
+        separately.
+      </p>
+    </section>
   );
 }

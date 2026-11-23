@@ -1,4 +1,3 @@
-import { Check } from "lucide-react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import WhatWeDo, { type Step } from "./WhatWeDo";
@@ -126,11 +125,12 @@ export default function MonthlyGivingContent() {
 
           <div className="mt-14 grid items-center gap-10 md:grid-cols-2 md:gap-14">
             <RecurringGivingChart />
-            <ul className="space-y-7">
-              {RECURRING_BENEFITS.map(([title, body]) => (
-                <li key={title} className="flex items-start gap-4">
-                  <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gilt/15">
-                    <Check className="h-4 w-4 text-gilt" strokeWidth={3} aria-hidden="true" />
+            {/* Roman numerals instead of check icons: reads like a missal. */}
+            <ul className="space-y-8">
+              {RECURRING_BENEFITS.map(([title, body], i) => (
+                <li key={title} className="flex items-baseline gap-5">
+                  <span className="w-10 shrink-0 text-right font-serif text-3xl font-medium leading-none text-gilt" aria-hidden="true">
+                    {["I", "II", "III"][i]}
                   </span>
                   <span>
                     <span className="block font-serif text-2xl font-semibold text-ink">{title}</span>

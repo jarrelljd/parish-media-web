@@ -6,7 +6,7 @@ import ParishPricing from "@/components/ParishPricing";
 export const metadata: Metadata = {
   title: "Pricing | Parish Media Company",
   description:
-    "Two ways to work with Parish Media Company: Parish Growth (social media and Meta ads) or the Parish Media Partnership (on-site filming, social media, ads, and a recurring giving campaign).",
+    "We build and launch a recurring giving campaign designed to create up to $5,000 per month in new recurring gifts. Plans: the Parish Growth and Giving Engine, Parish Growth, and a 30-Day Pilot.",
 };
 
 export default function ParishPricingPage() {

@@ -2,130 +2,96 @@ import { Check } from "lucide-react";
 
 /*
   Prices confirmed by Joe (2026-11-23):
-  - 30-Day Kickstart $6,000, paid in full, no discounts. Campaign choice:
-    plan your visit, volunteering, or an event (not giving).
-  - Parish Growth $30,000/yr. Monthly reporting, homily clips, flyers,
-    connection posts, 3 campaign types (not giving), and the landing
-    pages and backend automations each campaign needs.
-  - Parish Media Partnership $60,000/yr (Joe flies out with the team).
+  - 30-Day Pilot $6,000, paid in full, no discounts. Campaign choice:
+    plan your visit, volunteering, or an event (not giving). If the parish
+    continues into Parish Growth within 30 days, the $6,000 is credited
+    toward the annual engagement.
+  - Parish Growth $30,000/yr. Recommended plan. Monthly reporting, homily
+    clips, flyers, connection posts, 3 campaign types (not giving), and the
+    landing pages and backend automations each campaign needs.
+  - Parish Growth and Giving Engine $60,000/yr (formerly Parish Media
+    Partnership; Joe flies out with the team). The recurring giving
+    campaign is the headline proposition of the page.
   The annual plans get 10% off for deciding within 21 days and 10% off for
   paying in full, and the two stack. Whether stacking is a flat 20% or 10%
   then 10% isn't confirmed, so the page never shows a combined price.
-  Kept deliberately minimal: the page is sent to prospects after a call,
-  so details are covered there. No booking CTAs, not linked from Nav.
+  Sent to prospects after a call. No booking CTAs, not linked from Nav.
 
-  Visual hierarchy is intentional: Kickstart is a compact card, Growth is
-  a fuller white card, Partnership is the large dark premium card.
+  Page order (Joe, 2026-11-23): simple heading, $60k anchor, $30k
+  recommended, $6k pilot, ad spend note, FAQ.
 */
 
-type Tier = "basic" | "mid" | "premium";
-
-type Plan = {
-  name: string;
-  price: string;
-  period: string;
-  tier: Tier;
-  badge?: string;
-  lead?: string;
-  features: string[];
-  note?: string;
+const engine = {
+  name: "Parish Growth and Giving Engine",
+  price: "$60,000",
+  period: "per year",
+  lead: "Everything in Parish Growth, plus:",
+  features: [
+    "Joe flies out for several days to film your parish",
+    "52 professionally filmed Sunday reflections from your pastor, plus footage of parish life",
+    "A professional homily recording system, installed in your church",
+    "3 videos a week instead of 2",
+    "15 ad campaigns a year instead of 12",
+  ],
 };
 
-const plans: Record<Tier, Plan> = {
-  basic: {
-    name: "30-Day Kickstart",
-    price: "$6,000",
-    period: "for 30 days, paid in full",
-    tier: "basic",
-    features: ["8 homily clips", "1 Meta ad campaign", "Social media and ads setup"],
-  },
-  mid: {
-    name: "Parish Growth",
-    price: "$30,000",
-    period: "per year",
-    tier: "mid",
-    features: [
-      "2 homily clips a week, edited and published",
-      "Flyers and connection posts",
-      "12 ad campaigns a year for Plan Your Visit, volunteering, and parish events",
-      "Landing pages and follow-up automations built for every campaign",
-      "Monthly reports",
-    ],
-  },
-  premium: {
-    name: "Parish Media Partnership",
-    price: "$60,000",
-    period: "per year",
-    tier: "premium",
-    badge: "Our most complete plan",
-    lead: "Everything in Parish Growth, plus:",
-    features: [
-      "Joe flies out for several days to film your parish",
-      "52 professionally filmed Sunday reflections from your pastor, plus footage of parish life",
-      "A giving campaign, filmed on-site and launched as soon as we're back",
-      "A professional homily recording system, installed in your church",
-      "3 videos a week instead of 2",
-      "15 ad campaigns a year instead of 12",
-    ],
-    note: "The giving campaign aims for $5,000 a month in new recurring gifts, enough to cover the partnership.",
-  },
+const growth = {
+  name: "Parish Growth",
+  price: "$30,000",
+  period: "per year",
+  badge: "Best fit for most parishes",
+  description:
+    "A year-round system for increasing parish visibility, event participation, volunteer inquiries, and visits without adding work to parish staff.",
+  features: [
+    "2 homily clips a week, edited and published",
+    "Flyers and connection posts",
+    "12 ad campaigns a year for Plan Your Visit, volunteering, and parish events",
+    "Landing pages and follow-up automations built for every campaign",
+    "Monthly reports",
+  ],
 };
 
-const cardStyles: Record<Tier, string> = {
-  basic: "bg-white p-8 text-ink shadow-xl shadow-ink/5 ring-1 ring-ink/5",
-  mid: "bg-white p-9 text-ink shadow-2xl shadow-lapis/10 ring-2 ring-lapis/20",
-  premium: "bg-ink p-10 text-vellum shadow-2xl shadow-ink/40 ring-2 ring-gilt-light/60",
+const pilot = {
+  name: "30-Day Pilot",
+  price: "$6,000",
+  period: "for 30 days, paid in full",
+  description:
+    "A 30-day proof-of-concept for parishes that want to see the system in action before committing to an annual partnership.",
+  features: ["8 homily clips", "1 Meta ad campaign", "Social media and ads setup"],
+  credit:
+    "If you continue into Parish Growth within 30 days, your $6,000 pilot fee is credited toward the annual engagement.",
 };
 
-function PlanCard({ plan }: { plan: Plan }) {
-  const dark = plan.tier === "premium";
-  const compact = plan.tier === "basic";
+/*
+  FAQ answers are drafts built only from facts already on this page.
+  Joe to confirm wording before this goes live.
+*/
+const faqs = [
+  {
+    q: "Can I take this to my finance council first?",
+    a: "Yes, and most pastors do. The 10% decision discount stays open for 21 days after your call, which is enough time for a council meeting. If it would help, we're glad to answer the council's questions directly.",
+  },
+  {
+    q: "How does the on-site filming work?",
+    a: "On the Parish Growth and Giving Engine, Joe and the team fly out and spend several days at your parish. In that visit we film 52 Sunday reflections with your pastor, capture footage of parish life, film the giving campaign, and install the homily recording system. We work around your Mass and office schedule.",
+  },
+  {
+    q: "What's the timeline?",
+    a: "The pilot runs for 30 days. The annual plans run for 12 months. On the Giving Engine, the recurring giving campaign launches as soon as we're back from filming.",
+  },
+  {
+    q: "What does success look like?",
+    a: "For the Giving Engine, new recurring gifts, with the campaign designed to create up to $5,000 per month. For Parish Growth, more people seeing your parish, coming to events, asking about volunteering, and planning a visit, all tracked in your monthly report. For the pilot, one campaign that shows you the system working before you commit to a year.",
+  },
+];
 
+function Feature({ text, tone }: { text: string; tone: "dark" | "lapis" | "gold" }) {
+  const iconColor = tone === "dark" ? "text-gilt-light" : tone === "lapis" ? "text-lapis" : "text-gold-deep";
   return (
-    <div className={`flex flex-col rounded-3xl ${cardStyles[plan.tier]}`}>
-      {plan.badge && (
-        <p className="mb-5 self-start rounded-full bg-gilt-light px-3.5 py-1 text-sm font-semibold text-ink">
-          {plan.badge}
-        </p>
-      )}
-
-      {compact ? (
-        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-1">
-          <h2 className="font-serif text-2xl font-medium">{plan.name}</h2>
-          <div className="text-right">
-            <p className="font-serif text-3xl font-medium">{plan.price}</p>
-            <p className="mt-1 text-ink/60">{plan.period}</p>
-          </div>
-        </div>
-      ) : (
-        <>
-          <h2 className={`font-serif font-medium ${dark ? "text-3xl" : "text-[1.75rem]"}`}>{plan.name}</h2>
-          <p className={`mt-5 font-serif font-medium ${dark ? "text-6xl" : "text-5xl"}`}>{plan.price}</p>
-          <p className={`mt-1 ${dark ? "text-vellum/60" : "text-ink/60"}`}>{plan.period}</p>
-        </>
-      )}
-
-      {plan.lead && <p className="mt-8 font-semibold text-gilt-light">{plan.lead}</p>}
-
-      <ul className={`${plan.lead ? "mt-4" : compact ? "mt-6" : "mt-7"} space-y-3`}>
-        {plan.features.map((f) => (
-          <li key={f} className={`flex items-start gap-3 ${dark ? "text-vellum/85" : "text-ink/80"}`}>
-            <Check
-              aria-hidden="true"
-              strokeWidth={2.5}
-              className={`mt-1 h-4 w-4 shrink-0 ${dark ? "text-gilt-light" : plan.tier === "mid" ? "text-lapis" : "text-gold-deep"}`}
-            />
-            <span className="text-pretty">{f}</span>
-          </li>
-        ))}
-      </ul>
-
-      {plan.note && (
-        <p className="mt-8 rounded-2xl bg-gilt-light/10 p-5 text-pretty text-vellum/85 ring-1 ring-gilt-light/40">
-          {plan.note}
-        </p>
-      )}
-    </div>
+    <li className={`flex items-start gap-3 ${tone === "dark" ? "text-vellum/85" : "text-ink/80"}`}>
+      <Check aria-hidden="true" strokeWidth={2.5} className={`mt-1 h-4 w-4 shrink-0 ${iconColor}`} />
+      <span className="text-pretty">{text}</span>
+    </li>
   );
 }
 
@@ -133,22 +99,104 @@ export default function ParishPricing() {
   return (
     <section className="bg-vellum px-6 py-16 sm:py-24">
       <h1 className="text-center font-serif text-4xl font-medium text-ink sm:text-5xl">
-        Pricing
+        Plans and Pricing
       </h1>
 
-      <div className="mx-auto mt-12 grid max-w-md gap-6 lg:max-w-5xl lg:grid-cols-2">
-        <div className="flex flex-col gap-6">
-          <PlanCard plan={plans.basic} />
-          <PlanCard plan={plans.mid} />
+      {/* $60k anchor */}
+      <div className="mx-auto mt-12 max-w-5xl rounded-3xl bg-ink p-8 text-vellum shadow-2xl shadow-ink/40 ring-2 ring-gilt-light/60 sm:p-12">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="flex flex-col">
+            <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">{engine.name}</h2>
+            <p className="mt-5 font-serif text-6xl font-medium">{engine.price}</p>
+            <p className="mt-1 text-vellum/60">{engine.period}</p>
+
+            <div className="mt-8 rounded-2xl bg-gilt-light/10 p-6 ring-1 ring-gilt-light/50">
+              <p className="font-serif text-2xl font-medium text-gilt-light">
+                The recurring giving campaign
+              </p>
+              <p className="mt-3 text-pretty text-vellum/90">
+                Filmed on-site at your parish and launched as soon as we&apos;re back. Designed
+                to create up to $5,000 per month in new recurring&nbsp;gifts.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-semibold text-gilt-light">{engine.lead}</p>
+            <ul className="mt-4 space-y-3">
+              {engine.features.map((f) => (
+                <Feature key={f} text={f} tone="dark" />
+              ))}
+            </ul>
+          </div>
         </div>
-        <PlanCard plan={plans.premium} />
       </div>
 
-      <p className="mx-auto mt-10 max-w-xl text-balance text-center text-ink/70">
-        On the annual plans, save 10% when you decide within 21 days of your
-        call, and another 10% when you pay for the year in&nbsp;full. Ad spend
-        is billed separately.
+      {/* $30k recommended, then $6k pilot */}
+      <div className="mx-auto mt-6 grid max-w-5xl gap-6 lg:grid-cols-[1.25fr_1fr]">
+        <div className="flex flex-col rounded-3xl bg-white p-9 text-ink shadow-2xl shadow-lapis/10 ring-2 ring-lapis/40">
+          <p className="mb-5 self-start rounded-full bg-lapis px-3.5 py-1 text-sm font-semibold text-white">
+            {growth.badge}
+          </p>
+          <h2 className="font-serif text-[1.75rem] font-medium">{growth.name}</h2>
+          <p className="mt-5 font-serif text-5xl font-medium">{growth.price}</p>
+          <p className="mt-1 text-ink/60">{growth.period}</p>
+          <p className="mt-6 text-pretty text-ink/80">{growth.description}</p>
+          <ul className="mt-6 space-y-3">
+            {growth.features.map((f) => (
+              <Feature key={f} text={f} tone="lapis" />
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-col rounded-3xl bg-white p-8 text-ink shadow-xl shadow-ink/5 ring-1 ring-ink/5">
+          <h2 className="font-serif text-2xl font-medium">{pilot.name}</h2>
+          <p className="mt-4 font-serif text-4xl font-medium">{pilot.price}</p>
+          <p className="mt-1 text-ink/60">{pilot.period}</p>
+          <p className="mt-6 text-pretty text-ink/80">{pilot.description}</p>
+          <ul className="mt-6 space-y-3">
+            {pilot.features.map((f) => (
+              <Feature key={f} text={f} tone="gold" />
+            ))}
+          </ul>
+          <p className="mt-8 rounded-2xl bg-vellum p-5 text-pretty text-ink/80 ring-1 ring-ink/10">
+            {pilot.credit}
+          </p>
+        </div>
+      </div>
+
+      {/* Ad spend + discounts */}
+      <p className="mx-auto mt-10 max-w-2xl text-balance text-center text-ink/70">
+        Ad spend is billed separately and isn&apos;t included in the prices above. On the annual
+        plans, save 10% when you decide within 21 days of your call, and another 10% when you pay
+        for the year in&nbsp;full.
       </p>
+
+      {/* FAQ */}
+      <div className="mx-auto mt-20 max-w-3xl">
+        <h2 className="text-center font-serif text-3xl font-medium text-ink sm:text-4xl">
+          Common questions
+        </h2>
+        <div className="mt-8 space-y-3">
+          {faqs.map(({ q, a }) => (
+            <details
+              key={q}
+              className="group rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/5 open:shadow-md"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-xl font-medium text-ink">
+                {q}
+                <span
+                  aria-hidden="true"
+                  className="text-2xl leading-none text-gold-deep transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p className="mt-4 text-pretty text-ink/75">{a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

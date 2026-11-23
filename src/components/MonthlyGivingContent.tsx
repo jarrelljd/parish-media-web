@@ -47,7 +47,7 @@ const STEPS: RoadStep[] = [
   {
     letter: "T",
     title: "Tell the story",
-    body: "We fly in and film your pastor and parish, then build a polished video, clean ads, and a giving page where monthly giving takes a few taps.",
+    body: "We fly in and film your pastor and parish, then build a campaign around your patron saint: a polished video, clean ads, and a simple giving page.",
     // B-roll: Joe filming with the Bishop of Reno.
     visual: <FilmAndBuildVisual videoSrc="/videos/bishop-reno-broll.mp4" poster="/videos/bishop-reno-broll.jpg" />,
   },
@@ -79,7 +79,7 @@ const STEPS: RoadStep[] = [
   {
     letter: "E",
     title: "Express thanks",
-    body: "Every new monthly donor receives a personal video thank-you from their pastor.",
+    body: "Every new monthly donor gets a personal thank-you video from their pastor, sent by text.",
     visual: <ThankYouVideoVisual />,
   },
 ];

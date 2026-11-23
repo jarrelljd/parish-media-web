@@ -1,64 +1,21 @@
 import Image from "next/image";
-import { Clapperboard, Lock, Play } from "lucide-react";
+import { Clapperboard, Play } from "lucide-react";
 import BrandMark from "./BrandMark";
 import pastorFilming from "../../public/images/events/st-patrick/fr-dave.jpg";
 import parishFamilies from "../../public/images/events/st-rose/group-photo.jpg";
+import stJosephForm from "../../public/images/proof/st-joseph-giving-form.jpg";
 
-// Illustrations for the /monthly-giving steps. They're pictures of what we
-// build, not working forms, so they're hidden from screen readers and every
-// control is inert.
+// Visuals for the /monthly-giving T.I.T.H.E. steps. The ad, thermometer,
+// and thank-you screens are illustrations (hidden from screen readers);
+// the giving form in step T is a real screenshot from St. Joseph's.
 
-const AMOUNTS = ["$25", "$50", "$100", "$250"];
-
-// The monthly-giving form, modeled on Live Action's donate widget: give
-// once / monthly toggle, a few amount chips, name and email, one button.
-export function GivingFormMockup({ className = "" }: { className?: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`pointer-events-none w-64 select-none rounded-2xl bg-white p-5 text-left shadow-2xl shadow-ink/25 ring-1 ring-ink/5 ${className}`}
-    >
-      <p className="text-center font-serif text-lg font-semibold leading-tight text-ink">Support our parish</p>
-      <div className="mt-3 grid grid-cols-2 rounded-full bg-vellum p-1 text-xs font-semibold">
-        <span className="rounded-full py-1.5 text-center text-ink/50">Give once</span>
-        <span className="rounded-full bg-lapis py-1.5 text-center text-vellum shadow">Give monthly</span>
-      </div>
-      <div className="mt-3 grid grid-cols-4 gap-1.5 text-sm font-semibold">
-        {AMOUNTS.map((a) => (
-          <span
-            key={a}
-            className={`rounded-lg py-2 text-center ${
-              a === "$50" ? "bg-lapis text-vellum" : "text-ink ring-1 ring-ink/15"
-            }`}
-          >
-            {a}
-          </span>
-        ))}
-      </div>
-      <p className="mt-3 text-center text-[11px] leading-snug text-ink/60">
-        A monthly gift keeps your parish strong all year&nbsp;long.
-      </p>
-      <div className="mt-3 grid grid-cols-2 gap-1.5 text-[11px] text-ink/40">
-        <span className="rounded-md px-2 py-2 ring-1 ring-ink/15">First name</span>
-        <span className="rounded-md px-2 py-2 ring-1 ring-ink/15">Last name</span>
-        <span className="col-span-2 rounded-md px-2 py-2 ring-1 ring-ink/15">Email</span>
-      </div>
-      <span className="mt-3 block rounded-full bg-gilt-light py-2.5 text-center text-sm font-semibold text-ink">
-        Give $50 monthly
-      </span>
-      <p className="mt-2 flex items-center justify-center gap-1 text-[10px] text-ink/45">
-        <Lock className="h-3 w-3" /> Secure giving
-      </p>
-    </div>
-  );
-}
-
-// T (Tell the story): vertical behind-the-scenes b-roll (9:16), with the
-// giving form tucked in front of it. Pass `videoSrc` (a short muted clip in
+// T (Tell the story): vertical behind-the-scenes b-roll (9:16), with a real
+// giving form we built (St. Joseph, Los Banos) tucked in front of it. Pass `videoSrc` (a short muted clip in
 // /public) once the footage is ready; until then a placeholder frame shows.
 export function FilmAndBuildVisual({ videoSrc, poster }: { videoSrc?: string; poster?: string }) {
   return (
-    <div className="relative mx-auto h-[28rem] w-full max-w-md">
+    <figure className="mx-auto w-full max-w-md">
+    <div className="relative h-[28rem] w-full">
       <div className="absolute right-0 top-0 aspect-[9/16] h-full overflow-hidden rounded-2xl bg-ink shadow-xl shadow-ink/25 ring-1 ring-ink/10">
         {videoSrc ? (
           <video
@@ -79,21 +36,31 @@ export function FilmAndBuildVisual({ videoSrc, poster }: { videoSrc?: string; po
           </div>
         )}
       </div>
-      <GivingFormMockup className="absolute bottom-0 left-0 origin-bottom-left scale-[0.8]" />
+      <Image
+        src={stJosephForm}
+        alt="Monthly giving form from St. Joseph Catholic Church in Los Banos, with $50 to $300 monthly amounts and a Give monthly button"
+        sizes="240px"
+        className="absolute bottom-0 left-0 w-[47%] rounded-2xl shadow-2xl shadow-ink/25 ring-1 ring-ink/5"
+      />
     </div>
+      <figcaption className="mt-4 text-center text-sm text-ink/55">
+        Giving page we built for St. Joseph Catholic Church, Los&nbsp;Banos
+      </figcaption>
+    </figure>
   );
 }
 
 // H (Hit the goal): the goal thermometer parishioners see on the giving
 // page. It counts families, not dollars (warmer for parishioners); behind
-// the scenes the family goal is set to reach $10K a month. Sample: 200
-// families at a ~$50 average gift. Sample figures only.
-const FAMILY_GOAL = 200;
-const FAMILIES_JOINED = 148;
+// the scenes the family goal is set to reach $10K a month. Sample: 50
+// families at a $200 average gift, the same math as St. Joseph's campaign.
+// Sample figures only.
+const FAMILY_GOAL = 50;
+const FAMILIES_JOINED = 37;
 
 export function GoalThermometerVisual() {
   const pct = (FAMILIES_JOINED / FAMILY_GOAL) * 100;
-  const ticks = [200, 150, 100, 50, 0];
+  const ticks = [50, 40, 30, 20, 10, 0];
   return (
     <div
       aria-hidden="true"
@@ -131,7 +98,7 @@ export function ThankYouVideoVisual() {
       className="pointer-events-none mx-auto w-64 select-none overflow-hidden rounded-[1.6rem] border-[6px] border-ink bg-white text-left shadow-2xl shadow-ink/30 sm:w-72"
     >
       <div className="px-4 pb-3 pt-4">
-        <span className="block text-[11px] font-semibold text-gilt">A message from your pastor</span>
+        <span className="block text-[11px] font-semibold text-gilt">A text from your pastor</span>
         <span className="mt-1 block font-serif text-lg font-semibold leading-tight text-ink">
           Thank you for joining our monthly giving&nbsp;family
         </span>

@@ -53,16 +53,17 @@ export function GivingFormMockup({ className = "" }: { className?: string }) {
   );
 }
 
-// T (Tell the story): behind-the-scenes b-roll, with the giving form in
-// front of it. Pass `videoSrc` (a short muted clip in /public) once the
-// footage is ready; until then a placeholder frame shows.
-export function FilmAndBuildVisual({ videoSrc }: { videoSrc?: string }) {
+// T (Tell the story): vertical behind-the-scenes b-roll (9:16), with the
+// giving form tucked in front of it. Pass `videoSrc` (a short muted clip in
+// /public) once the footage is ready; until then a placeholder frame shows.
+export function FilmAndBuildVisual({ videoSrc, poster }: { videoSrc?: string; poster?: string }) {
   return (
-    <div className="relative mx-auto h-[26rem] w-full max-w-md">
-      <div className="absolute right-0 top-0 aspect-video w-[85%] overflow-hidden rounded-xl bg-ink shadow-xl shadow-ink/25 ring-1 ring-ink/10">
+    <div className="relative mx-auto h-[28rem] w-full max-w-md">
+      <div className="absolute right-0 top-0 aspect-[9/16] h-full overflow-hidden rounded-2xl bg-ink shadow-xl shadow-ink/25 ring-1 ring-ink/10">
         {videoSrc ? (
           <video
             src={videoSrc}
+            poster={poster}
             autoPlay
             muted
             loop
@@ -71,8 +72,7 @@ export function FilmAndBuildVisual({ videoSrc }: { videoSrc?: string }) {
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
-          // TODO: swap for Joe's b-roll of filming with the Diocese of Reno.
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed pl-[30%] border-gilt-light/50 bg-lapis-deep text-center text-vellum/70">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed pl-12 border-gilt-light/50 bg-lapis-deep text-center text-vellum/70">
             <Clapperboard className="h-8 w-8 text-gilt-light" aria-hidden="true" />
             <span className="px-4 text-sm font-semibold">B-roll placeholder</span>
             <span className="px-6 text-xs text-vellum/50">Filming with the Diocese of&nbsp;Reno</span>

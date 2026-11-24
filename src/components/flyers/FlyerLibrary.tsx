@@ -9,7 +9,7 @@ import FlyerCard from "./FlyerCard";
 
 const steps = [
   { title: "Find your event", body: "Search for it, or tap one of the suggestions." },
-  { title: "Pick a design", body: "Click \"Customize in Canva.\" Canva makes you your own copy." },
+  { title: "Pick a design", body: "Click the design you like. Canva makes you your own copy." },
   { title: "Add your details", body: "Change the date, time, and place, then download it to print or post." },
 ];
 
@@ -168,8 +168,9 @@ export default function FlyerLibrary({
         <main ref={resultsRef} className="scroll-mt-4" aria-live="polite">
           {groups.length > 0 ? (
             <>
-              <p className="mb-8 text-[15px] text-ink/60">
-                {label}: {designCount} {designCount === 1 ? "design" : "designs"}
+              <p className="mb-8 text-[15px] text-ink/60 text-pretty">
+                {label}: {designCount} {designCount === 1 ? "design" : "designs"}.{" "}
+                <span className="text-ink/80">Click a design to make your own copy in&nbsp;Canva.</span>
               </p>
               <div className="space-y-14">
                 {groups.map((g) => (

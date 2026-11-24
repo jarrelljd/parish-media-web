@@ -3,16 +3,22 @@ import { ExternalLink } from "lucide-react";
 import type { FlyerTemplate } from "@/data/flyers";
 import FlyerPlaceholder from "./FlyerPlaceholder";
 
+// The whole card is one link to the Canva template. The "Customize in Canva"
+// label shows on hover/focus; the results header tells phone users to tap a
+// design, so the cards don't each need their own button.
 export default function FlyerCard({ t }: { t: FlyerTemplate }) {
+  // The event is already the group heading; only show the design name if it adds something.
+  const caption = t.designName && t.designName.trim().toLowerCase() !== t.event.trim().toLowerCase() ? t.designName : null;
+
   return (
-    <article className="group flex flex-col">
-      <a
-        href={t.canvaUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block overflow-hidden rounded-xl bg-parchment shadow-md shadow-ink/10 ring-1 ring-ink/5 transition-all duration-300 [container-type:inline-size] group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-ink/20 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0"
-        aria-label={`Open the ${t.designName} ${t.event} flyer in Canva (opens in a new tab)`}
-      >
+    <a
+      href={t.canvaUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Customize the ${caption ? `${caption} ` : ""}${t.event} flyer in Canva (opens in a new tab)`}
+      className="group block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-lapis focus-visible:ring-offset-4 focus-visible:ring-offset-vellum"
+    >
+      <div className="relative overflow-hidden rounded-xl bg-parchment shadow-md shadow-ink/10 ring-1 ring-ink/5 transition-all duration-300 [container-type:inline-size] group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-ink/20 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
         {t.thumbnail ? (
           <Image
             src={t.thumbnail}
@@ -27,21 +33,16 @@ export default function FlyerCard({ t }: { t: FlyerTemplate }) {
         ) : (
           <FlyerPlaceholder event={t.event} category={t.category} look={t.placeholderStyle} />
         )}
-      </a>
 
-      <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="text-lg font-semibold leading-snug text-ink">{t.event}</h3>
-        <p className="mt-0.5 text-[15px] text-ink/60">{t.designName} design</p>
-        <a
-          href={t.canvaUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-lapis px-6 py-3 text-[15px] font-semibold text-vellum shadow-md shadow-lapis/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-lapis-deep hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-        >
-          Customize in Canva
-          <ExternalLink className="h-4 w-4" aria-hidden="true" />
-        </a>
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center bg-gradient-to-t from-ink/60 via-ink/0 to-transparent p-5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+          <span className="inline-flex items-center gap-2 rounded-full bg-vellum px-5 py-2.5 text-[15px] font-semibold text-lapis shadow-lg">
+            Customize in Canva
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </div>
       </div>
-    </article>
+
+      {caption && <p className="mt-3 text-[16px] font-semibold text-ink/80 group-hover:text-ink">{caption}</p>}
+    </a>
   );
 }

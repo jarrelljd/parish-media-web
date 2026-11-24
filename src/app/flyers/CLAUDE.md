@@ -11,8 +11,8 @@ Parish secretaries, staff, and priests who aren't technical. Big text, obvious b
 - Page: `src/app/flyers/page.tsx` (noindex). It has its own header/footer, no marketing Nav.
 - UI: `src/components/flyers/` (FlyerLibrary, FlyerCard, FlyerPlaceholder).
 - Data: `src/data/flyers.ts`, currently PLACEHOLDER templates. `FlyerTemplate` is the shape of the future database table; keep the UI reading that shape so the data source can be swapped without UI changes.
-- Layout: search, "Coming up", "Popular all year", and categories in a left column; results on the right (stacked on phones).
-- "Coming up" suggestions follow the liturgical year (`src/lib/flyerSeasons.ts`); "Popular all year" is `commonSearches` there. The page drops any suggestion with no templates, so add one freely and it appears once its templates exist.
+- Layout: search, "Coming up" (max 3), and categories in a left column; results on the right (stacked on phones). Joe wants this column kept simple (2026-11-24: "Popular all year" removed).
+- "Coming up" suggestions follow the liturgical year (`src/lib/flyerSeasons.ts`). `commonSearches` there is no longer shown. The page drops any suggestion with no templates, so add one freely and it appears once its templates exist.
 - Cards show the real flyer image (`thumbnail`) when there is one; the drawn placeholder is only a stand-in.
 - Templates that share an `event` show together as one group of design options (aim for 3 to 5 per event).
 

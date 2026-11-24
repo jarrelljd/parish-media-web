@@ -39,13 +39,11 @@ function Chips({ items, onPick, active }: { items: string[]; onPick: (s: string)
 export default function FlyerLibrary({
   templates,
   seasonal,
-  common,
   parishName,
   isAdmin = false,
 }: {
   templates: FlyerTemplate[];
   seasonal: string[];
-  common: string[];
   parishName?: string;
   isAdmin?: boolean;
 }) {
@@ -142,15 +140,8 @@ export default function FlyerLibrary({
             </div>
           )}
 
-          {common.length > 0 && (
-            <div className="mt-7">
-              <h2 className="mb-3 font-semibold text-gold-deep">Popular all year</h2>
-              <Chips items={common} onPick={pickSearch} active={query} />
-            </div>
-          )}
-
           <div className="mt-7">
-            <h2 className="mb-2 font-semibold text-gold-deep">Browse by category</h2>
+            <h2 className="mb-2 font-semibold text-gold-deep">Categories</h2>
             <ul className="-mx-3 flex gap-1 overflow-x-auto [scrollbar-width:none] lg:block">
               {[null, ...flyerCategories].map((c) => {
                 const on = category === c && !query.trim();

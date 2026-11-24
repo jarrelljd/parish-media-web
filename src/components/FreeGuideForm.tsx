@@ -227,26 +227,6 @@ export default function FreeGuideForm() {
               className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
             />
           </div>
-
-          <div>
-            <label
-              htmlFor="instagram"
-              className="block text-sm font-medium text-navy"
-            >
-              Instagram Handle{" "}
-              <span className="font-normal text-navy/50">(optional)</span>
-            </label>
-            <input
-              id="instagram"
-              name="instagram"
-              type="text"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              placeholder="@yourhandle"
-              className="mt-2 w-full rounded-xl border border-navy/15 bg-offwhite px-4 py-3 transition-colors text-navy outline-none focus:border-navy/50 focus:bg-white focus:ring-2 focus:ring-gold/30"
-            />
-          </div>
         </div>
       </div>
 

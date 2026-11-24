@@ -3,7 +3,7 @@ import Image from "next/image";
 import Script from "next/script";
 import FreeGuideForm from "@/components/FreeGuideForm";
 import FreeGuideCtaButton from "@/components/FreeGuideCtaButton";
-import FadeInOnScroll from "@/components/FadeInOnScroll";
+import StoryRail, { type StoryStep } from "@/components/results/StoryRail";
 import bookHardcover from "../../../public/images/free-guide/book-hardcover.png";
 import authorSigningPhoto from "../../../public/images/free-guide/author-book-signing.png";
 import frIgorPhoto from "../../../public/images/free-guide/fr-igor-cutout.png";
@@ -32,44 +32,21 @@ export const metadata: Metadata = {
     "Get a free copy of Social Media for Catholic Churches, Joe Jarrell's published, practical guide to Parish Facebook & Instagram.",
 };
 
-const concepts = [
+const concepts: StoryStep[] = [
   {
+    marker: "1",
     title: "Give First, Then Ask",
-    description:
-      "People repay good deeds. It’s human nature. Give real value first, then ask, and your parish earns a “yes” instead of a shrug.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-        <path d="M4 18a8 8 0 1 1 16 0" strokeLinecap="round" />
-        <path d="M12 18l4-6" strokeLinecap="round" />
-        <circle cx="12" cy="18" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    ),
+    body: "People repay good deeds. It’s human nature. Give real value first, then ask, and your parish earns a “yes” instead of a shrug.",
   },
   {
+    marker: "2",
     title: "Social Media Is a Funnel",
-    description:
-      "Every post moves people through three stages: reach new faces, nurture them with value, then convert the ones who are ready to respond.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-        <path
-          d="M4 5h16l-6 8v6l-4 2v-8L4 5z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    body: "Every post moves people through three stages: reach new faces, nurture them with value, then convert the ones who are ready to respond.",
   },
   {
+    marker: "3",
     title: "Ads Ask Without Wasting Goodwill",
-    description:
-      "A Story asks everyone, whether it applies to them or not. A well-aimed ad asks only the right people, so goodwill stays intact.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-        <circle cx="12" cy="12" r="8" />
-        <circle cx="12" cy="12" r="4.5" />
-        <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    ),
+    body: "A Story asks everyone, whether it applies to them or not. A well-aimed ad asks only the right people, so goodwill stays intact.",
   },
 ];
 
@@ -227,32 +204,15 @@ export default function FreeGuidePage() {
               </h2>
             </div>
 
-            <div className="mt-14 grid gap-5 sm:grid-cols-3">
-              {concepts.map((concept, i) => (
-                <FadeInOnScroll key={concept.title} delay={i * 120}>
-                  <div className="h-full rounded-3xl bg-offwhite p-7 text-center ring-1 ring-navy/5">
-                    <div
-                      className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-parchment text-gold-deep"
-                      aria-hidden="true"
-                    >
-                      <div className="h-7 w-7">{concept.icon}</div>
-                    </div>
-                    <h3 className="mt-5 font-serif text-xl font-medium tracking-tight text-navy">
-                      {concept.title}
-                    </h3>
-                    <p className="mt-3 text-pretty leading-relaxed text-navy/70">
-                      {concept.description}
-                    </p>
-                  </div>
-                </FadeInOnScroll>
-              ))}
+            <div className="mx-auto mt-16 max-w-2xl sm:mt-20">
+              <StoryRail steps={concepts} />
             </div>
 
-            <p className="mx-auto mt-14 max-w-xl text-pretty text-center text-lg leading-relaxed text-navy/70">
+            <p className="mx-auto mt-16 max-w-xl sm:mt-20 text-pretty text-center text-lg leading-relaxed text-navy/70">
               Whether your parish wants more event attendance, more
               volunteers, more young adult engagement, or simply a
               clearer social media strategy, this book gives you a
-              system you can actually understand and implement.
+              system you can actually understand&nbsp;and&nbsp;implement.
             </p>
           </div>
         </section>

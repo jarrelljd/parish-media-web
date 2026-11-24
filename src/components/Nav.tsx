@@ -16,8 +16,7 @@ const menus: Menu[] = [
     id: "services",
     label: "Services",
     items: [
-      { href: "/parish", label: "Social Media", note: "Weekly content, invitations, follow-up" },
-      { href: "/monthly-giving", label: "Monthly Giving", note: "$10K in recurring giving in 90 days" },
+      { href: "/parish", label: "Growth and Giving", note: "Social media, ads, and monthly giving" },
       { label: "Websites" },
     ],
   },

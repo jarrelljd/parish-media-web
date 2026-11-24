@@ -1,12 +1,27 @@
 import type { ReactNode } from "react";
-import { Check, Heart, MessageCircle, ThumbsUp, X } from "lucide-react";
+import Image, { type StaticImageData } from "next/image";
+import { ArrowRight, Check, Heart, MessageCircle, ThumbsUp, X } from "lucide-react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import ScrollToBookingButton from "./ScrollToBookingButton";
 import { GROWTH_REVIEW_CALENDLY_URL } from "@/data/booking";
 import { planYourVisitProof, proofFacts } from "@/data/method";
 import { PRIEST_TESTIMONIALS } from "@/data/priestTestimonials";
-import WhatWeDo from "./WhatWeDo";
+import TitheRoadmap, { type RoadStep } from "./TitheRoadmap";
+import {
+  FilmAndBuildVisual,
+  GivingAdVisual,
+  GoalThermometerVisual,
+  ThankYouVideoVisual,
+} from "./GivingMockups";
+import reportOnLaptop from "../../public/images/proof/report-on-laptop.png";
+import igPhoneScreen from "../../public/images/proof/ig-phone-screen.jpg";
+import fbAdScreen from "../../public/images/proof/fb-ad-screen.jpg";
+import givingForm from "../../public/images/proof/st-joseph-giving-form.jpg";
 import { FacebookLogo, InstagramLogo } from "./SocialIcons";
+
+// The Parish Growth and Giving landing page (/parish). One offer: weekly
+// content that builds trust, then ads that invite local families to visit,
+// get involved, and give monthly. /monthly-giving redirects here.
 
 const CALENDLY_URL = GROWTH_REVIEW_CALENDLY_URL;
 
@@ -14,22 +29,72 @@ const FAQS = [
   {
     question: "How much does it cost?",
     answer: [
-      "Pricing depends on your parish’s goals, location, campaign scope, and the level of support needed. We’ll walk through the recommended plan on the call and give you a clear investment before anything moves forward.",
+      "It depends on your parish’s goals, size, and the level of support you need. We’ll walk through the plans on the call and give you a clear investment before anything moves forward. Ad spend is always paid by the parish.",
+    ],
+  },
+  {
+    question: "We already have online giving. How is this different?",
+    answer: [
+      "Most parish giving pages are buried on the website, and no one is ever sent to them. We send the right people to a clean page with a simple form, so they actually give.",
+    ],
+  },
+  {
+    question: "We’re already too busy. How would we manage this?",
+    answer: [
+      "You shouldn’t have to manage it. We handle the strategy, filming, editing, ads, and reporting. Your pastor’s main commitment is the filming visit and approving the message before launch.",
+      "Your staff help us know about parish events and respond when interested people raise their hands.",
     ],
   },
   {
     question:
       "We have other priorities right now. Why should this be one of them?",
     answer: [
-      "That’s exactly why we focus on a 90-day plan. The goal isn’t to create another ongoing project for your parish. It’s to help more people discover what your parish already offers and take a clear next step toward participating.",
-      "If reaching more young adults and families is a priority, this gives your parish a practical system for doing it.",
+      "This isn’t another project for your staff to run. It’s a system that helps more people discover what your parish already offers and take a clear next step, from planning a visit to giving monthly.",
+      "If reaching young families and steadying your budget are priorities, this gives your parish a practical way to do both.",
     ],
   },
+];
+
+// The TITHE Framework, one milestone per letter on the roadmap. Covers the
+// whole system: weekly content (Tell), ads (Invite), and the giving campaign.
+const STEPS: RoadStep[] = [
   {
-    question: "We’re already too busy. How would we manage this?",
-    answer: [
-      "You shouldn’t have to manage it. We handle the campaign strategy, content coordination, advertising, and reporting. Your staff’s main responsibility is helping us understand parish events and responding when interested people raise their hands.",
-    ],
+    letter: "T",
+    title: "Tell the story",
+    body: "We fly in and film your pastor and parish. Then every week we post homily clips and parish life, so local families get to know, like, and trust your parish.",
+    // B-roll: Joe filming with the Bishop of Reno.
+    visual: <FilmAndBuildVisual videoSrc="/videos/bishop-reno-broll.mp4" poster="/videos/bishop-reno-broll.jpg" />,
+  },
+  {
+    letter: "I",
+    title: "Invite",
+    body: "Targeted Facebook and Instagram ads invite local families to plan a visit, come to events, and give monthly on a clean page that’s easy to use on a phone.",
+    visual: <GivingAdVisual />,
+  },
+  {
+    letter: "T",
+    title: "Track",
+    body: "Pixel tracking on every visit, sign-up, and gift shows exactly which ads bring people in.",
+    visual: (
+      <Image
+        src={reportOnLaptop}
+        alt="Ad results dashboard on a laptop showing every response tracked"
+        sizes="(min-width: 640px) 420px, 80vw"
+        className="mx-auto h-56 w-auto max-w-full object-contain drop-shadow-xl sm:h-72"
+      />
+    ),
+  },
+  {
+    letter: "H",
+    title: "Hit the goal",
+    body: "We refresh ads before they go stale, and a goal thermometer shows parishioners how many families have joined, inspiring others to join too.",
+    visual: <GoalThermometerVisual />,
+  },
+  {
+    letter: "E",
+    title: "Express thanks",
+    body: "Every new monthly donor gets a personal thank-you video from their pastor, sent by text.",
+    visual: <ThankYouVideoVisual />,
   },
 ];
 
@@ -40,6 +105,39 @@ const VERSUS: [[string, string, string], string][] = [
   [["", "Helpful videos from your pastor", ", like homily clips"], "No time or editing help, so videos rarely get made"],
   [["A ", "proven strategy", " from a Catholic creator, tested in 12+ dioceses"], "No real plan, and no social media training"],
   [["", "No potential wasted:", " ads reach every local family, backed by steady posts"], "Huge potential missed, while everyone nearby is on their phones"],
+  [["A ", "clean giving page", " anyone can join from their phone"], "Online giving buried on the website, where no one is sent"],
+];
+
+// Nurture, then ask: the whole system as three real phone screens, the
+// path a local family takes from following the parish to giving monthly.
+const SYSTEM: {
+  title: string;
+  body: string;
+  who: string;
+  image: StaticImageData;
+  alt: string;
+}[] = [
+  {
+    title: "Nurture",
+    body: "Weekly homily clips and parish posts, so local families get to know, like, and trust your parish.",
+    who: "St. Joseph, Los Banos, CA",
+    image: igPhoneScreen,
+    alt: "St. Joseph Catholic Parish Instagram profile with 941 followers and a grid of homily clips and parish photos",
+  },
+  {
+    title: "Ask",
+    body: "Targeted Facebook and Instagram ads invite them to plan a visit, come to an event, or get involved.",
+    who: "St. Patrick’s, South Hadley, MA",
+    image: fbAdScreen,
+    alt: "Facebook ad inviting St. Patrick parishioners and friends to the annual parish picnic",
+  },
+  {
+    title: "Give monthly",
+    body: "One of those asks is monthly giving, on a clean page anyone can join from their phone.",
+    who: "St. Joseph, Los Banos, CA",
+    image: givingForm,
+    alt: "St. Joseph monthly giving page with gift amounts and a short sign-up form",
+  },
 ];
 
 // Pill buttons: navy on light sections, gold on dark ones. Same shape
@@ -95,12 +193,13 @@ export default function ParishGrowthContent() {
       <section className="pb-14 sm:pb-16">
         <div className="bg-ink px-6 pt-14 sm:pt-20">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-balance font-serif text-[2.6rem] font-medium leading-[1.06] text-vellum motion-safe:animate-fade-up sm:text-6xl">
-              Help Your Catholic Parish Reach More Young&nbsp;Families
+            <h1 className="text-balance font-serif text-[2.2rem] font-medium leading-[1.08] text-vellum motion-safe:animate-fade-up sm:text-6xl">
+              Reach More Young Families and Grow Monthly Giving at Your Catholic&nbsp;Parish
             </h1>
             <p className="mx-auto mt-5 max-w-3xl text-balance text-lg text-vellum/80 motion-safe:animate-fade-up" style={{ animationDelay: "240ms" }}>
-              We show them what&rsquo;s happening at your parish and make it
-              easy to get involved, all through Facebook and&nbsp;Instagram.
+              Weekly content that builds trust, then Facebook and Instagram
+              ads that invite local families to visit, get involved, and
+              give&nbsp;monthly.
             </p>
           </div>
         </div>
@@ -212,8 +311,6 @@ export default function ParishGrowthContent() {
         </div>
       </section>
 
-      <WhatWeDo />
-
       {/* The difference: us vs. a staff member, then what staff do instead */}
       <section className="bg-vellum-deep px-6 py-20 sm:py-28 lg:px-10">
         <div className="mx-auto max-w-5xl">
@@ -221,14 +318,15 @@ export default function ParishGrowthContent() {
             <h2 className={h2}>&ldquo;But we already have someone posting on our social&nbsp;media.&rdquo;</h2>
             <p className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-ink/70">
               We don&rsquo;t doubt it. But they&rsquo;re posting as an extra
-              admin task, not as a real strategy to bring new young families&nbsp;in.
+              admin task, with no targeted ads and no real strategy to bring
+              new young families&nbsp;in.
             </p>
           </div>
 
           <div className="mx-auto mt-14 grid max-w-4xl items-center md:grid-cols-2">
             {/* Us: raised white card */}
             <div className="relative z-10 rounded-3xl bg-white px-7 py-9 shadow-2xl shadow-ink/15 ring-1 ring-ink/5 sm:px-10">
-              <p className="text-balance text-center font-serif text-3xl font-semibold text-lapis md:min-h-[4.5rem]">We run your social media</p>
+              <p className="text-balance text-center font-serif text-3xl font-semibold text-lapis md:min-h-[4.5rem]">We run the whole system</p>
               <ul className="mt-6 border-t border-ink/15">
                 {VERSUS.map(([us]) => (
                   <li key={us.join("")} className="flex items-center gap-3 border-b border-ink/10 py-4 text-lg leading-snug last:border-b-0 md:min-h-24">
@@ -263,8 +361,8 @@ export default function ParishGrowthContent() {
             </p>
             <p className="mt-3 font-serif text-6xl font-medium text-lapis sm:text-7xl">Ministry.</p>
             <p className="mx-auto mt-5 max-w-lg text-balance text-lg leading-relaxed text-ink/75">
-              We bring in people ready to plan a visit, get involved, or come
-              to an event. Your staff member welcomes them and gets them over
+              We bring in people ready to plan a visit, come to an event, get
+              involved, or give monthly. Your staff member welcomes them and gets them over
               the finish line. It&rsquo;s a perfect role for a communications&nbsp;person.
             </p>
           </div>
@@ -274,6 +372,77 @@ export default function ParishGrowthContent() {
           </div>
         </div>
       </section>
+
+      {/* The system: nurture first, then ask. Three real phone screens in a
+          row (desktop), or phone-beside-text rows (mobile). Giving is the
+          last step, so it gets the gold ring. */}
+      <section className="bg-ink px-6 py-20 text-vellum sm:py-28 lg:px-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className={h2}>Nurture first. Then&nbsp;ask.</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-vellum/75">
+              People say yes to a parish they already know and trust. So we
+              build that trust every week, then ask with targeted&nbsp;ads.
+            </p>
+          </div>
+
+          <ol className="mx-auto mt-14 grid max-w-md gap-4 md:max-w-none md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-start md:gap-6">
+            {SYSTEM.map((step, i) => {
+              const last = i === SYSTEM.length - 1;
+              return (
+                <li key={step.title} className="contents">
+                  <div className="flex items-center gap-5 md:flex-col md:items-center md:gap-0 md:text-center">
+                    <div
+                      className={`relative aspect-[9/17] w-28 shrink-0 overflow-hidden rounded-[1.3rem] border-[5px] border-black/70 bg-black shadow-2xl sm:w-32 md:w-52 md:rounded-[1.8rem] md:border-[6px] ${
+                        last ? "shadow-gilt/30 ring-2 ring-gilt-light" : "shadow-black/50 ring-1 ring-vellum/15"
+                      }`}
+                    >
+                      <Image
+                        src={step.image}
+                        alt={step.alt}
+                        fill
+                        sizes="(min-width: 768px) 208px, 128px"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                    <div className="md:mt-7">
+                      <p className={`font-semibold ${last ? "text-gilt-light" : "text-vellum/55"}`}>Step {i + 1}</p>
+                      <h3 className={`mt-1 font-serif text-2xl font-semibold sm:text-3xl ${last ? "text-gilt-light" : ""}`}>
+                        {step.title}
+                      </h3>
+                      <p className="mt-2 text-pretty leading-relaxed text-vellum/75 md:mx-auto md:max-w-[17rem] md:text-lg">
+                        {step.body}
+                      </p>
+                      <p className="mt-2 text-sm text-vellum/45">{step.who}</p>
+                    </div>
+                  </div>
+                  {!last && (
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="ml-11 h-6 w-6 rotate-90 text-gilt-light sm:ml-[3.25rem] md:ml-0 md:mt-44 md:rotate-0"
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+
+          {/* Where the system leads */}
+          <div className="mx-auto mt-16 max-w-xl border-t border-vellum/15 pt-10 text-center">
+            <p className="font-semibold text-vellum/60">Our goal for your parish</p>
+            <p className="mt-2 font-serif text-5xl font-medium text-gilt-light sm:text-6xl">$5,000 a&nbsp;month</p>
+            <p className="mt-2 text-lg text-vellum/75">in new, recurring&nbsp;giving</p>
+          </div>
+        </div>
+      </section>
+
+      {/* The TITHE Framework: five milestones on a winding roadmap */}
+      <TitheRoadmap
+        heading={<>Our 5-step T.I.T.H.E.&nbsp;Framework</>}
+        subheading={<>The whole system, step by step. Top&#8209;tier digital marketing, the kind parishes rarely have, built around your&nbsp;pastor.</>}
+        steps={STEPS}
+        destination={<>Goal: $5,000 a month in recurring&nbsp;giving</>}
+      />
 
       {/* Before you book + Calendly */}
       <section id="book" className="scroll-mt-20 px-6 py-16 sm:py-24">

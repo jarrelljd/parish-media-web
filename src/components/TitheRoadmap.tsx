@@ -25,10 +25,12 @@ export default function TitheRoadmap({
   heading,
   subheading,
   steps,
+  destination,
 }: {
   heading: ReactNode;
   subheading: ReactNode;
   steps: RoadStep[];
+  destination: ReactNode;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
@@ -221,7 +223,7 @@ export default function TitheRoadmap({
             </span>
             <div className="md:mt-4">
               <span className="inline-block rounded-full bg-lapis px-3 py-1 text-sm font-semibold text-vellum">Day 90</span>
-              <p className="mt-2 font-serif text-2xl font-semibold text-ink sm:text-3xl">$10,000 a month in recurring&nbsp;giving</p>
+              <p className="mt-2 font-serif text-2xl font-semibold text-ink sm:text-3xl">{destination}</p>
             </div>
           </div>
         </div>

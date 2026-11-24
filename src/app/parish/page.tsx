@@ -3,9 +3,9 @@ import BookingAnnouncementBar from "@/components/BookingAnnouncementBar";
 import ParishGrowthContent from "@/components/ParishGrowthContent";
 
 export const metadata: Metadata = {
-  title: "Social Media | Parish Media Company",
+  title: "Parish Growth and Giving | Parish Media Company",
   description:
-    "Organic social media content and targeted Meta ads for Catholic parishes and dioceses. See exactly how we grow your reach.",
+    "Weekly content and targeted Facebook and Instagram ads that help Catholic parishes reach more young families and grow monthly, recurring giving.",
 };
 
 export default function ParishGrowthPage() {

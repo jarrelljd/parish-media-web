@@ -42,6 +42,13 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: false,
       },
+      // Monthly Giving was merged into /parish (one Growth and Giving
+      // offer). Temporary (307) so it's easy to undo; make permanent later.
+      {
+        source: "/monthly-giving",
+        destination: "/parish",
+        permanent: false,
+      },
       {
         source: "/testimonials",
         destination: "/results",

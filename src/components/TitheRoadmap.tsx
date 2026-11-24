@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Flag } from "lucide-react";
 
-// The TITHE Framework on /monthly-giving, drawn as a roadmap: a navy road
+// The TITHE Framework on /parish, drawn as a roadmap: a navy road
 // with a dashed gold center line that winds back and forth between the
 // steps (steps alternate sides on desktop), from "Day 1" to a "Day 90"
 // destination. The road paves itself as the visitor scrolls, and each

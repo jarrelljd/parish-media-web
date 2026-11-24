@@ -24,6 +24,7 @@ const menus: Menu[] = [
     id: "resources",
     label: "Resources",
     items: [
+      { href: "/free-website", label: "Free Website Redesign", note: "A new parish website in 3 business days" },
       { href: "/free-guide", label: "The Book", note: "Social Media for Catholic Churches" },
       { href: "/house-of-studies", label: "House of Studies", note: "Free training for parish staff" },
       { href: "/scorecard", label: "Social Media Scorecard", note: "Score your parish in 14 questions" },

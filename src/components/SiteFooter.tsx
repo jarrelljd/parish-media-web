@@ -12,6 +12,7 @@ const columns = [
   {
     title: "Resources",
     links: [
+      { href: "/free-website", label: "Free Website Redesign" },
       { href: "/free-guide", label: "The Book" },
       { href: "/house-of-studies", label: "House of Studies" },
       { href: "/scorecard", label: "Social Media Scorecard" },

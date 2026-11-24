@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
+import { deliveryDate } from "@/data/freeWebsite";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
 import { greetingFor } from "@/lib/greeting";
 import {
@@ -645,5 +646,163 @@ export async function submitNps(
     }
   }
 
+  return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// Free website redesign (/free-website)
+// ---------------------------------------------------------------------------
+
+export type FreeWebsiteState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+  // Shared with the browser pixel's Lead so Meta dedupes the two.
+  eventId?: string;
+  // ISO date the new site is promised by (72 weekday hours from now).
+  deliverBy?: string;
+};
+
+// Tells Joe about a request. The Zap behind ZAPIER_WEBHOOK_FREE_WEBSITE
+// (when set) adds the lead to the CRM and starts the build; the Resend email
+// is a backup heads-up. Succeeds if either one gets through, so the visitor
+// is never told "error" while one channel still delivered their request.
+async function notifyFreeWebsite(subject: string, payload: Record<string, string>): Promise<boolean> {
+  let delivered = false;
+  if (process.env.ZAPIER_WEBHOOK_FREE_WEBSITE) {
+    try {
+      await notifyZapier(payload, "ZAPIER_WEBHOOK_FREE_WEBSITE");
+      delivered = true;
+    } catch (err) {
+      console.error("Failed to notify Zapier webhook (free website):", err);
+    }
+  }
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: "Parish Media Company <onboarding@resend.dev>",
+      to: NOTIFY_EMAIL,
+      replyTo: payload.email || undefined,
+      subject,
+      text: Object.entries(payload)
+        .map(([k, v]) => `${k}: ${v}`)
+        .join("\n"),
+    });
+    if (error) console.error("Resend error (free website):", error);
+    else delivered = true;
+  } catch (err) {
+    console.error("Failed to send free website email:", err);
+  }
+  return delivered;
+}
+
+function normalizeUrl(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  try {
+    const url = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`);
+    return url.hostname.includes(".") ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function submitFreeWebsiteRequest(
+  _prevState: FreeWebsiteState,
+  formData: FormData,
+): Promise<FreeWebsiteState> {
+  const website = normalizeUrl(String(formData.get("website") ?? ""));
+  const name = String(formData.get("name") ?? "").trim().slice(0, 120);
+  const role = String(formData.get("role") ?? "");
+  const email = String(formData.get("email") ?? "").trim().slice(0, 200);
+  const phone = String(formData.get("phone") ?? "").trim().slice(0, 40);
+  const organization = String(formData.get("organization") ?? "").trim().slice(0, 200);
+
+  // Same roles as the free guide (FreeWebsiteForm.tsx mirrors FreeGuideForm);
+  // "None of the Above" is turned away there too. Defense in depth here.
+  if (!(freeGuideRoles as readonly string[]).includes(role) || role === NO_QUALIFYING_ROLE) {
+    return { status: "error", message: "Please select your role." };
+  }
+  if (!name) return { status: "error", message: "Please enter your name." };
+  if (phone.replace(/\D/g, "").length < 10) {
+    return { status: "error", message: "Please enter a valid phone number." };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return { status: "error", message: "Please enter a valid email address." };
+  }
+  if (!organization) return { status: "error", message: "Please enter the name of your parish." };
+  if (!website) {
+    return { status: "error", message: "Please enter your parish’s current website address." };
+  }
+
+  const deliverBy = deliveryDate();
+  const delivered = await notifyFreeWebsite(`Free website request: ${organization} (${website})`, {
+    timestamp: new Date().toISOString(),
+    organization,
+    website,
+    name,
+    role,
+    email,
+    phone,
+    deliverBy: deliverBy.toISOString(),
+  });
+  if (!delivered) {
+    return {
+      status: "error",
+      message:
+        "Something went wrong sending your request. Please email joe@parishmediacompany.com directly.",
+    };
+  }
+
+  const eventId = randomUUID();
+  try {
+    const headersList = await headers();
+    await sendGenericLeadEvent({
+      eventId,
+      contentName: "Free Website Redesign",
+      sourcePath: "/free-website",
+      email,
+      phone: phone || undefined,
+      userAgent: headersList.get("user-agent"),
+      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    });
+  } catch (err) {
+    console.error("Failed to send Meta Conversions API event (free website):", err);
+  }
+
+  return { status: "success", eventId, deliverBy: deliverBy.toISOString() };
+}
+
+export type FreeWebsiteDetailsState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+// Optional extras from the thank-you page: the style they picked, what they
+// want visitors to find, what to fix, and a link to better photos.
+export async function submitFreeWebsiteDetails(
+  _prevState: FreeWebsiteDetailsState,
+  formData: FormData,
+): Promise<FreeWebsiteDetailsState> {
+  const field = (k: string, max = 1000) => String(formData.get(k) ?? "").trim().slice(0, max);
+  const payload = {
+    timestamp: new Date().toISOString(),
+    type: "details",
+    website: field("website", 300),
+    email: field("email", 200),
+    style: field("style", 40) || "No preference",
+    mostImportant: field("mostImportant"),
+    fix: field("fix"),
+    photos: field("photos", 500),
+  };
+  const delivered = await notifyFreeWebsite(
+    `Free website details: ${payload.website || payload.email || "unknown"}`,
+    payload,
+  );
+  if (!delivered) {
+    return {
+      status: "error",
+      message: "That didn’t go through. Please try again, or reply to our email with these details.",
+    };
+  }
   return { status: "success" };
 }

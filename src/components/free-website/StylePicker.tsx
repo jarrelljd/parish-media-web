@@ -29,7 +29,7 @@ function StyleView({ style }: { style: SiteStyle }) {
     <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
       <Image
         src={style.example.image}
-        alt={`${style.name} style homepage: ${style.example.parish}`}
+        alt={`A parish homepage in the ${style.name} style`}
         fill
         sizes="(min-width: 1024px) 56rem, 100vw"
         className="object-cover object-top"
@@ -68,9 +68,6 @@ export default function StylePicker() {
         </BrowserFrame>
         <div className="mx-auto mt-6 max-w-2xl text-center">
           <p className="text-balance text-lg text-vellum/85">{style.tagline}</p>
-          <p className="mt-2 text-sm text-vellum/50">
-            Best for: {style.bestFor} &middot; Shown: {style.example.parish}
-          </p>
         </div>
       </div>
     </div>

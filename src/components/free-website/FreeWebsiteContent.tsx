@@ -128,14 +128,11 @@ export default function FreeWebsiteContent() {
         </div>
         <div className="bg-linear-to-b from-ink from-60% to-transparent to-60% px-6 pt-12">
           <div className="mx-auto max-w-4xl">
-            <BrowserFrame url={`${hero.parish} · ${hero.place}`}>
-              <BeforeAfterSlider before={hero.before} after={hero.after} label={hero.parish} start={58} priority />
+            <BrowserFrame>
+              <BeforeAfterSlider before={hero.before} after={hero.after} start={58} priority />
             </BrowserFrame>
           </div>
         </div>
-        <p className="mx-auto mt-5 max-w-xl px-6 text-center text-sm text-ink/55">
-          {hero.parish}, {hero.place}. Drag to compare the new site with the&nbsp;old.
-        </p>
       </section>
 
       {/* The problem, in the family's own questions */}

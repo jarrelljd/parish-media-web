@@ -11,14 +11,12 @@ import Image from "next/image";
 export default function BeforeAfterSlider({
   before,
   after,
-  label,
   start = 55,
   sizes = "(min-width: 1024px) 48rem, 100vw",
   priority = false,
 }: {
   before: string;
   after: string;
-  label: string;
   start?: number;
   sizes?: string;
   priority?: boolean;
@@ -27,9 +25,9 @@ export default function BeforeAfterSlider({
 
   return (
     <div className="relative aspect-[16/10] w-full select-none overflow-hidden bg-ink">
-      <Image src={before} alt={`${label}, old website`} fill sizes={sizes} priority={priority} className="object-cover object-top" />
+      <Image src={before} alt="A parish’s old website" fill sizes={sizes} priority={priority} className="object-cover object-top" />
       <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <Image src={after} alt={`${label}, new website by Parish Media Company`} fill sizes={sizes} priority={priority} className="object-cover object-top" />
+        <Image src={after} alt="The same parish’s new website by Parish Media Company" fill sizes={sizes} priority={priority} className="object-cover object-top" />
       </div>
 
       <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-gilt-light px-3 py-1 text-xs font-semibold text-ink sm:left-4 sm:top-4 sm:text-sm">
@@ -54,7 +52,7 @@ export default function BeforeAfterSlider({
         max={100}
         value={pos}
         onChange={(e) => setPos(Number(e.target.value))}
-        aria-label={`Compare ${label} old and new website`}
+        aria-label="Drag to compare the new website with the old one"
         className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
       />
     </div>

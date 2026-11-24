@@ -5,7 +5,7 @@
 const DAY = 86_400_000;
 
 // Western Easter (anonymous Gregorian algorithm), as a UTC date.
-function easter(year: number): Date {
+export function easter(year: number): Date {
   const a = year % 19;
   const b = Math.floor(year / 100);
   const c = year % 100;
@@ -24,7 +24,7 @@ function easter(year: number): Date {
 }
 
 // First Sunday of Advent: the fourth Sunday before Christmas.
-function adventStart(year: number): Date {
+export function adventStart(year: number): Date {
   const christmas = new Date(Date.UTC(year, 11, 25));
   const lastSundayBefore = new Date(christmas.getTime() - (christmas.getUTCDay() || 7) * DAY);
   return new Date(lastSundayBefore.getTime() - 21 * DAY);

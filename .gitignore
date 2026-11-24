@@ -42,3 +42,6 @@ next-env.d.ts
 
 # source material kept locally for content work, not for the repo/deploy
 /docs/book-transcript.txt
+
+# Flyer Library data in local dev (in production it lives on the Railway volume)
+/.data/

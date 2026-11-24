@@ -55,9 +55,46 @@ export async function readCanvaLink(link: string): Promise<CanvaDesign> {
     // Title is a nice-to-have.
   }
 
-  const img = await fetch(`${design}/screen`, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) });
-  if (!img.ok || !img.headers.get("content-type")?.startsWith("image/")) {
-    throw new CanvaLinkError("Couldn't get the design's image from Canva. Check that the link is shared, then try again.");
+  // 1. Full-size image (1024x1280). Canva sometimes refuses this from cloud
+  //    servers (seen on Railway 2026-11-24) even though it works from a PC.
+  const full = await fetchImage(`${design}/screen`, "screen");
+  if (full) return { title, viewUrl, image: full };
+
+  // 2. Fallback: the design's view page loads fine from Railway and contains a
+  //    signed 400x500 preview on media.canva.com. Smaller, but good enough for
+  //    a card. (The size is part of the signature, so it can't be enlarged.)
+  const small = await previewFromViewPage(viewUrl);
+  if (small) return { title, viewUrl, image: small };
+
+  throw new CanvaLinkError("Couldn't get the design's image from Canva. Check that the link is shared, then try again.");
+}
+
+async function fetchImage(url: string, label: string): Promise<Buffer | null> {
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) });
+    const type = res.headers.get("content-type") ?? "";
+    if (res.ok && type.startsWith("image/")) return Buffer.from(await res.arrayBuffer());
+    const body = (await res.text().catch(() => "")).slice(0, 200).replace(/\s+/g, " ");
+    console.warn(`[flyers] Canva ${label} image refused: ${res.status} ${type} (final ${res.url}) ${body}`);
+  } catch (e) {
+    console.warn(`[flyers] Canva ${label} image failed:`, e);
   }
-  return { title, viewUrl, image: Buffer.from(await img.arrayBuffer()) };
+  return null;
+}
+
+async function previewFromViewPage(viewUrl: string): Promise<Buffer | null> {
+  try {
+    const res = await fetch(viewUrl, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) });
+    const html = await res.text();
+    const m = html.match(/https:(?:\\\/|\/){2}media\.canva\.com(?:\\\/|\/)v2(?:\\\/|\/)document-image[^"'\s<>]+/);
+    if (!m) {
+      console.warn(`[flyers] Canva view page had no preview image (status ${res.status}).`);
+      return null;
+    }
+    const url = m[0].replace(/\\\//g, "/").replace(/\\u0026/g, "&").replace(/&amp;/g, "&");
+    return await fetchImage(url, "preview");
+  } catch (e) {
+    console.warn("[flyers] Canva view page failed:", e);
+    return null;
+  }
 }

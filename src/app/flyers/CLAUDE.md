@@ -22,6 +22,7 @@ No Canva API. Each template stores a Canva "template link" (Share > Template lin
 
 - NEVER publish a Canva link ending in `/edit`: that's a collaborator link and anyone could change Joe's original. Only template links (or `/view` while testing).
 - Thumbnails can be pulled automatically (tested 2026-11-23): `https://www.canva.com/_oembed?url=<design /view URL>&format=json` returns the design title and a `thumbnail_url`; `<design>/screen` gives a 1024x1280 PNG (4:5). Requests need a browser User-Agent or Canva returns 403. `canva.link/...` short links redirect to the design URL. Plan: the admin page pastes a link, fetches title + image, and stores the image itself (don't hotlink Canva).
+- 2026-11-24: Canva started answering `/screen` with a 403 page (from Railway and from a home PC). `src/lib/flyers/canva.ts` now falls back to the signed 400x500 `media.canva.com/v2/document-image/...` URL found in the design's `/view` page HTML. Its size is part of the signature, so it can't be enlarged. Failures log as `[flyers] Canva ...` in Railway deploy logs.
 
 ## Access, admin, and storage (built 2026-11-24)
 

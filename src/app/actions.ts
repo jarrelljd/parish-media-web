@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import { STYLE_VALUES, deliveryDate } from "@/data/freeWebsite";
+import { addFreeWebsiteNotes, createFreeWebsiteRow } from "@/lib/notionFreeWebsite";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
 import { greetingFor } from "@/lib/greeting";
 import {
@@ -660,6 +661,9 @@ export type FreeWebsiteState = {
   eventId?: string;
   // ISO date the new site is promised by (72 weekday hours from now).
   deliverBy?: string;
+  // The request's row in the Notion tracker; the thank-you page sends it
+  // back so the optional notes land on the same row.
+  notionPageId?: string;
 };
 
 // Tells Joe about a request. The Zap behind ZAPIER_WEBHOOK_FREE_WEBSITE
@@ -756,9 +760,24 @@ export async function submitFreeWebsiteRequest(
     }
   }
 
-  const deliverBy = deliveryDate();
-  const delivered = await notifyFreeWebsite(`Free website request: ${organization} (${website})`, {
-    timestamp: new Date().toISOString(),
+  const requestedOn = new Date();
+  const deliverBy = deliveryDate(requestedOn);
+
+  // The Notion tracker is the main record (every later step reads it). Email
+  // stays as a backup, so a Notion outage never loses a request.
+  let notionPageId: string | undefined;
+  try {
+    notionPageId = await createFreeWebsiteRow({
+      organization, website, style, name, role, email, phone, pastorName, pastorEmail,
+      requestedOn, promisedBy: deliverBy,
+    });
+  } catch (err) {
+    console.error("Failed to create Notion row (free website):", err);
+  }
+
+  const emailed = await notifyFreeWebsite(`Free website request: ${organization} (${website})`, {
+    notion: notionPageId ? `https://www.notion.so/${notionPageId.replace(/-/g, "")}` : "NOT SAVED TO NOTION, add by hand",
+    timestamp: requestedOn.toISOString(),
     organization,
     website,
     style,
@@ -771,7 +790,7 @@ export async function submitFreeWebsiteRequest(
     requestedBy: isPastor ? "Pastor" : `${name} (${role}), copy on delivery`,
     deliverBy: deliverBy.toISOString(),
   });
-  if (!delivered) {
+  if (!notionPageId && !emailed) {
     return {
       status: "error",
       message:
@@ -795,7 +814,7 @@ export async function submitFreeWebsiteRequest(
     console.error("Failed to send Meta Conversions API event (free website):", err);
   }
 
-  return { status: "success", eventId, deliverBy: deliverBy.toISOString() };
+  return { status: "success", eventId, deliverBy: deliverBy.toISOString(), notionPageId };
 }
 
 export type FreeWebsiteDetailsState = {
@@ -819,11 +838,29 @@ export async function submitFreeWebsiteDetails(
     fix: field("fix"),
     photos: field("photos", 500),
   };
-  const delivered = await notifyFreeWebsite(
+
+  // Onto the request's Notion row, for the build job to read.
+  let saved = false;
+  const pageId = field("notionPageId", 40);
+  const notes = [
+    payload.mostImportant && `Most important to find: ${payload.mostImportant}`,
+    payload.fix && `Fix or change: ${payload.fix}`,
+    payload.photos && `Better photos: ${payload.photos}`,
+  ].filter(Boolean).join("\n");
+  if (pageId && notes) {
+    try {
+      await addFreeWebsiteNotes(pageId, notes);
+      saved = true;
+    } catch (err) {
+      console.error("Failed to add notes to Notion row (free website):", err);
+    }
+  }
+
+  const emailed = await notifyFreeWebsite(
     `Free website details: ${payload.website || payload.email || "unknown"}`,
     payload,
   );
-  if (!delivered) {
+  if (!saved && !emailed) {
     return {
       status: "error",
       message: "That didn’t go through. Please try again, or reply to our email with these details.",

@@ -61,6 +61,7 @@ export default function FreeWebsiteForm() {
           email: email.trim(),
           pastorName: needsPastor ? pastorName.trim() : "",
           deliverBy: state.deliverBy,
+          notionPageId: state.notionPageId,
         }),
       );
     } catch {
@@ -70,7 +71,7 @@ export default function FreeWebsiteForm() {
       window.location.href = "/free-website/thank-you";
     }, 1500);
     return () => clearTimeout(go);
-  }, [state.status, state.eventId, state.deliverBy, name, website, email, needsPastor, pastorName]);
+  }, [state.status, state.eventId, state.deliverBy, state.notionPageId, name, website, email, needsPastor, pastorName]);
 
   return (
     <form

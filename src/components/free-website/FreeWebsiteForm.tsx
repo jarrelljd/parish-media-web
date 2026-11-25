@@ -311,8 +311,8 @@ export default function FreeWebsiteForm() {
                   <label
                     key={s.value}
                     className={`cursor-pointer overflow-hidden rounded-xl bg-offwhite ring-2 transition-all has-[:focus-visible]:ring-navy ${
-                      on ? "ring-navy shadow-md shadow-navy/15" : "ring-navy/10 hover:ring-navy/25"
-                    }`}
+                      s.image ? "" : "col-span-2"
+                    } ${on ? "ring-navy shadow-md shadow-navy/15" : "ring-navy/10 hover:ring-navy/25"}`}
                   >
                     <input
                       type="radio"
@@ -324,17 +324,22 @@ export default function FreeWebsiteForm() {
                       onChange={() => setStyle(s.value)}
                       className="sr-only"
                     />
-                    <span className="relative block aspect-[16/10] bg-parchment">
-                      {s.image ? (
+                    {s.image && (
+                      <span className="relative block aspect-[16/10] bg-parchment">
                         <Image src={s.image} alt="" fill sizes="12rem" className="object-cover object-top" />
+                      </span>
+                    )}
+                    <span className="flex items-center justify-between gap-3 px-3 py-2 text-sm font-semibold text-navy">
+                      {s.image ? (
+                        s.label
                       ) : (
-                        <span className="flex h-full items-center justify-center px-3 text-center text-xs text-navy/60">
-                          We&rsquo;ll pick what fits your parish&nbsp;best
+                        <span>
+                          {s.label}
+                          <span className="block font-normal text-navy/60">
+                            We&rsquo;ll pick what fits your parish&nbsp;best.
+                          </span>
                         </span>
                       )}
-                    </span>
-                    <span className="flex items-center justify-between px-3 py-2 text-sm font-semibold text-navy">
-                      {s.label}
                       {on && (
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-4 w-4" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />

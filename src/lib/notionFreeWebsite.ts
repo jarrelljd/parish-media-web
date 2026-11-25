@@ -15,7 +15,6 @@ const NOTION_VERSION = "2025-09-03";
 const STYLE_TO_NOTION: Record<string, string> = {
   Classic: "Classic",
   Cathedral: "Cathedral",
-  Family: "Family",
   "Let us choose": "Our pick",
 };
 const ROLES = ["Pastor", "Parochial Vicar", "Deacon", "Communications", "Business Manager"];

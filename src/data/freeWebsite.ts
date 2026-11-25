@@ -31,11 +31,11 @@ export const REDESIGNS: Redesign[] = [
   { key: "olots", parish: "Our Lady of the Saints", place: "South Omaha, NE", before: "/images/free-website/olots-before.jpg", after: "/images/free-website/olots-after.jpg" },
 ];
 
-// The three homepage styles a parish can pick, each a real build from the
-// Parish Website Template. The Family shot is St. Joseph's real content and
-// photos rendered with hero.mosaic (a demo build, not their live site).
+// The two homepage styles a parish can pick, each a real build from the
+// Parish Website Template. (A third, "Family" / hero.mosaic, was dropped
+// 2026-11-25 because it looked too close to Classic.)
 export type SiteStyle = {
-  id: "classic" | "cathedral" | "family";
+  id: "classic" | "cathedral";
   name: string;
   tagline: string;
   bestFor: string;
@@ -57,16 +57,9 @@ export const SITE_STYLES: SiteStyle[] = [
     bestFor: "Beautiful or historic churches",
     example: { image: "/images/free-website/st-patrick-after.jpg", parish: "St. Patrick’s, South Hadley, MA" },
   },
-  {
-    id: "family",
-    name: "Family",
-    tagline: "Real parish life up front: families, kids, and young adults.",
-    bestFor: "Parishes reaching young families",
-    example: { image: "/images/free-website/family-after.jpg", parish: "St. Joseph, Los Banos, CA" },
-  },
 ];
 
-// The form's fourth choice, for parishes who'd rather we decide. Matches the
+// The form's last choice, for parishes who'd rather we decide. Matches the
 // "Our pick" option in the Notion tracker's Style column.
 export const STYLE_OUR_PICK = "Let us choose";
 export const STYLE_VALUES = [...SITE_STYLES.map((s) => s.name), STYLE_OUR_PICK];

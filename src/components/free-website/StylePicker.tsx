@@ -4,9 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { SITE_STYLES, type SiteStyle } from "@/data/freeWebsite";
 
-// A browser window with three tabs that swap the homepage style shown inside.
+// A browser window with tabs that swap the homepage style shown inside.
 // Every style is a screenshot of a real build from the Parish Website Template
-// (Classic = hero.photo, Cathedral = hero.video, Family = hero.mosaic).
+// (Classic = hero.photo, Cathedral = hero.video).
 export function BrowserFrame({ children, url = "yourparish.org" }: { children: React.ReactNode; url?: string }) {
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-2xl shadow-ink/30 ring-1 ring-ink/10">

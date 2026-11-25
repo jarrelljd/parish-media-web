@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 import ScrollToBookingButton from "@/components/ScrollToBookingButton";
 import StoryRail, { type StoryStep } from "@/components/results/StoryRail";
 import { REDESIGNS } from "@/data/freeWebsite";
@@ -22,7 +22,7 @@ const hero = REDESIGNS.find((r) => r.key === "st-patrick")!;
 // What a young family is looking for, and where most parish sites lose them.
 const QUESTIONS: [string, string][] = [
   ["When is Mass?", "Buried in a PDF bulletin, or out of date"],
-  ["Where do I park, and what should I expect?", "Nothing written for a first-time visitor"],
+  ["Where do I park, and what should I expect?","Nothing written for a first-time visitor"],
   ["Is there anything for my kids?", "Faith Formation hidden three menus deep"],
   ["Will anyone notice me?", "No simple way to say “we’re coming Sunday”"],
   ["Does it work on my phone?", "Tiny text, broken menus, endless pinching"],
@@ -143,28 +143,27 @@ export default function FreeWebsiteContent() {
 
       {/* The problem, in the family's own questions */}
       <section className="bg-vellum-deep px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-3xl">
-          <div className="text-center">
+        <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
             <h2 className={h2}>Young families visit your website before they visit your&nbsp;parish</h2>
-            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-ink/70">
+            <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/70">
               They&rsquo;re asking five simple questions. Most parish websites
               make them dig for every&nbsp;answer.
             </p>
           </div>
-          <ul className="mt-12 space-y-3">
-            {QUESTIONS.map(([q, problem]) => (
-              <li key={q} className="grid gap-1 rounded-2xl bg-white px-6 py-5 shadow-lg shadow-ink/5 ring-1 ring-ink/5 sm:grid-cols-[1fr_1fr] sm:items-center sm:gap-6">
-                <p className="font-serif text-xl font-medium text-ink">{q}</p>
-                <p className="flex items-start gap-2.5 text-ink/60">
-                  <X className="mt-0.5 h-5 w-5 shrink-0 text-rubric" strokeWidth={2.5} aria-hidden="true" />
-                  <span>{problem}</span>
-                </p>
-              </li>
-            ))}
-          </ul>
-          <p className="mx-auto mt-12 max-w-xl text-balance text-center text-xl font-medium text-ink">
-            Your new website answers all five on the first screen.
-          </p>
+          <div>
+            <dl className="space-y-9">
+              {QUESTIONS.map(([q, problem]) => (
+                <div key={q}>
+                  <dt className="font-serif text-2xl font-medium leading-snug text-ink sm:text-[1.75rem]">{q}</dt>
+                  <dd className="mt-1.5 text-lg text-ink/55">{problem}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-12 text-pretty text-xl font-medium text-ink">
+              Your new website answers all five on the first&nbsp;screen.
+            </p>
+          </div>
         </div>
       </section>
 

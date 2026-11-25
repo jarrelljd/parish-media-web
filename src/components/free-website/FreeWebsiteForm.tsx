@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import Image from "next/image";
 import { submitFreeWebsiteRequest, type FreeWebsiteState } from "@/app/actions";
-import { trackLead } from "@/lib/pixel";
+import { trackLead, trackSignup } from "@/lib/pixel";
 import { FREE_WEBSITE_LEAD_KEY, SITE_STYLES, STYLE_OUR_PICK } from "@/data/freeWebsite";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 
@@ -44,12 +44,21 @@ export default function FreeWebsiteForm() {
 
   useEffect(() => {
     if (state.status !== "success") return;
-    // Browser half of the Lead; the server sent the same eventId to the
-    // Conversions API. Tracking must never block the next step.
+    // Browser half of the events; the server sent the same ids to the
+    // Conversions API. Every role fires WebsiteRequest; only pastors get an
+    // eventId back, so only they fire a Lead. Tracking must never block the
+    // next step.
     try {
-      trackLead("Free Website Redesign", state.eventId);
+      trackSignup("WebsiteRequest", "Free Website Redesign", role, state.signupEventId);
     } catch (err) {
-      console.error("Failed to fire Meta Pixel Lead (free website):", err);
+      console.error("Failed to fire Meta Pixel WebsiteRequest:", err);
+    }
+    if (state.eventId) {
+      try {
+        trackLead("Free Website Redesign", state.eventId);
+      } catch (err) {
+        console.error("Failed to fire Meta Pixel Lead (free website):", err);
+      }
     }
     // The thank-you page greets them, shows the delivery date, and sends the
     // optional details along with their site and email. Kept out of the URL.
@@ -72,7 +81,7 @@ export default function FreeWebsiteForm() {
       window.location.href = "/free-website/thank-you";
     }, 1500);
     return () => clearTimeout(go);
-  }, [state.status, state.eventId, state.deliverBy, state.notionPageId, name, cityState, email, needsPastor, pastorName]);
+  }, [state.status, state.eventId, state.signupEventId, role, state.deliverBy, state.notionPageId, name, cityState, email, needsPastor, pastorName]);
 
   return (
     <form

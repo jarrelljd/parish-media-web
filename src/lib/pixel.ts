@@ -24,6 +24,24 @@ export function trackScorecardComplete(role: string, eventId?: string) {
   );
 }
 
+// Custom event for every free guide / free website request (any role).
+// Pastors also fire a Lead via trackLead. eventId matches the server's event
+// of the same name so Meta dedupes the pair.
+export function trackSignup(
+  eventName: "GuideRequest" | "WebsiteRequest",
+  contentName: string,
+  role: string,
+  eventId?: string,
+) {
+  const fbq = (window as unknown as { fbq?: Fbq }).fbq;
+  fbq?.(
+    "trackCustom",
+    eventName,
+    { content_name: contentName, role },
+    eventId ? { eventID: eventId } : undefined,
+  );
+}
+
 // Standard Meta "Schedule" event — for an actual booked appointment (e.g. a
 // completed Calendly booking), distinct from "Lead" above. Pass eventId when
 // the server also sends this booking (see ScheduleTracker) so Meta dedupes.

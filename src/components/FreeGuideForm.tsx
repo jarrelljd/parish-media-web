@@ -4,7 +4,7 @@ import { useActionState, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import SendingOverlay from "@/components/SendingOverlay";
 import { submitEbookRequest, type EbookRequestState } from "@/app/actions";
-import { trackLead } from "@/lib/pixel";
+import { trackLead, trackSignup } from "@/lib/pixel";
 import { LEAD_NAME_KEY } from "@/components/LetterGreeting";
 import {
   AMAZON_BOOK_URL,
@@ -32,12 +32,21 @@ export default function FreeGuideForm() {
 
   useEffect(() => {
     if (state.status === "success") {
-      // Browser half of the Lead; the server already sent the same eventId
-      // to the Conversions API. A tracking failure must never block the redirect.
+      // Browser half of the events; the server already sent the same ids to
+      // the Conversions API. Every role fires GuideRequest; only pastors get an
+      // eventId back, so only they fire a Lead. Tracking must never block the
+      // redirect.
       try {
-        trackLead("Free Guide Request", state.eventId);
+        trackSignup("GuideRequest", "Free Guide Request", role, state.signupEventId);
       } catch (err) {
-        console.error("Failed to fire Meta Pixel Lead (free guide):", err);
+        console.error("Failed to fire Meta Pixel GuideRequest:", err);
+      }
+      if (state.eventId) {
+        try {
+          trackLead("Free Guide Request", state.eventId);
+        } catch (err) {
+          console.error("Failed to fire Meta Pixel Lead (free guide):", err);
+        }
       }
       // Lets the letter on the next page greet them by name. Kept out of the
       // URL so it never reaches analytics or the pixel.
@@ -60,7 +69,7 @@ export default function FreeGuideForm() {
         document.body.style.overflow = prevOverflow;
       };
     }
-  }, [state.status, state.eventId, name]);
+  }, [state.status, state.eventId, state.signupEventId, name, role]);
 
   return (
     <>

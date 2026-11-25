@@ -126,6 +126,15 @@ export async function sendScorecardCompleteEvent(input: MarketingEventInput): Pr
   await sendMarketingEvent("ScorecardComplete", input);
 }
 
+// Custom event for every free guide / free website request, any role. Like
+// ScorecardComplete: only pastors also get a Lead (the ad optimization event).
+export async function sendSignupEvent(
+  eventName: "GuideRequest" | "WebsiteRequest",
+  input: MarketingEventInput,
+): Promise<void> {
+  await sendMarketingEvent(eventName, input);
+}
+
 export async function sendGenericLeadEvent(input: MarketingEventInput): Promise<void> {
   await sendMarketingEvent("Lead", input);
 }
@@ -136,7 +145,7 @@ export async function sendGenericScheduleEvent(input: MarketingEventInput): Prom
 }
 
 async function sendMarketingEvent(
-  eventName: "Lead" | "Schedule" | "ScorecardComplete",
+  eventName: "Lead" | "Schedule" | "ScorecardComplete" | "GuideRequest" | "WebsiteRequest",
   {
     eventId,
     contentName,

@@ -25,6 +25,7 @@ import {
   sendGenericLeadEvent,
   sendGenericScheduleEvent,
   sendScorecardCompleteEvent,
+  sendSignupEvent,
 } from "@/lib/metaConversionsApi";
 
 // TODO: swap to joe@parishmediacompany.com once Google Workspace is live.
@@ -177,7 +178,10 @@ export type EbookRequestState = {
   status: "idle" | "success" | "error";
   message?: string;
   // Shared with the browser pixel's Lead so Meta dedupes the two.
+  // Only set for pastors (the only role that counts as a Lead).
   eventId?: string;
+  // Shared with the browser's GuideRequest (every role) for dedupe.
+  signupEventId?: string;
 };
 
 // The Zap behind this webhook sends the book (Joe's own automation handles
@@ -245,23 +249,48 @@ export async function submitEbookRequest(
     };
   }
 
+  const headersList = await headers();
+  const metaUser = {
+    email,
+    phone,
+    userAgent: headersList.get("user-agent"),
+    ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+  };
+
+  // Every request (any role) is counted as a custom GuideRequest.
+  const signupEventId = randomUUID();
+  try {
+    await sendSignupEvent("GuideRequest", {
+      eventId: signupEventId,
+      contentName: "Free Guide Request",
+      sourcePath: "/free-guide",
+      extra: { role },
+      ...metaUser,
+    });
+  } catch (err) {
+    console.error("Failed to send Meta GuideRequest event:", err);
+  }
+
+  // Only pastors count as a Meta Lead: they're the decision-makers, so ads
+  // optimize toward them. Other roles still get the book, just no Lead. No
+  // eventId back to the client means the browser pixel skips it too.
+  if (role !== "Pastor") {
+    return { status: "success", signupEventId };
+  }
+
   const eventId = randomUUID();
   try {
-    const headersList = await headers();
     await sendGenericLeadEvent({
       eventId,
       contentName: "Free Guide Request",
       sourcePath: "/free-guide",
-      email,
-      phone,
-      userAgent: headersList.get("user-agent"),
-      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+      ...metaUser,
     });
   } catch (err) {
     console.error("Failed to send Meta Conversions API event (ebook):", err);
   }
 
-  return { status: "success", eventId };
+  return { status: "success", eventId, signupEventId };
 }
 
 // Server half of the Meta "Schedule" event for a booked Parish Growth
@@ -658,7 +687,10 @@ export type FreeWebsiteState = {
   status: "idle" | "success" | "error";
   message?: string;
   // Shared with the browser pixel's Lead so Meta dedupes the two.
+  // Only set for pastors (the only role that counts as a Lead).
   eventId?: string;
+  // Shared with the browser's WebsiteRequest (every role) for dedupe.
+  signupEventId?: string;
   // ISO date the new site is promised by (72 weekday hours from now).
   deliverBy?: string;
   // The request's row in the Notion tracker; the thank-you page sends it
@@ -787,23 +819,48 @@ export async function submitFreeWebsiteRequest(
     };
   }
 
+  const headersList = await headers();
+  const metaUser = {
+    email,
+    phone: phone || undefined,
+    userAgent: headersList.get("user-agent"),
+    ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+  };
+  const success = { status: "success" as const, deliverBy: deliverBy.toISOString(), notionPageId };
+
+  // Every request (any role) is counted as a custom WebsiteRequest.
+  const signupEventId = randomUUID();
+  try {
+    await sendSignupEvent("WebsiteRequest", {
+      eventId: signupEventId,
+      contentName: "Free Website Redesign",
+      sourcePath: "/free-website",
+      extra: { role },
+      ...metaUser,
+    });
+  } catch (err) {
+    console.error("Failed to send Meta WebsiteRequest event:", err);
+  }
+
+  // Only pastors count as a Meta Lead (see submitEbookRequest). Other roles
+  // still get the site, just no Lead, and no eventId so the pixel skips it.
+  if (!isPastor) {
+    return { ...success, signupEventId };
+  }
+
   const eventId = randomUUID();
   try {
-    const headersList = await headers();
     await sendGenericLeadEvent({
       eventId,
       contentName: "Free Website Redesign",
       sourcePath: "/free-website",
-      email,
-      phone: phone || undefined,
-      userAgent: headersList.get("user-agent"),
-      ipAddress: headersList.get("x-forwarded-for")?.split(",")[0]?.trim(),
+      ...metaUser,
     });
   } catch (err) {
     console.error("Failed to send Meta Conversions API event (free website):", err);
   }
 
-  return { status: "success", eventId, deliverBy: deliverBy.toISOString(), notionPageId };
+  return { ...success, eventId, signupEventId };
 }
 
 export type FreeWebsiteDetailsState = {

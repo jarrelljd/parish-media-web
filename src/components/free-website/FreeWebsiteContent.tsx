@@ -135,7 +135,7 @@ export default function FreeWebsiteContent() {
         <div className="bg-linear-to-b from-ink from-60% to-transparent to-60% px-6 pt-12">
           <div className="mx-auto max-w-4xl">
             <BrowserFrame>
-              <BeforeAfterSlider before={hero.before} after={hero.after} start={58} priority />
+              <BeforeAfterSlider before={hero.before} after={hero.after} afterVideo={hero.afterVideo} start={58} priority />
             </BrowserFrame>
           </div>
         </div>

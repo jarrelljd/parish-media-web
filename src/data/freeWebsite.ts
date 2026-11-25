@@ -10,10 +10,24 @@ export type Redesign = {
   place: string;
   before: string;
   after: string;
+  // Optional looping clip of the new homepage (its drone hero playing), built
+  // by laying the page's text over the site's own hero video. `poster` is its
+  // first frame, shown while it loads and to visitors who turn off motion.
+  afterVideo?: { src: string; poster: string };
 };
 
 export const REDESIGNS: Redesign[] = [
-  { key: "st-patrick", parish: "St. Patrick’s", place: "South Hadley, MA", before: "/images/free-website/st-patrick-before.jpg", after: "/images/free-website/st-patrick-after.jpg" },
+  {
+    key: "st-patrick",
+    parish: "St. Patrick’s",
+    place: "South Hadley, MA",
+    before: "/images/free-website/st-patrick-before.jpg",
+    after: "/images/free-website/st-patrick-after.jpg",
+    afterVideo: {
+      src: "/videos/free-website-st-patrick-after.mp4",
+      poster: "/images/free-website/st-patrick-after-poster.jpg",
+    },
+  },
   { key: "olots", parish: "Our Lady of the Saints", place: "South Omaha, NE", before: "/images/free-website/olots-before.jpg", after: "/images/free-website/olots-after.jpg" },
 ];
 

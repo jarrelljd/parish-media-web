@@ -6,7 +6,6 @@ import { Check } from "lucide-react";
 import { submitFreeWebsiteDetails, type FreeWebsiteDetailsState } from "@/app/actions";
 import {
   FREE_WEBSITE_LEAD_KEY,
-  SITE_STYLES,
   deliveryDate,
   formatDeliveryDate,
 } from "@/data/freeWebsite";
@@ -41,7 +40,6 @@ function greetingName(full: string): string {
 
 export default function ThankYouContent() {
   const [lead, setLead] = useState<Lead>({});
-  const [style, setStyle] = useState("");
   const [state, formAction, pending] = useActionState(submitFreeWebsiteDetails, initialState);
 
   useEffect(() => {
@@ -82,8 +80,8 @@ export default function ThankYouContent() {
           <div className="text-center">
             <h2 className={h2}>Want it made just for&nbsp;you?</h2>
             <p className="mx-auto mt-4 max-w-xl text-balance text-lg text-ink/70">
-              Everything here is optional. Skip it and we&rsquo;ll choose what
-              fits your parish&nbsp;best.
+              Everything here is optional. Skip it and we&rsquo;ll work from
+              your current&nbsp;website.
             </p>
           </div>
 
@@ -96,49 +94,6 @@ export default function ThankYouContent() {
             <form action={formAction} className="mt-10 space-y-8 rounded-3xl bg-white p-7 shadow-xl shadow-ink/10 ring-1 ring-ink/5 sm:p-10">
               <input type="hidden" name="website" value={lead.website ?? ""} />
               <input type="hidden" name="email" value={lead.email ?? ""} />
-
-              <fieldset>
-                <legend className="text-lg font-semibold text-ink">Pick a style</legend>
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                  {SITE_STYLES.map((s) => {
-                    const on = style === s.id;
-                    return (
-                      <label
-                        key={s.id}
-                        className={`cursor-pointer overflow-hidden rounded-2xl bg-vellum/50 ring-2 transition-all has-[:focus-visible]:ring-lapis ${
-                          on ? "ring-lapis shadow-lg shadow-lapis/20" : "ring-transparent hover:ring-ink/15"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="style"
-                          value={s.name}
-                          checked={on}
-                          onChange={() => setStyle(s.id)}
-                          className="sr-only"
-                        />
-                        <span className="relative block aspect-[16/10]">
-                          <Image src={s.example.image} alt="" fill sizes="(min-width: 640px) 14rem, 100vw" className="object-cover object-top" />
-                        </span>
-                        <span className="block px-4 py-3">
-                          <span className="flex items-center justify-between font-semibold">
-                            {s.name}
-                            {on && <Check className="h-4 w-4 text-lapis" strokeWidth={3} aria-hidden="true" />}
-                          </span>
-                          <span className="mt-0.5 block text-sm text-ink/55">{s.bestFor}</span>
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setStyle("")}
-                  className={`mt-3 text-sm font-medium underline-offset-4 hover:underline ${style === "" ? "text-lapis" : "text-ink/55"}`}
-                >
-                  {style === "" ? "✓ You choose for us" : "Not sure? Let us choose"}
-                </button>
-              </fieldset>
 
               <div>
                 <label htmlFor="ty-important" className="block text-lg font-semibold text-ink">

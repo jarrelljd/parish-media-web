@@ -52,6 +52,11 @@ export const SITE_STYLES: SiteStyle[] = [
   },
 ];
 
+// The form's fourth choice, for parishes who'd rather we decide. Matches the
+// "Our pick" option in the Notion tracker's Style column.
+export const STYLE_OUR_PICK = "Let us choose";
+export const STYLE_VALUES = [...SITE_STYLES.map((s) => s.name), STYLE_OUR_PICK];
+
 // The promise is 72 hours, not counting weekends. Returns the delivery date
 // for a request made at `from`: every weekday hour counts, weekend hours
 // don't. Holidays are not skipped.

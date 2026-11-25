@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
-import { deliveryDate } from "@/data/freeWebsite";
+import { STYLE_VALUES, deliveryDate } from "@/data/freeWebsite";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
 import { greetingFor } from "@/lib/greeting";
 import {
@@ -733,6 +733,10 @@ export async function submitFreeWebsiteRequest(
   if (!website) {
     return { status: "error", message: "Please enter your parish’s current website address." };
   }
+  const style = String(formData.get("style") ?? "");
+  if (!STYLE_VALUES.includes(style)) {
+    return { status: "error", message: "Please choose a style for your new website." };
+  }
 
   // Anyone but the pastor must vouch that he's on board and say how to reach
   // him: the site goes to him, with the requester copied (FreeWebsiteForm.tsx).
@@ -757,6 +761,7 @@ export async function submitFreeWebsiteRequest(
     timestamp: new Date().toISOString(),
     organization,
     website,
+    style,
     name,
     role,
     email,
@@ -798,8 +803,8 @@ export type FreeWebsiteDetailsState = {
   message?: string;
 };
 
-// Optional extras from the thank-you page: the style they picked, what they
-// want visitors to find, what to fix, and a link to better photos.
+// Optional extras from the thank-you page: what they want visitors to find,
+// what to fix, and a link to better photos. (Style is chosen in the form.)
 export async function submitFreeWebsiteDetails(
   _prevState: FreeWebsiteDetailsState,
   formData: FormData,
@@ -810,7 +815,6 @@ export async function submitFreeWebsiteDetails(
     type: "details",
     website: field("website", 300),
     email: field("email", 200),
-    style: field("style", 40) || "No preference",
     mostImportant: field("mostImportant"),
     fix: field("fix"),
     photos: field("photos", 500),

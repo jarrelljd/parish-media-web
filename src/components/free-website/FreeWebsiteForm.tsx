@@ -1,9 +1,10 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import Image from "next/image";
 import { submitFreeWebsiteRequest, type FreeWebsiteState } from "@/app/actions";
 import { trackLead } from "@/lib/pixel";
-import { FREE_WEBSITE_LEAD_KEY } from "@/data/freeWebsite";
+import { FREE_WEBSITE_LEAD_KEY, SITE_STYLES, STYLE_OUR_PICK } from "@/data/freeWebsite";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 
 const initialState: FreeWebsiteState = { status: "idle" };
@@ -29,6 +30,7 @@ export default function FreeWebsiteForm() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [website, setWebsite] = useState("");
+  const [style, setStyle] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [pastorName, setPastorName] = useState("");
   const [pastorEmail, setPastorEmail] = useState("");
@@ -181,7 +183,7 @@ export default function FreeWebsiteForm() {
       {/* Not the pastor: confirm he's on board, then tell us how to reach him. */}
       <div
         className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
-          needsPastor ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          needsPastor ? "grid-rows-[1fr] opacity-100" : "!mt-0 grid-rows-[0fr] opacity-0"
         }`}
       >
         <div className="min-h-0">
@@ -206,7 +208,7 @@ export default function FreeWebsiteForm() {
 
       <div
         className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
-          needsPastor && confirmed ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          needsPastor && confirmed ? "grid-rows-[1fr] opacity-100" : "!mt-0 grid-rows-[0fr] opacity-0"
         }`}
       >
         <div className="min-h-0 space-y-5">
@@ -288,6 +290,53 @@ export default function FreeWebsiteForm() {
               className={INPUT}
             />
           </div>
+
+          {/* Style: required, so the build agent always knows what to make.
+              "Let us choose" keeps anyone from getting stuck. */}
+          <fieldset>
+            <legend className="block text-sm font-medium text-navy">Choose a Style</legend>
+            <div className="mt-2 grid grid-cols-2 gap-3">
+              {[...SITE_STYLES.map((s) => ({ value: s.name, label: s.name, image: s.example.image })), { value: STYLE_OUR_PICK, label: STYLE_OUR_PICK, image: "" }].map((s) => {
+                const on = style === s.value;
+                return (
+                  <label
+                    key={s.value}
+                    className={`cursor-pointer overflow-hidden rounded-xl bg-offwhite ring-2 transition-all has-[:focus-visible]:ring-navy ${
+                      on ? "ring-navy shadow-md shadow-navy/15" : "ring-navy/10 hover:ring-navy/25"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="style"
+                      value={s.value}
+                      required={showMore}
+                      tabIndex={showMore ? 0 : -1}
+                      checked={on}
+                      onChange={() => setStyle(s.value)}
+                      className="sr-only"
+                    />
+                    <span className="relative block aspect-[16/10] bg-parchment">
+                      {s.image ? (
+                        <Image src={s.image} alt="" fill sizes="12rem" className="object-cover object-top" />
+                      ) : (
+                        <span className="flex h-full items-center justify-center px-3 text-center text-xs text-navy/60">
+                          We&rsquo;ll pick what fits your parish&nbsp;best
+                        </span>
+                      )}
+                    </span>
+                    <span className="flex items-center justify-between px-3 py-2 text-sm font-semibold text-navy">
+                      {s.label}
+                      {on && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-4 w-4" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+                        </svg>
+                      )}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
         </div>
       </div>
 

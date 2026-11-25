@@ -175,7 +175,7 @@ export default function FreeWebsiteContent() {
             <h2 className={h2}>Pick a style. We&rsquo;ll do the&nbsp;rest.</h2>
             <p className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-vellum/75">
               Every design is built around your church, your people, and your
-              photos. Choose one after you sign up, or let us pick what fits
+              photos. Choose one when you sign up, or let us pick what fits
               your parish&nbsp;best.
             </p>
           </div>
@@ -226,8 +226,8 @@ export default function FreeWebsiteContent() {
           <div className="text-center md:text-left">
             <h2 className={h2}>See what your parish&rsquo;s website could&nbsp;be</h2>
             <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/70">
-              Tell us where your current site is. On the next page you can pick
-              a style and tell us anything you&rsquo;d like changed.
+              Tell us where your current site is and pick a style. On the next
+              page you can tell us anything you&rsquo;d like&nbsp;changed.
             </p>
             <ul className="mx-auto mt-8 max-w-sm space-y-3 text-left text-lg md:mx-0">
               {["Delivered in 3 business days", "A live site you can click through", "Your current site stays untouched"].map((p) => (

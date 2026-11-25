@@ -65,9 +65,9 @@ const STEPS: StoryStep[] = [
     title: "Click through your new site",
     body: (
       <p>
-        We call you when it&rsquo;s ready and email you the link, with a
-        walkthrough of your new site. Explore it, share it with your staff,
-        and tell us what you&nbsp;think.
+        We call your pastor when it&rsquo;s ready and email him the link,
+        with a walkthrough of the new site. If someone on staff asked for it,
+        they&rsquo;re copied&nbsp;too.
       </p>
     ),
   },
@@ -85,6 +85,12 @@ const FAQS: { question: string; answer: string[] }[] = [
     question: "What happens if we want to use it?",
     answer: [
       "Just tell us. We install it on your domain and host it for you. Your email and online giving stay as they are, old links are redirected, and your old site stays up until the day the new one replaces it.",
+    ],
+  },
+  {
+    question: "Does our pastor need to be involved?",
+    answer: [
+      "Yes. He’s the one who decides, so we send the new website to him and walk him through it. If you’re on staff, we copy you and let him know you asked for it.",
     ],
   },
   {

@@ -734,6 +734,24 @@ export async function submitFreeWebsiteRequest(
     return { status: "error", message: "Please enter your parish’s current website address." };
   }
 
+  // Anyone but the pastor must vouch that he's on board and say how to reach
+  // him: the site goes to him, with the requester copied (FreeWebsiteForm.tsx).
+  const isPastor = role === "Pastor";
+  const pastorName = isPastor ? name : String(formData.get("pastorName") ?? "").trim().slice(0, 120);
+  const pastorEmail = isPastor ? email : String(formData.get("pastorEmail") ?? "").trim().slice(0, 200);
+  if (!isPastor) {
+    if (formData.get("pastorConfirmed") !== "yes") {
+      return { status: "error", message: "Please confirm your pastor would like to see a new website." };
+    }
+    if (!pastorName) return { status: "error", message: "Please enter your pastor’s name." };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pastorEmail)) {
+      return { status: "error", message: "Please enter a valid email address for your pastor." };
+    }
+    if (pastorEmail.toLowerCase() === email.toLowerCase()) {
+      return { status: "error", message: "Please enter your pastor’s own email address, not yours." };
+    }
+  }
+
   const deliverBy = deliveryDate();
   const delivered = await notifyFreeWebsite(`Free website request: ${organization} (${website})`, {
     timestamp: new Date().toISOString(),
@@ -743,6 +761,9 @@ export async function submitFreeWebsiteRequest(
     role,
     email,
     phone,
+    pastorName,
+    pastorEmail,
+    requestedBy: isPastor ? "Pastor" : `${name} (${role}), copy on delivery`,
     deliverBy: deliverBy.toISOString(),
   });
   if (!delivered) {

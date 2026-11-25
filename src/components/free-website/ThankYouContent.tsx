@@ -11,7 +11,7 @@ import {
   formatDeliveryDate,
 } from "@/data/freeWebsite";
 
-type Lead = { name?: string; website?: string; email?: string; deliverBy?: string };
+type Lead = { name?: string; website?: string; email?: string; pastorName?: string; deliverBy?: string };
 
 const initialState: FreeWebsiteDetailsState = { status: "idle" };
 const h2 = "font-serif text-3xl font-medium leading-[1.1] text-balance sm:text-4xl";
@@ -19,11 +19,16 @@ const input =
   "mt-2 w-full rounded-xl border border-ink/15 bg-vellum/60 px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-lapis/50 focus:bg-white focus:ring-2 focus:ring-gilt-light/40";
 
 
-const NEXT_STEPS = [
-  { title: "We build your new website", body: "Using your current site, plus anything you tell us below." },
-  { title: "We call you", body: "When it’s ready, we’ll give you a call and email you the link with a walkthrough of your new site." },
-  { title: "Love it? Just reply", body: "We’ll explain what it takes to make it live. No pressure either way." },
-];
+// When a staff member asked, the site goes to the pastor with them copied.
+function nextSteps(pastor: string) {
+  return [
+    { title: "We build your new website", body: "Using your current site, plus anything you tell us below." },
+    pastor
+      ? { title: `We send it to ${pastor}`, body: "When it’s ready, we’ll call him and email him the link with a walkthrough, with you copied." }
+      : { title: "We call you", body: "When it’s ready, we’ll give you a call and email you the link with a walkthrough of your new site." },
+    { title: "Love it? Just reply", body: "We’ll explain what it takes to make it live. No pressure either way." },
+  ];
+}
 
 // Parish leaders' titles read better in the greeting than a first name
 // alone ("Thank you, Fr. John").
@@ -65,7 +70,7 @@ export default function ThankYouContent() {
             {name ? <>Thank you, {name}. We&rsquo;re building your new&nbsp;website.</> : <>Thank you. We&rsquo;re building your new&nbsp;website.</>}
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-balance text-lg text-vellum/80 sm:text-xl">
-            Look for it in your inbox by
+            {lead.pastorName ? <>We&rsquo;ll send it to {lead.pastorName}, with you copied, by</> : <>Look for it in your inbox by</>}
           </p>
           <p className="mt-2 font-serif text-3xl font-medium text-gilt-light sm:text-4xl">{when}</p>
         </div>
@@ -178,7 +183,7 @@ export default function ThankYouContent() {
         <div className="mx-auto max-w-5xl text-center">
           <h2 className={h2}>What happens&nbsp;next</h2>
           <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-            {NEXT_STEPS.map((s, i) => (
+            {nextSteps(lead.pastorName ?? "").map((s, i) => (
               <li key={s.title}>
                 <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-lapis font-serif text-xl font-medium text-vellum shadow-lg shadow-lapis/30">
                   {i + 1}

@@ -15,6 +15,13 @@ const INPUT =
 // and role first; once those are filled in (and the role qualifies), the
 // parish name and website slide open. Same roles list, so "None of the Above"
 // is turned away the same way.
+//
+// Pastor buy-in, on purpose as friction: the pastor decides, so anyone who
+// isn't the pastor must confirm he wants to see a new site, then give his
+// name and email. The site goes to him with them copied, so a staff member
+// scrolling past won't submit on a whim.
+const PASTOR_ROLE = "Pastor";
+
 export default function FreeWebsiteForm() {
   const [state, formAction, pending] = useActionState(submitFreeWebsiteRequest, initialState);
   const [name, setName] = useState("");
@@ -22,8 +29,14 @@ export default function FreeWebsiteForm() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [website, setWebsite] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [pastorName, setPastorName] = useState("");
+  const [pastorEmail, setPastorEmail] = useState("");
   const ineligible = role === NO_QUALIFYING_ROLE;
-  const showMore = name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible;
+  const needsPastor = role !== "" && role !== PASTOR_ROLE && !ineligible;
+  const pastorReady =
+    role === PASTOR_ROLE || (confirmed && pastorName.trim() !== "" && pastorEmail.trim() !== "");
+  const showMore = name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible && pastorReady;
   const done = state.status === "success";
 
   useEffect(() => {
@@ -40,7 +53,13 @@ export default function FreeWebsiteForm() {
     try {
       sessionStorage.setItem(
         FREE_WEBSITE_LEAD_KEY,
-        JSON.stringify({ name: name.trim(), website: website.trim(), email: email.trim(), deliverBy: state.deliverBy }),
+        JSON.stringify({
+          name: name.trim(),
+          website: website.trim(),
+          email: email.trim(),
+          pastorName: needsPastor ? pastorName.trim() : "",
+          deliverBy: state.deliverBy,
+        }),
       );
     } catch {
       // Storage blocked: the thank-you page works out the date itself.
@@ -49,7 +68,7 @@ export default function FreeWebsiteForm() {
       window.location.href = "/free-website/thank-you";
     }, 1500);
     return () => clearTimeout(go);
-  }, [state.status, state.eventId, state.deliverBy, name, website, email]);
+  }, [state.status, state.eventId, state.deliverBy, name, website, email, needsPastor, pastorName]);
 
   return (
     <form
@@ -157,6 +176,79 @@ export default function FreeWebsiteForm() {
             The free redesign is only for the parish roles listed&nbsp;above.
           </p>
         )}
+      </div>
+
+      {/* Not the pastor: confirm he's on board, then tell us how to reach him. */}
+      <div
+        className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
+          needsPastor ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0">
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-gold/10 px-4 py-4 text-sm leading-relaxed text-navy">
+            <input
+              type="checkbox"
+              name="pastorConfirmed"
+              value="yes"
+              required={needsPastor}
+              checked={confirmed}
+              onChange={(e) => setConfirmed(e.target.checked)}
+              tabIndex={needsPastor ? 0 : -1}
+              className="mt-0.5 h-5 w-5 shrink-0 accent-navy"
+            />
+            <span>
+              I confirm our pastor knows about this and would like to see a new
+              website for our&nbsp;parish.
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div
+        className={`grid overflow-hidden transition-all duration-500 ease-out motion-reduce:transition-none ${
+          needsPastor && confirmed ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0 space-y-5">
+          <p className="text-sm leading-relaxed text-navy/70">
+            We&rsquo;ll send the new website to your pastor and copy you, noting
+            that you asked for the free redesign. How can we reach&nbsp;him?
+          </p>
+          <div>
+            <label htmlFor="fw-pastor-name" className="block text-sm font-medium text-navy">
+              Pastor&rsquo;s Name
+            </label>
+            <input
+              id="fw-pastor-name"
+              name="pastorName"
+              type="text"
+              required={needsPastor && confirmed}
+              tabIndex={needsPastor && confirmed ? 0 : -1}
+              placeholder="Fr. Michael Smith"
+              value={pastorName}
+              onChange={(e) => setPastorName(e.target.value)}
+              className={INPUT}
+            />
+          </div>
+          <div>
+            <label htmlFor="fw-pastor-email" className="block text-sm font-medium text-navy">
+              Pastor&rsquo;s Email
+            </label>
+            <input
+              id="fw-pastor-email"
+              name="pastorEmail"
+              type="email"
+              required={needsPastor && confirmed}
+              tabIndex={needsPastor && confirmed ? 0 : -1}
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+              title="Please enter your pastor's email address"
+              placeholder="pastor@yourparish.org"
+              value={pastorEmail}
+              onChange={(e) => setPastorEmail(e.target.value)}
+              className={INPUT}
+            />
+          </div>
+        </div>
       </div>
 
       <div

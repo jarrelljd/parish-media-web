@@ -699,22 +699,13 @@ async function notifyFreeWebsite(subject: string, payload: Record<string, string
   return delivered;
 }
 
-function normalizeUrl(raw: string): string | null {
-  const trimmed = raw.trim();
-  if (!trimmed) return null;
-  try {
-    const url = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`);
-    return url.hostname.includes(".") ? url.toString() : null;
-  } catch {
-    return null;
-  }
-}
-
 export async function submitFreeWebsiteRequest(
   _prevState: FreeWebsiteState,
   formData: FormData,
 ): Promise<FreeWebsiteState> {
-  const website = normalizeUrl(String(formData.get("website") ?? ""));
+  // No website field on purpose (people quit the form to look it up); the
+  // build job finds the parish's site from its name + city.
+  const cityState = String(formData.get("cityState") ?? "").trim().slice(0, 120);
   const name = String(formData.get("name") ?? "").trim().slice(0, 120);
   const role = String(formData.get("role") ?? "");
   const email = String(formData.get("email") ?? "").trim().slice(0, 200);
@@ -734,9 +725,7 @@ export async function submitFreeWebsiteRequest(
     return { status: "error", message: "Please enter a valid email address." };
   }
   if (!organization) return { status: "error", message: "Please enter the name of your parish." };
-  if (!website) {
-    return { status: "error", message: "Please enter your parish’s current website address." };
-  }
+  if (!cityState) return { status: "error", message: "Please enter your parish’s city and state." };
   const style = String(formData.get("style") ?? "");
   if (!STYLE_VALUES.includes(style)) {
     return { status: "error", message: "Please choose a style for your new website." };
@@ -768,18 +757,18 @@ export async function submitFreeWebsiteRequest(
   let notionPageId: string | undefined;
   try {
     notionPageId = await createFreeWebsiteRow({
-      organization, website, style, name, role, email, phone, pastorName, pastorEmail,
+      organization, cityState, style, name, role, email, phone, pastorName, pastorEmail,
       requestedOn, promisedBy: deliverBy,
     });
   } catch (err) {
     console.error("Failed to create Notion row (free website):", err);
   }
 
-  const emailed = await notifyFreeWebsite(`Free website request: ${organization} (${website})`, {
+  const emailed = await notifyFreeWebsite(`Free website request: ${organization} (${cityState})`, {
     notion: notionPageId ? `https://www.notion.so/${notionPageId.replace(/-/g, "")}` : "NOT SAVED TO NOTION, add by hand",
     timestamp: requestedOn.toISOString(),
     organization,
-    website,
+    cityState,
     style,
     name,
     role,
@@ -832,7 +821,7 @@ export async function submitFreeWebsiteDetails(
   const payload = {
     timestamp: new Date().toISOString(),
     type: "details",
-    website: field("website", 300),
+    cityState: field("cityState", 120),
     email: field("email", 200),
     mostImportant: field("mostImportant"),
     fix: field("fix"),
@@ -857,7 +846,7 @@ export async function submitFreeWebsiteDetails(
   }
 
   const emailed = await notifyFreeWebsite(
-    `Free website details: ${payload.website || payload.email || "unknown"}`,
+    `Free website details: ${payload.email || payload.cityState || "unknown"}`,
     payload,
   );
   if (!saved && !emailed) {

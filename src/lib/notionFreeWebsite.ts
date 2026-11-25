@@ -20,7 +20,7 @@ const ROLES = ["Pastor", "Parochial Vicar", "Deacon", "Communications", "Busines
 
 export type FreeWebsiteRow = {
   organization: string;
-  website: string;
+  cityState: string;
   style: string;
   name: string;
   role: string;
@@ -58,7 +58,9 @@ export async function createFreeWebsiteRow(r: FreeWebsiteRow): Promise<string> {
   const properties: Record<string, unknown> = {
     Parish: { title: [{ type: "text", text: { content: r.organization.slice(0, 200) } }] },
     Status: { status: { name: "Requested" } },
-    "Old website": { url: r.website },
+    // The form doesn't ask for the site (people quit to look it up); the
+    // build job finds it from parish + city and fills in "Old website".
+    "City/State": text(r.cityState),
     Pastor: text(r.pastorName),
     "Pastor email": { email: r.pastorEmail || null },
     // Blank when the pastor asked himself (his details are in Pastor above).

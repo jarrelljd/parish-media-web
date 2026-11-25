@@ -10,7 +10,7 @@ import {
   formatDeliveryDate,
 } from "@/data/freeWebsite";
 
-type Lead = { name?: string; website?: string; email?: string; pastorName?: string; deliverBy?: string; notionPageId?: string };
+type Lead = { name?: string; cityState?: string; email?: string; pastorName?: string; deliverBy?: string; notionPageId?: string };
 
 const initialState: FreeWebsiteDetailsState = { status: "idle" };
 const h2 = "font-serif text-3xl font-medium leading-[1.1] text-balance sm:text-4xl";
@@ -21,7 +21,7 @@ const input =
 // When a staff member asked, the site goes to the pastor with them copied.
 function nextSteps(pastor: string) {
   return [
-    { title: "We build your new website", body: "Using your current site, plus anything you tell us below." },
+    { title: "We build your new website", body: "We find your current site and build from it, plus anything you tell us below." },
     pastor
       ? { title: `We send it to ${pastor}`, body: "When it’s ready, we’ll call him and email him the link with a walkthrough, with you copied." }
       : { title: "We call you", body: "When it’s ready, we’ll give you a call and email you the link with a walkthrough of your new site." },
@@ -92,7 +92,7 @@ export default function ThankYouContent() {
             </div>
           ) : (
             <form action={formAction} className="mt-10 space-y-8 rounded-3xl bg-white p-7 shadow-xl shadow-ink/10 ring-1 ring-ink/5 sm:p-10">
-              <input type="hidden" name="website" value={lead.website ?? ""} />
+              <input type="hidden" name="cityState" value={lead.cityState ?? ""} />
               <input type="hidden" name="email" value={lead.email ?? ""} />
               <input type="hidden" name="notionPageId" value={lead.notionPageId ?? ""} />
 

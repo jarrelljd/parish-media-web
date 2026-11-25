@@ -45,7 +45,7 @@ const STEPS: StoryStep[] = [
     marker: "1",
     label: "About a minute",
     title: "Tell us about your parish",
-    body: <p>Your name, how to reach you, and your parish&rsquo;s current website. Nothing to write, nothing to gather.</p>,
+    body: <p>Your name, how to reach you, and which parish. Nothing to write, nothing to gather, not even your website&nbsp;address.</p>,
   },
   {
     marker: "2",
@@ -102,7 +102,7 @@ const FAQS: { question: string; answer: string[] }[] = [
   {
     question: "What do you need from us?",
     answer: [
-      "Only your current website address. We pull your Mass times, ministries, and photos from it. If you have better photos or something you’d like changed, you can tell us on the next page.",
+      "Nothing. We find your current website and pull your Mass times, ministries, and photos from it. If you have better photos or something you’d like changed, you can tell us on the next page.",
     ],
   },
 ];
@@ -122,7 +122,7 @@ export default function FreeWebsiteContent() {
               className="mx-auto mt-5 max-w-2xl text-balance text-lg text-vellum/80 motion-safe:animate-fade-up sm:text-xl"
               style={{ animationDelay: "240ms" }}
             >
-              Send us your current site. In 3 business days, you&rsquo;ll get a
+              Tell us about your parish. In 3 business days, you&rsquo;ll get a
               brand new, live website you can click through, built for the
               young families looking for a parish near&nbsp;them.
             </p>
@@ -226,8 +226,8 @@ export default function FreeWebsiteContent() {
           <div className="text-center md:text-left">
             <h2 className={h2}>See what your parish&rsquo;s website could&nbsp;be</h2>
             <p className="mt-5 text-pretty text-lg leading-relaxed text-ink/70">
-              Tell us where your current site is and pick a style. On the next
-              page you can tell us anything you&rsquo;d like&nbsp;changed.
+              Tell us about your parish and pick a style. On the next page you
+              can tell us anything you&rsquo;d like&nbsp;changed.
             </p>
             <ul className="mx-auto mt-8 max-w-sm space-y-3 text-left text-lg md:mx-0">
               {["Delivered in 3 business days", "A live site you can click through", "Your current site stays untouched"].map((p) => (

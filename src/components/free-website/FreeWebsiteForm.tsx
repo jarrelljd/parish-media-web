@@ -14,7 +14,8 @@ const INPUT =
 
 // Same shape as the /free-guide form (FreeGuideForm.tsx): name, phone, email,
 // and role first; once those are filled in (and the role qualifies), the
-// parish name and website slide open. Same roles list, so "None of the Above"
+// parish name and city slide open. No website field on purpose (people quit
+// forms to go look it up); the build job finds the site from name + city. Same roles list, so "None of the Above"
 // is turned away the same way.
 //
 // Pastor buy-in, on purpose as friction: the pastor decides, so anyone who
@@ -29,7 +30,7 @@ export default function FreeWebsiteForm() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [website, setWebsite] = useState("");
+  const [cityState, setCityState] = useState("");
   const [style, setStyle] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [pastorName, setPastorName] = useState("");
@@ -57,7 +58,7 @@ export default function FreeWebsiteForm() {
         FREE_WEBSITE_LEAD_KEY,
         JSON.stringify({
           name: name.trim(),
-          website: website.trim(),
+          cityState: cityState.trim(),
           email: email.trim(),
           pastorName: needsPastor ? pastorName.trim() : "",
           deliverBy: state.deliverBy,
@@ -71,7 +72,7 @@ export default function FreeWebsiteForm() {
       window.location.href = "/free-website/thank-you";
     }, 1500);
     return () => clearTimeout(go);
-  }, [state.status, state.eventId, state.deliverBy, state.notionPageId, name, website, email, needsPastor, pastorName]);
+  }, [state.status, state.eventId, state.deliverBy, state.notionPageId, name, cityState, email, needsPastor, pastorName]);
 
   return (
     <form
@@ -275,19 +276,17 @@ export default function FreeWebsiteForm() {
           </div>
 
           <div>
-            <label htmlFor="fw-website" className="block text-sm font-medium text-navy">
-              Current Parish Website
+            <label htmlFor="fw-city" className="block text-sm font-medium text-navy">
+              City/State
             </label>
             <input
-              id="fw-website"
-              name="website"
+              id="fw-city"
+              name="cityState"
               type="text"
-              inputMode="url"
-              autoComplete="url"
               required={showMore}
-              placeholder="stmaryparish.org"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
+              placeholder="Reno, NV"
+              value={cityState}
+              onChange={(e) => setCityState(e.target.value)}
               className={INPUT}
             />
           </div>

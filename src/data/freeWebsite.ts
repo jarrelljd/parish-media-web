@@ -1,6 +1,5 @@
-// Content for the free website redesign lead magnet (/free-website and its
-// thank-you page). One source so the landing page, the thank-you page, and
-// the server action agree on styles, roles, and the delivery promise.
+// Content for the free website redesign lead magnet (/free-website). One
+// source so the landing page, its form, and the server action agree on styles, roles, and the delivery promise.
 
 // Before/after pairs. Screenshots live in public/images/free-website/ and
 // were captured at 1440x900 from the old live site and our new build.
@@ -96,6 +95,11 @@ export function isoDay(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-// Thank-you page reads these, written by the form on success. Kept out of
-// the URL so nothing personal reaches analytics or the pixel.
-export const FREE_WEBSITE_LEAD_KEY = "pmc-free-website-lead";
+// Parish leaders' titles read better in the confirmation than a first name
+// alone ("Thank you, Fr. John").
+export function greetingName(full: string): string {
+  const parts = full.trim().split(/\s+/);
+  if (parts.length === 0 || !parts[0]) return "";
+  const title = /^(fr|father|dcn|deacon|msgr|rev|sr|br)\.?$/i.test(parts[0]);
+  return title && parts[1] ? `${parts[0]} ${parts[1]}` : parts[0];
+}

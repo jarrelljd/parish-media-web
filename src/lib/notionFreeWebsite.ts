@@ -52,8 +52,7 @@ async function notion(path: string, method: "POST" | "PATCH", body: unknown) {
   return res.json();
 }
 
-// Creates the row and returns its page ID (the thank-you page sends it back
-// with the optional notes).
+// Creates the row and returns its page ID.
 export async function createFreeWebsiteRow(r: FreeWebsiteRow): Promise<string> {
   const isPastor = r.role === "Pastor";
   const properties: Record<string, unknown> = {
@@ -80,11 +79,4 @@ export async function createFreeWebsiteRow(r: FreeWebsiteRow): Promise<string> {
     properties,
   });
   return page.id as string;
-}
-
-// The thank-you page's optional answers go into the row's Notes for the
-// build job to read.
-export async function addFreeWebsiteNotes(pageId: string, notes: string): Promise<void> {
-  if (!/^[0-9a-f-]{32,36}$/i.test(pageId)) throw new Error("Invalid Notion page id");
-  await notion(`pages/${pageId}`, "PATCH", { properties: { Notes: text(notes) } });
 }

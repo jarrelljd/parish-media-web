@@ -42,6 +42,13 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: false,
       },
+      // The free website thank-you page was folded into the form
+      // (2026-11-25); the confirmation now shows in place.
+      {
+        source: "/free-website/thank-you",
+        destination: "/free-website",
+        permanent: false,
+      },
       // Monthly Giving was merged into /parish (one Growth and Giving
       // offer). Temporary (307) so it's easy to undo; make permanent later.
       {

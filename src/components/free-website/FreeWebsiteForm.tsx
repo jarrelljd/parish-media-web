@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { Check } from "lucide-react";
 import { submitFreeWebsiteRequest, type FreeWebsiteState } from "@/app/actions";
 import { trackLead, trackSignup } from "@/lib/pixel";
-import { FREE_WEBSITE_LEAD_KEY, SITE_STYLES, STYLE_OUR_PICK } from "@/data/freeWebsite";
+import { SITE_STYLES, STYLE_OUR_PICK, formatDeliveryDate, greetingName } from "@/data/freeWebsite";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 
 const initialState: FreeWebsiteState = { status: "idle" };
@@ -41,6 +42,7 @@ export default function FreeWebsiteForm() {
     role === PASTOR_ROLE || (confirmed && pastorName.trim() !== "" && pastorEmail.trim() !== "");
   const showMore = name.trim() !== "" && email.trim() !== "" && role !== "" && !ineligible && pastorReady;
   const done = state.status === "success";
+  const doneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (state.status !== "success") return;
@@ -60,28 +62,42 @@ export default function FreeWebsiteForm() {
         console.error("Failed to fire Meta Pixel Lead (free website):", err);
       }
     }
-    // The thank-you page greets them, shows the delivery date, and sends the
-    // optional details along with their site and email. Kept out of the URL.
-    try {
-      sessionStorage.setItem(
-        FREE_WEBSITE_LEAD_KEY,
-        JSON.stringify({
-          name: name.trim(),
-          cityState: cityState.trim(),
-          email: email.trim(),
-          pastorName: needsPastor ? pastorName.trim() : "",
-          deliverBy: state.deliverBy,
-          notionPageId: state.notionPageId,
-        }),
-      );
-    } catch {
-      // Storage blocked: the thank-you page works out the date itself.
-    }
-    const go = setTimeout(() => {
-      window.location.href = "/free-website/thank-you";
-    }, 1500);
-    return () => clearTimeout(go);
-  }, [state.status, state.eventId, state.signupEventId, role, state.deliverBy, state.notionPageId, name, cityState, email, needsPastor, pastorName]);
+    // The form swaps to a confirmation in place (no separate thank-you page),
+    // so bring it into view.
+    doneRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [state.status, state.eventId, state.signupEventId, role]);
+
+  if (done) {
+    const who = greetingName(name);
+    const when = state.deliverBy ? formatDeliveryDate(new Date(state.deliverBy)) : "";
+    return (
+      <div
+        ref={doneRef}
+        role="status"
+        className="rounded-3xl bg-white p-8 text-center shadow-xl shadow-navy/5 ring-1 ring-navy/5 sm:p-10"
+      >
+        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold text-navy shadow-lg shadow-gold/30">
+          <Check className="h-6 w-6" strokeWidth={3} aria-hidden="true" />
+        </span>
+        <p className="mt-5 text-balance font-serif text-3xl font-medium text-navy">
+          {who ? <>Thank you, {who}.</> : <>Thank you.</>}
+        </p>
+        {needsPastor ? (
+          <p className="mx-auto mt-3 max-w-md text-pretty text-lg leading-relaxed text-navy/75">
+            We&rsquo;ll send your new website to {pastorName.trim()}, with you copied
+            {when ? <>, by <span className="font-semibold text-navy">{when}</span></> : null}. When
+            it&rsquo;s ready, we&rsquo;ll call to walk you both through&nbsp;it.
+          </p>
+        ) : (
+          <p className="mx-auto mt-3 max-w-md text-pretty text-lg leading-relaxed text-navy/75">
+            Your new website will be in your inbox
+            {when ? <> by <span className="font-semibold text-navy">{when}</span></> : <> within 3 business days</>}. When
+            it&rsquo;s ready, we&rsquo;ll give you a call and walk you through&nbsp;it.
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <form
@@ -100,11 +116,6 @@ export default function FreeWebsiteForm() {
       {state.status === "error" && (
         <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
           {state.message}
-        </div>
-      )}
-      {done && (
-        <div role="status" className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
-          Got it. We&rsquo;re starting on your new website now&hellip;
         </div>
       )}
 
@@ -356,12 +367,12 @@ export default function FreeWebsiteForm() {
 
       <button
         type="submit"
-        disabled={pending || done || ineligible}
+        disabled={pending || ineligible}
         className={`w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-navy shadow-lg shadow-gold/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold/40 disabled:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${
           ineligible ? "disabled:opacity-60" : "disabled:cursor-wait"
         }`}
       >
-        {pending || done ? (
+        {pending ? (
           <span className="inline-flex items-center justify-center gap-2.5">
             <span
               className="h-4 w-4 animate-spin rounded-full border-2 border-navy/25 border-t-navy motion-reduce:animate-none"

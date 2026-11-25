@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { Resend } from "resend";
 import { NO_QUALIFYING_ROLE, freeGuideRoles } from "@/data/freeGuideRoles";
 import { STYLE_VALUES, deliveryDate } from "@/data/freeWebsite";
-import { addFreeWebsiteNotes, createFreeWebsiteRow } from "@/lib/notionFreeWebsite";
+import { createFreeWebsiteRow } from "@/lib/notionFreeWebsite";
 import { lookupCityPopulation } from "@/lib/cityPopulation";
 import { greetingFor } from "@/lib/greeting";
 import {
@@ -693,8 +693,7 @@ export type FreeWebsiteState = {
   signupEventId?: string;
   // ISO date the new site is promised by (72 weekday hours from now).
   deliverBy?: string;
-  // The request's row in the Notion tracker; the thank-you page sends it
-  // back so the optional notes land on the same row.
+  // The request's row in the Notion tracker.
   notionPageId?: string;
 };
 
@@ -861,56 +860,4 @@ export async function submitFreeWebsiteRequest(
   }
 
   return { ...success, eventId, signupEventId };
-}
-
-export type FreeWebsiteDetailsState = {
-  status: "idle" | "success" | "error";
-  message?: string;
-};
-
-// Optional extras from the thank-you page: what they want visitors to find,
-// what to fix, and a link to better photos. (Style is chosen in the form.)
-export async function submitFreeWebsiteDetails(
-  _prevState: FreeWebsiteDetailsState,
-  formData: FormData,
-): Promise<FreeWebsiteDetailsState> {
-  const field = (k: string, max = 1000) => String(formData.get(k) ?? "").trim().slice(0, max);
-  const payload = {
-    timestamp: new Date().toISOString(),
-    type: "details",
-    cityState: field("cityState", 120),
-    email: field("email", 200),
-    mostImportant: field("mostImportant"),
-    fix: field("fix"),
-    photos: field("photos", 500),
-  };
-
-  // Onto the request's Notion row, for the build job to read.
-  let saved = false;
-  const pageId = field("notionPageId", 40);
-  const notes = [
-    payload.mostImportant && `Most important to find: ${payload.mostImportant}`,
-    payload.fix && `Fix or change: ${payload.fix}`,
-    payload.photos && `Better photos: ${payload.photos}`,
-  ].filter(Boolean).join("\n");
-  if (pageId && notes) {
-    try {
-      await addFreeWebsiteNotes(pageId, notes);
-      saved = true;
-    } catch (err) {
-      console.error("Failed to add notes to Notion row (free website):", err);
-    }
-  }
-
-  const emailed = await notifyFreeWebsite(
-    `Free website details: ${payload.email || payload.cityState || "unknown"}`,
-    payload,
-  );
-  if (!saved && !emailed) {
-    return {
-      status: "error",
-      message: "That didn’t go through. Please try again, or reply to our email with these details.",
-    };
-  }
-  return { status: "success" };
 }

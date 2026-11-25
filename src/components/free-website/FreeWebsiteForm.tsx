@@ -85,14 +85,12 @@ export default function FreeWebsiteForm() {
         {needsPastor ? (
           <p className="mx-auto mt-3 max-w-md text-pretty text-lg leading-relaxed text-navy/75">
             We&rsquo;ll send your new website to {pastorName.trim()}, with you copied
-            {when ? <>, by <span className="font-semibold text-navy">{when}</span></> : null}. When
-            it&rsquo;s ready, we&rsquo;ll call to walk you both through&nbsp;it.
+            {when ? <>, by <span className="font-semibold text-navy">{when}</span></> : <> within 3 business&nbsp;days</>}.
           </p>
         ) : (
           <p className="mx-auto mt-3 max-w-md text-pretty text-lg leading-relaxed text-navy/75">
             Your new website will be in your inbox
-            {when ? <> by <span className="font-semibold text-navy">{when}</span></> : <> within 3 business days</>}. When
-            it&rsquo;s ready, we&rsquo;ll give you a call and walk you through&nbsp;it.
+            {when ? <> by <span className="font-semibold text-navy">{when}</span></> : <> within 3 business&nbsp;days</>}.
           </p>
         )}
       </div>

@@ -65,9 +65,8 @@ const STEPS: StoryStep[] = [
     title: "Click through your new site",
     body: (
       <p>
-        We call your pastor when it&rsquo;s ready and email him the link,
-        with a walkthrough of the new site. If someone on staff asked for it,
-        they&rsquo;re copied&nbsp;too.
+        When it&rsquo;s ready, we email your pastor the link to his new site.
+        If someone on staff asked for it, they&rsquo;re copied&nbsp;too.
       </p>
     ),
   },
@@ -90,7 +89,7 @@ const FAQS: { question: string; answer: string[] }[] = [
   {
     question: "Does our pastor need to be involved?",
     answer: [
-      "Yes. He’s the one who decides, so we send the new website to him and walk him through it. If you’re on staff, we copy you and let him know you asked for it.",
+      "Yes. He’s the one who decides, so we send the new website to him. If you’re on staff, we copy you and let him know you asked for it.",
     ],
   },
   {

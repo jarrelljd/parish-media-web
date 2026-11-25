@@ -57,22 +57,36 @@ export const SITE_STYLES: SiteStyle[] = [
 export const STYLE_OUR_PICK = "Let us choose";
 export const STYLE_VALUES = [...SITE_STYLES.map((s) => s.name), STYLE_OUR_PICK];
 
-// The promise is 72 hours, not counting weekends. Returns the delivery date
-// for a request made at `from`: every weekday hour counts, weekend hours
-// don't. Holidays are not skipped.
+// The promise is "3 business days": a request on any day is due 3 weekdays
+// later (Tue → Fri; Sat or Sun → Wed). Worked out on Central time (where
+// we're based) and returned as a plain calendar date, noon UTC, so it shows
+// the same day in every US time zone and never lands on a weekend. Counting
+// hours in UTC used to push evening requests onto a Sunday. Holidays are
+// not skipped.
+const BUSINESS_TZ = "America/Chicago";
+
 export function deliveryDate(from: Date = new Date()): Date {
-  const d = new Date(from);
-  let hours = 72;
-  while (hours > 0) {
-    d.setHours(d.getHours() + 1);
-    const day = d.getDay();
-    if (day !== 0 && day !== 6) hours -= 1;
+  const [y, m, d] = from
+    .toLocaleDateString("en-CA", { timeZone: BUSINESS_TZ }) // YYYY-MM-DD
+    .split("-")
+    .map(Number);
+  const day = new Date(Date.UTC(y, m - 1, d, 12));
+  let left = 3;
+  while (left > 0) {
+    day.setUTCDate(day.getUTCDate() + 1);
+    const wd = day.getUTCDay();
+    if (wd !== 0 && wd !== 6) left -= 1;
   }
-  return d;
+  return day;
 }
 
 export function formatDeliveryDate(d: Date): string {
-  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
+}
+
+// YYYY-MM-DD, for date-only fields (the Notion tracker's "Promised by").
+export function isoDay(d: Date): string {
+  return d.toISOString().slice(0, 10);
 }
 
 // Thank-you page reads these, written by the form on success. Kept out of

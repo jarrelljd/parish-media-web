@@ -5,6 +5,8 @@
 // connection that the database has been shared with). Only imported from
 // server actions (src/app/actions.ts), so the token never reaches the browser.
 
+import { isoDay } from "@/data/freeWebsite";
+
 // The tracker's data source (Notion's newer API addresses rows by data source).
 const DATA_SOURCE_ID = "423caa4f-6e87-818d-b816-000b01fcc2dd";
 const NOTION_VERSION = "2025-09-03";
@@ -68,7 +70,8 @@ export async function createFreeWebsiteRow(r: FreeWebsiteRow): Promise<string> {
     "Requester email": { email: isPastor ? null : r.email || null },
     Phone: { phone_number: r.phone || null },
     "Requested on": date(r.requestedOn),
-    "Promised by": date(r.promisedBy),
+    // A calendar day, not a time: "3 business days" (see deliveryDate).
+    "Promised by": { date: { start: isoDay(r.promisedBy) } },
   };
   if (ROLES.includes(r.role)) properties.Role = { select: { name: r.role } };
   if (STYLE_TO_NOTION[r.style]) properties.Style = { select: { name: STYLE_TO_NOTION[r.style] } };

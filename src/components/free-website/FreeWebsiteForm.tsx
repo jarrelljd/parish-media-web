@@ -210,8 +210,8 @@ export default function FreeWebsiteForm() {
               className="mt-0.5 h-5 w-5 shrink-0 accent-navy"
             />
             <span>
-              I confirm our pastor knows about this and would like to see a new
-              website for our&nbsp;parish.
+              Our pastor knows I&rsquo;m looking into this and is open to
+              seeing a new&nbsp;website.
             </span>
           </label>
         </div>
@@ -224,8 +224,8 @@ export default function FreeWebsiteForm() {
       >
         <div className="min-h-0 space-y-5">
           <p className="text-sm leading-relaxed text-navy/70">
-            We&rsquo;ll send the new website to your pastor and copy you, noting
-            that you asked for the free redesign. How can we reach&nbsp;him?
+            When it&rsquo;s ready, we&rsquo;ll send it to you both, so he can
+            take a look and knows it came from&nbsp;you.
           </p>
           <div>
             <label htmlFor="fw-pastor-name" className="block text-sm font-medium text-navy">

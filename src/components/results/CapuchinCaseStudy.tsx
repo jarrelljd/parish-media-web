@@ -17,33 +17,25 @@ const steps: StoryStep[] = [
     label: "Step 0",
     title: "Where they started",
     body: (
-      <>
-        <p>
-          Very few men were reaching out to the vocation office about
-          religious life, and social media wasn&rsquo;t bringing in new&nbsp;ones.
-        </p>
-        <p>
-          In the same four months of 2025, the province&rsquo;s Facebook and
-          Instagram pages drew about 140,000 views and 600 new followers. That
-          was with boosted&nbsp;posts.
-        </p>
-      </>
+      <p>
+        Few men were contacting the vocation office, and social media
+        wasn&rsquo;t bringing in new ones. In the same four months of 2025, the
+        province&rsquo;s pages drew about 140,000 views and 600 new followers,
+        and that was with boosted&nbsp;posts.
+      </p>
     ),
   },
   {
     marker: "1",
     label: "Step 1",
-    title: "We posted content that built trust in the\u00a0province",
+    title: "We posted content that built trust in the province",
     body: (
-      <>
-        <p>
-          Every post had a job: helping men get to know, like, and trust the
-          friars. Stories about Fr.&nbsp;Nathan and the brothers. Practical
-          tips for discerning. Group photos from Come &amp; See weekends. And
-          saint videos made to be shared&nbsp;widely.
-        </p>
-        <p>The numbers climbed without boosting a single&nbsp;post.</p>
-      </>
+      <p>
+        Stories about Fr.&nbsp;Nathan and the brothers, discernment tips,
+        Come &amp; See photos, and saint videos made to be shared. Every post
+        helped men get to know and trust the friars, and the numbers climbed
+        without boosting a single&nbsp;post.
+      </p>
     ),
     visual: (
       <div className="space-y-7 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-ink/10">
@@ -67,20 +59,13 @@ const steps: StoryStep[] = [
   {
     marker: "2",
     label: "Step 2",
-    title: "We ran ads inviting men to talk with Fr.\u00a0Nathan about their\u00a0vocation",
+    title: "We ran ads inviting men to talk with Fr. Nathan",
     body: (
-      <>
-        <p>
-          Nobody signs up for postulancy from a Facebook ad. So we asked for
-          something much smaller: a conversation with a
-          Capuchin&nbsp;friar.
-        </p>
-        <p>
-          Targeted Facebook and Instagram ads offered men the chance to talk
-          with Fr.&nbsp;Nathan. One tap opened a short form with their name
-          and number already filled in, so saying yes took&nbsp;seconds.
-        </p>
-      </>
+      <p>
+        Nobody signs up for postulancy from a Facebook ad, so we asked for
+        something smaller: a conversation with a friar. One tap opened a short
+        form with their name and number already filled&nbsp;in.
+      </p>
     ),
     visual: (
       <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-ink/10">
@@ -108,20 +93,14 @@ const steps: StoryStep[] = [
   {
     marker: "3",
     label: "Step 3",
-    title: "Fr.\u00a0Nathan texted each man within\u00a0minutes",
+    title: "Fr. Nathan texted each man within minutes",
     body: (
-      <>
-        <p>
-          About four minutes after a man filled out the form, a text from
-          Fr.&nbsp;Nathan went out automatically. When the man wrote back,
-          Father picked up the conversation himself, like any
-          other&nbsp;text.
-        </p>
-        <p>
-          No spreadsheet of names to chase, and no one waiting days to hear
-          back while his interest&nbsp;cools.
-        </p>
-      </>
+      <p>
+        About four minutes after each form, an automatic text from
+        Fr.&nbsp;Nathan went out. When a man wrote back, Father took over the
+        conversation himself. No list of names to chase, and no interest
+        cooling while a man waits to hear&nbsp;back.
+      </p>
     ),
     visual: (
       <figure className="mx-auto max-w-xs">
@@ -140,12 +119,11 @@ const steps: StoryStep[] = [
   {
     marker: "4",
     label: "Step 4",
-    title: "21 men signed up for a Come &\u00a0See",
+    title: "21 men signed up for a Come & See",
     body: (
       <p>
-        More views and followers are nice. What Fr.&nbsp;Nathan cares about is
-        men in the room. A few weeks after the campaign, he sent us
-        this&nbsp;text.
+        Views and followers are nice. What Fr.&nbsp;Nathan cares about is men
+        in the room. A few weeks later, he sent us this&nbsp;text.
       </p>
     ),
     visual: (
@@ -161,66 +139,33 @@ export default function CapuchinCaseStudy() {
   return (
     <section id="capuchins" className="scroll-mt-20 px-6 py-20 sm:py-28 lg:px-10">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-3xl">
-          <p className="text-base font-semibold text-gold-deep">
-            Capuchin Franciscans &middot;{" "}
-            <span className="whitespace-nowrap">Midwest Province of St.&nbsp;Joseph</span>
-          </p>
-          <h2 className="mt-3 text-balance font-serif text-4xl font-medium leading-[1.06] text-ink sm:text-6xl">
-            436 men asked to talk with the vocations director in only 120&nbsp;days
-          </h2>
-          <p className="mt-5 text-pretty text-xl leading-relaxed text-ink/70">
-            Here&rsquo;s exactly how it&nbsp;worked.
-          </p>
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14">
+          <div>
+            <p className="text-base font-semibold text-gold-deep">
+              Capuchin Franciscans &middot;{" "}
+              <span className="whitespace-nowrap">Midwest Province of St.&nbsp;Joseph</span>
+            </p>
+            <h2 className="mt-3 text-balance font-serif text-4xl font-medium leading-[1.06] text-ink sm:text-6xl">
+              436 men asked about a vocation in 120&nbsp;days
+            </h2>
+            <p className="mt-5 text-pretty text-xl leading-relaxed text-ink/70">
+              Each one asked to talk with the vocations director, at $3.11 per
+              inquiry. Here&rsquo;s how it&nbsp;worked.
+            </p>
+          </div>
+          <div className="overflow-hidden rounded-3xl shadow-2xl shadow-ink/20">
+            <Image
+              src={friarsPhoto}
+              alt="Capuchin friars of the Midwest Province praying together at Mass"
+              sizes="(min-width: 1024px) 540px, 100vw"
+              className="h-auto w-full"
+              placeholder="blur"
+            />
+          </div>
         </div>
-
-        <div className="mt-12 overflow-hidden rounded-3xl shadow-2xl shadow-ink/20">
-          <Image
-            src={friarsPhoto}
-            alt="Capuchin friars of the Midwest Province praying together at Mass"
-            sizes="(min-width: 1152px) 1152px, 100vw"
-            className="h-auto w-full"
-            placeholder="blur"
-          />
-        </div>
-
-        {/* Headline numbers */}
-        <dl className="mt-12 grid gap-10 sm:grid-cols-3 sm:gap-8">
-          <div>
-            <dt className="sr-only">Organic views</dt>
-            <dd className="font-serif text-6xl font-medium leading-none text-lapis">
-              <CountUp to={614} suffix="%" />
-            </dd>
-            <dd className="mt-3 max-w-xs text-pretty text-[15px] leading-snug text-ink/60">
-              more organic views: nearly 1 million, up from 140,000 the year&nbsp;before
-            </dd>
-          </div>
-          <div>
-            <dt className="sr-only">New followers</dt>
-            <dd className="font-serif text-6xl font-medium leading-none text-lapis">
-              <CountUp to={3100} />
-            </dd>
-            <dd className="mt-3 max-w-xs text-pretty text-[15px] leading-snug text-ink/60">
-              new followers without boosting a post, up from 600 the year&nbsp;before
-            </dd>
-          </div>
-          <div>
-            <dt className="sr-only">Vocation inquiries</dt>
-            <dd className="font-serif text-6xl font-medium leading-none text-lapis">
-              <CountUp to={436} />
-            </dd>
-            <dd className="mt-3 max-w-xs text-pretty text-[15px] leading-snug text-ink/60">
-              men asked to talk with Fr.&nbsp;Nathan, at $3.11 per&nbsp;inquiry
-            </dd>
-          </div>
-        </dl>
-        <p className="mt-6 text-sm text-ink/50">
-          120 days on Facebook and Instagram, compared with the same four months
-          of&nbsp;2025.
-        </p>
 
         {/* The story */}
-        <div className="mt-20 sm:mt-28">
+        <div className="mt-16 sm:mt-24">
           <StoryRail steps={steps} />
         </div>
 
@@ -247,12 +192,8 @@ export default function CapuchinCaseStudy() {
               Fr. Nathan Linton, Vocations&nbsp;Director
             </h3>
             <p className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-ink/70">
-              Hear from Fr.&nbsp;Nathan about working together, and what changed for
-              the province&rsquo;s vocation&nbsp;outreach.
-            </p>
-            <p className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-ink/70">
-              After seeing these results on Facebook and Instagram, the province
-              asked us to take on YouTube&nbsp;next.
+              Hear what changed for the province&rsquo;s vocation outreach. After
+              these results, the province asked us to take on YouTube&nbsp;next.
             </p>
           </div>
         </div>
